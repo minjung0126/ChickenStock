@@ -24,6 +24,7 @@ public class NoticeController {
     public NoticeController(NoticeService noticeService){
 
         this.noticeService = noticeService;
+
     }
 
     @GetMapping("/list")
