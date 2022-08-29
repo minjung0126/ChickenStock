@@ -1,0 +1,21 @@
+#port 설정
+server:
+  port: 8085
+
+#datasource
+spring:
+  datasource:
+    driver-class-name: oracle.jdbc.driver.OracleDriver
+    url: jdbc:oracle:thin:@oracle.coffit.site:1521:xe
+    username: C##CHICKEN
+    password: CHICKEN
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+      enabled: true
+
+# mybatis config
+mybatis:
+  mapper-locations: mappers/**/*.xml # mappers 안에 모든 파일.xml
+  type-aliases-package: com.chicken.project.notice.model.dto
