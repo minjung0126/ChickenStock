@@ -5,11 +5,11 @@ import com.chicken.project.notice.model.dto.NoticeFileDTO;
 import com.chicken.project.notice.model.service.NoticeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -45,20 +45,19 @@ public class NoticeController {
 
     @PostMapping("/notice/insert")
     public String noticeInsert(@ModelAttribute NoticeDTO notice,
-                               HttpServletRequest request,
                                @RequestParam(name="originName", required=false) MultipartFile originName,
-                               ModelAndView mv){
+                               ModelAndView mv) throws Exception{
 
         NoticeFileDTO noticeFile = new NoticeFileDTO();
 
         System.out.println(notice);
         System.out.println(originName);
 
-        String root = "C:\\dev\\10_Spring\\00_spring-boot-project-main\\chicken\\src\\main\\resources\\static";
+        String root = ResourceUtils.getURL("src/main/resources").getPath();
 
-        System.out.println("루트ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ" + root);
+        String filePath = root + "/static/uploadFiles";
 
-        String filePath = root + "\\uploadFiles";
+        System.out.println("루트ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ" + filePath);
 
         File mkdir = new File(filePath);
         if(!mkdir.exists()) {
