@@ -6,14 +6,14 @@
 
   <title>chicken stock</title>
 
-  <link rel="stylesheet" th:href="@{/css/common.css}"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/common.css}"/>
   <!-- table css -->
   <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" type="text/css" th:href="@{/css/release_detail.css}">
   <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-  <script src="/js/common.js"></script>
+
   <style>
     .table tbody tr td:nth-last-child(1) {
 	  border-radius: 0px 0px 0px 0px;
@@ -49,113 +49,17 @@
     .container{
       max-width: 100%;
     }
-    th {
-      display: table-cell;
-      vertical-align: inherit;
-      font-weight: bold;
-      text-align: center;
-    }
+
   </style>
 </head>
 <body>
   <div class="wrap">
-
     <!-- S: header -->
-    <div class="header">
-      <div class="logo">
-        <a href="" title=""><img src="/images/logo.png" alt="logo"/></a>
-      </div>
-      <div class="logout_area">
-        <button class="btn btn-outline-light">로그아웃</button>
-      </div>
-      <div class="user_area">
-        <span>관리자</span>님, 환영합니다.
-      </div>
-    </div>
-    <!-- S: header -->
+    <div th:include="userHeader.html"></div>
 
     <!-- S: container -->
     <div class="container px-0">
-
-      <!-- S: aside -->
-      <div class="aside">
-        <div class="accordion">
-
-          <!-- 하위 메뉴가 없을때 -->
-          <div class="accordion_dep type1 ">
-            <a href="#" title="">홈</a>
-          </div>
-
-          <!-- 하위 메뉴가 있을때 -->
-          <div class="accordion_dep type2">
-            <a href="#" title="">마이페이지</a>
-            <ul>
-              <li>                
-                 <a href="mypage.html" title="">비밀번호 수정</a>
-              </li>
-            </ul>
-          </div>
-
-          <div class="accordion_dep type1 ">
-            <a href="admin_item.html" title="">품목관리</a>
-          </div>
-
-          <div class="accordion_dep type1 ">
-            <a href="admin_receive.html" title="">입고관리</a>
-          </div>
-
-          <div class="accordion_dep type1 ">
-            <a href="release_list.html" title="">출고관리</a>
-          </div>
-
-          <div class="accordion_dep type1">
-            <a href="returnRItemList.html" title="">반품관리</a>
-          </div>
-
-          <div class="accordion_dep type1 ">
-            <a href="billtaxList.html" title="">세금계산서</a>
-          </div>
-          
-          <div class="accordion_dep type1 ">
-            <a href="tsbilltaxList.html" title="">거래명세서</a>
-          </div>
-
-          <div class="accordion_dep type1 ">
-            <a href="store_list.html" title="">가맹점관리</a>
-          </div>
-
-          <div class="accordion_dep type1 ">
-            <a href="notice_list.html" title="">공지사항</a>
-          </div>
-
-          <div class="accordion_dep type2">
-            <a href="#" title="">관리자메뉴</a>
-            <ul>
-              <li>                
-                <a href="empList.html" title="" >직원관리</a>
-             </li>
-              <li>                
-                <a href="account_admin_list.html" title="">예치금관리</a>
-              </li>
-              <li>                
-                <a href="notice_insert.html" title="">공지사항 작성</a>
-              </li>
-              <li>                
-                <a href="store_insert.html" title="">가맹점 등록</a>
-              </li>
-              <li>                
-                <a href="calendar.html" title="">일정관리</a>
-              </li>
-            </ul>
-          </div>
-
-          <!-- <div class="accordion_dep type2 active">   
-            <ul style="display: block;"></ul> 
-            a href class="active" -->           
-        </div>
-      </div>
-      <!-- E: aside -->
-
+      <div th:replace="userSidebar.html"></div>
       <!-- S: main layout -->
       <div class="main_layout">
         <div class="main_layout_inner">
@@ -178,9 +82,9 @@
               <button class="btn btn-light px-1" type="button" disabled></button>
               <input class="form-control me-2" type="text" placeholder="검색어를 입력해주세요." style="min-width: max-content">
               <button class="btn btn-warning" type="submit" style="color:#fff">검색</button>
-            </div>	
-            <div style="height: 250px; width: 100%; overflow: auto; ">
-            <table class="table" style="border-spacing: 0;padding: 0px; margin-bottom: 20px;">       
+            </div>
+            <div style="height: 250px; width: 100%; overflow: auto;">
+            <table class="table" style="border-spacing: 0;padding: 0px; margin-bottom: 20px;">
               <thead>
                 <tr>
                   <th>상품코드</th>
@@ -197,87 +101,22 @@
                 </tr>
               </thead>
               <tbody class="release-tbody-delete">
-                <tr class="release-tr-add">
-                  <td>100000</td>
-                  <td>닭다리</td>
-                  <td>식재료</td>
-                  <td>1kg</td>
-                  <td>하림(국내산)</td>
-                  <td>5,500</td>
-                  <td>6,000</td>
-                  <td>100</td>
-                  <td>장한평점</td>
-                  <td>22/08/30</td>
+                <tr th:each="order : ${ orderList }" class="release-tr-add">
+                  <td th:text="${ order.orderNo }"></td>
+                  <td th:text="${ order.itemInfoDTO.itemName }"></td>
+                  <td th:text="${ order.itemCategoryDTO.categoryName}"></td>
+                  <td th:text="${ order.itemInfoDTO.itemStandard}"></td>
+                  <td th:text="${ order.itemInfoDTO.itemMake}"></td>
+                  <td th:text="${ order.itemInfoDTO.itemPurchase}"></td>
+                  <td th:text="${ order.itemInfoDTO.itemSales}"></td>
+                  <td th:text="${ order.orderAmount}"></td>
+                  <td th:text="${ order.storeName }"></td>
+                  <td th:text="${ order.orderDate }"></td>
                   <td class="plus-btn"><img src="/images/plus.png" width="23" height="23" class="plusImg"></td>
-                </tr>
-                <tr class="release-tr-add">
-                  <td>100000</td>
-                  <td>닭다리</td>
-                  <td>식재료</td>
-                  <td>1kg</td>
-                  <td>하림(국내산)</td>
-                  <td>5,500</td>
-                  <td>6,000</td>
-                  <td>100</td>
-                  <td>전농점</td>
-                  <td>22/08/30</td>
-                  <td class="plus-btn"><img src="/images/plus.png" width="23" height="23" class="plusImg"></td>
-                </tr>
-                <tr>
-                  <td>100000</td>
-                  <td>닭다리</td>
-                  <td>식재료</td>
-                  <td>1kg</td>
-                  <td>하림(국내산)</td>
-                  <td>5,500</td>
-                  <td>6,000</td>
-                  <td>100</td>
-                  <td>전농점</td>
-                  <td>22/08/30</td>
-                  <td><img src="/images/plus.png" width="23" height="23"></td>
-                </tr>
-                <tr>
-                  <td>100000</td>
-                  <td>닭다리</td>
-                  <td>식재료</td>
-                  <td>1kg</td>
-                  <td>하림(국내산)</td>
-                  <td>5,500</td>
-                  <td>6,000</td>
-                  <td>100</td>
-                  <td>전농점</td>
-                  <td>22/08/30</td>
-                  <td><img src="/images/plus.png" width="23" height="23"></td>
-                </tr>
-                <tr>
-                  <td>100000</td>
-                  <td>닭다리</td>
-                  <td>식재료</td>
-                  <td>1kg</td>
-                  <td>하림(국내산)</td>
-                  <td>5,500</td>
-                  <td>6,000</td>
-                  <td>100</td>
-                  <td>전농점</td>
-                  <td>22/08/30</td>
-                  <td><img src="/images/plus.png" width="23" height="23"></td>
-                </tr>
-                <tr>
-                  <td>100000</td>
-                  <td>닭다리</td>
-                  <td>식재료</td>
-                  <td>1kg</td>
-                  <td>하림(국내산)</td>
-                  <td>5,500</td>
-                  <td>6,000</td>
-                  <td>100</td>
-                  <td>전농점</td>
-                  <td>22/08/30</td>
-                  <td><img src="/images/plus.png" width="23" height="23"></td>
                 </tr>
               </tbody>
             </table>
-          </div>
+            </div>
           <div class="arrow">
             <img src="/images/blackarrow.png" width="35" height="35" alt="">
           </div>
@@ -299,21 +138,9 @@
               </tr>
             </thead>
             <tbody class="release-tbody-add">
-              <tr class="release-tr-delete">
-                <td>100000</td>
-                <td>닭다리</td>
-                <td>식재료</td>
-                <td>1kg</td>
-                <td>하림(국내산)</td>
-                <td>5,500</td>
-                <td>6,000</td>
-                <td>100</td>
-                <td>답십리점</td>
-                <td>22/08/30</td>
-                <td class="minus-btn"><img src="/images/minus.png" width="23" height="23" class="minusImg"></td>
-              </tr>
             </tbody>
           </table>
+          </div>
           <table class="table" style="border-spacing: 0;padding: 0px; margin: 0px;">       
             <thead>
               <tr>
@@ -328,29 +155,8 @@
               </tr>
             </thead>
           </table>
-        </div>
-        <!-- <div class="relese-text">
-          <span>품목명 : </span>
-          <input class="input-release" type="text" placeholder=" ex) ooo외 o개 품목">
-          <span>총매출가 : </span>
-          <input class="input-release" type="text" placeholder=""> 
-          <div class="release-btn">
-            <button class="btn btn-warning" type="submit" style="color:#fff">등록</button>
-            <button class="btn btn-warning" type="submit" style="color:#fff">취소</button>
+
           </div>
-        </div> -->
-          </div>
-          <!-- E: table -->
-          <!-- S: paging -->
-          <!-- <div class="d-flex justify-content-center">
-            <button type="button" class="btn btn-light disabled" id="startPage"><<</button>
-            <button type="button" class="btn btn-light mx-1 disabled"><</button>
-            <button type="button" class="btn btn-warning mx-1" disabled style="color:white">1</button>
-            <button type="button" class="btn btn-light mx-1">2</button>
-            <button type="button" class="btn btn-light mx-1">></button>
-            <button type="button" class="btn btn-light mx-1" id="maxPage">>></button> 
-          </div> -->
-          <!-- E: paging -->
         </div>
       </div> 
       <!-- E: main layout -->
@@ -359,7 +165,11 @@
     <!-- E: container -->
   </div>
   <style>
-
+    th {
+      vertical-align: inherit;
+      font-weight: bold;
+      text-align: center;
+    }
   </style>
   <script>
     $(".detail-main").click(function() {

@@ -2,6 +2,40 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.chicken.project.admin.release.model.dao.ReleaseMapper">
+<mapper namespace="com.chicken.project.release.model.dao.ReleaseMapper">
+    <resultMap id="releaseOrderResultMap" type="ReleaseOrderDTO">
+        <id property="orderNo" column="ORDER_NO"/>
+        <result property="orderDate" column="ORDER_DATE"/>
+        <result property="orderAmount" column="ORDER_AMOUNT"/>
+        <result property="cartNo" column="CART_NO"/>
+        <result property="itemNo" column="ITEM_NO"/>
+        <result property="storeName" column="STORE_NAME"/>
+        <association property="itemInfoDTO" resultMap="itemInfoResultMap"/>
+        <association property="itemCategoryDTO" resultMap="itemCategoryResultMap"/>
+    </resultMap>
+    <resultMap id="itemInfoResultMap" type="ItemInfoDTO">
+        <id property="itemNo" column="ITEM_NO"/>
+        <result property="itemName" column="ITEM_NAME"/>
+        <result property="itemStandard" column="ITEM_STANDARD"/>
+        <result property="itemPurchase" column="ITEM_PURCHASE"/>
+        <result property="itemSales" column="ITEM_SALES"/>
+        <result property="itemSoldoutYn" column="ITEM_SOLDOUT_YN"/>
+        <result property="itemMake" column="ITEM_MAKE"/>
+        <result property="categoryNo" column="CATEGORY_NO"/>
+        <result property="itemAmount" column="ITEM_AMOUNT"/>
+    </resultMap>
+    <resultMap id="itemCategoryResultMap" type="ItemCategoryDTO">
+        <id property="categoryNo" column="CATEGORY_NO"/>
+        <result property="categoryName" column="CATEGORY_NAME"/>
+        <result property="preCategory" column="PRE_CATEGORY"/>
+    </resultMap>
 
+    <select id="releaseOrderSelect" resultMap="releaseOrderResultMap">
+        SELECT
+               *
+          FROM STORE_ORDER A
+          JOIN ITEM_INFO B ON (A.ITEM_NO = B.ITEM_NO)
+          JOIN ITEM_CATEGORY C ON (B.CATEGORY_NO = C.CATEGORY_NO)
+          ORDER BY ORDER_NO
+    </select>
 </mapper>
