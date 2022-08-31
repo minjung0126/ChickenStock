@@ -9,12 +9,13 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("order")
 public class OrderController {
 
+    @GetMapping("orderItem")
+    public void orderItem () {
+
+    }
+
     @GetMapping("cart")
-    public ModelAndView Cart (ModelAndView mv) {
+    public void cart() {
 
-        //mv.addObject()
-
-
-        return null;
     }
 }

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
+
+  <title>chicken stock</title>
+
+  <link rel="stylesheet" href="../../../../../../lastProject/assets/css/common.css"/>
+
+  <!-- orderSuccess css -->
+  <link rel="stylesheet" type="text/css" href="../../../../../../lastProject/assets/css/orderResult.css">
+
+  <!-- table css -->
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="../../../../../../lastProject/assets/css/style.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+  <script src="../../../../../../lastProject/assets/js/common.js"></script>
+
+  <!-- font awesome -->
+  <script src="https://kit.fontawesome.com/da4b1b94bb.js" crossorigin="anonymous"></script>
+
+</head>
+<body>
+  <div class="wrap">
+
+    <!-- S: header -->
+    <div class="header">
+      <div class="logo">
+        <a href="" title=""><img src="../../../../../../lastProject/assets/images/logo.png" alt="logo"/></a>
+      </div>
+      <div class="logout_area">
+        <button class="btn btn-outline-light">로그아웃</button>
+      </div>
+      <div class="user_area">
+        <span>가맹점</span>님, 환영합니다.
+      </div>
+    </div>
+    <!-- S: header -->
+
+    <!-- S: container -->
+    <div class="container">
+
+      <!-- S: aside -->
+      <div class="aside">
+        <div class="accordion">
+
+          <!-- 하위 메뉴가 없을때 -->
+          <div class="accordion_dep type1 ">
+            <a href="#" title="">홈</a>
+          </div>
+
+          <div class="accordion_dep type2">
+            <a href="#" title="">마이페이지</a>
+            <ul>
+              <li>                
+                 <a href="#" title="">예치금 관리</a>
+              </li>
+              <li>                
+                 <a href="#" title="">비밀번호 재설정</a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="accordion_dep type1 ">
+            <a href="#" title="">품목관리</a>
+          </div>
+
+          <div class="accordion_dep type2 active">
+            <a href="#" title="">발주</a>
+            <ul style="display: block;">
+              <li>                
+                 <a href="orderItem.html" title="">상품 조회</a>
+              </li>
+              <li>                
+                 <a href="cart.html" title="" class="active">장바구니</a>
+              </li>
+              <li>                
+                <a href="#" title="">발주 내역</a>
+             </li>
+            </ul>
+          </div>
+
+          <div class="accordion_dep type1 ">
+            <a href="#" title="">입고 조회</a>
+          </div>
+
+          <div class="accordion_dep type1 ">
+            <a href="#" title="">반품관리</a>
+          </div>
+
+          <div class="accordion_dep type1 ">
+            <a href="#" title="">매입전표</a>
+          </div>
+          
+          <div class="accordion_dep type1 ">
+            <a href="#" title="">세금계산서</a>
+          </div>
+
+          <div class="accordion_dep type1 ">
+            <a href="#" title="">거래명세서</a>
+          </div>
+
+          <div class="accordion_dep type1 ">
+            <a href="#" title="">공지사항</a>
+          </div>
+          
+          <div class="accordion_dep type1 ">
+            <a href="#" title="">가맹점 조회</a>
+          </div>
+
+          <!-- <div class="accordion_dep type2 active"> 선택된 페이지 활성화 active  <ul style="display: block;"></ul> class="active  선택된 페이지 활성화 active -->
+        </div>
+      </div>
+      <!-- E: aside -->
+
+      <!-- S: main layout -->
+      <div class="main_layout">
+        <div class="main_layout_inner">
+
+          <!-- 작업 영역 -->
+          <!-- S: table -->
+          <div class="container-fluid" style="margin-top:30px">
+            <h3><i class="fa-solid fa-ban"></i> 발주 실패</h3>
+			      <br>
+            <div class="mainBox">
+                <div class="infoBox" style="font-size: 18px;">
+                    잔액이 부족하여 주문이 불가합니다.<br>
+                    <b>예치금 납입 및 승인 요청</b> 후 다시 시도해주세요.
+                </div>
+                <div class="buttonBox">
+                    <button class="btn btn-warning" style="color:#fff; cursor: pointer;" onclick="location.href='#'">예치금 납입</button>
+                    <button class="btn btn-warning" style="color:#fff; cursor: pointer;" onclick="location.href='cart.html'">이전으로</button>
+                </div>
+            </div>
+          </div>
+          <!-- E: table -->
+        </div>
+      </div>
+      <!-- E: main layout -->
+    </div>
+    <!-- E: container -->
+  </div>
+  <!-- table js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+
+</body>
+</html>

@@ -1,6 +1,6 @@
 @charset "UTF-8";
-
 .container { max-width: 100%; }
+
     #layerPop .border_tit {font-family:굴림, verdana, arial; font-size: 11px;color: #5863C7;}
     #layerPop .border_up {font-family:굴림, verdana, arial; font-size: 11px;color: #5863C7; border-top-width:1; border-right-width:1; border-bottom-width:1; border-left-width:1; border-color:#5863C7; border-top-style:solid; border-left-style:none; border-right-style:solid; border-bottom-style:none;}
     #layerPop .border_all {font-family:굴림, verdana, arial; font-size: 11px;color: #5863C7; border-top-width:2; border-right-width:2; border-bottom-width:2; border-left-width:2; border-color:#5863C7; border-top-style:solid; border-left-style:solid; border-right-style:solid; border-bottom-style:solid; }
