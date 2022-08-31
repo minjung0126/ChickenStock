@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
 
   <title>chicken stock</title>
-
+  <link rel="stylesheet" type="text/css" th:href="@{/css/common/common.css}"/>
   <link rel="stylesheet" type="text/css" th:href="@{/css/billtax/billList.css}"/>
   <!-- table css -->
   <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-  <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/common/style.css}"/>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
 </head>
@@ -18,7 +18,7 @@
       <div th:include="userHeader.html"></div>
 
     <!-- S: container -->
-      <div class="container">
+      <div class="container px-0">
           <div th:replace="userSidebar.html"></div>
           <!-- S: main layout -->
            <div class="main_layout">
