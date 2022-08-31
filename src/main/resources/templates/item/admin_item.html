@@ -6,10 +6,10 @@
 
   <title>chicken stock</title>
 
-  <link rel="stylesheet" href="../assets/css/common.css"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/common/common.css}"/>
   <!-- table css -->
   <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-  <link rel="stylesheet" type="text/css" href="../assets/css/item_receive.css">
+  <link rel="stylesheet" type="text/css" th:href="@{/css/item/item_receive.css}"/>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   <!-- datepicker js & css -->
   <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
@@ -25,104 +25,106 @@
 <div class="wrap">
 
   <!-- S: header -->
-  <div class="header">
-    <div class="logo">
-      <a href="" title=""><img src="../assets/images/logo.png" alt="logo"/></a>
-    </div>
-    <div class="logout_area">
-      <button class="btn btn-outline-light">로그아웃</button>
-    </div>
-    <div class="user_area">
-      <span>관리자</span>님, 환영합니다.
-    </div>
-  </div>
+<!--  <div class="header">-->
+<!--    <div class="logo">-->
+<!--      <a href="" title=""><img src="../assets/images/logo.png" alt="logo"/></a>-->
+<!--    </div>-->
+<!--    <div class="logout_area">-->
+<!--      <button class="btn btn-outline-light">로그아웃</button>-->
+<!--    </div>-->
+<!--    <div class="user_area">-->
+<!--      <span>관리자</span>님, 환영합니다.-->
+<!--    </div>-->
+<!--  </div>-->
   <!-- S: header -->
+  <div th:include="common/adminHeader.html"></div>
 
   <!-- S: container -->
   <div class="container px-0">
+    <div th:include="common/adminSidebar.html"></div>
 
     <!-- S: aside -->
-    <div class="aside">
-      <div class="accordion">
+<!--    <div class="aside">-->
+<!--      <div class="accordion">-->
 
-        <!-- 하위 메뉴가 없을때 -->
-        <div class="accordion_dep type1 ">
-          <a href="#" title="">홈</a>
-        </div>
+<!--        &lt;!&ndash; 하위 메뉴가 없을때 &ndash;&gt;-->
+<!--        <div class="accordion_dep type1 ">-->
+<!--          <a href="#" title="">홈</a>-->
+<!--        </div>-->
 
-        <!-- 하위 메뉴가 있을때 -->
-        <div class="accordion_dep type2">
-          <a href="#" title="">마이페이지</a>
-          <ul>
-            <li>
-              <a href="#" title="">비밀번호 수정</a>
-            </li>
-          </ul>
-        </div>
+<!--        &lt;!&ndash; 하위 메뉴가 있을때 &ndash;&gt;-->
+<!--        <div class="accordion_dep type2">-->
+<!--          <a href="#" title="">마이페이지</a>-->
+<!--          <ul>-->
+<!--            <li>-->
+<!--              <a href="#" title="">비밀번호 수정</a>-->
+<!--            </li>-->
+<!--          </ul>-->
+<!--        </div>-->
 
-        <div class="accordion_dep type1 active">
-          <a href="admin_item.html" title="" class="active">품목관리</a>
-        </div>
+<!--        <div class="accordion_dep type1 active">-->
+<!--          <a href="admin_item.html" title="" class="active">품목관리</a>-->
+<!--        </div>-->
 
-        <div class="accordion_dep type1 ">
-          <a href="admin_receive.html" title="">입고관리</a>
-        </div>
+<!--        <div class="accordion_dep type1 ">-->
+<!--          <a href="admin_receive.html" title="">입고관리</a>-->
+<!--        </div>-->
 
-        <div class="accordion_dep type1 ">
-          <a href="#" title="">출고관리</a>
-        </div>
+<!--        <div class="accordion_dep type1 ">-->
+<!--          <a href="#" title="">출고관리</a>-->
+<!--        </div>-->
 
-        <div class="accordion_dep type2">
-          <a href="#" title="">매입/매출관리</a>
-          <ul>
-            <li>
-              <a href="#" title="">매입전표</a>
-            </li>
-            <li>
-              <a href="#" title="">매출전표</a>
-            </li>
-          </ul>
-        </div>
+<!--        <div class="accordion_dep type2">-->
+<!--          <a href="#" title="">매입/매출관리</a>-->
+<!--          <ul>-->
+<!--            <li>-->
+<!--              <a href="#" title="">매입전표</a>-->
+<!--            </li>-->
+<!--            <li>-->
+<!--              <a href="#" title="">매출전표</a>-->
+<!--            </li>-->
+<!--          </ul>-->
+<!--        </div>-->
 
-        <div class="accordion_dep type1 ">
-          <a href="#" title="">세금계산서</a>
-        </div>
+<!--        <div class="accordion_dep type1 ">-->
+<!--          <a href="#" title="">세금계산서</a>-->
+<!--        </div>-->
 
-        <div class="accordion_dep type1 ">
-          <a href="#" title="">거래명세서</a>
-        </div>
+<!--        <div class="accordion_dep type1 ">-->
+<!--          <a href="#" title="">거래명세서</a>-->
+<!--        </div>-->
 
-        <div class="accordion_dep type1 ">
-          <a href="#" title="">가맹점관리</a>
-        </div>
+<!--        <div class="accordion_dep type1 ">-->
+<!--          <a href="#" title="">가맹점관리</a>-->
+<!--        </div>-->
 
-        <div class="accordion_dep type1 ">
-          <a href="#" title="">공지사항</a>
-        </div>
+<!--        <div class="accordion_dep type1 ">-->
+<!--          <a href="#" title="">공지사항</a>-->
+<!--        </div>-->
 
-        <div class="accordion_dep type2">
-          <a href="#" title="">관리자메뉴</a>
-          <ul>
-            <li>
-              <a href="#" title="">직원관리</a>
-            </li>
-            <li>
-              <a href="#" title="">예치금관리</a>
-            </li>
-            <li>
-              <a href="#" title="">공지사항 작성</a>
-            </li>
-            <li>
-              <a href="#" title="">일정관리</a>
-            </li>
-          </ul>
-        </div>
+<!--        <div class="accordion_dep type2">-->
+<!--          <a href="#" title="">관리자메뉴</a>-->
+<!--          <ul>-->
+<!--            <li>-->
+<!--              <a href="#" title="">직원관리</a>-->
+<!--            </li>-->
+<!--            <li>-->
+<!--              <a href="#" title="">예치금관리</a>-->
+<!--            </li>-->
+<!--            <li>-->
+<!--              <a href="#" title="">공지사항 작성</a>-->
+<!--            </li>-->
+<!--            <li>-->
+<!--              <a href="#" title="">일정관리</a>-->
+<!--            </li>-->
+<!--          </ul>-->
+<!--        </div>-->
 
-        <!-- <div class="accordion_dep type2 active">
-          <ul style="display: block;"></ul>
-          a href class="active" -->
-      </div>
-    </div>
+<!--        &lt;!&ndash; <div class="accordion_dep type2 active">-->
+<!--          <ul style="display: block;"></ul>-->
+<!--          a href class="active" &ndash;&gt;-->
+<!--      </div>-->
+<!--    </div>-->
     <!-- E: aside -->
 
     <!-- S: main layout -->
