@@ -1,40 +1,17 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
 
   <title>chicken stock</title>
 
-  <!-- table css -->
-  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="../assets/css/style.css">
-  <link rel="stylesheet" href="../assets/css/common.css"/>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-
+  <link rel="stylesheet" type="text/css" th:href="@{/css/common/common.css}"/>
   <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-  <script src="../assets/js/common.js"></script>
+  <script type="text/javascript" th:src="@{/js/common.js}"></script>
 
 </head>
 <body>
-  <div class="wrap">
-
-    <!-- S: header -->
-    <div class="header">
-      <div class="logo">
-        <a href="" title=""><img src="../assets/images/logo.png" alt="logo"/></a>
-      </div>
-      <div class="logout_area">
-        <button class="btn btn-outline-light">로그아웃</button>
-      </div>
-      <div class="user_area">
-        <span>가맹점</span>님, 환영합니다.
-      </div>
-    </div>
-    <!-- S: header -->
-
-    <!-- S: container -->
-    <div class="container">
 
       <!-- S: aside -->
       <div class="aside">
@@ -69,11 +46,11 @@
             <a href="#" title="">입고 조회</a>
           </div>
 
-          <div class="accordion_dep type1">
+          <div class="accordion_dep type2">
             <a href="#" title="">반품관리</a>
-            <ul style="display: block;">
+            <ul>
               <li>
-                <a href="../return/returnReItemList.html" title=""  class="active">반품요청</a>
+                <a href="../return/returnReItemList.html" title="">반품요청</a>
               </li>
               <li>
                 <a href="../return/storeReList.html" title="">반품요청목록조회</a>
@@ -90,31 +67,14 @@
           </div>
 
           <div class="accordion_dep type1 ">
-            <a href="#" title="">공지사항</a>
+            <a href="/notice/list" title="">공지사항</a>
           </div>
           
           <div class="accordion_dep type1 ">
-            <a href="#" title="">가맹점 조회</a>
+            <a href="/store/list" title="">가맹점 조회</a>
           </div>
-
-          <!-- <div class="accordion_dep type2 active"> 선택된 페이지 활성화 active  <ul style="display: block;"></ul> class="active  선택된 페이지 활성화 active -->
         </div>
       </div>
       <!-- E: aside -->
-
-      <!-- S: main layout -->
-      <div class="main_layout">
-        <div class="main_layout_inner">
-          <!-- 작업 영역 -->
-
-        </div>
-      </div>
-      <!-- E: main layout -->
-    </div>
-    <!-- E: container -->
-  </div>
-  <!-- table js -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 </body>
 </html>
