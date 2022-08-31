@@ -159,7 +159,7 @@ div::-webkit-scrollbar-track {
     content: '';
     width: 16px;
     height: 16px;
-    background: url(../images/ico-arrow-right.svg)no-repeat;
+    background: url(../../images/ico-arrow-right.svg)no-repeat;
     background-size: 100% auto;
     color: #666;
     font-weight: bold;
