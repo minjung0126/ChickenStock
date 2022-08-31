@@ -6,11 +6,16 @@
 
   <title>chicken stock</title>
 
-  <link rel="stylesheet" type="text/css" th:href="@{/css/common/common.css}"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/common.css}"/>
   <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
   <script type="text/javascript" th:src="@{/js/common.js}"></script>
+
 </head>
 <body>
+  <div class="wrap">
+    <!-- S: container -->
+    <div class="container px-0">
+
       <!-- S: aside -->
       <div class="aside">
         <div class="accordion">
@@ -59,7 +64,7 @@
           </div>
 
           <div class="accordion_dep type1 ">
-            <a href="/notice/list" title="">공지사항</a>
+            <a href="#" title="">공지사항</a>
           </div>
 
           <div class="accordion_dep type2 active">
@@ -82,6 +87,10 @@
               </li>
             </ul>
           </div>
+
+          <!-- <div class="accordion_dep type2 active">   
+            <ul style="display: block;"></ul> 
+            a href class="active" -->           
         </div>
       </div>
       <!-- E: aside -->
