@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
+
+  <title>chicken stock</title>
+
+  <link rel="stylesheet" th:href="@{/css/common/common.css}"/>
+
+  <!-- orderHistory css -->
+  <link rel="stylesheet" type="text/css" th:href="@{/css/order/orderHistory.css}">
+
+  <!-- table css -->
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/common/style.css}">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+  <script src="/js/common.js"></script>
+
+  <!-- font awesome -->
+  <script src="https://kit.fontawesome.com/da4b1b94bb.js" crossorigin="anonymous"></script>  
+  
+
+</head>
+<body>
+  <div class="wrap">
+
+    <!-- header -->
+    <div th:include="userHeader.html"></div>
+
+    <!-- S: container -->
+    <div class="container px-0">
+
+      <!-- S: aside -->
+      <div th:replace="userSidebar.html"></div>
+      <!-- E: aside -->
+
+      <!-- S: main layout -->
+      <div class="main_layout">
+        <div class="main_layout_inner">
+
+          <!-- 작업 영역 -->
+          <!-- S: table -->
+        <div class="container-fluid" style="margin-top:30px">
+            <h3><i class="fa-solid fa-list-check"></i> 발주 내역</h3>
+			<br>
+            <div class="input-group mb-3 col-12">
+                <div class="dateList1"> 입고 예정일 : 
+                    <span id="dueDate">입고예정</span>
+                </div>
+                <div class="dateList2"> 발주 마감일 : 
+                    <span id="deadline">마감일</span>
+                </div>
+                <div class="dateList3" style="font-weight: bold;"> 최종 발주일(수정일) : 
+                    <span id="finalDate">테스트 중입니다.</span>
+                    <!-- SELECT문으로 최종 발주일 띄워주기 -->
+                </div>
+                <input type="date" class="form-control" id="searchValue" name="searchValue" value="">
+                
+                <div id="addProduct">
+                    <button class="btn btn-warning" type="submit" style="color:#fff" onclick="linkToOrder()"><i class="fa-solid fa-magnifying-glass"></i> 제품 추가</button>
+                </div>
+
+            </div>	
+
+            <table class="table">
+                <thead>
+                  <tr>
+                    <th>
+                      <div class="form-check pb-3">
+                        <input type="checkbox" class="form-check-input" name="option" value='selectall' onclick='selectAll(this)'/>
+                      </div>
+                    </th>
+                    <th>번호</th>
+                    <th>상품코드</th>
+                    <th>썸네일</th>
+                    <th>상품명</th>
+                    <th>카테고리</th>
+                    <th>규격</th>
+                    <th>제조사(원산지)</th>
+                    <th>판매가격</th>
+                    <th>주문수량</th>
+                    <th>합계</th>
+                    <th>수정</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="check" name="option" value="something">
+                        <label class="form-check-label" for="check"></label>
+                      </div>
+                    </td>
+                    <td><p th:utext="${cartNo}"/></td>
+                    <td><p th:utext="${itemNo}"/></td>
+                    <td>
+                      <div class="img-info">
+                        <div class="img-info__img">
+                          <img src="/images/chicken.jpg" alt="">
+                        </div>
+                      </div>
+                    </td>
+                    <td><p th:utext="${itemName}"></p></td>
+                    <td><p th:utext="${categoryName}"></p></td>
+                    <td><p th:utext="${itemStandard}"></td>
+                    <td><p th:utext="${itemMake}"></td>
+                    <td><p th:utext="${itemSales}"></td>
+                    <td><p th:utext="${cartAmount}"></td>
+                    <td>60,000</td>
+                    <td>
+                      <div class="dropdown open">
+                        <a href="#!" class="px-2" id="triggerId1" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false">
+                              <i class="fa fa-ellipsis-v"></i>
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="triggerId1">
+                          <!-- <a class="dropdown-item" href="#"><i class="fa fa-eye mr-1"></i>View</a> -->
+                          <a class="dropdown-item" href="#" onclick="reviseAmount()"><i class="fa fa-pencil mr-1"></i> 수량 변경</a>
+                          <a class="dropdown-item text-danger" href="#" onclick="deleteConfirm()"><i class="fa fa-trash mr-1"></i> 발주 취소</a>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="check" name="option" value="something">
+                        <label class="form-check-label" for="check"></label>
+                      </div>
+                    </td>
+                    <td>1</td>
+                    <td>100000</td>
+                    <td>
+                      <div class="img-info">
+                        <div class="img-info__img">
+                          <img src="/images/chicken.jpg" alt="">
+                        </div>
+                      </div>
+                    </td>
+                    <td>닭다리</td>
+                    <td>식재료</td>
+                    <td>1kg</td>
+                    <td>하림(국내산)</td>
+                    <td>6,000</td>
+                    <td>10</td>
+                    <td>60,000</td>
+                    <td>
+                      <div class="dropdown open">
+                        <a href="#!" class="px-2" id="triggerId1" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false">
+                              <i class="fa fa-ellipsis-v"></i>
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="triggerId1">
+                          <!-- <a class="dropdown-item" href="#"><i class="fa fa-eye mr-1"></i>View</a> -->
+                          <a class="dropdown-item" href="#" onclick="reviseAmount()"><i class="fa fa-pencil mr-1"></i> 수량 변경</a>
+                          <a class="dropdown-item text-danger" href="#" onclick="deleteConfirm()"><i class="fa fa-trash mr-1"></i> 발주 취소</a>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="check" name="option" value="something">
+                        <label class="form-check-label" for="check"></label>
+                      </div>
+                    </td>
+                    <td>1</td>
+                    <td>100000</td>
+                    <td>
+                      <div class="img-info">
+                        <div class="img-info__img">
+                          <img src="/images/chicken.jpg" alt="">
+                        </div>
+                      </div>
+                    </td>
+                    <td>닭다리</td>
+                    <td>식재료</td>
+                    <td>1kg</td>
+                    <td>하림(국내산)</td>
+                    <td>6,000</td>
+                    <td>10</td>
+                    <td>60,000</td>
+                    <td>
+                      <div class="dropdown open">
+                        <a href="#!" class="px-2" id="triggerId1" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false">
+                              <i class="fa fa-ellipsis-v"></i>
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="triggerId1">
+                          <!-- <a class="dropdown-item" href="#"><i class="fa fa-eye mr-1"></i>View</a> -->
+                          <a class="dropdown-item" onclick="reviseAmount()"><i class="fa fa-pencil mr-1"></i> 수량 변경</a>
+                          <a class="dropdown-item text-danger" href="#" onclick="deleteConfirm()"><i class="fa fa-trash mr-1"></i> 발주 취소</a>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          <!-- E: table -->
+          <!-- S: paging -->
+          <div class="d-flex justify-content-center">
+            <button type="button" class="btn btn-light disabled" id="startPage"><<</button>
+            <button type="button" class="btn btn-light mx-1 disabled"><</button>
+            <button type="button" class="btn btn-warning mx-1" disabled style="color:white">1</button>
+            <button type="button" class="btn btn-light mx-1">2</button>
+            <button type="button" class="btn btn-light mx-1">></button>
+            <button type="button" class="btn btn-light mx-1" id="maxPage">>></button> 
+          </div>
+          <!-- E: paging -->
+        </div>
+      </div>
+      <!-- E: main layout -->
+    </div>
+    <!-- E: container -->
+  </div>
+  <!-- table js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+  
+  <!-- 입고 예정일 -->
+  <script type="text/javascript">
+    var dueDateTest = document.getElementById("dueDate");
+    function dueDate() {
+      var date = new Date();
+      var year = date.getFullYear();
+      var month = date.getMonth();
+      var clockDate = date.getDate();
+      var day = date.getDay();
+      var week = ['일', '월', '화', '수', '목', '금', '토'];
+
+      dueDateTest.innerText = `${year}년 ${month+1}월 ${clockDate+1}일 ${week[day+1]}요일`;
+    }
+
+    dueDate();
+  </script>
+
+  <!-- 발주 마감일 -->
+  <script type="text/javascript">
+    var deadlineTest = document.getElementById("deadline");
+    function deadline() {
+      var date = new Date();
+      var year = date.getFullYear();
+      var month = date.getMonth();
+      var clockDate = date.getDate();
+      var day = date.getDay();
+      var week = ['일', '월', '화', '수', '목', '금', '토'];
+
+      deadlineTest.innerText = `${year}년 ${month+1}월 ${clockDate}일 ${week[day]}요일 23시 59분 59초`;
+    }
+
+    deadline();
+  </script>
+
+    <!-- 상품 조회 페이지로 연결 -->
+    <script type="text/javascript">
+        function linkToOrder() {
+        url.href = 'order.html'
+        }
+    </script>
+
+  <!-- 체크 박스 전체 선택 -->
+  <script type="text/javascript">
+    function selectAll(selectAll)  {
+        const checkboxes = document.getElementsByName('option');
+    
+        checkboxes.forEach((checkbox) => {
+        checkbox.checked = selectAll.checked;
+        })
+    }
+  </script>
+
+  <!-- 수량 변경 -->
+  <script type="text/javascript">
+    function reviseAmount() {
+        let amount = prompt("변경하실 수량을 입력해주세요.");
+
+        if (amount == null || amount == "") {
+            alert("수량을 확인 후 다시 입력해주세요.");
+        } else {
+            alert("해당 상품의 수량이 " + amount + "(으)로 변경되었습니다.");
+        }
+    }
+  </script>
+
+  <!-- 선택 발주 취소 -->
+  <script type="text/javascript">
+    function deleteConfirm() {
+        var result = confirm("선택 제품의 발주를 취소하시겠습니까?");
+        if(result == true) {
+            alert("선택 제품의 발주가 취소되었습니다.");
+        }
+    }
+  </script>
+
+</body>
+</html>
