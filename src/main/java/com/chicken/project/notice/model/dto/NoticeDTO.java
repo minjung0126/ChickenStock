@@ -28,6 +28,30 @@ public class NoticeDTO {
         this.noticeNo = noticeNo;
     }
 
+    public void setNoticeName(String noticeName) {
+        this.noticeName = noticeName;
+    }
+
+    public void setNoticeContent(String noticeContent) {
+        this.noticeContent = noticeContent;
+    }
+
+    public void setNoticeRegistDate(Date noticeRegistDate) {
+        this.noticeRegistDate = noticeRegistDate;
+    }
+
+    public void setNoticeModifyDate(Date noticeModifyDate) {
+        this.noticeModifyDate = noticeModifyDate;
+    }
+
+    public void setEmpId(String empId) {
+        this.empId = empId;
+    }
+
+    public void setOriginName(NoticeFileDTO originName) {
+        this.originName = originName;
+    }
+
     public int getNoticeNo() {
         return noticeNo;
     }

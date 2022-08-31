@@ -46,8 +46,8 @@
         VALUES
         (
           SEQ_NOTICE_NO.NEXTVAL
-        , #{ noticeName, jdbcType=VARCHAR }
-        , #{ noticeContent, jdbcType=VARCHAR }
+        , #{ noticeName }
+        , #{ noticeContent }
         , SYSDATE
         , NULL
         , 'test01'
