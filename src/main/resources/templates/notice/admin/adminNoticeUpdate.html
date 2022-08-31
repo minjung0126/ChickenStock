@@ -18,107 +18,14 @@
   <div class="wrap">
 
     <!-- S: header -->
-    <div class="header">
-      <div class="logo">
-        <a href="" title=""><img src="/images/logo.png" alt="logo"/></a>
-      </div>
-      <div class="logout_area">
-        <button class="btn btn-outline-light">로그아웃</button>
-      </div>
-      <div class="user_area">
-        <span>관리자</span>님, 환영합니다.
-      </div>
-    </div>
-    <!-- S: header -->
+    <div th:include="common/adminHeader.html"></div>
+    <!-- E: header -->
 
     <!-- S: container -->
     <div class="container px-0">
 
       <!-- S: aside -->
-      <div class="aside">
-        <div class="accordion">
-
-          <!-- 하위 메뉴가 없을때 -->
-          <div class="accordion_dep type1 ">
-            <a href="#" title="">홈</a>
-          </div>
-
-          <!-- 하위 메뉴가 있을때 -->
-          <div class="accordion_dep type2">
-            <a href="#" title="">마이페이지</a>
-            <ul>
-              <li>                
-                 <a href="#" title="">비밀번호 수정</a>
-              </li>
-            </ul>
-          </div>
-
-          <div class="accordion_dep type1 ">
-            <a href="#" title="">품목관리</a>
-          </div>
-
-          <div class="accordion_dep type1 ">
-            <a href="#" title="">입고관리</a>
-          </div>
-
-          <div class="accordion_dep type1 ">
-            <a href="#" title="">출고관리</a>
-          </div>
-
-          <div class="accordion_dep type2">
-            <a href="#" title="">매입/매출관리</a>
-            <ul>
-              <li>                
-                <a href="#" title="">매입전표</a>
-             </li>
-              <li>                
-                <a href="#" title="">매출전표</a>
-              </li>
-            </ul>
-          </div>
-
-          <div class="accordion_dep type1 ">
-            <a href="#" title="">세금계산서</a>
-          </div>
-          
-          <div class="accordion_dep type1 ">
-            <a href="#" title="">거래명세서</a>
-          </div>
-
-          <div class="accordion_dep type1 ">
-            <a href="#" title="">가맹점관리</a>
-          </div>
-
-          <div class="accordion_dep type1">
-            <a href="/notice/list" title="">공지사항</a>
-          </div>
-
-          <div class="accordion_dep type2 active">
-            <a href="#" title="">관리자메뉴</a>
-            <ul style="display: block;">
-              <li>                
-                <a href="#" title="">직원관리</a>
-             </li>
-              <li>                
-                <a href="#" title="">예치금관리</a>
-              </li>
-              <li>                
-                <a href="#" title="" class="active">공지사항 작성</a>
-              </li>
-              <li>                
-                <a href="#" title="">가맹점 등록</a>
-              </li>
-              <li>                
-                <a href="#" title="">일정관리</a>
-              </li>
-            </ul>
-          </div>
-
-          <!-- <div class="accordion_dep type2 active">   
-            <ul style="display: block;"></ul> 
-            a href class="active" -->           
-        </div>
-      </div>
+      <div th:replace="common/adminSidebar.html"></div>
       <!-- E: aside -->
 
       <!-- S: main layout -->
@@ -128,10 +35,10 @@
           <!-- 작업 영역 -->
           <!-- S: table -->
           <div class="container-fluid" style="margin-top:30px">
-            <h3>공지사항 작성</h3>
+            <h3>공지사항 수정</h3>
 			      <br>
 
-            <form action="/notice/insert" method="post" enctype="multipart/form-data">
+            <form th:action="@{/notice/admin/update}" method="post" enctype="multipart/form-data">
               <table class="table">
                 <colgroup>
                   <col style="width:170px">
@@ -141,13 +48,13 @@
                   <tr>
                     <th>제목</th>
                     <td>
-                      <input type="text" name="noticeName"placeholder="제목을 입력하세요"/>
+                      <input type="text" name="noticeName" th:value="${ noticeDetail.noticeName }"/>
                     </td>
                   </tr>
                   <tr>
                     <th>내용</th>
                     <td>
-                      <textarea name="noticeContent"></textarea>
+                      <textarea name="noticeContent" th:text="${ noticeDetail.noticeContent }"></textarea>
                     </td>
                   </tr>
                   <tr>
@@ -167,7 +74,7 @@
         </div>
         <!-- E: table -->
         <!-- E: main layout -->
-      
+      </div>
     </div>
     <!-- E: container -->
   </div>
