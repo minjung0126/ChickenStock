@@ -1,4 +1,4 @@
-package com.chicken.project.billtax.controller;
+package com.chicken.project.user.billtax.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
