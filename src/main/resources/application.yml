@@ -9,15 +9,29 @@ spring:
     url: jdbc:oracle:thin:@oracle.coffit.site:1521:xe
     username: C##CHICKEN
     password: CHICKEN
+  devtools:
+    restart:
+      enabled: false
+    livereload:
+      enabled: true
+  freemarker:
+    cache: false
   servlet:
     multipart:
       max-file-size: 50MB
       max-request-size: 50MB
       enabled: true
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
 
 # mybatis config
 mybatis:
   mapper-locations: mappers/**/*.xml # mappers 안에 모든 파일.xml
-  type-aliases-package: com.chicken.project.notice.model.dto
+  type-aliases-package: com.chicken.project.notice.model.dto, com.chicken.project.store.model.dto
+
+logging:
+  level:
+    root: info
 
 

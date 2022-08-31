@@ -77,7 +77,7 @@
         )
     </insert>
 
-    <select id="noticeViewByNo" resultMap="noticeResultMap">
+    <select id="noticeDetailByNo" resultMap="noticeResultMap">
         SELECT
                A.NOTICE_NO
              , A.NOTICE_NAME
