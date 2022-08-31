@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
+
+  <title>chicken stock</title>
+
+  <link rel="stylesheet" th:href="@{/css/common.css}"/>
+  <!-- table css -->
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/release_detail.css}">
+  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+  <script src="/js/common.js"></script>
+  <style>
+    .table tbody tr td:nth-last-child(1) {
+	  border-radius: 0px 0px 0px 0px;
+    }
+    .table tbody tr td:nth-child(1) {
+	  border-radius: 0px 0px 0px 0px;
+    }
+    div::-webkit-scrollbar-track {
+      background-color: #f5f5f9;
+    }
+    div::-webkit-scrollbar-thumb {
+      background-color: rgb(222, 222, 222);
+    }
+    .table tbody tr {
+      border-bottom: 1px solid black;
+    }
+    .relese-text {
+      margin: 20px 0 0 0;
+      text-align: right;   
+    }
+    .release-btn {
+      padding-right: 10px;
+      display: inline-block;
+    }
+    .arrow {
+      margin: 20px 0 20px 0;
+      text-align: center;
+    }
+    .input-release {
+      height: 38px;
+      vertical-align: middle;
+    }
+    .container{
+      max-width: 100%;
+    }
+    th {
+      display: table-cell;
+      vertical-align: inherit;
+      font-weight: bold;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <!-- S: header -->
+    <div class="header">
+      <div class="logo">
+        <a href="" title=""><img src="/images/logo.png" alt="logo"/></a>
+      </div>
+      <div class="logout_area">
+        <button class="btn btn-outline-light">로그아웃</button>
+      </div>
+      <div class="user_area">
+        <span>관리자</span>님, 환영합니다.
+      </div>
+    </div>
+    <!-- S: header -->
+
+    <!-- S: container -->
+    <div class="container px-0">
+
+      <!-- S: aside -->
+      <div class="aside">
+        <div class="accordion">
+
+          <!-- 하위 메뉴가 없을때 -->
+          <div class="accordion_dep type1 ">
+            <a href="#" title="">홈</a>
+          </div>
+
+          <!-- 하위 메뉴가 있을때 -->
+          <div class="accordion_dep type2">
+            <a href="#" title="">마이페이지</a>
+            <ul>
+              <li>                
+                 <a href="mypage.html" title="">비밀번호 수정</a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="accordion_dep type1 ">
+            <a href="admin_item.html" title="">품목관리</a>
+          </div>
+
+          <div class="accordion_dep type1 ">
+            <a href="admin_receive.html" title="">입고관리</a>
+          </div>
+
+          <div class="accordion_dep type1 ">
+            <a href="release_list.html" title="">출고관리</a>
+          </div>
+
+          <div class="accordion_dep type1">
+            <a href="returnRItemList.html" title="">반품관리</a>
+          </div>
+
+          <div class="accordion_dep type1 ">
+            <a href="billtaxList.html" title="">세금계산서</a>
+          </div>
+          
+          <div class="accordion_dep type1 ">
+            <a href="tsbilltaxList.html" title="">거래명세서</a>
+          </div>
+
+          <div class="accordion_dep type1 ">
+            <a href="store_list.html" title="">가맹점관리</a>
+          </div>
+
+          <div class="accordion_dep type1 ">
+            <a href="notice_list.html" title="">공지사항</a>
+          </div>
+
+          <div class="accordion_dep type2">
+            <a href="#" title="">관리자메뉴</a>
+            <ul>
+              <li>                
+                <a href="empList.html" title="" >직원관리</a>
+             </li>
+              <li>                
+                <a href="account_admin_list.html" title="">예치금관리</a>
+              </li>
+              <li>                
+                <a href="notice_insert.html" title="">공지사항 작성</a>
+              </li>
+              <li>                
+                <a href="store_insert.html" title="">가맹점 등록</a>
+              </li>
+              <li>                
+                <a href="calendar.html" title="">일정관리</a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- <div class="accordion_dep type2 active">   
+            <ul style="display: block;"></ul> 
+            a href class="active" -->           
+        </div>
+      </div>
+      <!-- E: aside -->
+
+      <!-- S: main layout -->
+      <div class="main_layout">
+        <div class="main_layout_inner">
+
+          <!-- 작업 영역 -->
+          <!-- S: table -->
+          <div class="container-fluid" style="margin-top:30px">
+            <h3>
+              <a href="release_list.html">출고내역</a> ㅣ <a href="release_order.html">출고서작성</a></h3>
+			      <br>
+            <div class="input-group mb-3 col-5 float-right" style="min-width: max-content">
+              <select id="searchCondition" class="form-control" style="min-width: max-content">
+                <option value="date">요청일</option>
+                <option value="date">지점명</option>
+              </select>
+              <button class="btn btn-light px-1" type="button" disabled></button>
+              <input type="date" class="form-control"  name="searchValue" value="" style="min-width: max-content">
+              <button class="btn btn-light" type="button" disabled>~</button>
+              <input type="date" class="form-control"  name="searchValue" value="" style="min-width: max-content">
+              <button class="btn btn-light px-1" type="button" disabled></button>
+              <input class="form-control me-2" type="text" placeholder="검색어를 입력해주세요." style="min-width: max-content">
+              <button class="btn btn-warning" type="submit" style="color:#fff">검색</button>
+            </div>	
+            <div style="height: 250px; width: 100%; overflow: auto; ">
+            <table class="table" style="border-spacing: 0;padding: 0px; margin-bottom: 20px;">       
+              <thead>
+                <tr>
+                  <th>상품코드</th>
+                  <th>상품명</th>
+                  <th>카테고리</th>
+                  <th>규격</th>
+                  <th>제조사(원산지)</th>
+                  <th>매입단가</th>
+                  <th>매출단가</th>
+                  <th>발주수량</th>
+                  <th>지점명</th>
+                  <th>요청일</th>
+                  <th>추가</th>
+                </tr>
+              </thead>
+              <tbody class="release-tbody-delete">
+                <tr class="release-tr-add">
+                  <td>100000</td>
+                  <td>닭다리</td>
+                  <td>식재료</td>
+                  <td>1kg</td>
+                  <td>하림(국내산)</td>
+                  <td>5,500</td>
+                  <td>6,000</td>
+                  <td>100</td>
+                  <td>장한평점</td>
+                  <td>22/08/30</td>
+                  <td class="plus-btn"><img src="/images/plus.png" width="23" height="23" class="plusImg"></td>
+                </tr>
+                <tr class="release-tr-add">
+                  <td>100000</td>
+                  <td>닭다리</td>
+                  <td>식재료</td>
+                  <td>1kg</td>
+                  <td>하림(국내산)</td>
+                  <td>5,500</td>
+                  <td>6,000</td>
+                  <td>100</td>
+                  <td>전농점</td>
+                  <td>22/08/30</td>
+                  <td class="plus-btn"><img src="/images/plus.png" width="23" height="23" class="plusImg"></td>
+                </tr>
+                <tr>
+                  <td>100000</td>
+                  <td>닭다리</td>
+                  <td>식재료</td>
+                  <td>1kg</td>
+                  <td>하림(국내산)</td>
+                  <td>5,500</td>
+                  <td>6,000</td>
+                  <td>100</td>
+                  <td>전농점</td>
+                  <td>22/08/30</td>
+                  <td><img src="/images/plus.png" width="23" height="23"></td>
+                </tr>
+                <tr>
+                  <td>100000</td>
+                  <td>닭다리</td>
+                  <td>식재료</td>
+                  <td>1kg</td>
+                  <td>하림(국내산)</td>
+                  <td>5,500</td>
+                  <td>6,000</td>
+                  <td>100</td>
+                  <td>전농점</td>
+                  <td>22/08/30</td>
+                  <td><img src="/images/plus.png" width="23" height="23"></td>
+                </tr>
+                <tr>
+                  <td>100000</td>
+                  <td>닭다리</td>
+                  <td>식재료</td>
+                  <td>1kg</td>
+                  <td>하림(국내산)</td>
+                  <td>5,500</td>
+                  <td>6,000</td>
+                  <td>100</td>
+                  <td>전농점</td>
+                  <td>22/08/30</td>
+                  <td><img src="/images/plus.png" width="23" height="23"></td>
+                </tr>
+                <tr>
+                  <td>100000</td>
+                  <td>닭다리</td>
+                  <td>식재료</td>
+                  <td>1kg</td>
+                  <td>하림(국내산)</td>
+                  <td>5,500</td>
+                  <td>6,000</td>
+                  <td>100</td>
+                  <td>전농점</td>
+                  <td>22/08/30</td>
+                  <td><img src="/images/plus.png" width="23" height="23"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="arrow">
+            <img src="/images/blackarrow.png" width="35" height="35" alt="">
+          </div>
+          <div style="height: 250px; width: 100%; overflow: auto; ">
+          <table class="table" style="border-spacing: 0;padding: 0px; margin: 0px;">       
+            <thead>
+              <tr>
+                <th>상품코드</th>
+                <th>상품명</th>
+                <th>카테고리</th>
+                <th>규격</th>
+                <th>제조사(원산지)</th>
+                <th>매입단가</th>
+                <th>매출단가</th>
+                <th>발주수량</th>
+                <th>지점명</th>
+                <th>요청일</th>
+                <th>추가</th>
+              </tr>
+            </thead>
+            <tbody class="release-tbody-add">
+              <tr class="release-tr-delete">
+                <td>100000</td>
+                <td>닭다리</td>
+                <td>식재료</td>
+                <td>1kg</td>
+                <td>하림(국내산)</td>
+                <td>5,500</td>
+                <td>6,000</td>
+                <td>100</td>
+                <td>답십리점</td>
+                <td>22/08/30</td>
+                <td class="minus-btn"><img src="/images/minus.png" width="23" height="23" class="minusImg"></td>
+              </tr>
+            </tbody>
+          </table>
+          <table class="table" style="border-spacing: 0;padding: 0px; margin: 0px;">       
+            <thead>
+              <tr>
+                <td style="padding: 0px;">
+                  <div class="relese-text">
+                    <input class="input-release" type="text" placeholder="품목명">
+                    <input class="input-release" type="text" placeholder="총매출단가">
+                    <button class="btn btn-warning" type="submit" style="color:#fff">등록</button>
+                    <button class="btn btn-warning" type="submit" style="color:#fff">취소</button>
+                  </div>
+                </td>
+              </tr>
+            </thead>
+          </table>
+        </div>
+        <!-- <div class="relese-text">
+          <span>품목명 : </span>
+          <input class="input-release" type="text" placeholder=" ex) ooo외 o개 품목">
+          <span>총매출가 : </span>
+          <input class="input-release" type="text" placeholder=""> 
+          <div class="release-btn">
+            <button class="btn btn-warning" type="submit" style="color:#fff">등록</button>
+            <button class="btn btn-warning" type="submit" style="color:#fff">취소</button>
+          </div>
+        </div> -->
+          </div>
+          <!-- E: table -->
+          <!-- S: paging -->
+          <!-- <div class="d-flex justify-content-center">
+            <button type="button" class="btn btn-light disabled" id="startPage"><<</button>
+            <button type="button" class="btn btn-light mx-1 disabled"><</button>
+            <button type="button" class="btn btn-warning mx-1" disabled style="color:white">1</button>
+            <button type="button" class="btn btn-light mx-1">2</button>
+            <button type="button" class="btn btn-light mx-1">></button>
+            <button type="button" class="btn btn-light mx-1" id="maxPage">>></button> 
+          </div> -->
+          <!-- E: paging -->
+        </div>
+      </div> 
+      <!-- E: main layout -->
+      
+    </div>
+    <!-- E: container -->
+  </div>
+  <style>
+
+  </style>
+  <script>
+    $(".detail-main").click(function() {
+       $(this).next(".detail-sub-tr").find(".detail-sub").slideToggle(300);
+       $(this).toggleClass('on').siblings().removeClass('on');
+       $(this).next(".detail-sub-tr").find(".detail-sub").siblings(".detail-sub").slideUp(300);
+    });
+
+    $(document).on("click", ".plus-btn", function(){
+      var $trAdd = $(this).parent(".release-tr-add");
+      var $tbodyAdd = $(".release-tbody-add");
+      $tbodyAdd.append($trAdd);
+      if($trAdd.parent = $tbodyAdd){
+        $tbodyAdd.find(".plus-btn").removeClass('plus-btn').addClass('minus-btn');
+        $tbodyAdd.find(".release-tr-add").removeClass('release-tr-add').addClass('release-tr-delete');
+        $tbodyAdd.find(".plusImg").attr('src', '/images/minus.png');
+        $tbodyAdd.find(".plusImg").removeClass('plusImg').addClass('minusImg');
+      }
+    }); 
+
+    $(document).on("click", ".minus-btn", function(){
+      var $trDelete = $(this).parent(".release-tr-delete");
+      var $tbodyDelete = $(".release-tbody-delete");
+      $tbodyDelete.append($trDelete);
+      if($trDelete.parent = $tbodyDelete){
+        $tbodyDelete.find(".minus-btn").removeClass('minus-btn').addClass('plus-btn');
+        $tbodyDelete.find(".release-tr-delete").removeClass('release-tr-delete').addClass('release-tr-add');
+        $tbodyDelete.find(".minusImg").attr('src', '/images/plus.png');
+        $tbodyDelete.find(".minusImg").removeClass('minusImg').addClass('plusImg');
+      }
+    });
+
+  function openLayer(IdName, tpos, lpos){
+		var pop = document.getElementById(IdName);
+		pop.style.display = "block";
+		pop.style.top = tpos + "px";
+		pop.style.left = lpos + "px";
+	}
+  function closeLayer(IdName){
+		var pop = document.getElementById(IdName);
+		pop.style.display = "none";
+	}
+
+  // function trAdd(){
+  //   var trAdd = document.getElementById("release-tr-add");
+  //   var eventTarget = event.target;
+  //   var currentTarget = event.currentTarget;
+  //   var plusBtn = document.getElementsByClassName("plus-btn");
+  //   var tbody = document.getElementById("release-tbody");
+
+  //   console.log(eventTarget);
+  //   console.log(currentTarget);
+  //   console.log(plusBtn);
+  //   tbody.append(trAdd);
+  // }
+
+</script>
+<!-- table js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+<!-- datepicker js -->
+<script src="/js/daterange.js"></script>
+</body>
+</html>
