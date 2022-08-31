@@ -45,17 +45,17 @@ public class NoticeController {
 
     @PostMapping("/notice/insert")
     public String noticeInsert(@ModelAttribute NoticeDTO notice,
-                               @RequestParam(name="originName", required=false) MultipartFile originName,
-                               ModelAndView mv) throws Exception{
+                               @RequestParam(value="file", required=false) MultipartFile file
+                               ) throws Exception{
 
         NoticeFileDTO noticeFile = new NoticeFileDTO();
 
         System.out.println(notice);
-        System.out.println(originName);
+        System.out.println(file);
 
         String root = ResourceUtils.getURL("src/main/resources").getPath();
 
-        String filePath = root + "/static/uploadFiles";
+        String filePath = root + "static/uploadFiles";
 
         System.out.println("루트ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ" + filePath);
 
@@ -68,8 +68,8 @@ public class NoticeController {
         String ext = "";
         String changeName = "";
 
-        if(originName.getSize() > 0) {
-            originFileName = originName.getOriginalFilename();
+        if(file.getSize() > 0) {
+            originFileName = file.getOriginalFilename();
             ext = originFileName.substring(originFileName.lastIndexOf("."));
             changeName = UUID.randomUUID().toString().replace("-",  "");
 
@@ -83,10 +83,8 @@ public class NoticeController {
                 int result2 = noticeService.noticeFileInsert(noticeFile);
             }
 
-            mv.addObject("notice", notice);
-
             try {
-                originName.transferTo(new File(filePath + "\\" + changeName + ext));
+                file.transferTo(new File(filePath + "\\" + changeName + ext));
             } catch (IOException e) {
 
                 e.printStackTrace();
