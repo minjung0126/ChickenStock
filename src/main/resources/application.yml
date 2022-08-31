@@ -19,3 +19,5 @@ spring:
 mybatis:
   mapper-locations: mappers/**/*.xml # mappers 안에 모든 파일.xml
   type-aliases-package: com.chicken.project.notice.model.dto
+
+
