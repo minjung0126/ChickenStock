@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
@@ -15,11 +15,15 @@
 </head>
 <body>
   <div class="wrap">
+      <!-- header -->
       <div th:include="userHeader.html"></div>
 
     <!-- S: container -->
       <div class="container px-0">
+
+          <!-- sidebar -->
           <div th:replace="userSidebar.html"></div>
+
           <!-- S: main layout -->
            <div class="main_layout">
             <div class="main_layout_inner">
