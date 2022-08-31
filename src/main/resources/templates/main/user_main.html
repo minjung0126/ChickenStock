@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
+
+  <title>chicken stock</title>
+
+  <link rel="stylesheet" href="../assets/css/common.css"/>
+  <!-- table css -->
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="../assets/css/style.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <!-- datepicker js & css -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+  <!-- jquery 
+      <script src="https://code.jquery.com/jquery-3.6.0.js"></script> 
+  -->
+  <script src="../assets/js/common.js"></script>
+
+  <!-- fullcalendar -->
+  <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/core/main.min.css' rel='stylesheet' />
+  <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/daygrid/main.min.css' rel='stylesheet' />
+  <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/timegrid/main.min.css' rel='stylesheet' />
+  <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/list/main.min.css' rel='stylesheet' />
+
+</head>
+<body>
+  <div class="wrap">
+
+    <!-- S: header -->
+    <div class="header">
+      <div class="logo">
+        <a href="" title=""><img src="../assets/images/logo.png" alt="logo"/></a>
+      </div>
+      <div class="logout_area">
+        <button class="btn btn-outline-light">로그아웃</button>
+      </div>
+      <div class="user_area">
+        <span>관리자</span>님, 환영합니다.
+      </div>
+    </div>
+    <!-- S: header -->
+
+    <!-- S: container -->
+    <div class="container px-0">
+
+      <!-- S: aside -->
+      <div class="aside">
+        <div class="accordion">
+
+          <!-- 하위 메뉴가 없을때 -->
+          <div class="accordion_dep type1 active">
+            <a href="#" title="" class="active">홈</a>
+          </div>
+
+          <!-- 하위 메뉴가 있을때 -->
+          <div class="accordion_dep type2">
+            <a href="#" title="">마이페이지</a>
+            <ul>
+              <li>                
+                 <a href="#" title="">비밀번호 수정</a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="accordion_dep type1 ">
+            <a href="../html/admin_item.html" title="">품목관리</a>
+          </div>
+
+          <div class="accordion_dep type1 ">
+            <a href="#" title="">입고관리</a>
+          </div>
+
+          <div class="accordion_dep type1 ">
+            <a href="#" title="">출고관리</a>
+          </div>
+
+          <div class="accordion_dep type2">
+            <a href="#" title="">매입/매출관리</a>
+            <ul>
+              <li>                
+                <a href="#" title="">매입전표</a>
+             </li>
+              <li>                
+                <a href="#" title="">매출전표</a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="accordion_dep type1 ">
+            <a href="#" title="">세금계산서</a>
+          </div>
+          
+          <div class="accordion_dep type1 ">
+            <a href="#" title="">거래명세서</a>
+          </div>
+
+          <div class="accordion_dep type1 ">
+            <a href="#" title="">가맹점관리</a>
+          </div>
+
+          <div class="accordion_dep type1 ">
+            <a href="#" title="">공지사항</a>
+          </div>
+
+          <div class="accordion_dep type2">
+            <a href="#" title="">관리자메뉴</a>
+            <ul style="display: block;">
+              <li>                
+                <a href="#" title="">직원관리</a>
+             </li>
+              <li>                
+                <a href="#" title="">예치금관리</a>
+              </li>
+              <li>                
+                <a href="#" title="">공지사항 작성</a>
+              </li>
+              <li>                
+                <a href="#" title="">일정관리</a>
+              </li>
+              <li>                
+                <a href="#" title="">가맹점 등록</a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- <div class="accordion_dep type2 active">   
+            <ul style="display: block;"></ul> 
+            a href class="active" -->           
+        </div>
+      </div>
+      <!-- E: aside -->
+
+      <!-- S: main layout -->
+      <div class="main_layout">
+        <div class="main_layout_inner">
+
+          <!-- 작업 영역 -->
+          <!-- S: table -->
+          <div class="container-fluid" style="margin-top:30px">
+            <div class="row mx-5">
+              <div class="col px-5 py-1">
+                <h4>재고현황</h4>
+                <div class=" d-flex justify-content-end">
+                  <i class="fa fa-plus mx-4" style="color: #aaa; cursor: pointer;"></i>
+                  <i class="fa fa-refresh" style="color: #aaa; cursor: pointer;"></i>
+                </div>
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>번호</th>
+                      <th>상품코드</th>
+                      <th>상품명</th>
+                      <th>카테고리</th>
+                      <th>규격</th>
+                      <th>제조사(원산지)</th>
+                      <th>재고량</th>
+                      <th>품절여부</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>1</td>
+                      <td>100000</td>
+                      <td>닭다리</td>
+                      <td>식재료</td>
+                      <td>1kg</td>
+                      <td>하림(국내산)</td>
+                      <td>100</td>
+                      <td>
+                        <span class="active-circle bg-danger"></span>품절
+                      </td>
+                      
+                    </tr>
+                    <tr>
+                      <td>1</td>
+                      <td>100000</td>
+                      <td>닭다리</td>
+                      <td>식재료</td>
+                      <td>1kg</td>
+                      <td>하림(국내산)</td>
+                      <td>100</td>
+                      <td>
+                        <span class="active-circle bg-danger"></span>품절
+                      </td>
+                      
+                    </tr>
+                    <tr>
+                      <td>1</td>
+                      <td>100000</td>
+                      <td>닭다리</td>
+                      <td>식재료</td>
+                      <td>1kg</td>
+                      <td>하림(국내산)</td>
+                      <td>100</td>
+                      <td>
+                        <span class="active-circle bg-success"></span>보유
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                
+              </div>
+            </div>
+            <div class="row mx-5">
+              <div class="col p-5">
+                <h4>일정</h4>
+                <div class=" d-flex justify-content-end">
+                  <i class="fa fa-plus mx-4" style="color: #aaa; cursor: pointer;"></i>
+                  <i class="fa fa-refresh" style="color: #aaa; cursor: pointer;"></i>
+                </div>
+                <div id='calendar-container' class="px-5">
+                  <div id='calendar' class="py-1"></div>
+                </div>
+              </div>
+              <div class="col p-5">
+                <h4>공지사항</h4>
+                <div class=" d-flex justify-content-end">
+                  <i class="fa fa-plus mx-4" style="color: #aaa; cursor: pointer;"></i>
+                  <i class="fa fa-refresh" style="color: #aaa; cursor: pointer;"></i>
+                </div>
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>번호</th>
+                      <th>제목</th>
+                      <th>작성자</th>
+                      <th>등록일</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>1</td>
+                      <td><a href="../../html/notice/notice_view.html">제목입니당</a></td>
+                      <td>김민수</td>
+                      <td>1/1</td>
+                    </tr>
+                    <tr>
+                      <td>1</td>
+                      <td><a href="../../html/notice/notice_view.html">제목입니당</a></td>
+                      <td>김민수</td>
+                      <td>1/1</td>
+                    </tr>
+                    <tr>
+                      <td>1</td>
+                      <td><a href="../../html/notice/notice_view.html">제목입니당</a></td>
+                      <td>김민수</td>
+                      <td>1/1</td>
+                    </tr>
+                    <tr>
+                      <td>1</td>
+                      <td><a href="../../html/notice/notice_view.html">제목입니당</a></td>
+                      <td>김민수</td>
+                      <td>1/1</td>
+                    </tr>
+                    <tr>
+                      <td>1</td>
+                      <td><a href="../../html/notice/notice_view.html">제목입니당</a></td>
+                      <td>김민수</td>
+                      <td>1/1</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            
+
+          </div>
+        </div>
+      </div> 
+      <!-- E: main layout -->
+      
+    </div>
+    <!-- E: container -->
+  </div>
+  
+  <!-- table js -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+  <!-- datepicker js -->
+  <script src="../assets/js/daterange.js"></script>
+
+  <!-- fullcalendar js -->
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/core/main.min.js'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/interaction/main.min.js'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/daygrid/main.min.js'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/timegrid/main.min.js'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/list/main.min.js'></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var calendarEl = document.getElementById('calendar');
+      var calendar = new FullCalendar.Calendar(calendarEl, {
+        plugins: [ 'interaction', 'dayGrid', 'timeGrid', 'list' ],
+        height: 'parent',
+        header: {
+          left: 'prev,next today',
+          center: 'title',
+          right: 'dayGridMonth'
+        },
+        defaultView: 'dayGridMonth',
+        navLinks: true, // can click day/week names to navigate views
+        editable: true,
+        eventLimit: true, // allow "more" link when too many events
+        events: [
+          {
+            title: 'All Day Event',
+            start: '2020-02-01',
+          },
+          {
+            title: 'Long Event',
+            start: '2020-02-07',
+            end: '2020-02-10'
+          },
+          {
+            title: 'Conference',
+            start: '2020-02-11',
+            end: '2020-02-13'
+          }
+        ]
+      });
+
+      calendar.render();
+    });
+  </script>
+</body>
+</html>
