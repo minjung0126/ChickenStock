@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chicken.project.store.model.dao.StoreMapper">
+    <resultMap id="storeResultMap" type="StoreDTO">
+        <id property="storeName" column="STORE_NAME"></id>
+        <id property="storeAccount" column="STORE_ACCOUNT"></id>
+        <result property="storeRep" column="STORE_REP"></result>
+        <result property="storeAddress" column="STORE_ADDRESS"></result>
+        <result property="storePhone" column="STORE_PHONE"></result>
+        <result property="storeEmail" column="STORE_EMAIL"></result>
+        <result property="storeId" column="STORE_ID"></result>
+        <result property="storePwd" column="STORE_PWD"></result>
+        <result property="storeNo" column="STORE_NO"></result>
+        <result property="memberType" column="MEMBER_TYPE"></result>
+    </resultMap>
+
+    <select id="storeList" resultMap="storeResultMap">
+        SELECT
+               STORE_NAME
+             , STORE_NO
+             , STORE_REP
+             , STORE_ADDRESS
+             , STORE_PHONE
+             , STORE_EMAIL
+          FROM STORE
+    </select>
+</mapper>

@@ -6,14 +6,15 @@
 
   <title>chicken stock</title>
 
+  <link rel="stylesheet" href="../../assets/css/common.css"/>
+  <link rel="stylesheet" href="../../assets/css/returnItem/returnRe.css"/>
   <!-- table css -->
   <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="../../assets/css/style.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link rel="stylesheet" href="../assets/css/common.css"/>
-
   <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-  <script src="../assets/js/common.js"></script>
-
+  <script src="../../assets/js/common.js"></script>
+  <script src="https://kit.fontawesome.com/da4b1b94bb.js" crossorigin="anonymous"></script>  
 </head>
 <body>
   <div class="wrap">
@@ -21,7 +22,7 @@
     <!-- S: header -->
     <div class="header">
       <div class="logo">
-        <a href="" title=""><img src="../assets/images/logo.png" alt="logo"/></a>
+        <a href="" title=""><img src="../../assets/images/logo.png" alt="logo"/></a>
       </div>
       <div class="logout_area">
         <button class="btn btn-outline-light">로그아웃</button>
@@ -66,7 +67,11 @@
             <a href="#" title="">출고관리</a>
           </div>
 
-          <div class="accordion_dep type2">
+          <div class="accordion_dep type1 active">
+            <a href="#" title="" class="active">반품관리</a>
+          </div>
+
+          <div class="accordion_dep type2 ">
             <a href="#" title="">매입/매출관리</a>
             <ul>
               <li>                
@@ -94,20 +99,17 @@
             <a href="#" title="">공지사항</a>
           </div>
 
-          <div class="accordion_dep type2 active">
+          <div class="accordion_dep type2">
             <a href="#" title="">관리자메뉴</a>
-            <ul style="display: block;">
+            <ul>
               <li>                
-                <a href="#" title="" class="active">직원관리</a>
+                <a href="#" title="">직원관리</a>
              </li>
               <li>                
                 <a href="#" title="">예치금관리</a>
               </li>
               <li>                
-                <a href="/notice/notice_insert" title="">공지사항 작성</a>
-              </li>
-              <li>                
-                <a href="#" title="">가맹점 등록</a>
+                <a href="#" title="">공지사항 작성</a>
               </li>
               <li>                
                 <a href="#" title="">일정관리</a>
@@ -124,9 +126,68 @@
 
       <!-- S: main layout -->
       <div class="main_layout">
-        <div class="main_layout_inner">
-          <!-- 작업 영역 -->
+        <div class="main_layout_inner" style="position:relative;">
 
+          <!-- 작업 영역 -->
+          <!-- S: table -->
+          <div class="container-fluid" style="margin-top:30px">
+            <h3><i class="fa-solid fa-list-check"></i> 반품신청 내역</h3>
+			<br>
+            <div class="input-group mb-3 col-12">
+                <div class="dateList1"> 입고일 : 
+                    <span id="dueDate">2022-08-15</span>
+                </div>
+                <div class="dateList2"> 반품 신청일 : 
+                    <span id="deadline">2022-08-20</span>
+                </div>
+                <div class="dateList3" style="font-weight: bold;"> 반품사유 : 
+                    <span id="deadline">유통기한이 너무 짧음</span>
+                </div>
+            </div>	
+            <table class="table">
+                <thead>
+                    <tr>
+                    <th>번호</th>
+                    <th>상품코드</th>
+                    <th>썸네일</th>
+                    <th>상품명</th>
+                    <th>카테고리</th>
+                    <th>규격</th>
+                    <th>제조사(원산지)</th>
+                    <th>판매가격</th>
+                    <th>주문수량</th>
+                    <th>반품수량</th>
+                    <th>합계</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td>100000</td>
+                    <td>
+                      <div class="img-info">
+                        <div class="img-info__img">
+                          <img src="../../assets/images/chicken.jpg" alt="">
+                        </div>
+                      </div>
+                    </td>
+                    <td>닭다리</td>
+                    <td>식재료</td>
+                    <td>1kg</td>
+                    <td>하림(국내산)</td>
+                    <td>6,000</td>
+                    <td>10</td>
+                    <td>3</td>
+                    <td>60,000</td>
+                  </tr>
+                </tbody>
+              </table>
+          </div>
+          <!-- E: table -->
+        
+          <button class="btn btn-warning me-1" style="margin-left: 1300px;">반품 승인</button>
+          <button class="btn btn-warning me-1" style=" position: absolute; right: 180px;" onclick="location.href='returnRItemList.html'">뒤로가기</button>
+          
         </div>
       </div> 
       <!-- E: main layout -->

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
+
+  <title>chicken stock</title>
+
+  <link rel="stylesheet" href="../../assets/css/common.css"/>
+  <!-- table css -->
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="../../assets/css/style.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+  <script src="../../assets/js/common.js"></script>
+
+</head>
+<body>
+  <div class="wrap">
+
+    <!-- S: header -->
+    <div class="header">
+      <div class="logo">
+        <a href="" title=""><img src="../../assets/images/logo.png" alt="logo"/></a>
+      </div>
+      <div class="logout_area">
+        <button class="btn btn-outline-light">로그아웃</button>
+      </div>
+      <div class="user_area">
+        <span>관리자</span>님, 환영합니다.
+      </div>
+    </div>
+    <!-- S: header -->
+
+    <!-- S: container -->
+    <div class="container px-0">
+
+      <!-- S: aside -->
+      <div class="aside">
+        <div class="accordion">
+
+          <!-- 하위 메뉴가 없을때 -->
+          <div class="accordion_dep type1 ">
+            <a href="#" title="">홈</a>
+          </div>
+
+          <!-- 하위 메뉴가 있을때 -->
+          <div class="accordion_dep type2">
+            <a href="#" title="">마이페이지</a>
+            <ul>
+              <li>                
+                 <a href="#" title="">비밀번호 수정</a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="accordion_dep type1 ">
+            <a href="#" title="">품목관리</a>
+          </div>
+
+          <div class="accordion_dep type1 ">
+            <a href="#" title="">입고관리</a>
+          </div>
+
+          <div class="accordion_dep type1 ">
+            <a href="#" title="">출고관리</a>
+          </div>
+
+          <div class="accordion_dep type1 active">
+            <a href="#" title="" class="active">반품관리</a>
+          </div>
+
+          <div class="accordion_dep type2 ">
+            <a href="#" title="">매입/매출관리</a>
+            <ul>
+              <li>                
+                <a href="#" title="">매입전표</a>
+             </li>
+              <li>                
+                <a href="#" title="">매출전표</a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="accordion_dep type1 ">
+            <a href="#" title="">세금계산서</a>
+          </div>
+          
+          <div class="accordion_dep type1 ">
+            <a href="#" title="">거래명세서</a>
+          </div>
+
+          <div class="accordion_dep type1 ">
+            <a href="#" title="">가맹점관리</a>
+          </div>
+
+          <div class="accordion_dep type1 ">
+            <a href="#" title="">공지사항</a>
+          </div>
+
+          <div class="accordion_dep type2">
+            <a href="#" title="">관리자메뉴</a>
+            <ul>
+              <li>                
+                <a href="#" title="">직원관리</a>
+             </li>
+              <li>                
+                <a href="#" title="">예치금관리</a>
+              </li>
+              <li>                
+                <a href="#" title="">공지사항 작성</a>
+              </li>
+              <li>                
+                <a href="#" title="">일정관리</a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- <div class="accordion_dep type2 active">   
+            <ul style="display: block;"></ul> 
+            a href class="active" -->           
+        </div>
+      </div>
+      <!-- E: aside -->
+
+      <!-- S: main layout -->
+      <div class="main_layout">
+        <div class="main_layout_inner">
+
+          <!-- 작업 영역 -->
+          <!-- S: table -->
+          <div class="container-fluid" style="margin-top:30px">
+            <h3>반품 관리</h3>
+			      <br>
+            <div class="input-group mb-3 col-7">
+              <select id="searchCondition" class="form-control" style="display: none ">
+                <option value="date">날짜</option>
+              </select>
+              <input type="date" class="form-control col-2" id="searchValue" name="searchValue" value="">
+              <button class="btn btn-light" type="button" disabled>~</button>
+              <input type="date" class="form-control col-2" id="searchValue" name="searchValue" value="">
+              <button class="btn btn-light px-3" type="button" disabled></button>
+              <input class="form-control me-2 col-4" type="text" placeholder="검색어를 입력해주세요.">
+              <button class="btn btn-warning" type="submit" style="color:#fff">검색</button>
+            </div>	
+
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>번호</th>
+                  <th>지점</th>
+                  <th>점주</th>
+                  <th>품목</th>
+                  <th>요청일</th>
+                  <th>반품상태</th>
+                  <th>처리상태</th>
+                  <th>상세보기</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>ㅇㅇ가맹점</td>
+                  <td>조혜리</td>
+                  <td>식재료</td>
+                  <td>2022-08-19</td>
+                  <td>N</td>
+                  <td>-</td>
+                  <td>
+                   <button class="btn btn-warning me-1" onclick="location.href='returnRe.html'">상세보기</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>ㅎㅎ가맹점</td>
+                  <td>주이슬</td>
+                  <td>식재료</td>
+                  <td>2022-08-19</td>
+                  <td>Y</td>
+                  <td>폐기</td>
+                  <td>
+                   <button class="btn btn-warning me-1" onclick="location.href='returnRe.html'">상세보기</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td>ㅜㅜ가맹점</td>
+                  <td>이예빈</td>
+                  <td>식재료</td>
+                  <td>2022-08-19</td>
+                  <td>Y</td>
+                  <td>제품 재등록</td>
+                  <td>
+                   <button class="btn btn-warning me-1" onclick="location.href='returnRe.html'">상세보기</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- E: table -->
+          <!-- S: paging -->
+          <div class="d-flex justify-content-center">
+            <button type="button" class="btn btn-light disabled" id="startPage"><<</button>
+            <button type="button" class="btn btn-light mx-1 disabled"><</button>
+            <button type="button" class="btn btn-warning mx-1" disabled style="color:white">1</button>
+            <button type="button" class="btn btn-light mx-1">2</button>
+            <button type="button" class="btn btn-light mx-1">></button>
+            <button type="button" class="btn btn-light mx-1" id="maxPage">>></button> 
+          </div>
+          <!-- E: paging -->
+
+        </div>
+      </div> 
+      <!-- E: main layout -->
+      
+    </div>
+    <!-- E: container -->
+  </div>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>
