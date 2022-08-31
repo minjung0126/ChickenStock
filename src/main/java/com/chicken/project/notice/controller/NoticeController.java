@@ -27,24 +27,35 @@ public class NoticeController {
 
     }
 
-    @GetMapping("/list")
+    @GetMapping("/admin/list")
     public ModelAndView noticeList(ModelAndView mv){
 
         List<NoticeDTO> noticeList = noticeService.selectAllList();
 
         mv.addObject("noticeList", noticeList);
-        mv.setViewName("notice/notice_list");
+        mv.setViewName("/notice/admin/adminNoticeList");
 
         return mv;
     }
 
-    @GetMapping("/insert")
-    public String noticeInsertPage(){
+    @GetMapping("/user/list")
+    public ModelAndView userNoticeList(ModelAndView mv){
 
-        return "notice/notice_insert";
+        List<NoticeDTO> noticeList = noticeService.selectAllList();
+
+        mv.addObject("noticeList", noticeList);
+        mv.setViewName("/notice/user/userNoticeList");
+
+        return mv;
     }
 
-    @PostMapping("/notice/insert")
+    @GetMapping("/admin/insert")
+    public String noticeInsertPage(){
+
+        return "/notice/admin/adminNoticeInsert";
+    }
+
+    @PostMapping("/admin/noticeInsert")
     public String noticeInsert(@ModelAttribute NoticeDTO notice,
                                @RequestParam(value="file", required=false) MultipartFile file
                                ) throws Exception{
@@ -95,18 +106,31 @@ public class NoticeController {
 
         System.out.println(originFileName + "/////////" + ext + "////////////" + changeName);
 
-        return "redirect:/notice/list";
+        return "redirect:/notice/admin/list";
     }
 
-    @GetMapping("/view")
-    public ModelAndView noticeView(ModelAndView mv, @RequestParam int noticeNo){
+    @GetMapping("/admin/detail")
+    public ModelAndView adminNoticeDetail(ModelAndView mv, @RequestParam int noticeNo){
 
-        NoticeDTO noticeDetail = noticeService.noticeViewByNo(noticeNo);
+        NoticeDTO noticeDetail = noticeService.noticeDetailByNo(noticeNo);
 
         System.out.println(noticeDetail);
 
         mv.addObject("noticeDetail", noticeDetail);
-        mv.setViewName("notice/notice_view");
+        mv.setViewName("/notice/admin/adminNoticeDetail");
+
+        return mv;
+    }
+
+    @GetMapping("/user/detail")
+    public ModelAndView userNoticeDetail(ModelAndView mv, @RequestParam int noticeNo){
+
+        NoticeDTO noticeDetail = noticeService.noticeDetailByNo(noticeNo);
+
+        System.out.println(noticeDetail);
+
+        mv.addObject("noticeDetail", noticeDetail);
+        mv.setViewName("/notice/user/userNoticeDetail");
 
         return mv;
     }
