@@ -5,10 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
 
   <title>chicken stock</title>
-
+  <link rel="stylesheet" type="text/css" th:href="@{/css/common/common.css}"/>
   <link rel="stylesheet" type="text/css" th:href="@{/css/common/style.css}"/>
   <link rel="stylesheet" type="text/css" th:href="@{/css/notice/notice.css}"/>
   <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 
 </head>
 <body>
@@ -60,12 +61,11 @@
 
           <!-- S: search -->          
           <div class="input-group mb-3 col-7 flex-right">
-            <button class="btn btn-warning ml-1" type="submit" style="color:#fff">수정</button>
+            <button class="btn btn-warning ml-1" type="submit" style="color:#fff" th:onclick="'location.href=\'/notice/update?no='+ @{${ notice.no }} + '\''">수정</button>
             <button class="btn btn-warning ml-1" type="submit" style="color:#fff">삭제</button>
-            <button class="btn btn-warning ml-1" type="submit" style="color:#fff">이전</button>
+            <button class="btn btn-warning ml-1" type="submit" style="color:#fff" th:onclick="'location.href=\'/notice/admin/list\''">이전</button>
           </div>	
           <!-- E: search -->      
-
         </div>
       </div> 
       <!-- E: main layout -->
@@ -75,6 +75,6 @@
   </div>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
 </body>
 </html>

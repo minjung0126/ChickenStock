@@ -26,4 +26,10 @@
              , STORE_EMAIL
           FROM STORE
     </select>
+
+    <delete id="deleteStore" parameterType="StoreDTO">
+        DELETE
+          FROM STORE
+         WHERE STORE_NAME = #{ storeName }
+    </delete>
 </mapper>
