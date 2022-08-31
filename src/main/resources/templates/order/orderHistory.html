@@ -1,23 +1,23 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
 
   <title>chicken stock</title>
 
-  <link rel="stylesheet" href="../../../../../../lastProject/assets/css/common.css"/>
+  <link rel="stylesheet" th:href="@{/css/common/common.css}"/>
 
   <!-- orderHistory css -->
-  <link rel="stylesheet" type="text/css" href="../../../../../../lastProject/assets/css/orderHistory.css">
+  <link rel="stylesheet" type="text/css" th:href="@{/css/order/orderHistory.css}">
 
   <!-- table css -->
   <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="../../../../../../lastProject/assets/css/style.css">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/common/style.css}">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
   <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-  <script src="../../../../../../lastProject/assets/js/common.js"></script>
+  <script src="/js/common.js"></script>
 
   <!-- font awesome -->
   <script src="https://kit.fontawesome.com/da4b1b94bb.js" crossorigin="anonymous"></script>  
@@ -27,94 +27,14 @@
 <body>
   <div class="wrap">
 
-    <!-- S: header -->
-    <div class="header">
-      <div class="logo">
-        <a href="" title=""><img src="../../../../../../lastProject/assets/images/logo.png" alt="logo"/></a>
-      </div>
-      <div class="logout_area">
-        <button class="btn btn-outline-light">로그아웃</button>
-      </div>
-      <div class="user_area">
-        <span>가맹점</span>님, 환영합니다.
-      </div>
-    </div>
-    <!-- S: header -->
+    <!-- header -->
+    <div th:include="userHeader.html"></div>
 
     <!-- S: container -->
-    <div class="container">
+    <div class="container px-0">
 
       <!-- S: aside -->
-      <div class="aside">
-        <div class="accordion">
-
-          <!-- 하위 메뉴가 없을때 -->
-          <div class="accordion_dep type1 ">
-            <a href="#" title="">홈</a>
-          </div>
-
-          <div class="accordion_dep type2">
-            <a href="#" title="">마이페이지</a>
-            <ul>
-              <li>                
-                 <a href="#" title="">예치금 관리</a>
-              </li>
-              <li>                
-                 <a href="#" title="">비밀번호 재설정</a>
-              </li>
-            </ul>
-          </div>
-
-          <div class="accordion_dep type1 ">
-            <a href="#" title="">품목관리</a>
-          </div>
-
-          <div class="accordion_dep type2 active">
-            <a href="#" title="">발주</a>
-            <ul style="display: block;">
-              <li>                
-                 <a href="orderItem.html" title="">상품 조회</a>
-              </li>
-              <li>                
-                 <a href="cart.html" title="">장바구니</a>
-              </li>
-              <li>                
-                <a href="../html/orderHistory.html" title="" class="active">발주 내역</a>
-             </li>
-            </ul>
-          </div>
-
-          <div class="accordion_dep type1 ">
-            <a href="#" title="">입고 조회</a>
-          </div>
-
-          <div class="accordion_dep type1 ">
-            <a href="#" title="">반품관리</a>
-          </div>
-
-          <div class="accordion_dep type1 ">
-            <a href="#" title="">매입전표</a>
-          </div>
-          
-          <div class="accordion_dep type1 ">
-            <a href="#" title="">세금계산서</a>
-          </div>
-
-          <div class="accordion_dep type1 ">
-            <a href="#" title="">거래명세서</a>
-          </div>
-
-          <div class="accordion_dep type1 ">
-            <a href="#" title="">공지사항</a>
-          </div>
-          
-          <div class="accordion_dep type1 ">
-            <a href="#" title="">가맹점 조회</a>
-          </div>
-
-          <!-- <div class="accordion_dep type2 active"> 선택된 페이지 활성화 active  <ul style="display: block;"></ul> class="active  선택된 페이지 활성화 active -->
-        </div>
-      </div>
+      <div th:replace="userSidebar.html"></div>
       <!-- E: aside -->
 
       <!-- S: main layout -->
@@ -134,7 +54,7 @@
                     <span id="deadline">마감일</span>
                 </div>
                 <div class="dateList3" style="font-weight: bold;"> 최종 발주일(수정일) : 
-                    <span id="deadline">테스트 중입니다.</span>
+                    <span id="finalDate">테스트 중입니다.</span>
                     <!-- SELECT문으로 최종 발주일 띄워주기 -->
                 </div>
                 <input type="date" class="form-control" id="searchValue" name="searchValue" value="">
@@ -174,12 +94,49 @@
                         <label class="form-check-label" for="check"></label>
                       </div>
                     </td>
+                    <td><p th:utext="${cartNo}"/></td>
+                    <td><p th:utext="${itemNo}"/></td>
+                    <td>
+                      <div class="img-info">
+                        <div class="img-info__img">
+                          <img src="/images/chicken.jpg" alt="">
+                        </div>
+                      </div>
+                    </td>
+                    <td><p th:utext="${itemName}"></p></td>
+                    <td><p th:utext="${categoryName}"></p></td>
+                    <td><p th:utext="${itemStandard}"></td>
+                    <td><p th:utext="${itemMake}"></td>
+                    <td><p th:utext="${itemSales}"></td>
+                    <td><p th:utext="${cartAmount}"></td>
+                    <td>60,000</td>
+                    <td>
+                      <div class="dropdown open">
+                        <a href="#!" class="px-2" id="triggerId1" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false">
+                              <i class="fa fa-ellipsis-v"></i>
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="triggerId1">
+                          <!-- <a class="dropdown-item" href="#"><i class="fa fa-eye mr-1"></i>View</a> -->
+                          <a class="dropdown-item" href="#" onclick="reviseAmount()"><i class="fa fa-pencil mr-1"></i> 수량 변경</a>
+                          <a class="dropdown-item text-danger" href="#" onclick="deleteConfirm()"><i class="fa fa-trash mr-1"></i> 발주 취소</a>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="check" name="option" value="something">
+                        <label class="form-check-label" for="check"></label>
+                      </div>
+                    </td>
                     <td>1</td>
                     <td>100000</td>
                     <td>
                       <div class="img-info">
                         <div class="img-info__img">
-                          <img src="../../../../../../lastProject/assets/images/chicken.jpg" alt="">
+                          <img src="/images/chicken.jpg" alt="">
                         </div>
                       </div>
                     </td>
@@ -216,44 +173,7 @@
                     <td>
                       <div class="img-info">
                         <div class="img-info__img">
-                          <img src="../../../../../../lastProject/assets/images/chicken.jpg" alt="">
-                        </div>
-                      </div>
-                    </td>
-                    <td>닭다리</td>
-                    <td>식재료</td>
-                    <td>1kg</td>
-                    <td>하림(국내산)</td>
-                    <td>6,000</td>
-                    <td>10</td>
-                    <td>60,000</td>
-                    <td>
-                      <div class="dropdown open">
-                        <a href="#!" class="px-2" id="triggerId1" data-toggle="dropdown" aria-haspopup="true"
-                            aria-expanded="false">
-                              <i class="fa fa-ellipsis-v"></i>
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="triggerId1">
-                          <!-- <a class="dropdown-item" href="#"><i class="fa fa-eye mr-1"></i>View</a> -->
-                          <a class="dropdown-item" href="#" onclick="reviseAmount()"><i class="fa fa-pencil mr-1"></i> 수량 변경</a>
-                          <a class="dropdown-item text-danger" href="#" onclick="deleteConfirm()"><i class="fa fa-trash mr-1"></i> 발주 취소</a>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="check" name="option" value="something">
-                        <label class="form-check-label" for="check"></label>
-                      </div>
-                    </td>
-                    <td>1</td>
-                    <td>100000</td>
-                    <td>
-                      <div class="img-info">
-                        <div class="img-info__img">
-                          <img src="../../../../../../lastProject/assets/images/chicken.jpg" alt="">
+                          <img src="/images/chicken.jpg" alt="">
                         </div>
                       </div>
                     </td>
@@ -299,7 +219,7 @@
     <!-- E: container -->
   </div>
   <!-- table js -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
   

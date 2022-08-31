@@ -6,14 +6,14 @@
 
   <title>chicken stock</title>
   <!-- common css -->
-  <link rel="stylesheet" type="text/css" th:href="@{/css/common.css}"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/common/common.css}"/>
 
   <!-- cart css -->
   <link rel="stylesheet" type="text/css" th:href="@{/css/order/cart.css}">
 
   <!-- table css -->
   <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-  <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+  <link rel="stylesheet" type="text/css" th:href="@{/css/common/style.css}">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   
 
@@ -111,8 +111,8 @@
                       <label class="form-check-label" for="check"></label>
                     </div>
                   </td>
-                  <td>1</td>
-                  <td>100000</td>
+                  <td><p th:utext="${cartNo}"></p></td>
+                  <td><p th:utext="${itemNo}"></p></td>
                   <td>
                     <div class="img-info">
                       <div class="img-info__img">
@@ -120,12 +120,12 @@
                       </div>
                     </div>
                   </td>
-                  <td><p th:utext="${itemName}"></p></td>
-                  <td><p th:utext="${categoryName}"></p></td>
-                  <td><p th:utext="${itemStandard}"></td>
-                  <td><p th:utext="${itemMake}"></td>
-                  <td><p th:utext="${itemSales}"></td>
-                  <td><p th:utext="${cartAmount}"></td>
+                  <td><p th:utext="${itemName}"/></td>
+                  <td><p th:utext="${categoryName}"/></td>
+                  <td><p th:utext="${itemStandard}"/></td>
+                  <td><p th:utext="${itemMake}"/></td>
+                  <td><p th:utext="${itemSales}/"></td>
+                  <td><p th:utext="${cartAmount}/"></td>
                   <td>
                     <span class="active-circle bg-danger"></span>품절
                   </td>
