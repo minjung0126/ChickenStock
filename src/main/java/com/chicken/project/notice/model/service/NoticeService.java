@@ -34,8 +34,9 @@ public class NoticeService {
         return noticeMapper.noticeFileInsert(noticeFile);
     }
 
-    public NoticeDTO noticeViewByNo(int noticeNo) {
+    public NoticeDTO noticeDetailByNo(int noticeNo) {
 
-        return noticeMapper.noticeViewByNo(noticeNo);
+        //return noticeMapper.noticeDetailByNo(noticeNo);
+        return null;
     }
 }
