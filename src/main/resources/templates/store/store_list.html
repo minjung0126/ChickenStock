@@ -115,10 +115,6 @@
               </li>
             </ul>
           </div>
-
-          <!-- <div class="accordion_dep type2 active">   
-            <ul style="display: block;"></ul> 
-            a href class="active" -->           
         </div>
       </div>
       <!-- E: aside -->
@@ -157,13 +153,13 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>인천점</td>
-                  <td>333-22-666666</td>
-                  <td>김민수</td>
-                  <td>인천광역시 계양구 작전동 111-22</td>
-                  <td>010-1234-5678</td>
-                  <td>minsu1234@naver.com</td>
+                <tr th:each="store : ${ storeList }">
+                  <td th:text="${ store.storeName }"></td>
+                  <td th:text="${ store.storeNo }"></td>
+                  <td th:text="${ store.storeRep }"></td>
+                  <td th:text="${ store.storeAddress }"></td>
+                  <td th:text="${ store.storePhone }"></td>
+                  <td th:text="${ store.storeEmail }"></td>
                   <td><button class="btn btn-warning" type="submit" style="color:#fff">수정</button></td>
                   <td><button class="btn btn-warning" type="submit" style="color:#fff">삭제</button></td>
                 </tr>
