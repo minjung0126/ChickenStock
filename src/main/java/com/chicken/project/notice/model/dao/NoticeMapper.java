@@ -14,5 +14,5 @@ public interface NoticeMapper {
 
     int noticeFileInsert(NoticeFileDTO noticeFile);
 
-    NoticeDTO noticeViewByNo(int noticeNo);
+    NoticeDTO noticeDetailByNo(int noticeNo);
 }
