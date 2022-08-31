@@ -11,11 +11,12 @@ public class EmployeeDTO {
     private String menagerYn;
     private String pwd;
     private java.util.Date birth;
+    private String memberType;
 
     public EmployeeDTO() {
     }
 
-    public EmployeeDTO(String id, String name, String phone, String email, String menagerYn, String pwd, Date birth) {
+    public EmployeeDTO(String id, String name, String phone, String email, String menagerYn, String pwd, Date birth, String memberType) {
         this.id = id;
         this.name = name;
         this.phone = phone;
@@ -23,6 +24,7 @@ public class EmployeeDTO {
         this.menagerYn = menagerYn;
         this.pwd = pwd;
         this.birth = birth;
+        this.memberType = memberType;
     }
 
     public String getId() {
@@ -81,6 +83,14 @@ public class EmployeeDTO {
         this.birth = birth;
     }
 
+    public String getMemberType() {
+        return memberType;
+    }
+
+    public void setMemberType(String memberType) {
+        this.memberType = memberType;
+    }
+
     @Override
     public String toString() {
         return "EmployeeDTO{" +
@@ -91,6 +101,7 @@ public class EmployeeDTO {
                 ", menagerYn='" + menagerYn + '\'' +
                 ", pwd='" + pwd + '\'' +
                 ", birth=" + birth +
+                ", memberType='" + memberType + '\'' +
                 '}';
     }
 }
