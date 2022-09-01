@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 
 @Controller
-@RequestMapping("/empList")
+@RequestMapping("/empList/*")
 public class EmpListController {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());

@@ -8,7 +8,7 @@ public class EmployeeDTO {
     private String empName;
     private String empPhone;
     private String empEmail;
-    private String menagerYn;
+    private String managerYn;
     private String empPwd;
     private java.util.Date birth;
     private String memberType;
@@ -16,12 +16,12 @@ public class EmployeeDTO {
     public EmployeeDTO() {
     }
 
-    public EmployeeDTO(String empId, String empName, String empPhone, String empEmail, String menagerYn, String empPwd, Date birth, String memberType) {
+    public EmployeeDTO(String empId, String empName, String empPhone, String empEmail, String managerYn, String empPwd, Date birth, String memberType) {
         this.empId = empId;
         this.empName = empName;
         this.empPhone = empPhone;
         this.empEmail = empEmail;
-        this.menagerYn = menagerYn;
+        this.managerYn = managerYn;
         this.empPwd = empPwd;
         this.birth = birth;
         this.memberType = memberType;
@@ -59,12 +59,12 @@ public class EmployeeDTO {
         this.empEmail = empEmail;
     }
 
-    public String getMenagerYn() {
-        return menagerYn;
+    public String getManagerYn() {
+        return managerYn;
     }
 
-    public void setMenagerYn(String menagerYn) {
-        this.menagerYn = menagerYn;
+    public void setManagerYn(String managerYn) {
+        this.managerYn = managerYn;
     }
 
     public String getEmpPwd() {
@@ -98,7 +98,7 @@ public class EmployeeDTO {
                 ", empName='" + empName + '\'' +
                 ", empPhone='" + empPhone + '\'' +
                 ", empEmail='" + empEmail + '\'' +
-                ", menagerYn='" + menagerYn + '\'' +
+                ", managerYn='" + managerYn + '\'' +
                 ", empPwd='" + empPwd + '\'' +
                 ", birth=" + birth +
                 ", memberType='" + memberType + '\'' +

@@ -11,14 +11,11 @@
   <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
 	<link rel="stylesheet" type="text/css" th:href="@{/css/common/style.css}"/>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"/>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"/>
   <script src="https://code.jquery.com/jquery-3.6.0.js"/>
   <script th:src="@{js/common.js}"/>
-  <script>
-    function regist(){
-      $("#registModal").modal("show");
-    }
-  </script>
+
 </head>
 <body>
   <div class="wrap">
@@ -80,7 +77,7 @@
           <!-- S: table -->
 
           <div class="container-fluid" style="margin-top:30px">
-            <h3 style="float: left;">직원 관리</h3>
+            <h3 style="float: left">직원 관리</h3>
             <div class="d-flex justify-content-end">
               <button type="button" class="btn" onclick="regist();" style="margin-right: 30px;">직원 추가</button>
             </div>
@@ -95,17 +92,19 @@
                 <th>이메일</th>
                 <th>전화번호</th>
                 <th>생년월일</th>
+                <th>권한</th>
                 <th>권한부여</th>
               </tr>
               </thead>
               <tbody>
-              <tr>
+              <tr th:each="emp: ${ empList }">
                 <td>1</td>
-                <td>gdhong01</td>
-                <td>홍길동</td>
-                <td>gdhong01@gmail.com</td>
-                <td>010-1004-1201</td>
-                <td>1997.09.13</td>
+                <td th:text="${ emp.empId }"></td>
+                <td th:text="${ emp.empName }"></td>
+                <td th:text="${ emp.empEmail }"></td>
+                <td th:text="${ emp.empPhone }"></td>
+                <td th:text="${ emp.birth }"></td>
+                <td th:text="${ emp.managerYn }"></td>
                 <td><button class="btn btn-warning" onclick="test();" style="color: white;">권한 부여</button></td>
               </tr>
               </tbody>
@@ -125,22 +124,26 @@
           <!-- E: paging -->
 
         </div>
-      </div> 
+      </div>
       <!-- E: main layout -->
-      
+
     </div>
     <!-- E: container -->
   </div>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   <script>
     function test() {
-        if (!confirm("관리자 권한을 부여하시겠습니까?")) {
-            alert("취소");
-        } else {
-            alert("관리자 권한이 부여되었습니다.");
-        }
+      if (!confirm("관리자 권한을 부여하시겠습니까?")) {
+        alert("취소");
+      } else {
+        alert("관리자 권한이 부여되었습니다.");
+      }
+    };
+
+    function regist(){
+      $("#registModal").modal("show");
     }
-</script>
+  </script>
+
+
 </body>
 </html>
