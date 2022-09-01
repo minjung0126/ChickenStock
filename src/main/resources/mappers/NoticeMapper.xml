@@ -79,13 +79,22 @@
 
     <select id="noticeDetailByNo" resultMap="noticeResultMap">
         SELECT
-               A.NOTICE_NO
-             , A.NOTICE_NAME
-             , A.NOTICE_CONTENT
-             , B.ORIGIN_NAME
-             , B.NOTICE_NO
+               A.*
+             , B.*
           FROM NOTICE A
           JOIN NOTICE_FILE B ON (A.NOTICE_NO = B.NOTICE_NO)
          WHERE A.NOTICE_NO = #{ noticeNo }
     </select>
+
+    <delete id="deleteNotice" parameterType="NoticeDTO">
+        DELETE
+          FROM NOTICE
+         WHERE NOTICE_NO = #{ noticeNo }
+    </delete>
+
+    <delete id="deleteNoticeFile" parameterType="NoticeFileDTO">
+        DELETE
+          FROM NOTICE_FILE
+         WHERE NOTICE_NO = #{ noticeNo }
+    </delete>
 </mapper>

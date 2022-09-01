@@ -1,5 +1,7 @@
 package com.chicken.project.notice.controller;
 
+import com.chicken.project.exception.notice.NoticeDeleteException;
+import com.chicken.project.exception.notice.NoticeUpdateException;
 import com.chicken.project.notice.model.dto.NoticeDTO;
 import com.chicken.project.notice.model.dto.NoticeFileDTO;
 import com.chicken.project.notice.model.service.NoticeService;
@@ -9,7 +11,9 @@ import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -57,7 +61,8 @@ public class NoticeController {
 
     @PostMapping("/admin/noticeInsert")
     public String noticeInsert(@ModelAttribute NoticeDTO notice,
-                               @RequestParam(value="file", required=false) MultipartFile file
+                               @RequestParam(value="file", required=false) MultipartFile file,
+                               RedirectAttributes rttr
                                ) throws Exception{
 
         NoticeFileDTO noticeFile = new NoticeFileDTO();
@@ -92,7 +97,7 @@ public class NoticeController {
 
             if(result > 0) {
 
-                int result2 = noticeService.noticeFileInsert(noticeFile);
+                noticeService.noticeFileInsert(noticeFile);
             }
 
             try {
@@ -103,6 +108,8 @@ public class NoticeController {
                 new File(filePath + "\\" + changeName + ext).delete();
             }
         }
+
+        rttr.addFlashAttribute("message", "공지사항 등록 성공!");
 
         System.out.println(originFileName + "/////////" + ext + "////////////" + changeName);
 
@@ -133,5 +140,43 @@ public class NoticeController {
         mv.setViewName("/notice/user/userNoticeDetail");
 
         return mv;
+    }
+
+    @GetMapping("/admin/delete")
+    public String deleteNotice(HttpServletRequest request, RedirectAttributes rttr) throws NoticeDeleteException {
+
+        int noticeNo = Integer.parseInt(request.getParameter("noticeNo"));
+
+        int result = noticeService.deleteNotice(noticeNo);
+
+        rttr.addFlashAttribute("message", "공지사항 삭제 성공!");
+
+        return "redirect:/notice/admin/list";
+    }
+
+    @GetMapping("/admin/update")
+    public ModelAndView updateNoticePage(HttpServletRequest request, ModelAndView mv) {
+
+        int noticeNo = Integer.parseInt(request.getParameter("noticeNo"));
+
+        NoticeDTO noticeDetail = noticeService.noticeDetailByNo(noticeNo);
+
+        mv.addObject("noticeDetail", noticeDetail);
+        mv.setViewName("/notice/admin/adminNoticeUpdate");
+
+        return mv;
+    }
+
+    @PostMapping("/admin/update")
+    public String updateNotice(@ModelAttribute NoticeDTO notice,
+                               RedirectAttributes rttr) throws NoticeUpdateException {
+
+        System.out.println("notice = " + notice);
+
+        noticeService.updateNotice(notice);
+
+        rttr.addFlashAttribute("message", "공지사항 수정에 성공하셨습니다!");
+
+        return "redirect:/notice/admin/list";
     }
 }
