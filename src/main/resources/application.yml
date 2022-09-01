@@ -28,13 +28,7 @@ spring:
 # mybatis config
 mybatis:
   mapper-locations: mappers/**/*.xml # mappers 안에 모든 파일.xml
-  type-aliases-package: com.chicken.project.notice.model.dto, 
-                        com.chicken.project.store.model.dto, 
-                        com.chicken.project.order.model.dto, 
-                        com.chicken.project.receive.model.dto,
-                        com.chicken.project.empList.model.dto, 
-                        com.chicken.project.calendar.model.dto,
-                        com.chicken.project.billTax.model.dto
+  type-aliases-package: com.chicken.project.notice.model.dto, com.chicken.project.store.model.dto
 
 logging:
   level:
