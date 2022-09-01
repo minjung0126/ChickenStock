@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("item")
 public class ItemController {
 
-    @GetMapping("/list")
+    @GetMapping("/admin_item")
     public void itemList(){}
+    @GetMapping("/admin_item_new")
+    public void itemInsert(){}
 }

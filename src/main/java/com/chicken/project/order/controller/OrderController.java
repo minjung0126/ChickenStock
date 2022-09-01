@@ -2,7 +2,7 @@ package com.chicken.project.order.controller;
 
 import com.chicken.project.order.model.dto.OrderDTO;
 import com.chicken.project.order.model.service.OrderService;
-import com.chicken.project.order.paging.SelectCriteria;
+import com.chicken.project.common.paging.SelectCriteria;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

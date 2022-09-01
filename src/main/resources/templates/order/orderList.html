@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:lay>
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
@@ -147,13 +148,23 @@
           <!-- E: table -->
           <!-- S: paging -->
           <div class="d-flex justify-content-center">
+            <button class="btn btn-light" id="idStartPage"
+                    th:onclick="'location.href=\'/order/list?currentPage='+ @{${selectCriteria.startPage}} + '\''"
+                    th:disabled="${selectCriteria.pageNo == 1}"><<</button>
+
+            <button class="btn btn-light mx-1"
+                    th:onclick="'location.href=\'/order/list?currentPage='+ @{${selectCriteria.maxPage}} + '\'"
+                    th:disabled="${selectCriteria.pageNo == selectCriteria.maxPage}">>></button>
+
+
             <button type="button" class="btn btn-light disabled" id="startPage"></button>
             <button type="button" class="btn btn-light mx-1 disabled"></button>
             <button type="button" class="btn btn-warning mx-1" disabled style="color:white">1</button>
             <button type="button" class="btn btn-light mx-1">2</button>
             <button type="button" class="btn btn-light mx-1">></button>
-            <button type="button" class="btn btn-light mx-1" id="maxPage">>></button> 
+            <button type="button" class="btn btn-light mx-1" id="maxPage">>></button>
           </div>
+
           <!-- E: paging -->
         </div>
       </div>
