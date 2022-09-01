@@ -11,7 +11,7 @@
         <result property="noticeModifyDate" column="NOTICE_MODIFY_DATE"/>
         <result property="empId" column="EMP_ID"/>
 
-        <collection property="originName" ofType="NoticeFileDTO">
+        <collection property="noticeFile" ofType="NoticeFileDTO">
             <result property="originName" column="ORIGIN_NAME"/>
         </collection>
     </resultMap>
@@ -23,16 +23,74 @@
         <result property="noticeNo" column="NOTICE_NO"></result>
     </resultMap>
 
-    <select id="selectAllList" resultMap="noticeResultMap">
+    <select id="selectTotalCount" resultType="_int" parameterType="hashmap">
         SELECT
-               A.*
-             , B.ORIGIN_NAME
+               COUNT(*)
           FROM NOTICE A
-          JOIN NOTICE_FILE B ON(A.NOTICE_NO = B.NOTICE_NO)
-      ORDER BY A.NOTICE_NO DESC
+      <if test="searchCondition == 'writer'">
+          JOIN EMPLOYEE B ON(A.EMP_ID = B.EMP_ID)
+      </if>
+        <where>
+            <if test="searchCondition == 'writer'">
+                B.EMP_ID LIKE '%' || #{ searchValue } || '%'
+            </if>
+            <if test="searchCondition == 'title'">
+                A.NOTICE_NAME LIKE '%' || #{ searchValue } || '%'
+            </if>
+            <if test="searchCondition == 'content'">
+                A.NOTICE_CONTENT LIKE '%' || #{ searchValue } || '%'
+            </if>
+        </where>
+     ORDER BY A.NOTICE_NO DESC
     </select>
 
-    <insert id="noticeInsert" parameterType="NoticeDTO">
+    <select id="selectNoticeList" resultMap="noticeResultMap">
+        SELECT
+               A.RNUM
+             , A.NOTICE_NO
+             , A.NOTICE_NAME
+             , A.EMP_ID
+             , A.NOTICE_CONTENT
+             , A.NOTICE_REGIST_DATE
+             , D.EMP_ID
+          FROM (SELECT ROWNUM RNUM
+                     , B.NOTICE_NO
+                     , B.NOTICE_NAME
+                     , B.EMP_ID
+                     , B.NOTICE_CONTENT
+                     , B.NOTICE_REGIST_DATE
+                  FROM (SELECT C.NOTICE_NO
+                             , C.NOTICE_NAME
+                             , C.EMP_ID
+                             , C.NOTICE_CONTENT
+                             , C.NOTICE_REGIST_DATE
+                          FROM NOTICE C
+        <if test="searchCondition == 'writer'">
+            JOIN EMPLOYEE D ON(C.EMP_ID = D.EMP_ID)
+        </if>
+        <where>
+            <if test="searchCondition == 'writer'">
+                D.EMP_ID LIKE '%' || #{ searchValue } || '%'
+            </if>
+            <if test="searchCondition == 'title'">
+                C.NOTICE_NAME LIKE '%' || #{ searchValue } || '%'
+            </if>
+            <if test="searchCondition == 'content'">
+                C.NOTICE_CONTENT LIKE '%' || #{ searchValue } || '%'
+            </if>
+        </where>
+        ORDER BY C.NOTICE_NO DESC
+        ) B
+        <![CDATA[
+                  WHERE ROWNUM <= #{ endRow }
+                  ]]>
+        ) A
+        JOIN EMPLOYEE D ON (A.EMP_ID = D.EMP_ID)
+        WHERE A.RNUM >= #{ startRow }
+        ORDER BY 1 ASC
+    </select>
+
+    <insert id="noticeInsert">
         INSERT
           INTO NOTICE
         (
@@ -54,7 +112,7 @@
         )
     </insert>
 
-    <insert id="noticeFileInsert" parameterType="NoticeFileDTO">
+    <insert id="noticeFileInsert">
         <selectKey keyProperty="noticeNo" order="BEFORE" resultType="_int">
             SELECT
                    SEQ_NOTICE_NO.CURRVAL
