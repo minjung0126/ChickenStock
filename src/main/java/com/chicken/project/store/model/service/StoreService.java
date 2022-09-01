@@ -45,4 +45,16 @@ public class StoreService {
 
         return storeMapper.selectStoreByName(storeName);
     }
+
+    public int updateStore(StoreDTO store) throws StoreUpdateException {
+
+        int result = storeMapper.updateStore(store);
+
+        if(!(result > 0)){
+
+            throw new StoreUpdateException("가맹점 정보 수정 실패!");
+        }
+
+        return result;
+    }
 }

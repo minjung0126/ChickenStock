@@ -107,4 +107,18 @@ public class StoreController {
 
         return mv;
     }
+
+    @PostMapping("/admin/update")
+    public String updateStore(@ModelAttribute StoreDTO store, RedirectAttributes rttr) throws StoreUpdateException {
+
+        log.info("[StoreController] store : " + store);
+        log.info("[StoreController] storeId : " + store.getStoreId());
+
+        storeService.updateStore(store);
+
+        rttr.addFlashAttribute("message", "가맹점 정보 수정 성공!");
+
+        return "redirect:/store/admin/list";
+    }
+
 }
