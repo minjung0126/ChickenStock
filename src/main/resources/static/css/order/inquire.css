@@ -1,5 +1,5 @@
 .input-group {
-    width: 1200px;
+    display: 100%;
     position: relative;
 }
 
@@ -23,7 +23,7 @@
 .dateList2 {
     position: absolute;
     top: 50px;
-    
+
 }
 
 .dateList3 {
@@ -32,19 +32,17 @@
 }
 
 /* 검색창 */
-.input-group > .form-control {
-    width: 300px;
-    margin-top: 17px;
+.search-area > #searchForm > #searchValue {
+    width: 270px;
     position: absolute;
-    top: 150px;
-    left: 10px;
+    top: -5px;
+    left: 115px;
 }
 
-.input-group > .btn {
+.search-area > #searchForm > .btn {
     position: absolute;
-    margin-top: 17px;
-    left: 390px;
-    top: 150px;
+    left: 380px;
+    top: -5px;
 }
 
 
@@ -105,10 +103,24 @@
 
 .dropdown:hover .dropdown-content {
     display: block;
-    }
+}
 
 .dropdown:hover .dropbtn {
     background-color: #D7AA39;
+}
+
+/* 검색창 */
+.search-area {
+    width: 400px;
+    position: absolute;
+    top: 170px;
+}
+
+#searchCondition {
+    height: 37px;
+    position: absolute;
+    top: -5px;
+    left: 15px;
 }
 
 /* 체크박스 */
@@ -133,22 +145,22 @@
 /* placeholder 가운데 정렬*/
 ::-webkit-input-placeholder {
     text-align: center;
- }
- 
- :-moz-placeholder { /* Firefox 18- */
-    text-align: center;  
- }
- 
- ::-moz-placeholder {  /* Firefox 19+ */
-    text-align: center;  
- }
- 
- :-ms-input-placeholder {  
-    text-align: center; 
- }
+}
 
-  /* table */
-  .table {
-    margin-top: 150px;
+:-moz-placeholder { /* Firefox 18- */
+    text-align: center;
+}
 
- }
+::-moz-placeholder {  /* Firefox 19+ */
+    text-align: center;
+}
+
+:-ms-input-placeholder {
+    text-align: center;
+}
+
+/* table */
+.table {
+    margin-top: 210px;
+
+}

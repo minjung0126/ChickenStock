@@ -1,5 +1,6 @@
 package com.chicken.project.order.controller;
 
+import com.chicken.project.common.paging.Pagenation;
 import com.chicken.project.order.model.dto.OrderDTO;
 import com.chicken.project.order.model.service.OrderService;
 import com.chicken.project.common.paging.SelectCriteria;
@@ -45,6 +46,7 @@ public class OrderController {
         int buttonAmount = 5;
 
         SelectCriteria selectCriteria = null;
+        selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount);
 
         List<OrderDTO> orderList = orderService.selectAllItem();
 
