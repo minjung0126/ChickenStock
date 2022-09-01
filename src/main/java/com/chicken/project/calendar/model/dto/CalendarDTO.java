@@ -4,57 +4,57 @@ import java.util.Date;
 
 public class CalendarDTO {
 
-    private int no;
-    private String name;
-    private java.util.Date start;
-    private java.util.Date end;
+    private int calNo;
+    private String calName;
+    private java.util.Date startDay;
+    private java.util.Date endDay;
     private String content;
-    private String id;
+    private String empId;
     private String groupNO;
 
     public CalendarDTO() {
     }
 
-    public CalendarDTO(int no, String name, Date start, Date end, String content, String id, String groupNO) {
-        this.no = no;
-        this.name = name;
-        this.start = start;
-        this.end = end;
+    public CalendarDTO(int calNo, String calName, Date startDay, Date endDay, String content, String empId, String groupNO) {
+        this.calNo = calNo;
+        this.calName = calName;
+        this.startDay = startDay;
+        this.endDay = endDay;
         this.content = content;
-        this.id = id;
+        this.empId = empId;
         this.groupNO = groupNO;
     }
 
-    public int getNo() {
-        return no;
+    public int getCalNo() {
+        return calNo;
     }
 
-    public void setNo(int no) {
-        this.no = no;
+    public void setCalNo(int calNo) {
+        this.calNo = calNo;
     }
 
-    public String getName() {
-        return name;
+    public String getCalName() {
+        return calName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setCalName(String calName) {
+        this.calName = calName;
     }
 
-    public Date getStart() {
-        return start;
+    public Date getStartDay() {
+        return startDay;
     }
 
-    public void setStart(Date start) {
-        this.start = start;
+    public void setStartDay(Date startDay) {
+        this.startDay = startDay;
     }
 
-    public Date getEnd() {
-        return end;
+    public Date getEndDay() {
+        return endDay;
     }
 
-    public void setEnd(Date end) {
-        this.end = end;
+    public void setEndDay(Date endDay) {
+        this.endDay = endDay;
     }
 
     public String getContent() {
@@ -65,12 +65,12 @@ public class CalendarDTO {
         this.content = content;
     }
 
-    public String getId() {
-        return id;
+    public String getEmpId() {
+        return empId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setEmpId(String empId) {
+        this.empId = empId;
     }
 
     public String getGroupNO() {
@@ -84,12 +84,12 @@ public class CalendarDTO {
     @Override
     public String toString() {
         return "CalendarDTO{" +
-                "no=" + no +
-                ", name='" + name + '\'' +
-                ", start=" + start +
-                ", end=" + end +
+                "calNo=" + calNo +
+                ", calName='" + calName + '\'' +
+                ", startDay=" + startDay +
+                ", endDay=" + endDay +
                 ", content='" + content + '\'' +
-                ", id='" + id + '\'' +
+                ", empId='" + empId + '\'' +
                 ", groupNO='" + groupNO + '\'' +
                 '}';
     }

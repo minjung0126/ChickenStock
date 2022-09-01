@@ -9,4 +9,6 @@ import java.util.List;
 public interface StoreMapper {
     List<StoreDTO> storeList();
     int deleteStore(String storeName);
+
+    int insertStore(StoreDTO store);
 }
