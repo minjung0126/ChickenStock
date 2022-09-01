@@ -13,8 +13,8 @@
         <result property="orderDate" column="ORDER_DATE"/>
         <result property="storeNo" column="STORE_NO"/>
         <result property="storeName" column="STORE_NAME"/>
-        <result property="storeAddress" column="STORE_ADDRESS "/>
-        <result property="storeRef" column="STORE_REF "/>
+        <result property="storeAddress" column="STORE_ADDRESS"/>
+        <result property="storeRep" column="STORE_REP"/>
     </resultMap>
 
     <select id="selectTaxBillList" resultMap="taxBillResultMap">
@@ -23,13 +23,13 @@
              , S.STORE_NO
              , S.STORE_NAME
              , S.STORE_ADDRESS
-             , TB.TAX_DATE
-             , SO.ORDER_DATE
+             , TO_CHAR(TB.TAX_DATE,'yyyy-MM-dd') AS "TAX_DATE"
+             , TO_CHAR(SO.ORDER_DATE,'yyyy-MM-dd') AS "ORDER_DATE"
              , II.ITEM_NAME
              , II.ITEM_STANDARD
              , SO.ORDER_AMOUNT
              , II.ITEM_SALES
-             , S.STORE_REF
+             , S.STORE_REP
          FROM TAXBILL TB
          JOIN STORE_ORDER SO ON (TB.ORDER_NO = SO.ORDER_NO)
          JOIN STORE S ON(S.STORE_NAME = SO.STORE_NAME)

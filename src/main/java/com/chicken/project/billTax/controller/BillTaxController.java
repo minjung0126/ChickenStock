@@ -28,7 +28,7 @@ public class BillTaxController {
         List<TaxBillDTO> taxBillList = taxbillService.selectTaxBillList();
 
         mv.addObject("taxBillList", taxBillList);
-        mv.setViewName("/billTax/billList");
+        mv.setViewName("billTax/billList");
 
         return mv;
     }

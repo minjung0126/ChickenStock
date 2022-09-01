@@ -16,11 +16,11 @@ public class TaxBillDTO {
     private String storeName; // 가맹점상호
     private String storeAddress; //가맹점 주소
 
-    private String storeRef; // 가맹점주 이름
+    private String storeRep; // 가맹점주 이름
 
     public TaxBillDTO() { }
 
-    public TaxBillDTO(int taxNo, String itemName, String itemStandard, int orderAmount, int itemSales, Date orderDate, Date taxDate, String storeNo, String storeName, String storeAddress, String storeRef) {
+    public TaxBillDTO(int taxNo, String itemName, String itemStandard, int orderAmount, int itemSales, Date orderDate, Date taxDate, String storeNo, String storeName, String storeAddress, String storeRep) {
         this.taxNo = taxNo;
         this.itemName = itemName;
         this.itemStandard = itemStandard;
@@ -31,7 +31,7 @@ public class TaxBillDTO {
         this.storeNo = storeNo;
         this.storeName = storeName;
         this.storeAddress = storeAddress;
-        this.storeRef = storeRef;
+        this.storeRep = storeRep;
     }
 
     public int getTaxNo() {
@@ -114,12 +114,12 @@ public class TaxBillDTO {
         this.storeAddress = storeAddress;
     }
 
-    public String getStoreRef() {
-        return storeRef;
+    public String getStoreRep() {
+        return storeRep;
     }
 
-    public void setStoreRef(String storeRef) {
-        this.storeRef = storeRef;
+    public void setStoreRep(String storeRep) {
+        this.storeRep = storeRep;
     }
 
     @Override
@@ -135,7 +135,7 @@ public class TaxBillDTO {
                 ", storeNo='" + storeNo + '\'' +
                 ", storeName='" + storeName + '\'' +
                 ", storeAddress='" + storeAddress + '\'' +
-                ", storeRef='" + storeRef + '\'' +
+                ", storeRep='" + storeRep + '\'' +
                 '}';
     }
 }
