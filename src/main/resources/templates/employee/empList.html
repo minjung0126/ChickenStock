@@ -14,10 +14,52 @@
 
   <script src="https://code.jquery.com/jquery-3.6.0.js"/>
   <script th:src="@{js/common.js}"/>
-
+  <script>
+    function regist(){
+      $("#registModal").modal("show");
+    }
+  </script>
 </head>
 <body>
   <div class="wrap">
+    <!-- modal 추가 -->
+    <div class="modal fade" id="registModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">정보를 입력하세요.</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <form action="" method="post">
+            <div class="modal-body">
+              <div class="form-group">
+                <label for="id" class="col-form-label">아이디</label>
+                <input type="text" class="form-control col-8" id="id" name="id" required>
+                <label for="pwd" class="col-form-label">비밀번호</label>
+                <input type="password" class="form-control" id="pwd" name="pwd" required>
+                <label for="name" class="col-form-label">이름</label>
+                <input type="text" class="form-control" id="name" name="name" required>
+                <label for="email" class="col-form-label">이메일</label>
+                <input type="email" class="form-control" id="email" name="email" required>
+                <label for="phone" class="col-form-label">전화번호</label>
+                <input type="tel" class="form-control" id="phone" name="phone" required>
+                <label for="birth" class="col-form-label">생년월일</label>
+                <input type="date" class="form-control col-6" id="birth" name="birth" required>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-warning" id="addRegist">추가</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                      id="sprintSettingModalClose">취소</button>
+            </div>
+          </form>
+
+        </div>
+      </div>
+    </div>
 
     <!-- S: header -->
     <div th:include="common/adminHeader.html"></div>
@@ -36,60 +78,50 @@
 
           <!-- 작업 영역 -->
           <!-- S: table -->
+
           <div class="container-fluid" style="margin-top:30px">
-            <h3>직원 관리</h3>
-			      <br>
+            <h3 style="float: left;">직원 관리</h3>
+            <div class="d-flex justify-content-end">
+              <button type="button" class="btn" onclick="regist();" style="margin-right: 30px;">직원 추가</button>
+            </div>
+            <br>
 
             <table class="table">
               <thead>
-                <tr>
-                  <th>번호</th>
-                  <th>아이디</th>
-                  <th>이름</th>
-                  <th>이메일</th>
-                  <th>전화번호</th>
-                  <th>생년월일</th>
-                  <th>권한부여</th>
-                  <th>설정</th>
-                </tr>
+              <tr>
+                <th>번호</th>
+                <th>아이디</th>
+                <th>이름</th>
+                <th>이메일</th>
+                <th>전화번호</th>
+                <th>생년월일</th>
+                <th>권한부여</th>
+              </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>gdhong01</td>
-                  <td>홍길동</td>
-                  <td>gdhong01@gmail.com</td>
-                  <td>010-1004-1201</td>
-                  <td>1997.09.13</td>
-                  <td><button class="btn btn-warning" onclick="test();" style="color: white;">권한 부여</button></td>
-                  <!-- https://ungdoli0916.tistory.com/471 : confirm창 -->
-                  <td>
-                    <div class="dropdown open">
-                      <a href="#!" class="px-2" id="triggerId1" data-toggle="dropdown" aria-haspopup="true"
-                          aria-expanded="false">
-                            <i class="fa fa-ellipsis-v"></i>
-                      </a>
-                      <div class="dropdown-menu" aria-labelledby="triggerId1">
-                        <!-- <a class="dropdown-item" href="#"><i class="fa fa-eye mr-1"></i>View</a> -->
-                        <a class="dropdown-item" href="#"><i class="fa fa-pencil mr-1"></i> Edit</a>
-                        <a class="dropdown-item text-danger" href="#"><i class="fa fa-trash mr-1"></i> Delete</a>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
+              <tr>
+                <td>1</td>
+                <td>gdhong01</td>
+                <td>홍길동</td>
+                <td>gdhong01@gmail.com</td>
+                <td>010-1004-1201</td>
+                <td>1997.09.13</td>
+                <td><button class="btn btn-warning" onclick="test();" style="color: white;">권한 부여</button></td>
+              </tr>
               </tbody>
             </table>
           </div>
           <!-- E: table -->
           <!-- S: paging -->
-          <div class="d-flex justify-content-center">
+          <div class="d-flex justify-content-center col-12" >
             <button type="button" class="btn btn-light disabled" id="startPage"><<</button>
             <button type="button" class="btn btn-light mx-1 disabled"><</button>
             <button type="button" class="btn btn-warning mx-1" disabled style="color:white">1</button>
             <button type="button" class="btn btn-light mx-1">2</button>
             <button type="button" class="btn btn-light mx-1">></button>
-            <button type="button" class="btn btn-light mx-1" id="maxPage">>></button> 
+            <button type="button" class="btn btn-light mx-1" id="maxPage">>></button>
           </div>
+
           <!-- E: paging -->
 
         </div>
