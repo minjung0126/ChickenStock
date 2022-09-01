@@ -49,10 +49,10 @@
         <result property="itemNo" column="ITEM_NO"/>
     </resultMap>
 
-<!--    <resultMap id="employeeResultMap" type="com.chicken.project.member.model.dto.EmployeeDTO">-->
-<!--        <id property="id" column="EMP_ID"/>-->
-<!--        <result property="name" column="EMP_NAME"/>-->
-<!--    </resultMap>-->
+    <resultMap id="employeeResultMap" type="com.chicken.project.empList.model.dto.EmployeeDTO">
+        <id property="id" column="EMP_ID"/>
+        <result property="name" column="EMP_NAME"/>
+    </resultMap>
 
     <select id="selectAllReceive" resultMap="receiveOfficeResultMap">
         SELECT
