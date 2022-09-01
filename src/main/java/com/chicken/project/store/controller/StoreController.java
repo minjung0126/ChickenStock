@@ -94,18 +94,16 @@ public class StoreController {
     }
 
     @GetMapping("/admin/update")
-    public ModelAndView updateStorePage(HttpServletRequest request, RedirectAttributes rttr, ModelAndView mv) throws StoreUpdateException {
+    public ModelAndView updateStorePage(HttpServletRequest request, RedirectAttributes rttr, ModelAndView mv){
 
         String storeName = request.getParameter("storeName");
 
         log.info("[StoreController] storeName : " + storeName);
 
-        storeService.selectStoreByName(storeName);
+        StoreDTO store = storeService.selectStoreByName(storeName);
 
-        mv.addObject("storeName", storeName);
+        mv.addObject("store", store);
         mv.setViewName("/store/admin/adminStoreUpdate");
-
-        rttr.addFlashAttribute("message", "가맹점 정보 삭제 성공!");
 
         return mv;
     }
