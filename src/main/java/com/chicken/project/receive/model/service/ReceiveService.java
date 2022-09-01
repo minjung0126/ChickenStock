@@ -16,8 +16,8 @@ public class ReceiveService {
         this.receiveMapper = receiveMapper;
     }
 
-    public List<ReceiveOfficeDTO> selectAllList() {
+    public List<ReceiveOfficeDTO> selectAllReceive() {
 
-        return receiveMapper.selectAllList();
+        return receiveMapper.selectAllReceive();
     }
 }

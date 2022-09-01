@@ -11,7 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
 @Controller
-@RequestMapping("/receive/*")
+@RequestMapping("/receive")
 public class ReceiveController {
 
     private final ReceiveService receiveService;
@@ -22,13 +22,13 @@ public class ReceiveController {
         this.receiveService = receiveService;
     }
 
-    @GetMapping("/list")
+    @GetMapping("/admin/list")
     public ModelAndView receiveList(ModelAndView mv){
 
-        List<ReceiveOfficeDTO> receiveList = receiveService.selectAllList();
+        List<ReceiveOfficeDTO> receiveList = receiveService.selectAllReceive();
 
         mv.addObject("receiveList", receiveList);
-        mv.setViewName("receive/receive_list");
+        mv.setViewName("receive/admin/admin_receive");
 
         return mv;
     }

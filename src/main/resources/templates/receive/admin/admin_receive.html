@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="utf-8"/>
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
 
   <title>chicken stock</title>
@@ -18,7 +18,7 @@
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
   <!-- <script src="https://code.jquery.com/jquery-3.6.0.js"></script> -->
-  <script src="../assets/js/common.js"></script>
+  <script src="/js/common.js"></script>
 
 </head>
 <body>
@@ -75,7 +75,7 @@
             <thead>
             <tr>
               <th>번호</th>
-              <th>입고 번호</th>
+              <th>입고 코드</th>
               <th>상품명</th>
               <th>입고 수량</th>
               <th>입고 금액</th>
@@ -84,119 +84,99 @@
             </tr>
             </thead>
             <tbody>
-            <tr class="detail-main">
+            <tr class="detail-main" th:each="receive : ${ receiveList }">
               <td>1</td>
-              <td>PS1902</td>
-              <td>닭다리 외 2개 품목</td>
-              <td>90</td>
-              <td>405,000</td>
-              <td>2022-08-07</td>
-              <td>김○○</td>
+              <td th:text="${ receive.recCode }"></td>
+              <td th:text="${ receive.countRecCode }">닭다리 외 2개 품목</td>
+              <td th:text="${ receive.sumRecTotalAmount }"></td>
+              <td th:text="${ receive.sumRecTotalMoney }"></td>
+              <td th:text="${ receive.stringRecDate }"></td>
+              <td th:text="${ receive.employee.name }"></td>
             </tr>
-            <tr class="detail-sub-tr style=" display: none;>
-              <td class="detail-sub-td" colspan="9" >
-                <div class="detail-sub" >
-                  <table width="100%">
-                    <thead>
-                    <tr>
-                      <th>번호</th>
-                      <th>입고 번호</th>
-                      <th>상품코드</th>
-                      <th>썸네일</th>
-                      <th>상품명</th>
-                      <th>카테고리</th>
-                      <th>규격</th>
-                      <th>제조사</th>
-                      <th>입고 수량</th>
-                      <th>입고 단가</th>
-                      <th>입고 금액</th>
-                      <th>입고일</th>
-                    </tr>
-                    </thead>
-                    <tr>
-                      <td>1</td>
-                      <td>PS1902</td>
-                      <td>100001</td>
-                      <td>
-                        <div class="img-info">
-                          <div class="img-info__img">
-                            <img src="../assets/images/chicken.jpg" alt="">
-                          </div>
-                        </div>
-                      </td>
-                      <td>닭다리</td>
-                      <td>식재료</td>
-                      <td>1kg</td>
-                      <td>하림</td>
-                      <td>30</td>
-                      <td>4,500</td>
-                      <td>135,000</td>
-                      <td>2022-08-07</td>
-                    </tr>
-                    <tr>
-                      <td>1</td>
-                      <td>PS1902</td>
-                      <td>100001</td>
-                      <td>
-                        <div class="img-info">
-                          <div class="img-info__img">
-                            <img src="../assets/images/chicken.jpg" alt="">
-                          </div>
-                        </div>
-                      </td>
-                      <td>닭다리</td>
-                      <td>식재료</td>
-                      <td>1kg</td>
-                      <td>하림</td>
-                      <td>30</td>
-                      <td>4,500</td>
-                      <td>135,000</td>
-                      <td>2022-08-07</td>
-                    </tr>
-                    <tr>
-                      <td>1</td>
-                      <td>PS1902</td>
-                      <td>100001</td>
-                      <td>
-                        <div class="img-info">
-                          <div class="img-info__img">
-                            <img src="../assets/images/chicken.jpg" alt="">
-                          </div>
-                        </div>
-                      </td>
-                      <td>닭다리</td>
-                      <td>식재료</td>
-                      <td>1kg</td>
-                      <td>하림</td>
-                      <td>30</td>
-                      <td>4,500</td>
-                      <td>135,000</td>
-                      <td>2022-08-07</td>
-                    </tr>
-                  </table>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>1</td>
-              <td>PS1902</td>
-              <td>닭다리</td>
-              <td>100</td>
-              <td>1,000,000</td>
-              <td>2022-08-07</td>
-              <td>김○○</td>
-
-            </tr>
-            <tr>
-              <td>1</td>
-              <td>PS1902</td>
-              <td>닭다리</td>
-              <td>100</td>
-              <td>1,000,000</td>
-              <td>2022-08-07</td>
-              <td>김○○</td>
-
-            </tr>
+<!--            <tr class="detail-sub-tr style=" display: none;>-->
+<!--              <td class="detail-sub-td" colspan="9" >-->
+<!--                <div class="detail-sub" >-->
+<!--                  <table width="100%">-->
+<!--                    <thead>-->
+<!--                    <tr>-->
+<!--                      <th>번호</th>-->
+<!--                      <th>입고 번호</th>-->
+<!--                      <th>상품코드</th>-->
+<!--                      <th>썸네일</th>-->
+<!--                      <th>상품명</th>-->
+<!--                      <th>카테고리</th>-->
+<!--                      <th>규격</th>-->
+<!--                      <th>제조사</th>-->
+<!--                      <th>입고 수량</th>-->
+<!--                      <th>입고 단가</th>-->
+<!--                      <th>입고 금액</th>-->
+<!--                      <th>입고일</th>-->
+<!--                    </tr>-->
+<!--                    </thead>-->
+<!--                    <tr>-->
+<!--                      <td>1</td>-->
+<!--                      <td>PS1902</td>-->
+<!--                      <td>100001</td>-->
+<!--                      <td>-->
+<!--                        <div class="img-info">-->
+<!--                          <div class="img-info__img">-->
+<!--                            <img src="../assets/images/chicken.jpg" alt="">-->
+<!--                          </div>-->
+<!--                        </div>-->
+<!--                      </td>-->
+<!--                      <td>닭다리</td>-->
+<!--                      <td>식재료</td>-->
+<!--                      <td>1kg</td>-->
+<!--                      <td>하림</td>-->
+<!--                      <td>30</td>-->
+<!--                      <td>4,500</td>-->
+<!--                      <td>135,000</td>-->
+<!--                      <td>2022-08-07</td>-->
+<!--                    </tr>-->
+<!--                    <tr>-->
+<!--                      <td>1</td>-->
+<!--                      <td>PS1902</td>-->
+<!--                      <td>100001</td>-->
+<!--                      <td>-->
+<!--                        <div class="img-info">-->
+<!--                          <div class="img-info__img">-->
+<!--                            <img src="../assets/images/chicken.jpg" alt="">-->
+<!--                          </div>-->
+<!--                        </div>-->
+<!--                      </td>-->
+<!--                      <td>닭다리</td>-->
+<!--                      <td>식재료</td>-->
+<!--                      <td>1kg</td>-->
+<!--                      <td>하림</td>-->
+<!--                      <td>30</td>-->
+<!--                      <td>4,500</td>-->
+<!--                      <td>135,000</td>-->
+<!--                      <td>2022-08-07</td>-->
+<!--                    </tr>-->
+<!--                    <tr>-->
+<!--                      <td>1</td>-->
+<!--                      <td>PS1902</td>-->
+<!--                      <td>100001</td>-->
+<!--                      <td>-->
+<!--                        <div class="img-info">-->
+<!--                          <div class="img-info__img">-->
+<!--                            <img src="../assets/images/chicken.jpg" alt="">-->
+<!--                          </div>-->
+<!--                        </div>-->
+<!--                      </td>-->
+<!--                      <td>닭다리</td>-->
+<!--                      <td>식재료</td>-->
+<!--                      <td>1kg</td>-->
+<!--                      <td>하림</td>-->
+<!--                      <td>30</td>-->
+<!--                      <td>4,500</td>-->
+<!--                      <td>135,000</td>-->
+<!--                      <td>2022-08-07</td>-->
+<!--                    </tr>-->
+<!--                  </table>-->
+<!--                </div>-->
+<!--              </td>-->
+<!--            </tr>-->
             </tbody>
           </table>
         </div>
@@ -226,7 +206,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
 <!-- datepicker js -->
-<script src="../assets/js/daterange.js"></script>
+<!--<script src="/js/daterange.js"></script>-->
 
 <!-- 상품 상세 페이지 팝업 띄우기 -->
 <script type="text/javascript">
@@ -331,6 +311,65 @@
   });
 </script>
 
+<script>
+  $(function() {
+
+    var start = moment();
+    var end = moment();
+
+    function cb(start, end) {
+      $('#reportrange span').html( '&nbsp;&nbsp;' + start.format('YYYY-MM-DD') + ' ~ ' + end.format('YYYY-MM-DD'));
+    }
+
+    $('#reportrange').daterangepicker({
+      showDropdowns: true,
+      minYear: 2020,
+      maxYear: 2030,
+      "autoApply": true,
+      autoUpdateInput: false,
+      "linkedCalendars": false,
+      "locale": {
+        "format": "YYYY/MM/DD",
+        "separator": " ~ ",
+        "applyLabel": "확인",
+        "cancelLabel": "취소",
+        "fromLabel": "From",
+        "toLabel": "To",
+        "customRangeLabel": "Custom",
+        "weekLabel": "W",
+        "daysOfWeek": [
+          "일",
+          "월",
+          "화",
+          "수",
+          "목",
+          "금",
+          "토"
+        ],
+        "monthNames": [
+          "1월",
+          "2월",
+          "3월",
+          "4월",
+          "5월",
+          "6월",
+          "7월",
+          "8월",
+          "9월",
+          "10월",
+          "11월",
+          "12월"
+        ],
+        "firstDay": 7
+      },
+      startDate: start,
+      endDate: end,
+    }, cb);
+
+    cb(start, end);
+
+  });
+</script>
 
 
 </body>
