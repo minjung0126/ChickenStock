@@ -1,10 +1,14 @@
 package com.chicken.project.notice.controller;
 
+import com.chicken.project.common.paging.Pagenation;
+import com.chicken.project.common.paging.SelectCriteria;
 import com.chicken.project.exception.notice.NoticeDeleteException;
 import com.chicken.project.exception.notice.NoticeUpdateException;
 import com.chicken.project.notice.model.dto.NoticeDTO;
 import com.chicken.project.notice.model.dto.NoticeFileDTO;
 import com.chicken.project.notice.model.service.NoticeService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ResourceUtils;
@@ -16,14 +20,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Controller
 @RequestMapping("/notice/*")
 public class NoticeController {
 
     private final NoticeService noticeService;
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
     @Autowired
     public NoticeController(NoticeService noticeService){
 
@@ -32,22 +36,94 @@ public class NoticeController {
     }
 
     @GetMapping("/admin/list")
-    public ModelAndView noticeList(ModelAndView mv){
+    public ModelAndView noticeList(ModelAndView mv, HttpServletRequest request){
 
-        List<NoticeDTO> noticeList = noticeService.selectAllList();
+        String currentPage = request.getParameter("currentPage");
+        int pageNo = 1;
+
+        if(currentPage != null && !"".equals(currentPage)) {
+            pageNo = Integer.parseInt(currentPage);
+        }
+
+        String searchCondition = request.getParameter("searchCondition");
+        String searchValue = request.getParameter("searchValue");
+
+        Map<String, String> searchMap = new HashMap<>();
+        searchMap.put("searchCondition", searchCondition);
+        searchMap.put("searchValue", searchValue);
+
+        log.info("[NoticeController] searchMap = " + searchMap);
+
+        int totalCount = noticeService.selectTotalCount(searchMap);
+
+        log.info("[NoticeController] totalCount = " + totalCount);
+
+        int limit = 6;
+        int buttonAmount = 5;
+
+        SelectCriteria selectCriteria = null;
+
+        if(searchCondition != null && !"".equals(searchCondition)) {
+            selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount, searchCondition, searchValue);
+        } else {
+            selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount);
+        }
+
+        log.info("[NoticeController] selectCriteria = " + selectCriteria);
+
+        List<NoticeDTO> noticeList = noticeService.selectNoticeList(selectCriteria);
+
+        log.info("[NoticeController] noticeList = " + noticeList);
 
         mv.addObject("noticeList", noticeList);
+        mv.addObject("selectCriteria", selectCriteria);
         mv.setViewName("/notice/admin/adminNoticeList");
 
         return mv;
     }
 
     @GetMapping("/user/list")
-    public ModelAndView userNoticeList(ModelAndView mv){
+    public ModelAndView userNoticeList(ModelAndView mv, HttpServletRequest request){
 
-        List<NoticeDTO> noticeList = noticeService.selectAllList();
+        String currentPage = request.getParameter("currentPage");
+        int pageNo = 1;
+
+        if(currentPage != null && !"".equals(currentPage)) {
+            pageNo = Integer.parseInt(currentPage);
+        }
+
+        String searchCondition = request.getParameter("searchCondition");
+        String searchValue = request.getParameter("searchValue");
+
+        Map<String, String> searchMap = new HashMap<>();
+        searchMap.put("searchCondition", searchCondition);
+        searchMap.put("searchValue", searchValue);
+
+        log.info("[NoticeController] searchMap = " + searchMap);
+
+        int totalCount = noticeService.selectTotalCount(searchMap);
+
+        log.info("[NoticeController] totalCount = " + totalCount);
+
+        int limit = 6;
+        int buttonAmount = 5;
+
+        SelectCriteria selectCriteria = null;
+
+        if(searchCondition != null && !"".equals(searchCondition)) {
+            selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount, searchCondition, searchValue);
+        } else {
+            selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount);
+        }
+
+        log.info("[NoticeController] selectCriteria = " + selectCriteria);
+
+        List<NoticeDTO> noticeList = noticeService.selectNoticeList(selectCriteria);
+
+        log.info("[NoticeController] noticeList = " + noticeList);
 
         mv.addObject("noticeList", noticeList);
+        mv.addObject("selectCriteria", selectCriteria);
         mv.setViewName("/notice/user/userNoticeList");
 
         return mv;
@@ -171,12 +247,6 @@ public class NoticeController {
     public String updateNotice(@ModelAttribute NoticeDTO notice,
                                RedirectAttributes rttr) throws NoticeUpdateException {
 
-        System.out.println("notice = " + notice);
-
-        noticeService.updateNotice(notice);
-
-        rttr.addFlashAttribute("message", "공지사항 수정에 성공하셨습니다!");
-
-        return "redirect:/notice/admin/list";
+        return "";
     }
 }

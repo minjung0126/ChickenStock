@@ -1,9 +1,9 @@
 package com.chicken.project.receive.model.dto;
 
+import com.chicken.project.empList.model.dto.EmployeeDTO;
 import com.chicken.project.item.model.dto.ItemCategoryDTO;
 import com.chicken.project.item.model.dto.ItemFileDTO;
 import com.chicken.project.item.model.dto.ItemInfoDTO;
-import com.chicken.project.member.model.dto.EmployeeDTO;
 
 import java.sql.Date;
 import java.util.List;
