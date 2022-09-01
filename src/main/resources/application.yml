@@ -29,7 +29,11 @@ spring:
 mybatis:
   mapper-locations: mappers/**/*.xml # mappers 안에 모든 파일.xml
 <<<<<<< HEAD
+<<<<<<< HEAD
   type-aliases-package: com.chicken.project.notice.model.dto, com.chicken.project.store.model.dto, com.chicken.project.empList.model.dto, com.chicken.project.calendar.model.dto, com.chicken.project.order.model.dto
+=======
+  type-aliases-package: com.chicken.project.notice.model.dto, com.chicken.project.store.model.dto, com.chicken.project.order.model.dto, com.chicken.project.billTax.model.dto
+>>>>>>> ea1663a6075894dc33a4ef334fe9457c708ad2d0
 =======
   type-aliases-package: com.chicken.project.notice.model.dto, com.chicken.project.store.model.dto, com.chicken.project.order.model.dto, com.chicken.project.billTax.model.dto
 >>>>>>> ea1663a6075894dc33a4ef334fe9457c708ad2d0
