@@ -1,6 +1,4 @@
-package com.chicken.project.billTax.model.dto;
-
-import java.util.Date;
+package com.chicken.project.billtax.model.dto;
 
 
 public class TaxBillDTO {

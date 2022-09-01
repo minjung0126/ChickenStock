@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.chicken.project.billTax.model.dao.TaxBillMapper">
+<mapper namespace="com.chicken.project.billtax.model.dao.TaxBillMapper">
     <resultMap id="taxBillResultMap" type="TaxBillDTO">
         <id property="taxNo" column="TAX_NO"/>
         <result property="taxDate" column="TAX_DATE"/>
