@@ -30,7 +30,7 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <form action="" method="post">
+          <form th:action="@{empList/empList}" method="post">
             <div class="modal-body">
               <div class="form-group">
                 <label for="id" class="col-form-label">아이디</label>
@@ -141,6 +141,11 @@
 
     function regist(){
       $("#registModal").modal("show");
+    };
+
+    const result = "${msg}"
+    if(result == "success"){
+      alert("직원 정보 등록에 성공하셨습니다.")
     }
   </script>
 

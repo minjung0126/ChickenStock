@@ -8,4 +8,6 @@ import java.util.List;
 @Mapper
 public interface EmployeeMapper {
     List<EmployeeDTO> selectAllEmployee();
+
+    int insertEmployee(EmployeeDTO emp);
 }

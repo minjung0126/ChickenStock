@@ -12,6 +12,8 @@
         <result property="empPwd" column="EMP_PWD"/>
         <result property="birth" column="EMP_BIRTH"/>
         <result property="memberType" column="MEMBER_TYPE"/>
+        
+        <collection property="calendar" resultMap="calendarResultMap"/>
     </resultMap>
 
     <resultMap id="calendarResultMap" type="CalendarDTO">
@@ -21,8 +23,6 @@
         <result property="endDay" column="CAL_END"/>
         <result property="content" column="CAL_CONTENT"/>
         <result property="groupNo" column="CAL_GROUP_NO"/>
-
-        <association property="empId" column="EMP_ID"/>
     </resultMap>
 
     <select id="selectAllEmployee" resultMap="employeeResultMap">
@@ -35,4 +35,30 @@
              , A.EMP_BIRTH
           FROM EMPLOYEE A
     </select>
+
+    <insert id="insertEmployee" parameterType="EmployeeDTO">
+        INSERT
+          INTO EMPLOYEE A
+        (
+          EMP_ID
+        , EMP_NAME
+        , EMP_PHONE
+        , EMP_EMAIL
+        , MANAGER_YN
+        , EMP_PWD
+        , EMP_BIRTH
+        , MEMBER_TYPE
+        )
+        VALUES
+        (
+          #{ empId }
+        , #{ empName }
+        , #{ empPhone }
+        , #{ empEmail }
+        , 'N'
+        , #{ empPwd }
+        , #{ birth }
+        , 'employee'
+        )
+    </insert>
 </mapper>
