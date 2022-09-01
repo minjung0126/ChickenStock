@@ -8,10 +8,9 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 
 @Configuration
 @ComponentScan(basePackages = "com.chicken.project")
-public class ContextConfiguration {
+public class ContextConfig {
 
-    @Bean
-    public MessageSource messageSource(){
+    @Bean    public MessageSource messageSource(){
 
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
         messageSource.setBasename("classpath:/message/message");
