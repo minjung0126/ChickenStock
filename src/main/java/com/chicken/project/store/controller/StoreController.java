@@ -48,13 +48,13 @@ public class StoreController {
     }
 
     @GetMapping("/admin/delete")
-    public String deleteStore(HttpServletRequest request, RedirectAttributes rttr) throws StoreDeleteException {
+    public String deleteStore(HttpServletRequest request, RedirectAttributes rttr) throws Exception {
 
         String storeName = request.getParameter("storeName");
 
         storeService.deleteStore(storeName);
 
-        rttr.addFlashAttribute("message", "가맹점 정보 삭제에 성공하였습니다.");
+        rttr.addFlashAttribute("message", "가맹점 정보 삭제 성공!");
 
         return "redirect:/store/admin/list";
     }
