@@ -10,8 +10,8 @@ public class TaxBillDTO {
     private String itemStandard; //규격
     private int orderAmount; //수량
     private int itemSales;  //매출단가
-    private java.util.Date orderDate; //발주날짜
-    private java.util.Date taxDate; //세금계산서 발급날짜
+    private String orderDate; //발주날짜
+    private String taxDate; //세금계산서 발급날짜
     private String storeNo; // 사업자등록번호
     private String storeName; // 가맹점상호
     private String storeAddress; //가맹점 주소
@@ -20,7 +20,7 @@ public class TaxBillDTO {
 
     public TaxBillDTO() { }
 
-    public TaxBillDTO(int taxNo, String itemName, String itemStandard, int orderAmount, int itemSales, Date orderDate, Date taxDate, String storeNo, String storeName, String storeAddress, String storeRep) {
+    public TaxBillDTO(int taxNo, String itemName, String itemStandard, int orderAmount, int itemSales, String orderDate, String taxDate, String storeNo, String storeName, String storeAddress, String storeRep) {
         this.taxNo = taxNo;
         this.itemName = itemName;
         this.itemStandard = itemStandard;
@@ -74,19 +74,19 @@ public class TaxBillDTO {
         this.itemSales = itemSales;
     }
 
-    public Date getOrderDate() {
+    public String getOrderDate() {
         return orderDate;
     }
 
-    public void setOrderDate(Date orderDate) {
+    public void setOrderDate(String orderDate) {
         this.orderDate = orderDate;
     }
 
-    public Date getTaxDate() {
+    public String getTaxDate() {
         return taxDate;
     }
 
-    public void setTaxDate(Date taxDate) {
+    public void setTaxDate(String taxDate) {
         this.taxDate = taxDate;
     }
 
@@ -130,8 +130,8 @@ public class TaxBillDTO {
                 ", itemStandard='" + itemStandard + '\'' +
                 ", orderAmount=" + orderAmount +
                 ", itemSales=" + itemSales +
-                ", orderDate=" + orderDate +
-                ", taxDate=" + taxDate +
+                ", orderDate='" + orderDate + '\'' +
+                ", taxDate='" + taxDate + '\'' +
                 ", storeNo='" + storeNo + '\'' +
                 ", storeName='" + storeName + '\'' +
                 ", storeAddress='" + storeAddress + '\'' +

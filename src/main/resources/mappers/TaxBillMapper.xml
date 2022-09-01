@@ -23,8 +23,8 @@
              , S.STORE_NO
              , S.STORE_NAME
              , S.STORE_ADDRESS
-             , TO_CHAR(TB.TAX_DATE,'yyyy-MM-dd') AS "TAX_DATE"
-             , TO_CHAR(SO.ORDER_DATE,'yyyy-MM-dd') AS "ORDER_DATE"
+             , TO_CHAR(TB.TAX_DATE,'yyyy-MM-dd') AS TAX_DATE
+             , TO_CHAR(SO.ORDER_DATE,'yyyy-MM-dd') AS ORDER_DATE
              , II.ITEM_NAME
              , II.ITEM_STANDARD
              , SO.ORDER_AMOUNT
