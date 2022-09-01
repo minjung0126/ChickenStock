@@ -77,10 +77,7 @@
                                 <td colspan='1' class='border_back ' width='25'>&nbsp;</td>
                                 <td colspan='1' class='border_up' width='25'>&nbsp;</td>
                                 <td colspan='1' class='border_up' width='25'>&nbsp;</td>
-                                <td colspan='1' class='border_up' width='25'>&nbsp;</td>
-                                <td colspan='1' class='border_up' width='25'>&nbsp;</td>
-                                <td colspan='1' class='border_up' width='25'>&nbsp;</td>
-                                <td colspan='1' class='border_top' width='25' th:text="${ tax.taxNo }"></td>  <!-- 책,권 -->
+                                <td colspan='4' class='border_top' width='100' th:text="${ tax.taxNo }"></td>  <!-- 책,권 -->
                                </tr>
                               </table>
                              </td>
@@ -110,7 +107,7 @@
                                 <td class='border_up' align='center' width='55' height='33'>사업장<br>주  소</td>
                                 <td class='border_up' align='center' width='278' colspan='5'>서울시 강남구</td>
                                 <td class='border_up' align='center' width='55'>사업장<br>주  소</td>
-                                <td class='border_top' align='center' width='278' colspan='5' th:text="${ tax.storeAddress }"></td>
+                                <td class='border_top' align='center' width='278' colspan='5' th:text="|${ tax.storeAddress } 인|"></td>
                                </tr>
                                <tr>
                                 <td class='border_up' align='center' width='55' height='33'>업  태</td>

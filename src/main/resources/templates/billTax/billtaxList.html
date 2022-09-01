@@ -80,10 +80,7 @@
                         <td colspan='1' class='border_back_red ' width='25'>&nbsp;</td>
                         <td colspan='1' class='border_up_red' width='25'>&nbsp;</td>
                         <td colspan='1' class='border_up_red' width='25'>&nbsp;</td>
-                        <td colspan='1' class='border_up_red' width='25'>&nbsp;</td>
-                        <td colspan='1' class='border_up_red' width='25'>&nbsp;</td>
-                        <td colspan='1' class='border_up_red' width='25'>&nbsp;</td>
-                        <td colspan='1' class='border_top_red' width='25' th:text="${ tax.taxNo }"></td>  <!-- 책,권 -->
+                        <td colspan='4' class='border_top_red' width='100' th:text="${ tax.taxNo }"></td>  <!-- 책,권 -->
                         </tr>
                         </table>
                     </td>
@@ -107,7 +104,7 @@
                         <td class='border_up_red' align='center' width='55'>상 호<br>(법입명)</td>
                         <td class='border_up_red' align='center' width='160' colspan='3' th:text="${ tax.storeName }"></td>
                         <td class='border_up_red' align='center' width='12' colspan='1'>성<br>명</td>
-                        <td class='border_top_red' align='right' width='94' colspan='1' th:text="${ tax.storeRep }"></td>
+                        <td class='border_top_red' align='right' width='94' colspan='1' th:text="|${ tax.storeRep } 인|"></td>
                         </tr>
                         <tr>
                         <td class='border_up_red' align='center' width='55' height='33'>사업장<br>주  소</td>
