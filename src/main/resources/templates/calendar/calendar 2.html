@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
+
+    <title>chicken stock</title>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/css/common/common.css}"/>
+    <!-- table css -->
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/common/style.css}"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/common/main.css}"/>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script th:src="@{js/common.js}"/>
+    <script th:src="@{js/main.js}"/>
+    <script th:src="@{js/ko.js}"/>
+    <!-- <script src="../lib/gcal.js"></script> -->
+
+
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var calendarEl = document.getElementById('calendar');
+
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                googleCalendarApiKey: 'AIzaSyCDi0sVIXFLB5pKLfgmEgPvvieZ3a375dQ',
+                eventSources: [
+                    {
+                        googleCalendarId: 'ko.south_korea#holiday@group.v.calendar.google.com',
+                        color: '#EB503B',
+                        textColor: 'white',
+                        className: 'holiday'
+                    }
+                ],
+                eventClick: function(info){
+                    if(info.event.className = 'holiday'){
+                        info.jsEvent.stopPropagation();
+                        info.jsEvent.preventDefault();
+                    }
+                    if(info.event.className != 'holiday'){
+                        if(confirm('일정을 삭제하시겠습니까?')){
+                            info.event.remove();
+                        }
+                    }
+                },
+                events: [
+                    {
+                        groupId: 999,
+                        title: 'Conference',
+                        start: '2022-09-15',
+                        end: '2022-09-17',
+                    }
+                ],
+                footerToolbar:{
+                    right: 'addEventButton'
+                },
+                customButtons:{
+                    addEventButton:{
+                        text: '일정 추가',
+                        click: function(){
+                            $("#calendarModal").modal("show");
+
+                            $("#addCalendar").on("click",function(){
+                                var content = $("#calendar_content").val();
+                                var start_date = $("#calendar_start_date").val();
+                                var end_date = $("#calendar_end_date").val();
+
+                                if(content == null || content == ""){
+                                    alert("내용을 입력하세요.");
+                                }else if(start_date == "" || end_date ==""){
+                                    alert("날짜를 입력하세요.");
+                                }else if(new Date(end_date)- new Date(start_date) < 0){
+                                    alert("종료일이 시작일보다 먼저입니다.");
+                                }else{
+                                    var obj = {
+                                        "title" : content,
+                                        "start" : start_date,
+                                        "end" : end_date
+                                    }
+                                    // console.log(obj);
+                                }
+                            });
+                        }
+                    }
+                },
+                expandRows: false,
+                editable: true,
+                selectable: true,
+                businessHours: true,
+                dayMaxEvents: 3, // allow "more" link when too many events
+                dayMaxEventRows: true,
+                views:{
+                    timeGrid: {
+                        dayMaxEventRows : 3
+                    }
+                },
+                locale: 'ko',
+                select: function(arg){
+                    var title = prompt('일정 이름 : ');
+                    if(title){
+                        calendar.addEvent({
+                            title: title,
+                            start: arg.start,
+                            end: arg.end,
+                            allDay: arg.allDay
+                        })
+                    }
+                    calendar.unselect()
+                },
+            });
+
+            calendar.render();
+        });
+
+    </script>
+</head>
+<body>
+<div class="wrap">
+
+    <!-- modal 추가 -->
+    <div class="modal fade" id="calendarModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">일정을 입력하세요.</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="taskId" class="col-form-label">일정 내용</label>
+                        <input type="text" class="form-control" id="calendar_content" name="calendar_content">
+                        <label for="taskId" class="col-form-label">시작 날짜</label>
+                        <input type="date" class="form-control" id="calendar_start_date" name="calendar_start_date">
+                        <label for="taskId" class="col-form-label">종료 날짜</label>
+                        <input type="date" class="form-control" id="calendar_end_date" name="calendar_end_date">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning" id="addCalendar">추가</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                            id="sprintSettingModalClose">취소</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- S: header -->
+    <div th:include="common/adminHeader.html"></div>
+    <!-- S: header -->
+
+    <!-- S: container -->
+    <div class="container px-0">
+
+        <!-- S: aside -->
+        <div th:include="common/adminSidebar.html"></div>
+        <!-- E: aside -->
+
+        <!-- S: main layout -->
+        <div class="main_layout">
+            <div class="main_layout_inner">
+
+                <!-- 작업 영역 -->
+                <!-- S: table -->
+                <div id='calendar'style="background-color: white; padding: 20px"></div>
+                <!-- E: table -->
+            </div>
+        </div>
+        <!-- E: main layout -->
+
+    </div>
+    <!-- E: container -->
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>
