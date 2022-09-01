@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.chicken.project.notice.model.dao.OrderMapper">
+<mapper namespace="com.chicken.project.order.model.dao.OrderMapper">
     <resultMap id="orderResultMap" type="OrderDTO">
         <id property="itemNo" column="ITEM_NO"/>
         <result property="itemName" column="ITEM_NAME"/>
@@ -14,25 +14,29 @@
         <result property="orderAmount" column="ORDER_AMOUNT"/>
         <result property="itemSoldoutYn" column="ITEM_SOLDOUT_YN"/>
         <result property="interYn" column="INTER_YN"/>
+        <result property="orderDate" column="ORDER_DATE"/>
     </resultMap>
 
-    <select id="findAllItem" resultMap="orderResultMap">
+    <select id="selectAllItem" resultMap="orderResultMap">
     SELECT
-           A.ITEM_NO
-         , A.ITEM_NAME
-         , B.CATEGORY_NAME
-         , A.ITEM_STANDARD
-         , A.ITEM_MAKE
-         , A.ITEM_SALES
+        B.ITEM_NO
+         , B.ITEM_NAME
+         , A.CATEGORY_NAME
+         , B.ITEM_STANDARD
+         , B.ITEM_MAKE
+         , B.ITEM_SALES
          , C.STORE_AMOUNT
-         , D.ORDER_AMOUNT
-         , A.ITEM_SOLDOUT_YN
-         , E.INTER_YN
-      FROM ITEM_INFO A
-      JOIN ITEM_CATEGORY B ON (A.CATEGORY_NO = B.CATEGORY_NO)
-      JOIN STO_ITEM_INFO C ON (B.CATEGORY_NO = C.CATEGORY_NO)
-      JOIN STORE_ORDER D ON (C.ITEM_NO = D.ITEM_NO)
-      JOIN INTEREST E ON (D.ITEM_NO = E.ITEM_NO)
+         , B.ITEM_SOLDOUT_YN
+    FROM ITEM_CATEGORY A
+             JOIN ITEM_INFO B ON (A.CATEGORY_NO = B.CATEGORY_NO)
+             LEFT JOIN STO_ITEM_INFO C ON (B.ITEM_NO = C.ITEM_NO)
+    WHERE C.STORE_NAME ='${storeName}' OR C.STORE_NAME IS NULL
+    </select>
+
+    <select id="selectTotalCount" resultType="_int" parameterType="hashmap">
+    SELECT
+    COUNT(*)
+    FROM ITEM_INFO A
     </select>
 
 
