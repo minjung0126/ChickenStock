@@ -27,6 +27,22 @@
           FROM STORE
     </select>
 
+    <insert id="insertStore" parameterType="StoreDTO">
+        INSERT
+          INTO STORE
+        (
+          STORE_NAME, STORE_ACCOUNT, STORE_REP, STORE_ADDRESS
+        , STORE_PHONE, STORE_EMAIL, STORE_ID
+        , STORE_PWD, STORE_NO, MEMBER_TYPE
+        )
+        VALUES
+        (
+          #{ storeName }, #{ storeAccount }, #{ storeRep }, #{ storeAddress }
+        , #{ storePhone }, #{ storeEmail }, #{ storeId }
+        , #{ storePwd }, #{ storeNo }, DEFAULT
+        )
+    </insert>
+
     <delete id="deleteStore" parameterType="StoreDTO">
         DELETE
           FROM STORE

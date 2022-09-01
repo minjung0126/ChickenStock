@@ -54,9 +54,10 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>1</td>
-                      <td>2022년 8월 18일</td>
+                    <tr th:each="tax : ${ taxBillList }" >
+                      <td th:text="${ tax }"></td>
+                      <td th:text="${ tax.taxNo }"></td>
+                      <td th:text="${ tax.taxDate }"></td>
                       <td><button onclick="openLayer('layerPop',140,430)" class="btn btn-warning me-1">세금계산서 확인하기</button>
                         <div class="box" id="layerPop" style="width: auto; height: auto; margin: 0 auto; margin-top: 100px; padding-top: 50px; background-color: #fff; display:none;">
           
@@ -94,7 +95,7 @@
                                 <td class='border_up' align='center' width='278' colspan='5'>&nbsp;</td>
                                 <td class='border_up' align='center' width='17' rowspan='4'>공<br>급<br>받<br>는<br>자</td>
                                 <td class='border_up' align='center' width='55'>등록번호</td>
-                                <td class='border_top' align='center' width='278' colspan='5'></td>
+                                <td class='border_top' align='center' width='278' colspan='5' th:text="${ tax.storeNo }"></td>
                                </tr>
                                <tr>
                                 <td class='border_up' align='center' width='55' height='33'>상 호<br>(법인명)</td>
@@ -102,25 +103,25 @@
                                 <td class='border_up' align='center' width='12' colspan='1'>성<br>명</td>
                                 <td class='border_up' align='right' width='94' colspan='1'>김지환 인</td>
                                 <td class='border_up' align='center' width='55'>상 호<br>(법인명)</td>
-                                <td class='border_up' align='center' width='160' colspan='3'></td>
+                                <td class='border_up' align='center' width='160' colspan='3' th:text="${ tax.storeName }"></td>
                                 <td class='border_up' align='center' width='12' colspan='1'>성<br>명</td>
-                                <td class='border_top' align='right' width='94' colspan='1'> 인</td>
+                                <td class='border_top' align='right' width='94' colspan='1' th:text="${ tax.storeRep }"> 인</td>
                                </tr>
                                <tr>
                                 <td class='border_up' align='center' width='55' height='33'>사업장<br>주  소</td>
                                 <td class='border_up' align='center' width='278' colspan='5'>서울시 강남구</td>
                                 <td class='border_up' align='center' width='55'>사업장<br>주  소</td>
-                                <td class='border_top' align='center' width='278' colspan='5'></td>
+                                <td class='border_top' align='center' width='278' colspan='5' th:text="${ tax.storeAddress }"></td>
                                </tr>
                                <tr>
                                 <td class='border_up' align='center' width='55' height='33'>업  태</td>
-                                <td class='border_up' align='center' width='148' colspan='1'>식품업</td>
+                                <td class='border_up' align='center' width='148' colspan='1'>도매 및 소매업</td>
                                 <td class='border_up' align='center' width='12' colspan='1'>종<br>목</td>
-                                <td class='border_up' align='center' width='106' colspan='3'>&nbsp;</td>
+                                <td class='border_up' align='center' width='106' colspan='3'>식품</td>
                                 <td class='border_up' align='center' width='55'>업 &nbsp; 태</td>
-                                <td class='border_up' align='center' width='148' colspan='1'>식품업</td>
+                                <td class='border_up' align='center' width='148' colspan='1'>숙박 및 음식점업</td>
                                 <td class='border_up' align='center' width='12' colspan='1'>종<br>목</td>
-                                <td class='border_top' align='center' width='106' colspan='3'></td>
+                                <td class='border_top' align='center' width='106' colspan='3'>치킨 전문점</td>
                                </tr>
                               </table>
                              </td>
@@ -206,44 +207,14 @@
                                 <td class='border_up' align='center' width='83'>세 액</td>
                                 <td class='border_top' align='center' width='60'>비고</td>
                                </tr>
-                               <tr>
+                               <tr th:each="tax : ${ taxBillList }" >
                                 <td class='border_up' align='center' width='50' height='25'></td>
-                                <td class='border_up' align='center' width='195'></td>
-                                <td class='border_up' align='center' width='42'>&nbsp;</td>
-                                <td class='border_up' align='center' width='65'></td>
-                                <td class='border_up' align='center' width='55'></td>
-                                <td class='border_up' align='center' width='150'>/td>
+                                <td class='border_up' align='center' width='195' th:text="${ tax.itemName }"></td>
+                                <td class='border_up' align='center' width='42' th:text="${ tax.itemStandard }"></td>
+                                <td class='border_up' align='center' width='65' th:text="${ tax.orderAmount }"></td>
+                                <td class='border_up' align='center' width='55' th:text="${ tax.itemSales }"></td>
+                                <td class='border_up' align='center' width='150'></td>
                                 <td class='border_up' align='center' width='83'></td>
-                                <td class='border_top' align='center' width='60'>&nbsp;</td>
-                               </tr>
-                               <tr>
-                                <td class='border_up' align='center' width='50' height='25'>&nbsp;</td>
-                                <td class='border_up' align='center' width='195'>&nbsp;</td>
-                                <td class='border_up' align='center' width='42'>&nbsp;</td>
-                                <td class='border_up' align='center' width='65'>&nbsp;</td>
-                                <td class='border_up' align='center' width='55'>&nbsp;</td>
-                                <td class='border_up' align='center' width='150'>&nbsp;</td>
-                                <td class='border_up' align='center' width='83'>&nbsp;</td>
-                                <td class='border_top' align='center' width='60'>&nbsp;</td>
-                               </tr>
-                               <tr>
-                                <td class='border_up' align='center' width='50' height='25'>&nbsp;</td>
-                                <td class='border_up' align='center' width='195'>&nbsp;</td>
-                                <td class='border_up' align='center' width='42'>&nbsp;</td>
-                                <td class='border_up' align='center' width='65'>&nbsp;</td>
-                                <td class='border_up' align='center' width='55'>&nbsp;</td>
-                                <td class='border_up' align='center' width='150'>&nbsp;</td>
-                                <td class='border_up' align='center' width='83'>&nbsp;</td>
-                                <td class='border_top' align='center' width='60'>&nbsp;</td>
-                               </tr>
-                               <tr>
-                                <td class='border_up' align='center' width='50' height='25'>&nbsp;</td>
-                                <td class='border_up' align='center' width='195'>&nbsp;</td>
-                                <td class='border_up' align='center' width='42'>&nbsp;</td>
-                                <td class='border_up' align='center' width='65'>&nbsp;</td>
-                                <td class='border_up' align='center' width='55'>&nbsp;</td>
-                                <td class='border_up' align='center' width='150'>&nbsp;</td>
-                                <td class='border_up' align='center' width='83'>&nbsp;</td>
                                 <td class='border_top' align='center' width='60'>&nbsp;</td>
                                </tr>
                               </table>
@@ -278,16 +249,6 @@
                           </div>
                        </div>
                       </td>
-                    </tr>
-                    <tr>
-                      <td>2</td>
-                      <td>2022년 8월 18일</td>
-                      <td><button onclick="" class="btn btn-warning me-1">세금계산서 확인하기</button></td>
-                    </tr>
-                    <tr>
-                      <td>3</td>
-                      <td>2022년 8월 18일</td>
-                      <td><button onclick="" class="btn btn-warning me-1">세금계산서 확인하기</button></td>
                     </tr>
                   </tbody>
                 </table>
@@ -327,6 +288,7 @@
     function closeLayer(IdName){
       var pop = document.getElementById(IdName);
       pop.style.display = "none";
+
     }
   </script>
   <!-- table js -->
