@@ -18,6 +18,20 @@
         <result property="recDate" column="REC_DATE"/>
     </resultMap>
 
+    <resultMap id="tsBillResultMap" type="TsBillDTO">
+        <id property="tsNo" column="TS_NO"/>
+        <result property="tsTaxDate" column="TS_TAX_DATE"/>
+        <result property="itemName" column="ITEM_NAME"/>
+        <result property="itemStandard" column="ITEM_STANDARD"/>
+        <result property="itemSales" column="ITEM_SALES"/>
+        <result property="storeNo" column="STORE_NO"/>
+        <result property="storeName" column="STORE_NAME"/>
+        <result property="storeAddress" column="STORE_ADDRESS"/>
+        <result property="storeRep" column="STORE_REP"/>
+        <result property="recAmount" column="REC_AMOUNT"/>
+        <result property="recDate" column="REC_DATE"/>
+    </resultMap>
+
     <select id="selectTaxBillList" resultMap="taxBillResultMap">
         SELECT
                TB.TAX_NO
@@ -38,4 +52,25 @@
           JOIN ITEM_INFO II ON (II.ITEM_NO = SO.ITEM_NO)
           JOIN RECEIVE_STORE RS ON (RS.ORDER_NO = TB.ORDER_NO)
     </select>
+
+    <select id="selectTsBillList" resultMap="tsBillResultMap">
+        SELECT
+               TS.TS_NO
+             , S.STORE_NO
+             , S.STORE_NAME
+             , S.STORE_ADDRESS
+             , TO_CHAR(TS.TS_TAX_DATE,'yyyy-MM-dd') AS TS_TAX_DATE
+             , II.ITEM_NAME
+             , II.ITEM_STANDARD
+             , II.ITEM_SALES
+             , S.STORE_REP
+             , TO_CHAR(RS.REC_DATE, 'MM-dd') AS REC_DATE
+             , RS.REC_AMOUNT
+          FROM TSBILL TS
+          JOIN STORE_ORDER SO ON (TS.ORDER_NO = SO.ORDER_NO)
+          JOIN STORE S ON(S.STORE_NAME = SO.STORE_NAME)
+          JOIN ITEM_INFO II ON (II.ITEM_NO = SO.ITEM_NO)
+          JOIN RECEIVE_STORE RS ON (RS.ORDER_NO = TS.ORDER_NO)
+    </select>
+
 </mapper>

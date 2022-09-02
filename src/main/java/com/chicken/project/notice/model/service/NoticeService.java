@@ -41,8 +41,7 @@ public class NoticeService {
 
     public NoticeDTO noticeDetailByNo(int noticeNo) {
 
-        //return noticeMapper.noticeDetailByNo(noticeNo);
-        return null;
+        return noticeMapper.noticeDetailByNo(noticeNo);
     }
 
     public int deleteNotice(int noticeNo) throws NoticeDeleteException {

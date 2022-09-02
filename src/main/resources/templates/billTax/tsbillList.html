@@ -21,7 +21,7 @@
       <div th:include="common/userHeader.html"></div>
 
     <!-- S: container -->
-    <div class="container">
+    <div class="container px-0">
 
         <!-- sidebar -->
         <div th:replace="common/userSidebar.html"></div>
@@ -54,9 +54,9 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>2022년 8월 18일</td>
+                <tr th:each="ts : ${ tsBillList }">
+                  <td th:text="${ ts.tsNo }"></td>
+                  <td th:text="${ ts.tsTaxDate }"></td>
                   <td><button onclick="openLayer('layerPop',110,230)" class="btn btn-warning me-1">거래명세서 확인하기</button>
                     <div id="layerPop"style="width: auto; height: auto; margin: 0 auto; margin-top: 100px; padding-top: 50px; background-color: #fff; display:none;">
                       <table id="taxTable" border="0" cellpadding="0" cellspacing="0" width="1000">
@@ -79,7 +79,7 @@
                             <td
                                 style="border-top:2px solid blue;border-right:2px solid blue;background:#f4fbff; color:#222;font-size:10pt;text-align:left;padding-left:6px;"
                                 colspan="5"
-                                rowspan="2"></td>
+                                rowspan="2" th:text="${ ts.tsTaxDate }"></td>
                             <td
                                 style="color:#1211ff;font-size:9pt;text-align:right;"
                                 colspan="6"
@@ -97,7 +97,7 @@
                             <td
                                 style="height:32px;border-top:2px solid blue;border-right:1px solid blue;border-bottom:1px solid blue;background:#f4fbff; color:#222;font-size:11pt;text-align:left;padding-left:6px;"
                                 colspan="9">
-                                <strong></strong>
+                                <strong>125-14-05311</strong>
                             </td>
                             <td
                                 style="border-top:2px solid blue;border-right:1px solid blue;border-bottom:1px solid blue; color:#1211ff;font-size:10pt;text-align:center;"
@@ -107,7 +107,7 @@
                             <td
                                 style="height:32px;border-top:2px solid blue;border-right:2px solid blue;border-bottom:1px solid blue; color:#222;font-size:11pt;text-align:left;padding-left:6px;"
                                 colspan="10">
-                                <strong></strong>
+                                <strong th:text="${ ts.storeNo }"></strong>
                             </td>
                         </tr>
                         <tr>
@@ -115,56 +115,56 @@
                                 style="height:32px;border-right:1px solid blue;border-bottom:1px solid blue;background:#dbf4ff; color:#1211ff;font-size:9pt;text-align:center;">상호</td>
                             <td
                                 style="height:32px;border-right:1px solid blue;border-bottom:1px solid blue;background:#f4fbff; color:#222;font-size:10pt;text-align:left;padding-left:6px;"
-                                colspan="4"></td>
+                                colspan="4">치킨스톡</td>
                             <td
                                 style="height:32px;border-right:1px solid blue;border-bottom:1px solid blue;background:#dbf4ff; color:#1211ff;font-size:9pt;text-align:center;">성<br>명</td>
                             <td
                                 style="height:32px;border-right:1px solid blue;border-bottom:1px solid blue;background:#f4fbff; color:#222;font-size:10pt;text-align:left;padding-left:6px;"
-                                colspan="4"></td>
+                                colspan="4">김지환 인</td>
                             <td
                                 style="height:32px;border-right:1px solid blue;border-bottom:1px solid blue; color:#1211ff;font-size:10pt;text-align:center;">상호</td>
                             <td
                                 style="height:32px;border-right:1px solid blue;border-bottom:1px solid blue; color:#222;font-size:9pt;text-align:left;padding-left:6px;"
-                                colspan="6"></td>
+                                colspan="6" th:text="${ ts.storeName }"></td>
                             <td
                                 style="height:32px;border-right:1px solid blue;border-bottom:1px solid blue; color:#1211ff;font-size:10pt;text-align:center;">성<br>명</td>
                             <td
                                 style="height:32px;border-right:2px solid blue;border-bottom:1px solid blue; color:#222;font-size:9pt;text-align:left;padding-left:6px;"
-                                colspan="3"></td>
+                                colspan="3" th:text="|${ ts.storeRep } 인|"></td>
                         </tr>
                         <tr>
                             <td
                                 style="height:32px;border-right:1px solid blue;border-bottom:1px solid blue;background:#dbf4ff; color:#1211ff;font-size:9pt;text-align:center;">주소</td>
                             <td
                                 style="height:32px;border-right:1px solid blue;border-bottom:1px solid blue;background:#f4fbff; color:#222;font-size:9pt;text-align:left;padding-left:6px;"
-                                colspan="9"></td>
+                                colspan="9">서울시 강남구</td>
                             <td
                                 style="height:32px;border-right:1px solid blue;border-bottom:1px solid blue; color:#1211ff;font-size:10pt;text-align:center;">주소</td>
                             <td
                                 style="height:32px;border-right:2px solid blue;border-bottom:1px solid blue; color:#222;font-size:9pt;text-align:left;padding-left:6px;"
-                                colspan="10"></td>
+                                colspan="10" 구></td>
                         </tr>
                         <tr>
                             <td
                                 style="height:32px;border-right:1px solid blue;border-bottom:1px solid blue;background:#dbf4ff; color:#1211ff;font-size:9pt;text-align:center;">업태</td>
                             <td
                                 style="height:32px;border-right:1px solid blue;border-bottom:1px solid blue;background:#f4fbff; color:#222;font-size:10pt;text-align:left;padding-left:6px;"
-                                colspan="2"></td>
+                                colspan="3">도매 및 소매업</td>
                             <td
                                 style="height:32px;border-right:1px solid blue;border-bottom:1px solid blue;background:#dbf4ff; color:#1211ff;font-size:9pt;text-align:center;">종<br>목</td>
                             <td
                                 style="height:32px;border-right:1px solid blue;border-bottom:1px solid blue;background:#f4fbff; color:#222;font-size:10pt;text-align:left;padding-left:6px;"
-                                colspan="6"></td>
+                                colspan="5">식품</td>
                             <td
                                 style="height:32px;border-right:1px solid blue;border-bottom:1px solid blue; color:#1211ff;font-size:10pt;text-align:center;">업태</td>
                             <td
                                 style="height:32px;border-right:1px solid blue;border-bottom:1px solid blue; color:#222;font-size:9pt;text-align:left;padding-left:6px;"
-                                colspan="4"></td>
+                                colspan="4">숙박 및 음식점업</td>
                             <td
                                 style="height:32px;border-right:1px solid blue;border-bottom:1px solid blue; color:#1211ff;font-size:10pt;text-align:center;">종<br>목</td>
                             <td
                                 style="height:32px;border-right:2px solid blue;border-bottom:1px solid blue; color:#222;font-size:9pt;text-align:left;padding-left:6px;"
-                                colspan="5"></td>
+                                colspan="5">치킨 전문점</td>
                         </tr>
                         <tr>
                             <td
@@ -191,24 +191,24 @@
                         <tr>
                             <td
                                 style="padding:2px;height:24px;border-left:2px solid blue;border-right:1px solid blue; color:#222;font-size:9pt;text-align:center;padding-left:6px;"
-                                colspan="2"></td>
+                                colspan="2" th:text="${ ts.recDate }"></td>
                             <td
                                 style="padding:2px;height:24px;border-right:1px solid blue; color:#222;font-size:9pt;text-align:left;padding-left:6px;"
-                                colspan="8"></td>
+                                colspan="8" th:text="${ ts.itemName }"></td>
                             <td
                                 style="padding:2px;height:24px;border-right:1px solid blue; color:#222;font-size:9pt;text-align:left;padding-left:6px;"
-                                colspan="2"></td>
+                                colspan="2" th:text="${ ts.itemStandard }"></td>
                             <td
                                 style="padding:2px;height:24px;border-right:1px solid blue; color:#222;font-size:9pt;text-align:right;padding-left:6px;"
-                                colspan="2"></td>
+                                colspan="2" th:text="${ ts.recAmount }"></td>
+                            <td
+                                style="padding:2px;height:24px;border-right:1px solid blue; color:#222;font-size:9pt;text-align:right;padding-left:6px;"
+                                colspan="4" th:text="${ ts.itemSales }"></td>
                             <td
                                 style="padding:2px;height:24px;border-right:1px solid blue; color:#222;font-size:9pt;text-align:right;padding-left:6px;"
                                 colspan="4"></td>
                             <td
-                                style="padding:2px;height:24px;border-right:1px solid blue; color:#222;font-size:9pt;text-align:right;padding-left:6px;"
-                                colspan="4"></td>
-                            <td
-                                style="padding:2px;height:24px;border-right:2px solid blue; color:#222;font-size:9pt;text-align:right;padding-left:6px;"><?php echo number_format($tex_n); ?></td>
+                                style="padding:2px;height:24px;border-right:2px solid blue; color:#222;font-size:9pt;text-align:right;padding-left:6px;"></td>
                         </tr>
                         <tr>
                             <td
@@ -231,13 +231,13 @@
                                 style="padding:2px;border-top:1px solid blue;padding:4px;border-right:1px solid blue; color:#1211ff;font-size:9pt;text-align:center;">미수금</td>
                             <td
                                 style="padding:2px;border-top:1px solid blue;padding:4px;border-right:1px solid blue; color:#222;font-size:9pt;text-align:left;padding-left:6px;"
-                                colspan="4"></td>
+                                colspan="4"> - </td>
                             <td
                                 style="padding:2px;border-top:1px solid blue;padding:4px;border-right:1px solid blue; color:#1211ff;font-size:9pt;text-align:center;"
                                 colspan="2">인수자</td>
                             <td
                                 style="padding:2px;border-top:1px solid blue;padding:4px;border-right:2px solid blue; color:#222;font-size:9pt;text-align:left;padding-left:6px;"
-                                colspan="2"></td>
+                                colspan="2" th:text="${ ts.storeRep }"></td>
                         </tr>
                         <tr>
                             <td

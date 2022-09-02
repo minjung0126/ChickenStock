@@ -36,7 +36,7 @@ public class NoticeController {
     }
 
     @GetMapping("/admin/list")
-    public ModelAndView noticeList(ModelAndView mv, HttpServletRequest request){
+    public ModelAndView adminNoticeList(ModelAndView mv, HttpServletRequest request){
 
         String currentPage = request.getParameter("currentPage");
         int pageNo = 1;

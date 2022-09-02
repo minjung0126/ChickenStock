@@ -1,7 +1,5 @@
 package com.chicken.project.billTax.model.dto;
 
-import java.util.Date;
-
 
 public class TaxBillDTO {
 
