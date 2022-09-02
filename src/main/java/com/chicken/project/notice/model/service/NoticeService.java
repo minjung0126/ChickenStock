@@ -1,6 +1,7 @@
 package com.chicken.project.notice.model.service;
 
 
+import com.chicken.project.common.paging.SelectCriteria;
 import com.chicken.project.exception.notice.NoticeDeleteException;
 import com.chicken.project.exception.notice.NoticeInsertException;
 import com.chicken.project.notice.model.dao.NoticeMapper;
@@ -9,6 +10,7 @@ import com.chicken.project.notice.model.dto.NoticeFileDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service("noticeService")
 public class NoticeService {
@@ -18,11 +20,6 @@ public class NoticeService {
     public NoticeService(NoticeMapper noticeMapper){
 
         this.noticeMapper = noticeMapper;
-    }
-
-    public List<NoticeDTO> selectAllList() {
-
-        return noticeMapper.selectAllList();
     }
 
     public int noticeInsert(NoticeDTO notice) throws NoticeInsertException {
@@ -67,5 +64,19 @@ public class NoticeService {
     public void updateNotice(NoticeDTO notice) {
 
 
+    }
+
+    public int selectTotalCount(Map<String, String> searchMap) {
+
+        int result = noticeMapper.selectTotalCount(searchMap);
+
+        return result;
+    }
+
+    public List<NoticeDTO> selectNoticeList(SelectCriteria selectCriteria) {
+
+        List<NoticeDTO> noticeList = noticeMapper.selectNoticeList(selectCriteria);
+
+        return noticeList;
     }
 }

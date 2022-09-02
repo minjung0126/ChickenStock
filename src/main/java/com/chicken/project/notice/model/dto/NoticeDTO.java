@@ -1,6 +1,7 @@
 package com.chicken.project.notice.model.dto;
 
 import java.sql.Date;
+import java.util.List;
 
 public class NoticeDTO {
     
@@ -10,18 +11,18 @@ public class NoticeDTO {
     private Date noticeRegistDate; // 공지사항 등록일
     private Date noticeModifyDate; // 공지사항 수정일
     private String empId; // 등록자 아이디
-    private NoticeFileDTO originName;
+    private NoticeFileDTO noticeFile;
 
     public NoticeDTO() {}
 
-    public NoticeDTO(int noticeNo, String noticeName, String noticeContent, Date noticeRegistDate, Date noticeModifyDate, String empId, NoticeFileDTO originName) {
+    public NoticeDTO(int noticeNo, String noticeName, String noticeContent, Date noticeRegistDate, Date noticeModifyDate, String empId, NoticeFileDTO noticeFile) {
         this.noticeNo = noticeNo;
         this.noticeName = noticeName;
         this.noticeContent = noticeContent;
         this.noticeRegistDate = noticeRegistDate;
         this.noticeModifyDate = noticeModifyDate;
         this.empId = empId;
-        this.originName = originName;
+        this.noticeFile = noticeFile;
     }
 
     public void setNoticeNo(int noticeNo) {
@@ -48,8 +49,8 @@ public class NoticeDTO {
         this.empId = empId;
     }
 
-    public void setOriginName(NoticeFileDTO originName) {
-        this.originName = originName;
+    public void setNoticeFile(NoticeFileDTO noticeFile) {
+        this.noticeFile = noticeFile;
     }
 
     public int getNoticeNo() {
@@ -76,8 +77,8 @@ public class NoticeDTO {
         return empId;
     }
 
-    public NoticeFileDTO getOriginName() {
-        return originName;
+    public NoticeFileDTO getNoticeFile() {
+        return noticeFile;
     }
 
     @Override
@@ -89,7 +90,7 @@ public class NoticeDTO {
                 ", noticeRegistDate=" + noticeRegistDate +
                 ", noticeModifyDate=" + noticeModifyDate +
                 ", empId='" + empId + '\'' +
-                ", originName=" + originName +
+                ", noticeFile=" + noticeFile +
                 '}';
     }
 }
