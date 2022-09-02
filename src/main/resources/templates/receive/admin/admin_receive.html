@@ -17,7 +17,6 @@
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
-  <!-- <script src="https://code.jquery.com/jquery-3.6.0.js"></script> -->
   <script th:src="@{/js/common.js}"></script>
 
 </head>
@@ -243,9 +242,13 @@
     });
 
     jb(".detail-main").click(function() {
+<<<<<<< HEAD
       jb(this).next(".detail-sub-tr").find(".detail-sub").slideToggle(300);
       jb(this).toggleClass('on').siblings().removeClass('on');
       jb(this).next(".detail-sub-tr").find(".detail-sub").siblings(".detail-sub").slideUp(300);
+=======
+      jb(this).next(".detail-sub-tr").find(".detail-sub").slideToggle(400);
+>>>>>>> origin/minjeong
     });
 
     $(function() {

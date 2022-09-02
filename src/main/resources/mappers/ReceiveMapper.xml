@@ -61,8 +61,8 @@
     </resultMap>
 
     <resultMap id="employeeResultMap" type="com.chicken.project.empList.model.dto.EmployeeDTO">
-        <id property="id" column="EMP_ID"/>
-        <result property="name" column="EMP_NAME"/>
+        <id property="empId" column="EMP_ID"/>
+        <result property="empName" column="EMP_NAME"/>
     </resultMap>
 
     <select id="selectAllReceive" resultMap="receiveOfficeResultMap">
