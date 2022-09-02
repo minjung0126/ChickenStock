@@ -8,19 +8,21 @@ public class ItemInfoDTO {
     private int itemPurchase;
     private int itemSales;
     private String itemSoldoutYn;
+    private String itemMake;
     private int categoryNo;
     private int itemAmount;
 
     public ItemInfoDTO() {
     }
 
-    public ItemInfoDTO(int itemNo, String itemName, String itemStandard, int itemPurchase, int itemSales, String itemSoldoutYn, int categoryNo, int itemAmount) {
+    public ItemInfoDTO(int itemNo, String itemName, String itemStandard, int itemPurchase, int itemSales, String itemSoldoutYn, String itemMake, int categoryNo, int itemAmount) {
         this.itemNo = itemNo;
         this.itemName = itemName;
         this.itemStandard = itemStandard;
         this.itemPurchase = itemPurchase;
         this.itemSales = itemSales;
         this.itemSoldoutYn = itemSoldoutYn;
+        this.itemMake = itemMake;
         this.categoryNo = categoryNo;
         this.itemAmount = itemAmount;
     }
@@ -73,6 +75,14 @@ public class ItemInfoDTO {
         this.itemSoldoutYn = itemSoldoutYn;
     }
 
+    public String getItemMake() {
+        return itemMake;
+    }
+
+    public void setItemMake(String itemMake) {
+        this.itemMake = itemMake;
+    }
+
     public int getCategoryNo() {
         return categoryNo;
     }
@@ -98,6 +108,7 @@ public class ItemInfoDTO {
                 ", itemPurchase=" + itemPurchase +
                 ", itemSales=" + itemSales +
                 ", itemSoldoutYn='" + itemSoldoutYn + '\'' +
+                ", itemMake='" + itemMake + '\'' +
                 ", categoryNo=" + categoryNo +
                 ", itemAmount=" + itemAmount +
                 '}';

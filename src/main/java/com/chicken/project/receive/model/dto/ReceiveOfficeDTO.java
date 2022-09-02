@@ -147,7 +147,7 @@ public class ReceiveOfficeDTO {
                 ", sumRecTotalAmount=" + sumRecTotalAmount +
                 ", countRecCode=" + countRecCode +
                 ", sumRecTotalMoney='" + sumRecTotalMoney + '\'' +
-                ", StringRecDate='" + stringRecDate + '\'' +
+                ", stringRecDate='" + stringRecDate + '\'' +
                 ", receiveOfficeItem=" + receiveOfficeItem +
                 ", itemInfo=" + itemInfo +
                 ", itemCategory=" + itemCategory +
