@@ -61,4 +61,20 @@
         , 'employee'
         )
     </insert>
+
+    <select id="selectEmpInfo" resultMap="employeeResultMap">
+        SELECT
+            *
+        FROM EMPLOYEE
+        WHERE EMP_ID = #{ username }
+    </select>
+
+
+    <select id="selectEmpId" resultMap="employeeResultMap">
+        SELECT
+              EMP_ID
+         FROM EMPLOYEE
+        WHERE EMP_ID = #{ username }
+    </select>
+
 </mapper>

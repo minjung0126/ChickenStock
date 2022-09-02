@@ -4,15 +4,17 @@
     <meta charset="UTF-8">
     <title>로그인</title>
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
-    <link rel="stylesheet"th:href="@{css/member/member.css}"/>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/css/member/member.css}"/>
+
 </head>
 <body>
     <div class="wrap">
         <div class="box">
             <div class="logo">
-                <img th:src="@{images/logoTypo.png}" alt="로고">
+                <img th:src="@{/images/logo.png}" alt="로고">
             </div>
-            <form action="">
+            <form th:action="@{}" method="post">
                 <input type="text" class="form_box" id="login_id" name="username" placeholder="아이디 입력"/>
                 <input type="password" class="form_box" id="login_pw" name="password" placeholder="비밀번호 입력"/>
                 <button type="submit" id="btn" class="btn btn-warning">로그인</button>

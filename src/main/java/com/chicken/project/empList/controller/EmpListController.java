@@ -4,6 +4,8 @@ import com.chicken.project.empList.model.service.EmpListServiceImpl;
 import com.chicken.project.empList.model.dto.EmployeeDTO;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,12 +26,15 @@ public class EmpListController {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
     private final EmpListServiceImpl empListService;
-    private final PasswordEncoder passwordEncoder;
+
+    private PasswordEncoder passwordEncoder;
+
 
     @Autowired
     public EmpListController(EmpListServiceImpl empListService, PasswordEncoder passwordEncoder) {
         this.empListService = empListService;
         this.passwordEncoder = passwordEncoder;
+
     }
 
     @GetMapping("/empList")
@@ -59,13 +64,19 @@ public class EmpListController {
         log.info("[EmpListController] ========================================");
 
         emp.setEmpPhone(emp.getEmpPhone().replace("-",""));
-        emp.setEmpPwd(passwordEncoder.encode(emp.getEmpPwd()));
+        //emp.setEmpPwd(passwordEncoder.encode(emp.getEmpPwd()));
 
         log.info("[EmpListController] registEmp : " + emp);
 
-        empListService.registEmp(emp);
+        int result = empListService.registEmp(emp);
 
-        rttr.addFlashAttribute("message", "success");
+        if(result > 0){
+
+            rttr.addFlashAttribute("message", "success");
+        } else {
+
+            rttr.addFlashAttribute("message","fail");
+        }
 
         log.info("[EmpListController] ========================================");
 
