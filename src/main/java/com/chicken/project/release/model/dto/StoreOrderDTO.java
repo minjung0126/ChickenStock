@@ -2,7 +2,7 @@ package com.chicken.project.release.model.dto;
 
 import java.sql.Date;
 
-public class ReleaseOrderDTO {
+public class StoreOrderDTO {
 
     private int orderNo;
     private java.sql.Date orderDate;
@@ -11,14 +11,10 @@ public class ReleaseOrderDTO {
     private int itemNo;
     private String storeName;
     private String relYn;
-    private ItemInfoDTO itemInfoDTO;
-    private ItemCategoryDTO itemCategoryDTO;
 
-    private ItemFileDTO itemFileDTO;
+    public StoreOrderDTO() {}
 
-    public ReleaseOrderDTO() {}
-
-    public ReleaseOrderDTO(int orderNo, Date orderDate, int orderAmount, int cartNo, int itemNo, String storeName, String relYn, ItemInfoDTO itemInfoDTO, ItemCategoryDTO itemCategoryDTO, ItemFileDTO itemFileDTO) {
+    public StoreOrderDTO(int orderNo, Date orderDate, int orderAmount, int cartNo, int itemNo, String storeName, String relYn) {
         this.orderNo = orderNo;
         this.orderDate = orderDate;
         this.orderAmount = orderAmount;
@@ -26,9 +22,6 @@ public class ReleaseOrderDTO {
         this.itemNo = itemNo;
         this.storeName = storeName;
         this.relYn = relYn;
-        this.itemInfoDTO = itemInfoDTO;
-        this.itemCategoryDTO = itemCategoryDTO;
-        this.itemFileDTO = itemFileDTO;
     }
 
     public int getOrderNo() {
@@ -87,33 +80,9 @@ public class ReleaseOrderDTO {
         this.relYn = relYn;
     }
 
-    public ItemInfoDTO getItemInfoDTO() {
-        return itemInfoDTO;
-    }
-
-    public void setItemInfoDTO(ItemInfoDTO itemInfoDTO) {
-        this.itemInfoDTO = itemInfoDTO;
-    }
-
-    public ItemCategoryDTO getItemCategoryDTO() {
-        return itemCategoryDTO;
-    }
-
-    public void setItemCategoryDTO(ItemCategoryDTO itemCategoryDTO) {
-        this.itemCategoryDTO = itemCategoryDTO;
-    }
-
-    public ItemFileDTO getItemFileDTO() {
-        return itemFileDTO;
-    }
-
-    public void setItemFileDTO(ItemFileDTO itemFileDTO) {
-        this.itemFileDTO = itemFileDTO;
-    }
-
     @Override
     public String toString() {
-        return "ReleaseOrderDTO{" +
+        return "StoreOrderDTO{" +
                 "orderNo=" + orderNo +
                 ", orderDate=" + orderDate +
                 ", orderAmount=" + orderAmount +
@@ -121,9 +90,6 @@ public class ReleaseOrderDTO {
                 ", itemNo=" + itemNo +
                 ", storeName='" + storeName + '\'' +
                 ", relYn='" + relYn + '\'' +
-                ", itemInfoDTO=" + itemInfoDTO +
-                ", itemCategoryDTO=" + itemCategoryDTO +
-                ", itemFileDTO=" + itemFileDTO +
                 '}';
     }
 }
