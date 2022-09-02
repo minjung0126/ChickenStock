@@ -1,0 +1,27 @@
+package com.chicken.project.billtax.model.service;
+
+import com.chicken.project.billtax.model.dao.TaxBillMapper;
+import com.chicken.project.billtax.model.dto.TaxBillDTO;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service("taxBillService")
+public class TaxBillService {
+
+    private final TaxBillMapper taxbillMapper;
+
+    public TaxBillService(TaxBillMapper taxbillMapper) {
+        this.taxbillMapper = taxbillMapper;
+    }
+
+    public List<TaxBillDTO> selectTaxBillList() {
+
+        return taxbillMapper.selectTaxBillList();
+    }
+
+    public List<TaxBillDTO> selectBillTaxList() {
+
+        return taxbillMapper.selectTaxBillList();
+    }
+}

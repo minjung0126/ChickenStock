@@ -69,7 +69,8 @@
                   <td th:text="${ store.storeAddress }"></td>
                   <td th:text="${ store.storePhone }"></td>
                   <td th:text="${ store.storeEmail }"></td>
-                  <td><button class="btn btn-warning" type="submit" style="color:#fff">수정</button></td>
+                  <td><button class="btn btn-warning" type="submit" style="color:#fff"
+                              th:onclick="'location.href=\'/store/admin/update?storeName='+ @{${ store.storeName }} + '\''">수정</button></td>
                   <td><button class="btn btn-warning" type="submit" style="color:#fff"
                               th:onclick="'location.href=\'/store/admin/delete?storeName='+ @{${ store.storeName }} + '\''">삭제</button></td>
                 </tr>

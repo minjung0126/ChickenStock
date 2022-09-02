@@ -45,6 +45,8 @@
                   <col>
                 </colgroup>
                 <tbody>
+                <input type="hidden" name="noticeNo" th:value="${ noticeDetail.noticeNo }">
+                <input type="hidden" name="originName" th:value="${ noticeDetail.noticeFile}">
                   <tr>
                     <th>제목</th>
                     <td>
@@ -60,7 +62,7 @@
                   <tr>
                     <th>첨부파일</th>
                     <td class="align-left">
-                      <input type="file" name="originName"/>
+                      <input type="file" name="file"/>
                     </td>
                   </tr>
                 </tbody>

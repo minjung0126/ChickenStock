@@ -4,6 +4,7 @@ package com.chicken.project.notice.model.service;
 import com.chicken.project.common.paging.SelectCriteria;
 import com.chicken.project.exception.notice.NoticeDeleteException;
 import com.chicken.project.exception.notice.NoticeInsertException;
+import com.chicken.project.exception.notice.NoticeUpdateException;
 import com.chicken.project.notice.model.dao.NoticeMapper;
 import com.chicken.project.notice.model.dto.NoticeDTO;
 import com.chicken.project.notice.model.dto.NoticeFileDTO;
@@ -41,8 +42,7 @@ public class NoticeService {
 
     public NoticeDTO noticeDetailByNo(int noticeNo) {
 
-        //return noticeMapper.noticeDetailByNo(noticeNo);
-        return null;
+        return noticeMapper.noticeDetailByNo(noticeNo);
     }
 
     public int deleteNotice(int noticeNo) throws NoticeDeleteException {
@@ -61,9 +61,16 @@ public class NoticeService {
     }
 
 
-    public void updateNotice(NoticeDTO notice) {
+    public int updateNotice(NoticeDTO notice) throws NoticeUpdateException {
 
+        int result = noticeMapper.updateNotice(notice);
 
+        if(!(result > 0)){
+
+            throw new NoticeUpdateException("공지사항 수정 실패!");
+        }
+
+        return result;
     }
 
     public int selectTotalCount(Map<String, String> searchMap) {
@@ -78,5 +85,20 @@ public class NoticeService {
         List<NoticeDTO> noticeList = noticeMapper.selectNoticeList(selectCriteria);
 
         return noticeList;
+    }
+
+    public NoticeFileDTO selectFileByName(int noticeNo) {
+
+        return noticeMapper.selectFileByName(noticeNo);
+    }
+
+    public int deleteNoticeFile(int noticeNo) {
+
+        return noticeMapper.deleteNoticeFile(noticeNo);
+    }
+
+    public int updateNoticeFile(NoticeFileDTO noticeFile) {
+
+        return noticeMapper.updateNoticeFile(noticeFile);
     }
 }

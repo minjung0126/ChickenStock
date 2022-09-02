@@ -2,19 +2,20 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.chicken.project.billTax.model.dao.TaxBillMapper">
+<mapper namespace="com.chicken.project.billtax.model.dao.TaxBillMapper">
     <resultMap id="taxBillResultMap" type="TaxBillDTO">
         <id property="taxNo" column="TAX_NO"/>
         <result property="taxDate" column="TAX_DATE"/>
         <result property="itemName" column="ITEM_NAME"/>
         <result property="itemStandard" column="ITEM_STANDARD"/>
-        <result property="orderAmount" column="ORDER_AMOUNT"/>
         <result property="itemSales" column="ITEM_SALES"/>
         <result property="orderDate" column="ORDER_DATE"/>
         <result property="storeNo" column="STORE_NO"/>
         <result property="storeName" column="STORE_NAME"/>
         <result property="storeAddress" column="STORE_ADDRESS"/>
         <result property="storeRep" column="STORE_REP"/>
+        <result property="recAmount" column="REC_AMOUNT"/>
+        <result property="recDate" column="REC_DATE"/>
     </resultMap>
 
     <select id="selectTaxBillList" resultMap="taxBillResultMap">
@@ -27,12 +28,14 @@
              , TO_CHAR(SO.ORDER_DATE,'yyyy-MM-dd') AS ORDER_DATE
              , II.ITEM_NAME
              , II.ITEM_STANDARD
-             , SO.ORDER_AMOUNT
              , II.ITEM_SALES
              , S.STORE_REP
-         FROM TAXBILL TB
-         JOIN STORE_ORDER SO ON (TB.ORDER_NO = SO.ORDER_NO)
-         JOIN STORE S ON(S.STORE_NAME = SO.STORE_NAME)
-         JOIN ITEM_INFO II ON (II.ITEM_NO = SO.ITEM_NO)
+             , TO_CHAR(RS.REC_DATE, 'MM-dd') AS REC_DATE
+             , RS.REC_AMOUNT
+          FROM TAXBILL TB
+          JOIN STORE_ORDER SO ON (TB.ORDER_NO = SO.ORDER_NO)
+          JOIN STORE S ON(S.STORE_NAME = SO.STORE_NAME)
+          JOIN ITEM_INFO II ON (II.ITEM_NO = SO.ITEM_NO)
+          JOIN RECEIVE_STORE RS ON (RS.ORDER_NO = TB.ORDER_NO)
     </select>
 </mapper>
