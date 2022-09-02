@@ -1,7 +1,7 @@
-package com.chicken.project.billTax.controller;
+package com.chicken.project.billtax.controller;
 
-import com.chicken.project.billTax.model.dto.TaxBillDTO;
-import com.chicken.project.billTax.model.service.TaxBillService;
+import com.chicken.project.billtax.model.dto.TaxBillDTO;
+import com.chicken.project.billtax.model.service.TaxBillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +29,16 @@ public class BillTaxController {
 
         mv.addObject("taxBillList", taxBillList);
         mv.setViewName("billTax/billList");
+
+        return mv;
+    }
+    @GetMapping("/billtaxList")
+    public ModelAndView billTaxList(ModelAndView mv){
+
+        List<TaxBillDTO> taxBillList = taxbillService.selectBillTaxList();
+
+        mv.addObject("billTaxList", taxBillList);
+        mv.setViewName("billTax/billtaxList");
 
         return mv;
     }

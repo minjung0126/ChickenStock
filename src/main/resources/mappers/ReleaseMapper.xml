@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chicken.project.release.model.dao.ReleaseMapper">
+    <resultMap id="releaseOrderResultMap" type="ReleaseOrderDTO">
+        <id property="orderNo" column="ORDER_NO"/>
+        <result property="orderDate" column="ORDER_DATE"/>
+        <result property="orderAmount" column="ORDER_AMOUNT"/>
+        <result property="cartNo" column="CART_NO"/>
+        <result property="itemNo" column="ITEM_NO"/>
+        <result property="storeName" column="STORE_NAME"/>
+        <result property="relYn" column="REL_YN"/>
+        <association property="itemInfoDTO" resultMap="itemInfoResultMap"/>
+        <association property="itemCategoryDTO" resultMap="itemCategoryResultMap"/>
+    </resultMap>
+
+    <resultMap id="itemInfoResultMap" type="ItemInfoDTO">
+        <id property="itemNo" column="ITEM_NO"/>
+        <result property="itemName" column="ITEM_NAME"/>
+        <result property="itemStandard" column="ITEM_STANDARD"/>
+        <result property="itemPurchase" column="ITEM_PURCHASE"/>
+        <result property="itemSales" column="ITEM_SALES"/>
+        <result property="itemSoldoutYn" column="ITEM_SOLDOUT_YN"/>
+        <result property="itemMake" column="ITEM_MAKE"/>
+        <result property="categoryNo" column="CATEGORY_NO"/>
+        <result property="itemAmount" column="ITEM_AMOUNT"/>
+    </resultMap>
+
+    <resultMap id="itemCategoryResultMap" type="ItemCategoryDTO">
+        <id property="categoryNo" column="CATEGORY_NO"/>
+        <result property="categoryName" column="CATEGORY_NAME"/>
+        <result property="preCategory" column="PRE_CATEGORY"/>
+    </resultMap>
+
+    <resultMap id="releaseResultMap" type="ReleaseDTO">
+        <id property="relCode" column="REL_CODE"/>
+        <result property="relName" column="REL_NAME"/>
+        <result property="relRequestDate" column="REL_REQUEST_DATE"/>
+        <result property="relDate" column="REL_DATE"/>
+        <result property="relYn" column="REL_YN"/>
+        <result property="storeName" column="STORE_NAME"/>
+        <result property="orderNo" column="ORDER_NO"/>
+    </resultMap>
+
+    <resultMap id="releaseItemResultMap" type="ReleaseItemDTO">
+        <id property="relYn" column="REL_YN"/>
+        <result property="relAmount" column="REL_AMOUNT"/>
+        <result property="relRequestDate" column="REL_REQUEST_DATE"/>
+        <result property="itemNo" column="ITEM_NO"/>
+        <result property="orderAmount" column="ORDER_AMOUNT"/>
+        <result property="relDate" column="REL_DATE"/>
+        <result property="relItemRequestDate" column="RELITEM_REQUEST_DATE"/>
+        <result property="storeName" column="STORE_NAME"/>
+    </resultMap>
+
+    <select id="releaseOrderSelectN" resultMap="releaseOrderResultMap">
+        SELECT
+               *
+          FROM STORE_ORDER A
+          JOIN ITEM_INFO B ON (A.ITEM_NO = B.ITEM_NO)
+          JOIN ITEM_CATEGORY C ON (B.CATEGORY_NO = C.CATEGORY_NO)
+          WHERE A.REL_YN ='N'
+          ORDER BY ORDER_NO
+    </select>
+
+    <select id="releaseOrderSelectY" resultMap="releaseOrderResultMap">
+        SELECT
+            *
+        FROM STORE_ORDER A
+                 JOIN ITEM_INFO B ON (A.ITEM_NO = B.ITEM_NO)
+                 JOIN ITEM_CATEGORY C ON (B.CATEGORY_NO = C.CATEGORY_NO)
+        WHERE A.REL_YN ='Y'
+        ORDER BY ORDER_NO
+    </select>
+
+    <select id="releaseDtoOrderSelect" resultMap="releaseResultMap">
+        SELECT
+              *
+          FROM RELEASE
+    </select>
+
+    <update id="releaseItemUpdateY">
+        UPDATE STORE_ORDER
+           SET REL_YN = 'Y'
+         WHERE REL_YN = 'N'
+           AND ITEM_NO = #{ itemNo }
+           AND STORE_NAME = #{ storeName }
+    </update>
+
+    <insert id="releaseItemInsert">
+        INSERT INTO RELEASE_ITEM
+        (
+          REL_YN
+        , REL_AMOUNT
+        , REL_CODE
+        , ITEM_NO
+        , ORDER_AMOUNT
+        , REL_DATE
+        , RELITEM_REQUEST_DATE
+        , STORE_NAME
+        )
+        VALUES
+        (
+          'N'
+        , null
+        , #{ relCode }
+        , #{ storeOrderDTO.itemNo }
+        , #{ storeOrderDTO.orderAmount }
+        , null
+        , #{ storeOrderDTO.orderDate }
+        , #{ storeOrderDTO.storeName }
+        )
+    </insert>
+
+    <update id="releaseItemUpdateN">
+        UPDATE STORE_ORDER
+        SET REL_YN = 'N'
+        WHERE REL_YN = 'Y'
+          AND ITEM_NO = #{ itemNo }
+          AND STORE_NAME = #{ storeName }
+    </update>
+
+    <delete id="releaseItemDelete">
+        DELETE
+          FROM RELEASE_ITEM
+         WHERE ITEM_NO = #{ storeOrderDTO.itemNo }
+           AND REL_CODE = #{ relCode }
+           AND REL_DATE = #{ storeOrderDTO.orderDate }
+           AND STORE_NAME =#{ storeOrderDTO.storeName }
+    </delete>
+
+</mapper>

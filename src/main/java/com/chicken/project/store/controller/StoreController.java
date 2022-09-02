@@ -2,6 +2,7 @@ package com.chicken.project.store.controller;
 
 import com.chicken.project.exception.store.StoreDeleteException;
 import com.chicken.project.exception.store.StoreInsertException;
+import com.chicken.project.exception.store.StoreUpdateException;
 import com.chicken.project.store.model.dto.StoreDTO;
 import com.chicken.project.store.model.service.StoreService;
 import org.slf4j.Logger;
@@ -76,7 +77,7 @@ public class StoreController {
     }
 
     @PostMapping("/admin/insert")
-    public String insertStore(@ModelAttribute StoreDTO store, RedirectAttributes rttr) throws StoreInsertException {
+    public String insertStore(@ModelAttribute StoreDTO store, RedirectAttributes rttr, ModelAndView mv) throws StoreInsertException {
 
         store.setStorePhone(store.getStorePhone().replace("-", ""));
         store.setStorePwd(passwordEncoder.encode(store.getStorePwd()));
@@ -87,6 +88,37 @@ public class StoreController {
 
         rttr.addFlashAttribute("message", "가맹점 등록 성공!");
 
+        mv.addObject("store", store);
+
         return "redirect:/store/admin/list";
     }
+
+    @GetMapping("/admin/update")
+    public ModelAndView updateStorePage(HttpServletRequest request, RedirectAttributes rttr, ModelAndView mv){
+
+        String storeName = request.getParameter("storeName");
+
+        log.info("[StoreController] storeName : " + storeName);
+
+        StoreDTO store = storeService.selectStoreByName(storeName);
+
+        mv.addObject("store", store);
+        mv.setViewName("/store/admin/adminStoreUpdate");
+
+        return mv;
+    }
+
+    @PostMapping("/admin/update")
+    public String updateStore(@ModelAttribute StoreDTO store, RedirectAttributes rttr) throws StoreUpdateException {
+
+        log.info("[StoreController] store : " + store);
+        log.info("[StoreController] storeId : " + store.getStoreId());
+
+        storeService.updateStore(store);
+
+        rttr.addFlashAttribute("message", "가맹점 정보 수정 성공!");
+
+        return "redirect:/store/admin/list";
+    }
+
 }
