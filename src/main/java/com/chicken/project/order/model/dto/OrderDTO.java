@@ -6,7 +6,7 @@ public class OrderDTO {
 
     /* ITEM_INFO, ITEM_FILE, ITEM_CATEGORY, STO_ITEM_INFO, INTEREST join */
     private int itemNo; //상품번호
-    private ItemFileDTO originName; //썸네일
+    private OrderItemFileDTO originName; //썸네일
     private String itemName; //상품명
     private int categoryNo; //카테고리 번호
     private String categoryName; //카테고리명
@@ -22,7 +22,7 @@ public class OrderDTO {
     public OrderDTO() {
     }
 
-    public OrderDTO(int itemNo, ItemFileDTO originName, String itemName, int categoryNo, String categoryName, String itemStandard, String itemMake, int itemSales, int storeAmount, int orderAmount, String itemSoldoutYn, String interYn, Date orderDate) {
+    public OrderDTO(int itemNo, OrderItemFileDTO originName, String itemName, int categoryNo, String categoryName, String itemStandard, String itemMake, int itemSales, int storeAmount, int orderAmount, String itemSoldoutYn, String interYn, Date orderDate) {
         this.itemNo = itemNo;
         this.originName = originName;
         this.itemName = itemName;
@@ -46,11 +46,11 @@ public class OrderDTO {
         this.itemNo = itemNo;
     }
 
-    public ItemFileDTO getOriginName() {
+    public OrderItemFileDTO getOriginName() {
         return originName;
     }
 
-    public void setOriginName(ItemFileDTO originName) {
+    public void setOriginName(OrderItemFileDTO originName) {
         this.originName = originName;
     }
 
