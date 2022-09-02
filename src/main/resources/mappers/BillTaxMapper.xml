@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chicken.project.billTax.model.dao.BillTaxMapper">
+    <resultMap id="billTaxResultMap" type="BillTaxDTO">
+        <id property="taxNo" column="TAX_NO"/>
+        <result property="storeNo" column="STORE_NO"/>
+        <result property="storeName" column="STORE_NAME"/>
+        <result property="storeAddress" column="STORE_ADDRESS"/>
+        <result property="taxDate" column="TAX_DATE"/>
+        <result property="itemName" column="ITEM_NAME"/>
+        <result property="itemStandard" column="ITEM_STANDARD"/>
+        <result property="itemSales" column="ITEM_SALES"/>
+        <result property="storeRep" column="STORE_REP"/>
+        <result property="recDate" column="REC_DATE"/>
+        <result property="recAmount" column="REC_AMOUNT"/>
+        <result property="recMoney" column="REC_MONEY"/>
+        <result property="recTotalMoney" column="REC_TOTALMONEY"/>
+    </resultMap>
+
+    <select id="selectBillTaxList" resultMap="billTaxResultMap">
+        SELECT
+               T.TAX_NO
+             , S.STORE_NO
+             , S.STORE_NAME
+             , S.STORE_ADDRESS
+             , TO_CHAR(T.TAX_DATE,'yyyy-MM-dd') AS TAX_DATE
+             , II.ITEM_NAME
+             , II.ITEM_STANDARD
+             , II.ITEM_SALES
+             , S.STORE_REP
+             , TO_CHAR(RS.REC_DATE, 'MM-dd') AS REC_DATE
+             , RS.REC_AMOUNT
+             , RSI.REC_MONEY
+             , RS.REC_TOTALMONEY
+          FROM TAXBILL T
+          JOIN RECEIVE_STORE RS ON (RS.REC_CODE = T.REC_CODE)
+          JOIN STORE_ORDER SO ON (RS.ORDER_NO = SO.ORDER_NO)
+          JOIN STORE S ON(S.STORE_NAME = RS.STORE_NAME)
+          JOIN ORDER_HANDLER OH ON (OH.ORDER_NO = SO.ORDER_NO)
+          JOIN CART C ON (C.CART_NO = OH.CART_NO)
+          JOIN RECEIVE_STORE_ITEM RSI ON (RSI.REC_CODE = RS.REC_CODE)
+          JOIN ITEM_INFO II ON (II.ITEM_NO = C.ITEM_NO)
+    </select>
+</mapper>

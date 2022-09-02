@@ -1,6 +1,6 @@
 package com.chicken.project.order.model.dto;
 
-public class ItemFileDTO {
+public class OrderItemFileDTO {
 
     private int fileNo;
     private String originName;
@@ -8,10 +8,10 @@ public class ItemFileDTO {
     private int categoryNo;
     private int itemNo;
 
-    public ItemFileDTO() {
+    public OrderItemFileDTO() {
     }
 
-    public ItemFileDTO(int fileNo, String originName, String fileName, int categoryNo, int itemNo) {
+    public OrderItemFileDTO(int fileNo, String originName, String fileName, int categoryNo, int itemNo) {
         this.fileNo = fileNo;
         this.originName = originName;
         this.fileName = fileName;
