@@ -32,18 +32,4 @@
           FROM STORE
          WHERE STORE_NAME = #{ storeName }
     </delete>
-
-    <select id="selectStoreInfo" resultMap="storeResultMap">
-        SELECT
-               *
-          FROM STORE
-         WHERE STORE_ID = #{ username }
-    </select>
-
-    <select id="selectStoreId" resultMap="storeResultMap">
-        SELECT
-              STORE_ID
-         FROM STORE
-        WHERE STORE_ID = #{ username }
-    </select>
 </mapper>

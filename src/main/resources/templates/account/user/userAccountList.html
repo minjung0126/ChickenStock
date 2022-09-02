@@ -7,93 +7,28 @@
   <title>chicken stock</title>
 
   <link rel="stylesheet" type="text/css" th:href="@{/css/common/common.css}"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/common/style.css}"/>
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" th:href="@{/css/notice/notice.css}"/>
   <link rel="stylesheet" type="text/css" th:href="@{/css/account/account_list.css}"/>
-  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
   <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-  <script src="/js/common.js"></script>
+  <script type="text/javascript" th:src="@{/js/common.js}"></script>
 
 </head>
 <body>
 <div class="wrap">
 
   <!-- S: header -->
-  <div class="header">
-    <div class="logo">
-      <a href="" title=""><img src="/images/logo.png" alt="logo"/></a>
-    </div>
-    <div class="logout_area">
-      <button class="btn btn-outline-light">로그아웃</button>
-    </div>
-    <div class="user_area">
-      <span>관리자</span>님, 환영합니다.
-    </div>
-  </div>
-  <!-- S: header -->
+  <div th:include="common/userHeader.html"></div>
+  <!-- E: header -->
 
   <!-- S: container -->
   <div class="container px-0">
 
     <!-- S: aside -->
-    <div class="aside">
-      <div class="accordion">
-
-        <!-- 하위 메뉴가 없을때 -->
-        <div class="accordion_dep type1 ">
-          <a href="#" title="">홈</a>
-        </div>
-
-        <div class="accordion_dep type2 active">
-          <a href="#" title="">마이페이지</a>
-          <ul style="display: block;">
-            <li>
-              <a href="#" title="" class="active">예치금 관리</a>
-            </li>
-            <li>
-              <a href="#" title="">비밀번호 재설정</a>
-            </li>
-          </ul>
-        </div>
-
-        <div class="accordion_dep type1 ">
-          <a href="#" title="">품목관리</a>
-        </div>
-
-        <div class="accordion_dep type1 ">
-          <a href="#" title="">발주</a>
-        </div>
-
-        <div class="accordion_dep type1 ">
-          <a href="#" title="">입고 조회</a>
-        </div>
-
-        <div class="accordion_dep type1 ">
-          <a href="#" title="">반품관리</a>
-        </div>
-
-        <div class="accordion_dep type1 ">
-          <a href="#" title="">매입전표</a>
-        </div>
-
-        <div class="accordion_dep type1 ">
-          <a href="#" title="">세금계산서</a>
-        </div>
-
-        <div class="accordion_dep type1 ">
-          <a href="#" title="">거래명세서</a>
-        </div>
-
-        <div class="accordion_dep type1 ">
-          <a href="#" title="">공지사항</a>
-        </div>
-
-        <div class="accordion_dep type1 ">
-          <a href="#" title="">가맹점 조회</a>
-        </div>
-      </div>
-    </div>
+    <div th:replace="common/userSidebar.html"></div>
     <!-- E: aside -->
 
     <!-- S: main layout -->
@@ -120,19 +55,17 @@
 
           <table class="table">
             <colgroup>
-              <col style="width: 8%;">
-              <col style="width: 14%;">
-              <col style="width: 26%;">
-              <col style="width: 26%;">
-              <col style="width: 26%;">
+              <col style="width: 10%;">
+              <col style="width: 20%;">
+              <col style="width: 30%;">
+              <col style="width: 30%;">
             </colgroup>
             <thead>
             <tr>
               <th>건수</th>
               <th>일시</th>
               <th>입금액</th>
-              <th>출금액</th>
-              <th>잔액</th>
+              <th>상태</th>
             </tr>
             </thead>
             <tbody>
@@ -140,8 +73,7 @@
               <td>1</td>
               <td>2022.08.28</td>
               <td>1,000,000</td>
-              <td>500,000</td>
-              <td>500,000</td>
+              <td>대기</td>
             </tr>
             </tbody>
           </table>

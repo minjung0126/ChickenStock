@@ -8,10 +8,12 @@
 
   <link rel="stylesheet" type="text/css" th:href="@{/css/common/common.css}"/>
   <link rel="stylesheet" type="text/css" th:href="@{/css/common/style.css}"/>
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" th:href="@{/css/notice/notice.css}"/>
   <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 
+  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+  <script type="text/javascript" th:src="@{/js/common.js}"></script>
 </head>
 <body>
   <div class="wrap">
@@ -53,7 +55,7 @@
                 </tr>
                 <tr>
                   <th>첨부파일</th>
-                  <td class="align-left" th:text="${ noticeDetail.originName }" style="cursor:pointer"></td>
+                  <td class="align-left"><a th:href="|/notice/attach/${ noticeDetail.noticeNo }|" th:text="${ noticeDetail.noticeFile }" ></a></td>
                 </tr>
               </tbody>
             </table>

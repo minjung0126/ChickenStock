@@ -6,9 +6,6 @@
 
   <title>chicken stock</title>
 
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script type="text/javascript" th:src="@{/js/common.js}"></script>
-
 </head>
 <body>
 
@@ -23,7 +20,7 @@
           <div class="accordion_dep type2">
             <a href="#" title="">마이페이지</a>
             <ul>
-              <li>                
+              <li>
                  <a href="#" title="">비밀번호 수정</a>
               </li>
             </ul>
@@ -46,11 +43,11 @@
           </div>
 
           <div class="accordion_dep type1 ">
-            <a href="../billtax/billtaxList.html" title="">세금계산서</a>
+            <a href="../billTax/billtaxList.html" title="">세금계산서</a>
           </div>
 
           <div class="accordion_dep type1 ">
-            <a href="../billtax/tsbilltaxList.html" title="">거래명세서</a>
+            <a href="../billTax/tsbilltaxList.html" title="">거래명세서</a>
           </div>
 
           <div class="accordion_dep type1 ">
@@ -64,26 +61,25 @@
           <div class="accordion_dep type2">
             <a href="#" title="">관리자메뉴</a>
             <ul style="display: block;">
-              <li>                
-                <a th:href="@{/empList/empList}" title="">직원관리</a>
-             </li>
-              <li>                
-                <a href="#" title="">예치금관리</a>
+              <li>
+                <a href="/account/admin/list" title="">예치금관리</a>
               </li>
-              <li>                
+              <li>
                 <a href="/notice/admin/insert" title="">공지사항 작성</a>
               </li>
-              <li>                
-                <a href="#" title="">가맹점 등록</a>
+              <li>
+                <a href="/store/admin/insert" title="">가맹점 등록</a>
               </li>
-              <li>                
+              <li>
                 <a href="#" title="">일정관리</a>
-              </li>
+              <li>
+                <a th:href="@{/empList/empList}" title="">직원관리</a>
+             </li>
             </ul>
           </div>
+
         </div>
       </div>
-
       <!-- E: aside -->
 </body>
 </html>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
@@ -8,10 +8,12 @@
 
   <link rel="stylesheet" type="text/css" th:href="@{/css/common/common.css}"/>
   <link rel="stylesheet" type="text/css" th:href="@{/css/common/style.css}"/>
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" th:href="@{/css/notice/notice.css}"/>
   <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 
+  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+  <script type="text/javascript" th:src="@{/js/common.js}"></script>
 </head>
 <body>
   <div class="wrap">
@@ -37,78 +39,76 @@
             <h3>가맹점 등록</h3>
 			      <br>
 
-            <table class="table">
-              <colgroup>
-                <col style="width:170px">
-                <col>
-              </colgroup>
-              <tbody>
-                <tr>
-                  <th>가맹점 명</th>
-                  <td>
-                    <input type="text" placeholder="가맹점 명을 입력하세요"/>
-                  </td>
-                </tr>
-                <tr>
-                  <th>사업자 등록번호</th>
-                  <td>
-                    <input type="text" placeholder="사업자 등록번호를 입력하세요"/>
-                  </td>
-                </tr>
-                <tr>
-                  <th>대표자 명</th>
-                  <td>
-                    <input type="text" placeholder="대표자 명을 입력하세요"/>
-                  </td>
-                </tr>
-                <tr>
-                  <th>계좌번호</th>
-                  <td>
-                    <input type="password" placeholder="계좌번호를 입력하세요"/>
-                  </td>
-                </tr>
-                <tr>
-                  <th>주소</th>
-                  <td>
-                    <input type="text" placeholder="주소를 입력하세요"/>
-                  </td>
-                </tr>
-                <tr>
-                  <th>전화번호</th>
-                  <td>
-                    <input type="text" placeholder="전화번호를 입력하세요"/>
-                  </td>
-                </tr>
-                <tr>
-                  <th>이메일</th>
-                  <td>
-                    <input type="text" placeholder="이메일을 입력하세요"/>
-                  </td>
-                </tr>
-                <tr>
-                  <th>아이디</th>
-                  <td>
-                    <input type="text" placeholder="아이디를 입력하세요"/>
-                  </td>
-                </tr>
-                <tr>
-                  <th>비밀번호</th>
-                  <td>
-                    <input type="password" placeholder="비밀번호를 입력하세요"/>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+            <form th:action="@{/store/admin/insert}" method="post">
+              <table class="table">
+                <colgroup>
+                  <col style="width:170px">
+                  <col>
+                </colgroup>
+                <tbody>
+                  <tr>
+                    <th>가맹점 명</th>
+                    <td>
+                      <input type="text" name="storeName" placeholder="가맹점 명을 입력하세요"/>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>계좌번호</th>
+                    <td>
+                      <input type="text" name="storeAccount" placeholder="계좌번호를 입력하세요"/>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>대표자 명</th>
+                    <td>
+                      <input type="text" name="storeRep" placeholder="대표자 명을 입력하세요"/>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>주소</th>
+                    <td>
+                      <input type="text" name="storeAddress" placeholder="주소를 입력하세요"/>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>전화번호</th>
+                    <td>
+                      <input type="text" name="storePhone" placeholder="전화번호를 입력하세요"/>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>이메일</th>
+                    <td>
+                      <input type="text" name="storeEmail" placeholder="이메일을 입력하세요"/>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>아이디</th>
+                    <td>
+                      <input type="text" name="storeId" placeholder="아이디를 입력하세요"/>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>비밀번호</th>
+                    <td>
+                      <input type="password" name="storePwd" placeholder="비밀번호를 입력하세요"/>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>사업자 등록번호</th>
+                    <td>
+                      <input type="text" name="storeNo" placeholder="사업자 등록번호를 입력하세요"/>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+                <div class="input-group mb-3 col-7 flex-right">
+                  <button class="btn btn-warning ml-1" type="submit" style="color:#fff">등록</button>
+                  <button class="btn btn-warning ml-1" type="submit" style="color:#fff">취소</button>
+                </div>
+            </form>
           </div>
           <!-- E: table -->
-
-          <!-- S: search -->          
-          <div class="input-group mb-3 col-7 flex-right">
-            <button class="btn btn-warning ml-1" type="submit" style="color:#fff">등록</button>
-            <button class="btn btn-warning ml-1" type="submit" style="color:#fff">취소</button>
-          </div>	
-          <!-- E: search -->      
-
         </div>
       </div> 
       <!-- E: main layout -->

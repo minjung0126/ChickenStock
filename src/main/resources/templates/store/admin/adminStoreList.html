@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
@@ -8,12 +8,15 @@
 
   <link rel="stylesheet" type="text/css" th:href="@{/css/common/common.css}"/>
   <link rel="stylesheet" type="text/css" th:href="@{/css/common/style.css}"/>
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" th:href="@{/css/notice/notice.css}"/>
   <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 
+  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+  <script type="text/javascript" th:src="@{/js/common.js}"></script>
 </head>
 <body>
+
   <div class="wrap">
 
     <!-- S: header -->
@@ -68,7 +71,8 @@
                   <td th:text="${ store.storeAddress }"></td>
                   <td th:text="${ store.storePhone }"></td>
                   <td th:text="${ store.storeEmail }"></td>
-                  <td><button class="btn btn-warning" type="submit" style="color:#fff">수정</button></td>
+                  <td><button class="btn btn-warning" type="submit" style="color:#fff"
+                              th:onclick="'location.href=\'/store/admin/update?storeName='+ @{${ store.storeName }} + '\''">수정</button></td>
                   <td><button class="btn btn-warning" type="submit" style="color:#fff"
                               th:onclick="'location.href=\'/store/admin/delete?storeName='+ @{${ store.storeName }} + '\''">삭제</button></td>
                 </tr>
@@ -84,5 +88,12 @@
   </div>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script th:inline="javascript">
+    let message = [[${message}]];
+
+    if(message != null && message !== '') {
+      alert(message);
+    }
+  </script>
 </body>
 </html>
