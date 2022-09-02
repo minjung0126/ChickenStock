@@ -1,6 +1,7 @@
 package com.chicken.project.receive.controller;
 
 import com.chicken.project.receive.model.dto.ReceiveOfficeDTO;
+import com.chicken.project.receive.model.dto.ReceiveOfficeItemDTO;
 import com.chicken.project.receive.model.service.ReceiveService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,9 +26,13 @@ public class ReceiveController {
     @GetMapping("/admin/list")
     public ModelAndView receiveList(ModelAndView mv){
 
-        List<ReceiveOfficeDTO> receiveList = receiveService.selectAllReceive();
-
-        mv.addObject("receiveList", receiveList);
+        List<ReceiveOfficeDTO> receiveOfficeList = receiveService.selectAllReceive();
+        List<ReceiveOfficeItemDTO> receiveOfficeItemList = receiveService.selectAllReceiveItem();
+        for(ReceiveOfficeItemDTO receiveOffice : receiveOfficeItemList){
+            System.out.println("receiveOffice = " + receiveOffice);
+        }
+        mv.addObject("receiveOfficeList", receiveOfficeList);
+        mv.addObject("receiveOfficeItemList", receiveOfficeItemList);
         mv.setViewName("receive/admin/admin_receive");
 
         return mv;
