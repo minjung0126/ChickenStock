@@ -72,5 +72,4 @@
           JOIN ITEM_INFO II ON (II.ITEM_NO = SO.ITEM_NO)
           JOIN RECEIVE_STORE RS ON (RS.ORDER_NO = TS.ORDER_NO)
     </select>
-
 </mapper>

@@ -8,10 +8,17 @@
 
   <link rel="stylesheet" type="text/css" th:href="@{/css/common/common.css}"/>
   <link rel="stylesheet" type="text/css" th:href="@{/css/returnItem/returnRe.css}"/>
+  <!-- datepicker js & css -->
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
   <!-- table css -->
   <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" th:href="@{/css/common/style.css}"/>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script th:src="@{/js/common.js}"></script>
 
 </head>
 <body>
@@ -34,17 +41,16 @@
           <div class="container-fluid" style="margin-top:30px">
             <h3>반품 관리</h3>
 			      <br>
-            <div class="input-group mb-3 col-7">
-              <select id="searchCondition" class="form-control" style="display: none ">
-                <option value="date">날짜</option>
+            <div class="input-group mb-3 col-12 float-start">
+              <select id="searchCondition" class="form-control col-2" style="max-width: max-content;">
+                <option value="#">가맹점명</option>
               </select>
-              <input type="date" class="form-control col-2" id="searchValue" name="searchValue" value="">
-              <button class="btn btn-light" type="button" disabled>~</button>
-              <input type="date" class="form-control col-2" id="searchValue" name="searchValue" value="">
-              <button class="btn btn-light px-3" type="button" disabled></button>
-              <input class="form-control me-2 col-4" type="text" placeholder="검색어를 입력해주세요.">
+              <div id="reportrange" class="form-control" style="cursor: pointer; max-width: max-content;">
+                <i class="fa fa-calendar"></i>
+                <span class="date"><!-- 날짜 입력한 값 들어감 --></span>
+              </div>
+              <input class="form-control me-2 col-3" type="text" placeholder="검색어를 입력해주세요.">
               <button class="btn btn-warning" type="submit" style="color:#fff">검색</button>
-            </div>	
 
             <table class="table">
               <thead>
@@ -118,6 +124,65 @@
     </div>
     <!-- E: container -->
   </div>
+    <script>
+      $(function() {
+
+        var start = moment();
+        var end = moment();
+
+        function cb(start, end) {
+          $('#reportrange span').html( '&nbsp;&nbsp;' + start.format('YYYY-MM-DD') + ' ~ ' + end.format('YYYY-MM-DD'));
+        }
+
+        $('#reportrange').daterangepicker({
+          showDropdowns: true,
+          minYear: 2020,
+          maxYear: 2030,
+          "autoApply": true,
+          autoUpdateInput: false,
+          "linkedCalendars": false,
+          "locale": {
+            "format": "YYYY/MM/DD",
+            "separator": " ~ ",
+            "applyLabel": "확인",
+            "cancelLabel": "취소",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel": "W",
+            "daysOfWeek": [
+              "일",
+              "월",
+              "화",
+              "수",
+              "목",
+              "금",
+              "토"
+            ],
+            "monthNames": [
+              "1월",
+              "2월",
+              "3월",
+              "4월",
+              "5월",
+              "6월",
+              "7월",
+              "8월",
+              "9월",
+              "10월",
+              "11월",
+              "12월"
+            ],
+            "firstDay": 7
+          },
+          startDate: start,
+          endDate: end,
+        }, cb);
+
+        cb(start, end);
+
+      });
+    </script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 </body>

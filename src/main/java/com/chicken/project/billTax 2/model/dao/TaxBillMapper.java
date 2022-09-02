@@ -5,6 +5,7 @@ import com.chicken.project.billTax.model.dto.TsBillDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface TaxBillMapper {
@@ -12,4 +13,6 @@ public interface TaxBillMapper {
     List<TaxBillDTO> selectTaxBillList();
 
     List<TsBillDTO> selectTsBillList();
+
+
 }

@@ -26,6 +26,7 @@ public class BillTaxController {
     @GetMapping("/billList")
     public ModelAndView billList(ModelAndView mv){
 
+
         List<TaxBillDTO> taxBillList = taxbillService.selectTaxBillList();
 
         mv.addObject("taxBillList", taxBillList);
