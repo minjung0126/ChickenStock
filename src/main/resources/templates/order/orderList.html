@@ -58,8 +58,8 @@
                 <span id="clock">현재시각</span>
               </div>
 
-              <div class="search-area">
-                <form id="searchForm" th:align="center"
+              <div class="search-area" align="center">
+                <form id="searchForm"
                       th:action="@{/order/list}"
                       method="get"
                       style="display: inline-block">
@@ -67,11 +67,11 @@
                   <input type="hidden" name="currentPage" value="1">
                   <select id="searchCondition" name="searchCondition" style="text-align: center;">
                     <option>== 선택 ==</option>
-                    <option value="itemName">상품명</option>
-                    <option value="category">카테고리</option>
+                    <option name="itemName" value="itemName">상품명</option>
+                    <option name="category" value="category">카테고리</option>
                   </select>
                   <input class="form-control" type="search" id="searchValue" name="searchValue" placeholder="검색 내용을 입력해주세요.">
-                  <button class="btn btn-warning" type="submit"style="color:#fff">검색</button>
+                  <button class="btn btn-warning" type="submit" style="color:#fff">검색</button>
                 </form>
               </div>
 
@@ -94,18 +94,17 @@
                       <input type="checkbox" class="form-check-input" name="option" value='selectall' onclick='selectAll(this)' required/>
                     </div>
                   </th>
-                  <th class="col-1">번호</th>
-                  <th class="col-1">상품코드</th>
-                  <th class="col-1">썸네일</th>
-                  <th class="col-2">상품명</th>
-                  <th class="col-2">카테고리</th>
-                  <th class="col-1">규격</th>
-                  <th class="col-1">제조사</th>
-                  <th class="col-1">판매가격</th>
-                  <th class="col-1">재고량</th>
-                  <th>수량</th>
-                  <th class="col-2">품절여부</th>
-                  <th class="col-1">관심등록</th>
+                  <th style="width: 90px;">상품코드</th>
+                  <th style="width: 100px;">썸네일</th>
+                  <th style="width: 145px;">상품명</th>
+                  <th style="width: 145px;">카테고리</th>
+                  <th style="width: 60px;">규격</th>
+                  <th style="width: 100px;">제조사</th>
+                  <th style="width: 100px;">판매가격</th>
+                  <th style="width: 90px;">재고량</th>
+                  <th style="width: 100px;">수량</th>
+                  <th style="width: 90px;">품절여부</th>
+                  <th style="width: 80px;">관심등록</th>
                 </tr>
               </thead>
               <tbody>
@@ -116,8 +115,7 @@
                       <label class="form-check-label" for="check"></label>
                     </div>
                   </td>
-                  <td>1</td>
-                  <td th:text="${ order.itemNo }">상품코드</td>
+                  <td th:text="${ order.itemNo }" id="itemNo">상품코드</td>
                   <td>썸네일</td>
                   <td th:text="${ order.itemName }">상품명</td>
                   <td th:text="${ order.categoryName }">카테고리</td>
@@ -129,14 +127,17 @@
                   <td th:text="${ order.itemSoldoutYn }">품절여부</td>
                   <td>
                     <div class="dropdown open">
-                      <a href="#" class="px-2" id="triggerId1" data-toggle="dropdown" aria-haspopup="true"
+                      <a href="javascript:void(0);" class="px-2" id="triggerId1" data-toggle="dropdown" aria-haspopup="true"
                           aria-expanded="false">
                             <i class="fa fa-ellipsis-v"></i>
                       </a>
                       <div class="dropdown-menu" aria-labelledby="triggerId1">
                         <!-- <a class="dropdown-item" href="#"><i class="fa fa-eye mr-1"></i>View</a> -->
-                        <a class="dropdown-item" href="#" onclick="interest()"><i class="fa-solid fa-heart-circle-plus"></i> 관심 등록</a>
+
+                        <a class="dropdown-item" href="javascript:void(0);" th:onclick="interest(this.getAttribute('itemNo'))">
+                          <i class="fa-solid fa-heart-circle-plus"></i> 관심 등록</a>
                         <a class="dropdown-item text-danger" href="#"><i class="fa fa-trash mr-1"></i> Delete</a>
+
                       </div>
                     </div>
                   </td>
@@ -147,8 +148,7 @@
           </div>
           <!-- E: table -->
           <!-- S: paging -->
-
-          <div class="d-flex justify-content-center">
+          <div class="d-flex justify-content-center" id="pageBox">
             <button class="btn btn-light"
                     th:onclick="'location.href=\'/order/list?currentPage='+ @{${selectCriteria.startPage}} + '\''"
                     th:disabled="${selectCriteria.pageNo == 1}"><<</button>
@@ -173,34 +173,6 @@
                     th:disabled="${selectCriteria.pageNo == selectCriteria.maxPage}">>></button>
           </div>
 
-
-            <!--
-            <button class="btn btn-light" id="idStartPage"
-                    th:onclick="'location.href=\'/order/list?currentPage='+ @{${selectCriteria.startPage}} + '\''"
-                    th:disabled="${selectCriteria.pageNo == 1}"><<</button>
-
-            <button type="button" class="btn btn-light mx-1"
-                    th:onclick="'location.href=\'/order/list?currentPage='+ @{${selectCriteria.pageNo - 1}} + '\''"
-                    th:disabled="${selectCriteria.pageNo == 1}"><</button>
-
-            <th:block th:each="page : ${#numbers.sequence(selectCriteria.startPage, selectCriteria.endPage)}">
-              <button class="btn btn-warning mx-1" disabled style="color:white"
-                      th:text="${ page }"
-                      th:onclick="'location.href=\'/order/list?currentPage='+ @{${page}} + '\''"
-                      th:disabled="${ selectCriteria.pageNo eq page }">
-              </button>
-            </th:block>
-
-            <button type="button" class="btn btn-light mx-1"
-                    th:onclick="'location.href=\'/order/list?currentPage='+ @{${selectCriteria.pageNo + 1}} + '\''"
-                    th:disabled="${selectCriteria.pageNo == selectCriteria.maxPage}"><</button>
-
-            <button class="btn btn-light mx-1" id="idMaxPage"
-                    th:onclick="'location.href=\'/order/list?currentPage='+ @{${selectCriteria.maxPage}} + '\'"
-                    th:disabled="${selectCriteria.pageNo == selectCriteria.maxPage}">>></button>
-
-          </div>
-          -->
           <!-- E: paging -->
         </div>
       </div>
@@ -217,6 +189,7 @@
   
   <!-- 입고 예정일 -->
   <script th:inline="javascript">
+    /*<![CDATA[*/
     let dueDateTest = document.getElementById("dueDate");
     function dueDate() {
       let date = new Date();
@@ -229,10 +202,12 @@
       dueDateTest.innerText = `${year}년 ${month+1}월 ${clockDate+1}일 ${week[day+1]}요일`;
     }
     dueDate();
+    /*]]>*/
   </script>
 
   <!-- 발주 마감일 -->
   <script th:inline="javascript">
+    /*<![CDATA[*/
     let deadlineTest = document.getElementById("deadline");
     function deadline() {
       let date = new Date();
@@ -243,9 +218,11 @@
       let week = ['일', '월', '화', '수', '목', '금', '토'];
 
       deadlineTest.innerText = `${year}년 ${month+1}월 ${clockDate}일 ${week[day]}요일 23시 59분 59초`;
+
     }
 
     deadline();
+    /*]]>*/
   </script>
 
   <!-- 현재 시각 -->
@@ -265,20 +242,18 @@
 
       clockTarget.innerText = `${year}년 ${month+1}월 ${clockDate}일 ${week[day]}요일` +
       ` ${hours < 10 ? `0${hours}` : hours}시 ${minutes < 10 ? `0${minutes }` : minutes }분 ${seconds < 10 ? `0${seconds }` : seconds }초`;
-}
+    }
     function init() {
       clock();
       setInterval(clock, 1000);
     }
-
     init();
   </script>
 
   <!-- 관심 설정 -->
   <script th:inline="javascript">
-    function interest() {
-        alert("해당 상품이 관심 목록에 추가 되었습니다.");
-    }
+
+
   </script>
 
   <!-- 장바구니 담기 -->
