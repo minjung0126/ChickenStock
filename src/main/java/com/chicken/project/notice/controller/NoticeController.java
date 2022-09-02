@@ -10,16 +10,24 @@ import com.chicken.project.notice.model.service.NoticeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.util.UriUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 @Controller
@@ -143,14 +151,14 @@ public class NoticeController {
 
         NoticeFileDTO noticeFile = new NoticeFileDTO();
 
-        System.out.println(notice);
-        System.out.println(file);
+        log.info("[NoticeController]" + notice);
+        log.info("[NoticeController]" + file);
 
         String root = ResourceUtils.getURL("src/main/resources").getPath();
 
         String filePath = root + "static/uploadFiles";
 
-        System.out.println("루트ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ" + filePath);
+        log.info("루트ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ" + filePath);
 
         File mkdir = new File(filePath);
         if(!mkdir.exists()) {
@@ -160,14 +168,17 @@ public class NoticeController {
         String originFileName = "";
         String ext = "";
         String changeName = "";
+        String savedPath = "";
 
         if(file.getSize() > 0) {
             originFileName = file.getOriginalFilename();
             ext = originFileName.substring(originFileName.lastIndexOf("."));
             changeName = UUID.randomUUID().toString().replace("-",  "");
+            savedPath = filePath + "/" + changeName + ext;
 
             noticeFile.setOriginName(originFileName);
             noticeFile.setFileName(changeName);
+            noticeFile.setSavedPath(savedPath);
 
             int result = noticeService.noticeInsert(notice);
 
@@ -187,8 +198,6 @@ public class NoticeController {
 
         rttr.addFlashAttribute("message", "공지사항 등록 성공!");
 
-        System.out.println(originFileName + "/////////" + ext + "////////////" + changeName);
-
         return "redirect:/notice/admin/list";
     }
 
@@ -203,6 +212,24 @@ public class NoticeController {
         mv.setViewName("/notice/admin/adminNoticeDetail");
 
         return mv;
+    }
+
+    @GetMapping("/attach/{noticeNo}")
+    public ResponseEntity<Resource> downloadAttach(@PathVariable int noticeNo) throws MalformedURLException {
+
+        log.info("[NoticeController] noticeNo : " + noticeNo);
+
+        noticeNo = Integer.parseInt(String.valueOf(noticeNo));
+
+        NoticeFileDTO file = noticeService.selectFileByName(noticeNo);
+
+        UrlResource resource = new UrlResource("file : " + file.getSavedPath());
+
+        String encodedFileName = UriUtils.encode(file.getOriginName(), StandardCharsets.UTF_8);
+
+        String contentDisposition = "attachment; filename=\"" + encodedFileName + "\"";
+
+        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,contentDisposition).body(resource);
     }
 
     @GetMapping("/user/detail")
@@ -245,8 +272,65 @@ public class NoticeController {
 
     @PostMapping("/admin/update")
     public String updateNotice(@ModelAttribute NoticeDTO notice,
-                               RedirectAttributes rttr) throws NoticeUpdateException {
+                               @RequestParam int noticeNo,
+                               @RequestParam(value="file", required=false) MultipartFile file,
+                               RedirectAttributes rttr) throws Exception{
 
-        return "";
+        log.info("[NoticeController]" + notice);
+        log.info("[NoticeController]" + file);
+
+        String root = ResourceUtils.getURL("src/main/resources").getPath();
+
+        String filePath = root + "static/uploadFiles";
+
+        log.info("루트ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ" + filePath);
+
+        File mkdir = new File(filePath);
+        if(!mkdir.exists()) {
+            mkdir.mkdirs();
+        }
+
+        String originFileName = "";
+        String ext = "";
+        String changeName = "";
+        String savedPath = "";
+
+        if(file.getSize() > 0) {
+            originFileName = file.getOriginalFilename();
+            ext = originFileName.substring(originFileName.lastIndexOf("."));
+            changeName = UUID.randomUUID().toString().replace("-",  "");
+            savedPath = filePath + "/" + changeName + ext;
+
+            NoticeFileDTO noticeFile = new NoticeFileDTO();
+
+            int result = noticeService.updateNotice(notice);
+
+            if(result > 0) {
+
+                int result2 = noticeService.deleteNoticeFile(noticeNo);
+
+                if(result2 > 0){
+
+                    noticeFile.setNoticeNo(noticeNo);
+                    noticeFile.setOriginName(originFileName);
+                    noticeFile.setFileName(changeName);
+                    noticeFile.setSavedPath(savedPath);
+
+                    noticeService.updateNoticeFile(noticeFile);
+                }
+            }
+
+            try {
+                file.transferTo(new File(filePath + "\\" + changeName + ext));
+            } catch (IOException e) {
+
+                e.printStackTrace();
+                new File(filePath + "\\" + changeName + ext).delete();
+            }
+        }
+
+        rttr.addFlashAttribute("message", "공지사항 수정 성공!");
+
+        return "redirect:/notice/admin/list";
     }
 }

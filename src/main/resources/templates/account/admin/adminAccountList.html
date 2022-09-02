@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
+
+  <title>chicken stock</title>
+
+  <link rel="stylesheet" type="text/css" th:href="@{/css/common/common.css}"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/common/style.css}"/>
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" th:href="@{/css/notice/notice.css}"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/account/account_admin_list.css}"/>
+  <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+  <script src="/js/common.js"></script>
+
+</head>
+<body>
+<div class="wrap">
+
+  <!-- S: header -->
+  <div th:include="common/adminHeader.html"></div>
+  <!-- E: header -->
+
+  <!-- S: container -->
+  <div class="container px-0">
+
+    <!-- S: aside -->
+    <div th:replace="common/adminSidebar.html"></div>
+    <!-- E: aside -->
+
+    <!-- S: main layout -->
+    <div class="main_layout">
+      <div class="main_layout_inner">
+
+        <!-- 작업 영역 -->
+        <!-- S: table -->
+        <div class="container-fluid" style="margin-top:30px">
+          <h3>예치금 관리</h3>
+          <br>
+
+          <table class="table">
+            <colgroup>
+              <col style="width: 8%;">
+              <col style="width: 32%;">
+              <col style="width: 32%;">
+              <col style="width: 14%;">
+              <col style="width: 14%;">
+            </colgroup>
+            <thead>
+            <tr>
+              <th>건수</th>
+              <th>가맹점 명</th>
+              <th>입금액</th>
+              <th>일시</th>
+              <th>상태</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td>1</td>
+              <td>가맹점</td>
+              <td>1,000,000</td>
+              <td>2022.08.28</td>
+              <td>
+                <button class="btn btn-warning" style="color: #fff;">승인</button>
+                <button class="btn btn-warning" style="color: #fff;">반려</button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- E: table -->
+
+      </div>
+    </div>
+    <!-- E: main layout -->
+
+  </div>
+  <!-- E: container -->
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>
