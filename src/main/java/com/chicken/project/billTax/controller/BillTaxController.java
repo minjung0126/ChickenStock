@@ -32,4 +32,14 @@ public class BillTaxController {
 
         return mv;
     }
+    @GetMapping("/billtaxList")
+    public ModelAndView billTaxList(ModelAndView mv){
+
+        List<TaxBillDTO> taxBillList = taxbillService.selectBillTaxList();
+
+        mv.addObject("billTaxList", taxBillList);
+        mv.setViewName("billTax/billtaxList");
+
+        return mv;
+    }
 }

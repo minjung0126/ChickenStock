@@ -19,4 +19,9 @@ public class TaxBillService {
 
         return taxbillMapper.selectTaxBillList();
     }
+
+    public List<TaxBillDTO> selectBillTaxList() {
+
+        return taxbillMapper.selectTaxBillList();
+    }
 }

@@ -8,6 +8,7 @@ public class OrderDTO {
     private int itemNo; //상품번호
     private ItemFileDTO originName; //썸네일
     private String itemName; //상품명
+    private int categoryNo; //카테고리 번호
     private String categoryName; //카테고리명
     private String itemStandard; //규격
     private String itemMake; //생산자
@@ -21,10 +22,11 @@ public class OrderDTO {
     public OrderDTO() {
     }
 
-    public OrderDTO(int itemNo, ItemFileDTO originName, String itemName, String categoryName, String itemStandard, String itemMake, int itemSales, int storeAmount, int orderAmount, String itemSoldoutYn, String interYn, Date orderDate) {
+    public OrderDTO(int itemNo, ItemFileDTO originName, String itemName, int categoryNo, String categoryName, String itemStandard, String itemMake, int itemSales, int storeAmount, int orderAmount, String itemSoldoutYn, String interYn, Date orderDate) {
         this.itemNo = itemNo;
         this.originName = originName;
         this.itemName = itemName;
+        this.categoryNo = categoryNo;
         this.categoryName = categoryName;
         this.itemStandard = itemStandard;
         this.itemMake = itemMake;
@@ -58,6 +60,14 @@ public class OrderDTO {
 
     public void setItemName(String itemName) {
         this.itemName = itemName;
+    }
+
+    public int getCategoryNo() {
+        return categoryNo;
+    }
+
+    public void setCategoryNo(int categoryNo) {
+        this.categoryNo = categoryNo;
     }
 
     public String getCategoryName() {
@@ -138,6 +148,7 @@ public class OrderDTO {
                 "itemNo=" + itemNo +
                 ", originName=" + originName +
                 ", itemName='" + itemName + '\'' +
+                ", categoryNo=" + categoryNo +
                 ", categoryName='" + categoryName + '\'' +
                 ", itemStandard='" + itemStandard + '\'' +
                 ", itemMake='" + itemMake + '\'' +

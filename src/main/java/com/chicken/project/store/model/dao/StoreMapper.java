@@ -11,4 +11,6 @@ public interface StoreMapper {
     int deleteStore(String storeName);
 
     int insertStore(StoreDTO store);
+
+    StoreDTO selectStoreByName(String storeName);
 }
