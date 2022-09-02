@@ -6,6 +6,7 @@
     <resultMap id="orderResultMap" type="OrderDTO">
         <id property="itemNo" column="ITEM_NO"/>
         <result property="itemName" column="ITEM_NAME"/>
+        <result property="categoryNo" column="CATEGORY_NO"/>
         <result property="categoryName" column="CATEGORY_NAME"/>
         <result property="itemStandard" column="ITEM_STANDARD"/>
         <result property="itemMake" column="ITEM_MAKE"/>
@@ -17,27 +18,90 @@
         <result property="orderDate" column="ORDER_DATE"/>
     </resultMap>
 
-    <select id="selectAllItem" resultMap="orderResultMap">
-    SELECT
-        B.ITEM_NO
-         , B.ITEM_NAME
-         , A.CATEGORY_NAME
-         , B.ITEM_STANDARD
-         , B.ITEM_MAKE
-         , B.ITEM_SALES
-         , C.STORE_AMOUNT
-         , B.ITEM_SOLDOUT_YN
-    FROM ITEM_CATEGORY A
-             JOIN ITEM_INFO B ON (A.CATEGORY_NO = B.CATEGORY_NO)
-             LEFT JOIN STO_ITEM_INFO C ON (B.ITEM_NO = C.ITEM_NO)
-    WHERE C.STORE_NAME ='${storeName}' OR C.STORE_NAME IS NULL
-    </select>
+    <resultMap id="interestResultMap" type="InterestDTO">
+        <id property="interYn" column="INTER_YN"/>
+        <result property="interNo" column="INTER_NO"/>
+        <result property="storeName" column="STORE_NAME"/>
+        <result property="categoryNo" column="CATEGORY_NO"/>
+        <result property="itemNo" column="ITEM_NO"/>
+    </resultMap>
 
     <select id="selectTotalCount" resultType="_int" parameterType="hashmap">
-    SELECT
-    COUNT(*)
-    FROM ITEM_INFO A
+        SELECT
+        COUNT(*)
+        FROM ITEM_INFO A
+        <if test="searchCondition == 'category'">
+            JOIN ITEM_CATEGORY B ON(A.CATEGORY_NO = B.CATEGORY_NO)
+        </if>
+        <where>
+            <if test="searchCondition == 'category'">
+                B.CATEGORY_NAME LIKE '%' || #{ searchValue } || '%'
+            </if>
+            <if test="searchCondition == 'itemName'">
+                A.ITEM_NAME LIKE '%' || #{ searchValue } || '%'
+            </if>
+        </where>
     </select>
+
+    <select id="selectAllItem" resultMap="orderResultMap">
+        SELECT
+              A.RNUM
+            , A.ITEM_NO
+            , A.ITEM_NAME
+            , D.CATEGORY_NAME
+            , A.ITEM_STANDARD
+            , A.ITEM_MAKE
+            , A.ITEM_SALES
+            , E.STORE_AMOUNT
+            , A.ITEM_SOLDOUT_YN
+        FROM (SELECT ROWNUM RNUM
+            , B.ITEM_NO
+            , B.ITEM_NAME
+            , B.CATEGORY_NO
+            , B.ITEM_STANDARD
+            , B.ITEM_MAKE
+            , B.ITEM_SALES
+            , B.ITEM_SOLDOUT_YN
+        FROM (SELECT
+              C.ITEM_NO
+            , C.ITEM_NAME
+            , C.CATEGORY_NO
+            , C.ITEM_STANDARD
+            , C.ITEM_MAKE
+            , C.ITEM_SALES
+            , C.ITEM_SOLDOUT_YN
+        FROM ITEM_INFO C
+        <if test="searchCondition == 'category'">
+            JOIN ITEM_CATEGORY D ON(C.CATEGORY_NO = D.CATEGORY_NO)
+        </if>
+        <where>
+            <if test="searchCondition == 'category'">
+                D.CATEGORY_NAME LIKE '%' || #{ searchValue } || '%'
+            </if>
+            <if test="searchCondition == 'itemName'">
+                C.ITEM_NAME LIKE '%' || #{ searchValue } || '%'
+            </if>
+        </where>
+        ORDER BY C.ITEM_NO ASC
+        ) B
+        <![CDATA[
+                  WHERE ROWNUM <= #{ endRow }
+                  ]]>
+        ) A
+        JOIN ITEM_CATEGORY D ON (A.CATEGORY_NO = D.CATEGORY_NO)
+        LEFT JOIN STO_ITEM_INFO E ON (A.ITEM_NO = E.ITEM_NO)
+        WHERE A.RNUM >= #{ startRow }
+        ORDER BY A.ITEM_NO ASC
+    </select>
+
+    <select id="selectInterestCount" resultType="_int" parameterType="InterestDTO">
+        SELECT
+            COUNT(*)
+         FROM INTEREST A
+        WHERE A.ITEM_NO = ${ itemNo }
+          AND A.STORE_NAME = ${ storeName }
+    </select>
+
 
 
 </mapper>

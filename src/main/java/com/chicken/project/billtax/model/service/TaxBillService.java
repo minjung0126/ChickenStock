@@ -1,7 +1,7 @@
-package com.chicken.project.billTax.model.service;
+package com.chicken.project.billtax.model.service;
 
-import com.chicken.project.billTax.model.dao.TaxBillMapper;
-import com.chicken.project.billTax.model.dto.TaxBillDTO;
+import com.chicken.project.billtax.model.dao.TaxBillMapper;
+import com.chicken.project.billtax.model.dto.TaxBillDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +16,11 @@ public class TaxBillService {
     }
 
     public List<TaxBillDTO> selectTaxBillList() {
+
+        return taxbillMapper.selectTaxBillList();
+    }
+
+    public List<TaxBillDTO> selectBillTaxList() {
 
         return taxbillMapper.selectTaxBillList();
     }

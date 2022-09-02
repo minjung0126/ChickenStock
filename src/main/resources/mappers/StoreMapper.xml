@@ -48,4 +48,11 @@
           FROM STORE
          WHERE STORE_NAME = #{ storeName }
     </delete>
+
+    <select id="selectStoreByName" resultMap="storeResultMap">
+        SELECT
+               *
+          FROM STORE
+         WHERE STORE_NAME = #{ storeName }
+    </select>
 </mapper>
