@@ -12,13 +12,13 @@
   <link rel="stylesheet" type="text/css" th:href="@{/css/item/item_receive.css}"/>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   <!-- datepicker js & css -->
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+  <script type="text/javascript" th:src="@{http://code.jquery.com/jquery-3.6.0.min.js}"></script>
   <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
-  <!-- <script src="https://code.jquery.com/jquery-3.6.0.js"></script> -->
-  <script src="/js/common.js"></script>
+  <!-- <script src="https://code.jquery.com/jquery-3.6.0.js"></script> -->s
+  <script th:src="@{/js/common.js}"></script>
 
 </head>
 <body>
@@ -256,10 +256,10 @@
 
 <!-- 팝업으로 이동 -->
 <script>
-
+  var jb = jQuery.noConflict();
   var form = document.getElementsByClassName('form-check');
 
-  $(document).ready(function(){
+  jb(document).ready(function(){
     // 1. 상품 상세 조회
     // $("tbody tr").click(function(){
     //       location.href = 'javascript:showItemDetail()';
@@ -268,10 +268,73 @@
     //   event.stopPropagation();
     // });
     // 2. 상품 등록
-    $("#btnInsertItem").click(function(){
+    jb("#btnInsertItem").click(function(){
       location.href = 'javascript:showInsertItem()';
     });
+
+    jb(".detail-main").click(function() {
+      jb(this).next(".detail-sub-tr").find(".detail-sub").slideToggle(400);
+    });
+
+    $(function() {
+
+      var start = moment();
+      var end = moment();
+
+      function cb(start, end) {
+        jb('#reportrange span').html( '&nbsp;&nbsp;' + start.format('YYYY-MM-DD') + ' ~ ' + end.format('YYYY-MM-DD'));
+      }
+
+      $('#reportrange').daterangepicker({
+        showDropdowns: true,
+        minYear: 2020,
+        maxYear: 2030,
+        "autoApply": true,
+        autoUpdateInput: false,
+        "linkedCalendars": false,
+        "locale": {
+          "format": "YYYY/MM/DD",
+          "separator": " ~ ",
+          "applyLabel": "확인",
+          "cancelLabel": "취소",
+          "fromLabel": "From",
+          "toLabel": "To",
+          "customRangeLabel": "Custom",
+          "weekLabel": "W",
+          "daysOfWeek": [
+            "일",
+            "월",
+            "화",
+            "수",
+            "목",
+            "금",
+            "토"
+          ],
+          "monthNames": [
+            "1월",
+            "2월",
+            "3월",
+            "4월",
+            "5월",
+            "6월",
+            "7월",
+            "8월",
+            "9월",
+            "10월",
+            "11월",
+            "12월"
+          ],
+          "firstDay": 7
+        },
+        startDate: start,
+        endDate: end,
+      }, cb);
+
+      cb(start, end);
+
+    });
   });
+
 </script>
 
 <!-- 체크 박스 전체 선택 -->
@@ -302,75 +365,6 @@
 
   }
 </script>
-
-<script>
-  $(".detail-main").click(function() {
-    $(this).next(".detail-sub-tr").find(".detail-sub").slideToggle(400);
-
-
-  });
-</script>
-
-<script>
-  $(function() {
-
-    var start = moment();
-    var end = moment();
-
-    function cb(start, end) {
-      $('#reportrange span').html( '&nbsp;&nbsp;' + start.format('YYYY-MM-DD') + ' ~ ' + end.format('YYYY-MM-DD'));
-    }
-
-    $('#reportrange').daterangepicker({
-      showDropdowns: true,
-      minYear: 2020,
-      maxYear: 2030,
-      "autoApply": true,
-      autoUpdateInput: false,
-      "linkedCalendars": false,
-      "locale": {
-        "format": "YYYY/MM/DD",
-        "separator": " ~ ",
-        "applyLabel": "확인",
-        "cancelLabel": "취소",
-        "fromLabel": "From",
-        "toLabel": "To",
-        "customRangeLabel": "Custom",
-        "weekLabel": "W",
-        "daysOfWeek": [
-          "일",
-          "월",
-          "화",
-          "수",
-          "목",
-          "금",
-          "토"
-        ],
-        "monthNames": [
-          "1월",
-          "2월",
-          "3월",
-          "4월",
-          "5월",
-          "6월",
-          "7월",
-          "8월",
-          "9월",
-          "10월",
-          "11월",
-          "12월"
-        ],
-        "firstDay": 7
-      },
-      startDate: start,
-      endDate: end,
-    }, cb);
-
-    cb(start, end);
-
-  });
-</script>
-
 
 </body>
 </html>
