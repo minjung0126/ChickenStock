@@ -6,22 +6,24 @@ public class ReleaseDTO {
 
     private int relCode;
     private String relName;
-    private java.sql.Date relRequestDate;
     private java.sql.Date relDate;
     private String relYn;
     private String storeName;
     private String orderNo;
+    private int totalMoney;
+    private java.sql.Date relListDate;
 
     public ReleaseDTO() {}
 
-    public ReleaseDTO(int relCode, String relName, Date relRequestDate, Date relDate, String relYn, String storeName, String orderNo) {
+    public ReleaseDTO(int relCode, String relName, Date relDate, String relYn, String storeName, String orderNo, int totalMoney, Date relListDate) {
         this.relCode = relCode;
         this.relName = relName;
-        this.relRequestDate = relRequestDate;
         this.relDate = relDate;
         this.relYn = relYn;
         this.storeName = storeName;
         this.orderNo = orderNo;
+        this.totalMoney = totalMoney;
+        this.relListDate = relListDate;
     }
 
     public int getRelCode() {
@@ -38,14 +40,6 @@ public class ReleaseDTO {
 
     public void setRelName(String relName) {
         this.relName = relName;
-    }
-
-    public Date getRelRequestDate() {
-        return relRequestDate;
-    }
-
-    public void setRelRequestDate(Date relRequestDate) {
-        this.relRequestDate = relRequestDate;
     }
 
     public Date getRelDate() {
@@ -80,16 +74,33 @@ public class ReleaseDTO {
         this.orderNo = orderNo;
     }
 
+    public int getTotalMoney() {
+        return totalMoney;
+    }
+
+    public void setTotalMoney(int totalMoney) {
+        this.totalMoney = totalMoney;
+    }
+
+    public Date getRelListDate() {
+        return relListDate;
+    }
+
+    public void setRelListDate(Date relListDate) {
+        this.relListDate = relListDate;
+    }
+
     @Override
     public String toString() {
         return "ReleaseDTO{" +
                 "relCode=" + relCode +
                 ", relName='" + relName + '\'' +
-                ", relRequestDate=" + relRequestDate +
                 ", relDate=" + relDate +
                 ", relYn='" + relYn + '\'' +
                 ", storeName='" + storeName + '\'' +
                 ", orderNo='" + orderNo + '\'' +
+                ", totalMoney=" + totalMoney +
+                ", relListDate=" + relListDate +
                 '}';
     }
 }

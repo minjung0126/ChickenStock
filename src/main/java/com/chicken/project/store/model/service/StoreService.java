@@ -39,4 +39,5 @@ public class StoreService {
             throw new StoreInsertException("가맹점 등록 실패!");
         }
     }
+
 }

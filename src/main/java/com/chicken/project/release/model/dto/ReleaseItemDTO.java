@@ -12,10 +12,11 @@ public class ReleaseItemDTO {
     private java.sql.Date relDate;
     private java.sql.Date relItemRequestDate;
     private String storeName;
+    private int totalItemMoney;
 
     public ReleaseItemDTO() {}
 
-    public ReleaseItemDTO(String relYn, int relAmount, int relCode, int itemNo, int orderAmount, Date relDate, Date relItemRequestDate, String storeName) {
+    public ReleaseItemDTO(String relYn, int relAmount, int relCode, int itemNo, int orderAmount, Date relDate, Date relItemRequestDate, String storeName, int totalItemMoney) {
         this.relYn = relYn;
         this.relAmount = relAmount;
         this.relCode = relCode;
@@ -24,6 +25,7 @@ public class ReleaseItemDTO {
         this.relDate = relDate;
         this.relItemRequestDate = relItemRequestDate;
         this.storeName = storeName;
+        this.totalItemMoney = totalItemMoney;
     }
 
     public String getRelYn() {
@@ -90,6 +92,14 @@ public class ReleaseItemDTO {
         this.storeName = storeName;
     }
 
+    public int getTotalItemMoney() {
+        return totalItemMoney;
+    }
+
+    public void setTotalItemMoney(int totalItemMoney) {
+        this.totalItemMoney = totalItemMoney;
+    }
+
     @Override
     public String toString() {
         return "ReleaseItemDTO{" +
@@ -101,6 +111,7 @@ public class ReleaseItemDTO {
                 ", relDate=" + relDate +
                 ", relItemRequestDate=" + relItemRequestDate +
                 ", storeName='" + storeName + '\'' +
+                ", totalItemMoney=" + totalItemMoney +
                 '}';
     }
 }
