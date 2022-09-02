@@ -35,7 +35,8 @@ mybatis:
                         com.chicken.project.empList.model.dto, 
                         com.chicken.project.calendar.model.dto,
                         com.chicken.project.billtax.model.dto,
-                        com.chicken.project.release.model.dto
+                        com.chicken.project.release.model.dto,
+                        com.chicken.project.account.model.dto
 
 logging:
   level:
