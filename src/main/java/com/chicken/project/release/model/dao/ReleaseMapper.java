@@ -14,9 +14,19 @@ public interface ReleaseMapper {
 
     int releaseItemUpdateY(ReleaseOrderDTO storeOrderDTO);
 
-    int releaseItemInsert(ReleaseOrderDTO storeOrderDTO, int relCode);
+    int releaseItemInsert(ReleaseOrderDTO storeOrderDTO, int relCode, int totalItemMoney);
 
     int releaseItemUpdateN(ReleaseOrderDTO storeOrderDTO);
 
     int releaseItemDelete(ReleaseOrderDTO storeOrderDTO, int relCode);
+
+    Integer totalMoneySelect(Integer intRelCode);
+
+    int releaseInsert(ReleaseDTO relDto);
+
+    int releaseItemUpdateF();
+
+    List<ReleaseDTO> releaseSelect();
+
+    List<ReleaseOrderDTO> releaseItemListSelect();
 }

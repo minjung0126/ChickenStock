@@ -54,9 +54,9 @@ public class ReleaseServiceImpl implements ReleaseService{
 
     @Override
     @Transactional
-    public int releaseItemInsert(ReleaseOrderDTO storeOrderDTO, int relCode) {
+    public int releaseItemInsert(ReleaseOrderDTO storeOrderDTO, int relCode, int totalItemMoney) {
 
-        int result = releaseMapper.releaseItemInsert(storeOrderDTO, relCode);
+        int result = releaseMapper.releaseItemInsert(storeOrderDTO, relCode, totalItemMoney);
 
         return result;
     }
@@ -77,5 +77,47 @@ public class ReleaseServiceImpl implements ReleaseService{
         int result = releaseMapper.releaseItemDelete(storeOrderDTO, relCode);
 
         return result;
+    }
+
+    @Override
+    public Integer totalMoneySelect(Integer intRelCode) {
+
+        Integer totalMoney = releaseMapper.totalMoneySelect(intRelCode);
+
+        return totalMoney;
+    }
+
+    @Override
+    @Transactional
+    public int releaseInsert(ReleaseDTO relDto) {
+
+        int releaseInsert = releaseMapper.releaseInsert(relDto);
+
+        return releaseInsert;
+    }
+
+    @Override
+    @Transactional
+    public int releaseItemUpdateF() {
+
+        int releaseUpdate = releaseMapper.releaseItemUpdateF();
+
+        return releaseUpdate;
+    }
+
+    @Override
+    public List<ReleaseDTO> releaseSelect() {
+
+        List<ReleaseDTO> releaseSelect = releaseMapper.releaseSelect();
+
+        return releaseSelect;
+    }
+
+    @Override
+    public List<ReleaseOrderDTO> releaseItemListSelect() {
+
+        List<ReleaseOrderDTO> releaseItemListSelect = releaseMapper.releaseItemListSelect();
+
+        return releaseItemListSelect;
     }
 }

@@ -1,5 +1,6 @@
 package com.chicken.project.release.controller;
 
+import com.chicken.project.release.model.dto.ItemInfoDTO;
 import com.chicken.project.release.model.dto.ReleaseDTO;
 import com.chicken.project.release.model.dto.ReleaseOrderDTO;
 import com.chicken.project.release.model.service.ReleaseService;
@@ -9,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.swing.*;
 import java.util.List;
 
 @Controller
@@ -29,25 +31,16 @@ public class ReleaseController {
         List<ReleaseOrderDTO> orderListY = releaseService.releaseOrderSelectY();
         List<ReleaseDTO> releaseDTO = releaseService.releaseDtoOrderSelect();
 
-//        for(ReleaseOrderDTO order : orderListN){
-//            System.out.println(order);
-//        }
-//
-//        for(ReleaseOrderDTO order : orderListY){
-//            System.out.println(order);
-//        }
-//
-//        for(ReleaseDTO release : releaseDTO){
-//            System.out.println(release);
-//        }
 
         String relCode = null;
         if(!releaseDTO.isEmpty()){
             relCode = String.valueOf(releaseDTO.size()+1);
         }
 
-//        System.out.println(relCode);
+        int intRelCode = Integer.parseInt(relCode);
+        Integer totalMoney = releaseService.totalMoneySelect(intRelCode);
 
+        mv.addObject("totalMoney", totalMoney);
         mv.addObject("relCode", relCode);
         mv.addObject("releaseDTO",releaseDTO);
         mv.addObject("orderListN", orderListN);
@@ -58,18 +51,33 @@ public class ReleaseController {
     }
 
     @PostMapping("/orderInsertUpdate")
-    public String releaseInsertUpdate(@ModelAttribute ReleaseOrderDTO storeOrderDTO, @RequestParam("relCode") int relCode) {
+    public ModelAndView releaseInsertUpdate(@ModelAttribute ReleaseOrderDTO storeOrderDTO,
+                                            @ModelAttribute ItemInfoDTO itemInfoDTO,
+                                            @RequestParam("relCode") int relCode,
+                                            ModelAndView mv) {
 
-        System.out.println(storeOrderDTO);
-        System.out.println(relCode);
+//        System.out.println(storeOrderDTO);
+//        System.out.println(relCode);
+
+        int itemSales = Integer.parseInt(itemInfoDTO.getItemSales());
+        int orderAmount = storeOrderDTO.getOrderAmount();
+        int totalItemMoney = itemSales * orderAmount;
+
+//        System.out.println("itemSales = " + itemSales);
+//        System.out.println("orderAmount = " + orderAmount);
+//        System.out.println("totalItemMoney = " + totalItemMoney);
 
         int resultUpdate = releaseService.releaseItemUpdateY(storeOrderDTO);
-        int resultInsert = releaseService.releaseItemInsert(storeOrderDTO, relCode);
+        int resultInsert = releaseService.releaseItemInsert(storeOrderDTO, relCode, totalItemMoney);
 
-        return "redirect:release/release_order";
+        mv.setViewName("redirect:/release/orderSelect");
+
+        return mv;
     }
     @PostMapping("/orderDeleteUpdate")
-    public String releaseDeleteUpdate(@ModelAttribute ReleaseOrderDTO storeOrderDTO, @RequestParam("relCode") int relCode) {
+    public ModelAndView releaseDeleteUpdate(@ModelAttribute ReleaseOrderDTO storeOrderDTO,
+                                            @RequestParam("relCode") int relCode,
+                                            ModelAndView mv) {
 
         System.out.println(storeOrderDTO);
         System.out.println(relCode);
@@ -77,6 +85,38 @@ public class ReleaseController {
         int resultInsert = releaseService.releaseItemUpdateN(storeOrderDTO);
         int resultDelete = releaseService.releaseItemDelete(storeOrderDTO, relCode);
 
-        return "redirect:release/release_order";
+        mv.setViewName("redirect:/release/orderSelect");
+        return mv;
+    }
+
+    @PostMapping("/releaseInsertUpdate")
+    public ModelAndView releaseInsert(ModelAndView mv, @ModelAttribute ReleaseDTO relDto){
+
+        System.out.println(relDto);
+
+        int releaseInsert = releaseService.releaseInsert(relDto);
+        int resultUpdate = releaseService.releaseItemUpdateF();
+
+        mv.setViewName("redirect:/release/orderSelect");
+        return mv;
+    }
+
+    @GetMapping("/releaseSelect")
+    public ModelAndView releaseSelect(ModelAndView mv){
+
+        List<ReleaseDTO> releaseSelect = releaseService.releaseSelect();
+        List<ReleaseOrderDTO> releaseItemListSelect = releaseService.releaseItemListSelect();
+
+        for(ReleaseDTO relList : releaseSelect){
+            System.out.println(relList);
+        }
+
+        for(ReleaseOrderDTO relListSelect : releaseItemListSelect){
+            System.out.println(relListSelect);
+        }
+
+        mv.addObject("releaseSelect", releaseSelect);
+        mv.setViewName("release/release_list");
+        return mv;
     }
 }
