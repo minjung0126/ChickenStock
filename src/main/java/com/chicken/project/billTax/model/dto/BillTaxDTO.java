@@ -15,11 +15,12 @@ public class BillTaxDTO {
     private int recAmount;         // 수량
     private int recMoney;          // 품목병 입고금액
     private int recTotalMoney;     // 발주서 총 합계금액
+    private String recCode;        // 입고코드
 
     public BillTaxDTO() {
     }
 
-    public BillTaxDTO(int taxNo, String storeNo, String storeName, String storeAddress, String taxDate, String itemName, String itemStandard, int itemSales, String storeRep, String recDate, int recAmount, int recMoney, int recTotalMoney) {
+    public BillTaxDTO(int taxNo, String storeNo, String storeName, String storeAddress, String taxDate, String itemName, String itemStandard, int itemSales, String storeRep, String recDate, int recAmount, int recMoney, int recTotalMoney, String recCode) {
         this.taxNo = taxNo;
         this.storeNo = storeNo;
         this.storeName = storeName;
@@ -33,6 +34,7 @@ public class BillTaxDTO {
         this.recAmount = recAmount;
         this.recMoney = recMoney;
         this.recTotalMoney = recTotalMoney;
+        this.recCode = recCode;
     }
 
     public int getTaxNo() {
@@ -139,6 +141,14 @@ public class BillTaxDTO {
         this.recTotalMoney = recTotalMoney;
     }
 
+    public String getRecCode() {
+        return recCode;
+    }
+
+    public void setRecCode(String recCode) {
+        this.recCode = recCode;
+    }
+
     @Override
     public String toString() {
         return "BillTaxDTO{" +
@@ -155,6 +165,7 @@ public class BillTaxDTO {
                 ", recAmount=" + recAmount +
                 ", recMoney=" + recMoney +
                 ", recTotalMoney=" + recTotalMoney +
+                ", recCode='" + recCode + '\'' +
                 '}';
     }
 }

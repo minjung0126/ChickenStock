@@ -87,7 +87,7 @@
                               </table>
                              </td>
                             </tr>
-                            <tr> 
+                            <tr>
                              <td>
                               <table cellpadding='0' cellspacing='0' width='700'>
                                <tr>
@@ -151,7 +151,7 @@
                                    <td class='border_up' align='center' width='20'>백</td>
                                    <td class='border_up' align='center' width='20'>십</td>
                                    <td class='border_up' align='center' width='20'>일</td>
-                                   
+
                                    <td class='border_up' align='center' width='20'>십</td>
                                    <td class='border_up' align='center' width='20'>억</td>
                                    <td class='border_up' align='center' width='20'>천</td>
@@ -178,7 +178,7 @@
                                    <td class='border_up' align='center' width='20'><script>document.write(last2)</script></td>
                                    <td class='border_up' align='center' width='20'><script>document.write(last1)</script></td>
                                    <td class='border_up' align='center' width='20'><script>document.write(last)</script></td>
-                                   
+
                                    <td class='border_up' align='center' width='20'>&nbsp;</td>
                                    <td class='border_up' align='center' width='20'><script>document.write(tax9)</script></td>
                                    <td class='border_up' align='center' width='20'><script>document.write(tax8)</script></td>
@@ -206,7 +206,7 @@
                                 <td class='border_up' align='center' width='83'>세 액</td>
                                 <td class='border_top' align='center' width='60'>비고</td>
                                </tr>
-                               <tr th:each="tax : ${ taxBillList }" >
+                               <tr th:each="tax : ${ taxListMenu }" >
                                 <td class='border_up' align='center' width='50' height='25'th:text="${ tax.recDate }"></td>
                                 <td class='border_up' align='center' width='195' th:text="${ tax.itemName }"></td>
                                 <td class='border_up' align='center' width='42' th:text="${ tax.itemStandard }"></td>
@@ -252,17 +252,47 @@
                   </tbody>
                 </table>
               </div>
-              <!-- E: table -->
-                <!-- S: paging -->
-                <div class="d-flex justify-content-center">
-                    <button type="button" class="btn btn-light disabled" id="startPage"><<</button>
-                    <button type="button" class="btn btn-light mx-1 disabled"><</button>
-                    <button type="button" class="btn btn-warning mx-1" disabled style="color:white">1</button>
-                    <button type="button" class="btn btn-light mx-1">2</button>
-                    <button type="button" class="btn btn-light mx-1">></button>
-                    <button type="button" class="btn btn-light mx-1" id="maxPage">>></button>
-                </div>
-                <!-- E: paging -->
+              <!-- E: table --> <!-- S: paging -->
+                  <div class="d-flex justify-content-center" id="pageBox">
+                      <!-- 맨 앞으로 이동 버튼 -->
+                      <button class="btn btn-light"
+                              th:onclick="'location.href=\'/billTax/billList?currentPage='+ @{${selectCriteria.startPage}} + '\''"
+                              th:disabled="${selectCriteria.pageNo == 1}"
+                      >
+                          <<
+                      </button>
+                      <!-- 이전 페이지 버튼 -->
+                      <button class="btn btn-light mx-1"
+                              th:onclick="'location.href=\'/billTax/billList?currentPage='+ @{${selectCriteria.pageNo - 1}} + '\''"
+                              th:disabled="${selectCriteria.pageNo == 1}"
+                      >
+                          <
+                      </button>
+                      <!-- 숫자 버튼 -->
+                      <th:block th:each="page : ${#numbers.sequence(selectCriteria.startPage, selectCriteria.endPage)}">
+                          <button class="btn btn-warning mx-1" disabled style="color:white"
+                                  th:text="${ page }"
+                                  th:onclick="'location.href=\'/billTax/billList?currentPage='+ @{${page}} + '\''"
+                                  th:disabled="${ selectCriteria.pageNo eq page }">
+                          </button>
+                      </th:block>
+
+                      <!-- 다음 페이지 버튼 -->
+                      <button class="btn btn-light mx-1"
+                              th:onclick="'location.href=\'/billTax/billList?currentPage='+ @{${selectCriteria.pageNo + 1}} + '\''"
+                              th:disabled="${selectCriteria.pageNo == selectCriteria.maxPage}"
+                      >
+                          >
+                      </button>
+                      <!-- 마지막 페이지로 이동 버튼 -->
+                      <button class="btn btn-light"
+                              th:onclick="'location.href=\'/billTax/billList?currentPage='+ @{${selectCriteria.maxPage}} + '\''"
+                              th:disabled="${selectCriteria.pageNo == selectCriteria.maxPage}"
+                      >
+                          >>
+                      </button>
+                  </div>
+                  <!-- E: paging -->
             </div>
           </div> 
           <!-- E: main layout -->   

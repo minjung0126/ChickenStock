@@ -17,30 +17,60 @@
         <result property="recAmount" column="REC_AMOUNT"/>
         <result property="recMoney" column="REC_MONEY"/>
         <result property="recTotalMoney" column="REC_TOTALMONEY"/>
+        <result property="recCode" column="REC_CODE"/>
     </resultMap>
 
     <select id="selectBillTaxList" resultMap="billTaxResultMap">
         SELECT
-               T.TAX_NO
+               A.RNUM
+             , A.TAX_NO
+             , A.TAX_DATE
              , S.STORE_NO
              , S.STORE_NAME
              , S.STORE_ADDRESS
-             , TO_CHAR(T.TAX_DATE,'yyyy-MM-dd') AS TAX_DATE
-             , II.ITEM_NAME
+             , S.STORE_REP
+             , RS.REC_TOTALMONEY
+             , A.REC_CODE
+          FROM (SELECT ROWNUM RNUM
+                     , B.TAX_NO
+                     , B.TAX_DATE
+                     , B.REC_CODE
+                  FROM (SELECT
+                               C.TAX_NO
+                             , TO_CHAR(C.TAX_DATE,'yyyy-MM-dd') AS TAX_DATE
+                             , C.REC_CODE
+                          FROM TAXBILL C
+                         ORDER BY C.TAX_NO ASC ) B
+                 <![CDATA[
+                WHERE ROWNUM <= #{ endRow }
+                  ]]>
+            ) A
+         JOIN RECEIVE_STORE RS ON (RS.REC_CODE = A.REC_CODE)
+         JOIN STORE_ORDER SO ON (RS.ORDER_NO = SO.ORDER_NO)
+         JOIN STORE S ON(S.STORE_NAME = RS.STORE_NAME)
+        WHERE A.RNUM >= #{ startRow }
+        ORDER BY A.TAX_NO ASC
+    </select>
+
+    <select id="selectTotalCount" resultType="_int" parameterType="hashmap">
+        SELECT
+        COUNT(*)
+        FROM TAXBILL T
+    </select>
+
+    <select id="selectTaxMenuList" resultMap="billTaxResultMap" parameterType="String">
+        SELECT
+               II.ITEM_NAME
              , II.ITEM_STANDARD
              , II.ITEM_SALES
-             , S.STORE_REP
              , TO_CHAR(RS.REC_DATE, 'MM-dd') AS REC_DATE
-             , RS.REC_AMOUNT
+             , RSI.REC_AMOUNT
              , RSI.REC_MONEY
-             , RS.REC_TOTALMONEY
-          FROM TAXBILL T
-          JOIN RECEIVE_STORE RS ON (RS.REC_CODE = T.REC_CODE)
-          JOIN STORE_ORDER SO ON (RS.ORDER_NO = SO.ORDER_NO)
-          JOIN STORE S ON(S.STORE_NAME = RS.STORE_NAME)
-          JOIN ORDER_HANDLER OH ON (OH.ORDER_NO = SO.ORDER_NO)
-          JOIN CART C ON (C.CART_NO = OH.CART_NO)
-          JOIN RECEIVE_STORE_ITEM RSI ON (RSI.REC_CODE = RS.REC_CODE)
-          JOIN ITEM_INFO II ON (II.ITEM_NO = C.ITEM_NO)
+             , RS.REC_CODE
+        FROM RECEIVE_STORE RS
+        JOIN RECEIVE_STORE_ITEM RSI ON (RSI.REC_CODE = RS.REC_CODE)
+        JOIN ITEM_INFO II ON (II.ITEM_NO = RSI.ITEM_NO)
+       WHERE RSI.REC_CODE = '${ recCode }'
     </select>
+
 </mapper>
