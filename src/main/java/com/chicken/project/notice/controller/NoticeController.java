@@ -143,7 +143,7 @@ public class NoticeController {
         return "/notice/admin/adminNoticeInsert";
     }
 
-    @PostMapping("/admin/noticeInsert")
+    @PostMapping("/admin/insert")
     public String noticeInsert(@ModelAttribute NoticeDTO notice,
                                @RequestParam(value="file", required=false) MultipartFile file,
                                RedirectAttributes rttr
@@ -177,7 +177,7 @@ public class NoticeController {
             savedPath = filePath + "/" + changeName + ext;
 
             noticeFile.setOriginName(originFileName);
-            noticeFile.setFileName(changeName);
+            noticeFile.setFileName(changeName + ext);
             noticeFile.setSavedPath(savedPath);
 
             int result = noticeService.noticeInsert(notice);
@@ -212,24 +212,6 @@ public class NoticeController {
         mv.setViewName("/notice/admin/adminNoticeDetail");
 
         return mv;
-    }
-
-    @GetMapping("/attach/{noticeNo}")
-    public ResponseEntity<Resource> downloadAttach(@PathVariable int noticeNo) throws MalformedURLException {
-
-        log.info("[NoticeController] noticeNo : " + noticeNo);
-
-        noticeNo = Integer.parseInt(String.valueOf(noticeNo));
-
-        NoticeFileDTO file = noticeService.selectFileByName(noticeNo);
-
-        UrlResource resource = new UrlResource("file : " + file.getSavedPath());
-
-        String encodedFileName = UriUtils.encode(file.getOriginName(), StandardCharsets.UTF_8);
-
-        String contentDisposition = "attachment; filename=\"" + encodedFileName + "\"";
-
-        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,contentDisposition).body(resource);
     }
 
     @GetMapping("/user/detail")

@@ -55,7 +55,7 @@
                 </tr>
                 <tr>
                   <th>첨부파일</th>
-                  <td class="align-left"><a th:href="|/notice/attach/${ noticeDetail.noticeNo }|" th:text="${ noticeDetail.noticeFile }" ></a></td>
+                  <td class="align-left" ><a th:href="|/uploadFiles/${ noticeDetail.noticeFile.getFileName() }|" th:text="${ noticeDetail.noticeFile.getOriginName() }" download></a></td>
                 </tr>
               </tbody>
             </table>
