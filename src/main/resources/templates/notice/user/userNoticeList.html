@@ -40,12 +40,14 @@
                 <col style="">
                 <col style="width:100px">
                 <col style="width:100px">
+                <col style="width:100px">
               </colgroup>
               <thead>
                 <tr>
                   <th>번호</th>
                   <th>제목</th>
                   <th>작성자</th>
+                  <th>조회수</th>
                   <th class="th1">등록일</th>
                 </tr>
               </thead>
@@ -54,6 +56,7 @@
                   <td th:text="${ notice.noticeNo }"></td>
                   <td th:text="${ notice.noticeName }"></td>
                   <td th:text="${ notice.empId }"></td>
+                  <td th:text="${ notice.noticeCount }"></td>
                   <td th:text="${ notice.noticeRegistDate }"></td>
                 </tr>
               </tbody>

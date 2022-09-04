@@ -31,4 +31,6 @@ public interface NoticeMapper {
     int updateNotice(NoticeDTO notice);
 
     int updateNoticeFile(NoticeFileDTO noticeFile);
+
+    int incrementNoticeCount(int noticeNo);
 }

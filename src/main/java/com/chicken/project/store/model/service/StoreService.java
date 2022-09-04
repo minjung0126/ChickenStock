@@ -6,6 +6,7 @@ import com.chicken.project.exception.store.StoreUpdateException;
 import com.chicken.project.store.model.dao.StoreMapper;
 import com.chicken.project.store.model.dto.StoreDTO;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -18,11 +19,14 @@ public class StoreService {
 
         this.storeMapper = storeMapper;
     }
+    /* 가맹점 조회 */
     public List<StoreDTO> storeList() {
 
         return storeMapper.storeList();
     }
 
+    /* 가맹점 삭제 */
+    @Transactional
     public void deleteStore(String storeName) throws StoreDeleteException {
 
         int result = storeMapper.deleteStore(storeName);
@@ -32,6 +36,8 @@ public class StoreService {
         }
     }
 
+    /* 가맹점 등록 */
+    @Transactional
     public void insertStore(StoreDTO store) throws StoreInsertException {
 
         int result = storeMapper.insertStore(store);
@@ -41,11 +47,14 @@ public class StoreService {
         }
     }
 
+    /* 가맹점 명을 받아 가맹점 조회 */
     public StoreDTO selectStoreByName(String storeName) {
 
         return storeMapper.selectStoreByName(storeName);
     }
 
+    /* 가맹점 정보 수정 */
+    @Transactional
     public int updateStore(StoreDTO store) throws StoreUpdateException {
 
         int result = storeMapper.updateStore(store);

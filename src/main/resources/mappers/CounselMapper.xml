@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chicken.project.counsel.model.dao.CounselMapper">
+
+    <resultMap id="counselResultMap" type="CounselDTO">
+        <id property="counselNo" column="COUNSEL_NO"/>
+        <result property="counselName" column="COUNSEL_NAME"/>
+        <result property="counselContent" column="COUNSEL_CONTENT"/>
+        <result property="counselRegistDate" column="COUNSEL_REGIST_DATE"/>
+        <result property="storeId" column="STORE_ID"/>
+        <result property="counselYn" column="COUNSEL_YN"/>
+    </resultMap>
+
+    <insert id="insertCounsel">
+        INSERT
+          INTO COUNSEL
+        (
+          COUNSEL_NO, COUNSEL_NAME, COUNSEL_CONTENT
+        , COUNSEL_REGIST_DATE, STORE_ID, COUNSEL_YN
+        )
+        VALUES
+        (
+          SEQ_COUNSEL_NO.NEXTVAL, #{ counselName }, #{ counselContent }
+        , SYSDATE, 'alstn0743', DEFAULT
+        )
+    </insert>
+
+    <select id="selectCounsel" resultMap="counselResultMap">
+        SELECT
+               *
+          FROM COUNSEL
+    </select>
+</mapper>

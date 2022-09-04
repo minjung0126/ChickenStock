@@ -9,6 +9,7 @@
         <result property="noticeContent" column="NOTICE_CONTENT"/>
         <result property="noticeRegistDate" column="NOTICE_REGIST_DATE"/>
         <result property="noticeModifyDate" column="NOTICE_MODIFY_DATE"/>
+        <result property="noticeCount" column="NOTICE_COUNT"/>
         <result property="empId" column="EMP_ID"/>
 
         <collection property="noticeFile" ofType="NoticeFileDTO">
@@ -57,17 +58,20 @@
              , A.EMP_ID
              , A.NOTICE_CONTENT
              , A.NOTICE_REGIST_DATE
+             , A.NOTICE_COUNT
              , D.EMP_ID
           FROM (SELECT ROWNUM RNUM
                      , B.NOTICE_NO
                      , B.NOTICE_NAME
                      , B.EMP_ID
                      , B.NOTICE_CONTENT
+                     , B.NOTICE_COUNT
                      , B.NOTICE_REGIST_DATE
                   FROM (SELECT C.NOTICE_NO
                              , C.NOTICE_NAME
                              , C.EMP_ID
                              , C.NOTICE_CONTENT
+                             , C.NOTICE_COUNT
                              , C.NOTICE_REGIST_DATE
                           FROM NOTICE C
         <if test="searchCondition == 'writer'">
@@ -204,4 +208,14 @@
         , #{ noticeNo }
         )
     </insert>
+
+    <update id="incrementNoticeCount">
+        UPDATE
+               NOTICE A
+           SET A.NOTICE_COUNT = (SELECT B.NOTICE_COUNT
+                                   FROM NOTICE B
+                                  WHERE B.NOTICE_NO = #{ noticeNo }
+                                ) + 1
+        WHERE A.NOTICE_NO = #{ noticeNo }
+    </update>
 </mapper>
