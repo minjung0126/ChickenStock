@@ -1,6 +1,6 @@
 package com.chicken.project.release.model.dto;
 
-public class ItemFileDTO {
+public class ReleaseItemFileDTO {
 
     private int fileNo;
     private String originName;
@@ -8,10 +8,10 @@ public class ItemFileDTO {
     private int categoryNo;
     private int itemNo;
 
-    public ItemFileDTO() {
+    public ReleaseItemFileDTO() {
     }
 
-    public ItemFileDTO(int fileNo, String originName, String fileName, int categoryNo, int itemNo) {
+    public ReleaseItemFileDTO(int fileNo, String originName, String fileName, int categoryNo, int itemNo) {
         this.fileNo = fileNo;
         this.originName = originName;
         this.fileName = fileName;

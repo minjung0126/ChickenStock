@@ -47,7 +47,7 @@ a:hover{
     border-radius: 10px 0 0 10px;
 }
 .table tbody tr td:nth-last-child(1) {
-    border-radius: 10px;
+    border-radius: 0px 10px 10px 0;
 }
 .img-info {
     align-items: center;

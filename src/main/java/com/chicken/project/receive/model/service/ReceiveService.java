@@ -2,6 +2,7 @@ package com.chicken.project.receive.model.service;
 
 import com.chicken.project.receive.model.dao.ReceiveMapper;
 import com.chicken.project.receive.model.dto.ReceiveOfficeDTO;
+import com.chicken.project.receive.model.dto.ReceiveOfficeItemDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,5 +20,10 @@ public class ReceiveService {
     public List<ReceiveOfficeDTO> selectAllReceive() {
 
         return receiveMapper.selectAllReceive();
+    }
+
+    public List<ReceiveOfficeItemDTO> selectAllReceiveItem(String recCode) {
+
+        return receiveMapper.selectAllReceiveItem(recCode);
     }
 }

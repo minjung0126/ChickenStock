@@ -34,13 +34,9 @@ mybatis:
                         com.chicken.project.receive.model.dto,
                         com.chicken.project.empList.model.dto, 
                         com.chicken.project.calendar.model.dto,
-<<<<<<< HEAD
-                        com.chicken.project.billTax.model.dto
-=======
-                        com.chicken.project.billtax.model.dto,
                         com.chicken.project.release.model.dto,
-                        com.chicken.project.account.model.dto
->>>>>>> origin/minsukim
+                        com.chicken.project.account.model.dto,
+                        com.chicken.project.empList.model.dto
 
 logging:
   level:

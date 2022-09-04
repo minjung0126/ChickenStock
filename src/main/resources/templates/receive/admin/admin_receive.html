@@ -17,7 +17,7 @@
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
-  <!-- <script src="https://code.jquery.com/jquery-3.6.0.js"></script> -->s
+  <!-- <script src="https://code.jquery.com/jquery-3.6.0.js"></script> -->
   <script th:src="@{/js/common.js}"></script>
 
 </head>
@@ -84,99 +84,62 @@
             </tr>
             </thead>
             <tbody>
-            <tr class="detail-main" th:each="receive : ${ receiveList }">
-              <td>1</td>
-              <td th:text="${ receive.recCode }"></td>
-              <td th:text="${ receive.countRecCode }">닭다리 외 2개 품목</td>
-              <td th:text="${ receive.sumRecTotalAmount }"></td>
-              <td th:text="${ receive.sumRecTotalMoney }"></td>
-              <td th:text="${ receive.stringRecDate }"></td>
-              <td th:text="${ receive.employee.name }"></td>
-            </tr>
-<!--            <tr class="detail-sub-tr style=" display: none;>-->
-<!--              <td class="detail-sub-td" colspan="9" >-->
-<!--                <div class="detail-sub" >-->
-<!--                  <table width="100%">-->
-<!--                    <thead>-->
-<!--                    <tr>-->
-<!--                      <th>번호</th>-->
-<!--                      <th>입고 번호</th>-->
-<!--                      <th>상품코드</th>-->
-<!--                      <th>썸네일</th>-->
-<!--                      <th>상품명</th>-->
-<!--                      <th>카테고리</th>-->
-<!--                      <th>규격</th>-->
-<!--                      <th>제조사</th>-->
-<!--                      <th>입고 수량</th>-->
-<!--                      <th>입고 단가</th>-->
-<!--                      <th>입고 금액</th>-->
-<!--                      <th>입고일</th>-->
-<!--                    </tr>-->
-<!--                    </thead>-->
-<!--                    <tr>-->
-<!--                      <td>1</td>-->
-<!--                      <td>PS1902</td>-->
-<!--                      <td>100001</td>-->
-<!--                      <td>-->
-<!--                        <div class="img-info">-->
-<!--                          <div class="img-info__img">-->
-<!--                            <img src="../assets/images/chicken.jpg" alt="">-->
-<!--                          </div>-->
-<!--                        </div>-->
-<!--                      </td>-->
-<!--                      <td>닭다리</td>-->
-<!--                      <td>식재료</td>-->
-<!--                      <td>1kg</td>-->
-<!--                      <td>하림</td>-->
-<!--                      <td>30</td>-->
-<!--                      <td>4,500</td>-->
-<!--                      <td>135,000</td>-->
-<!--                      <td>2022-08-07</td>-->
-<!--                    </tr>-->
-<!--                    <tr>-->
-<!--                      <td>1</td>-->
-<!--                      <td>PS1902</td>-->
-<!--                      <td>100001</td>-->
-<!--                      <td>-->
-<!--                        <div class="img-info">-->
-<!--                          <div class="img-info__img">-->
-<!--                            <img src="../assets/images/chicken.jpg" alt="">-->
-<!--                          </div>-->
-<!--                        </div>-->
-<!--                      </td>-->
-<!--                      <td>닭다리</td>-->
-<!--                      <td>식재료</td>-->
-<!--                      <td>1kg</td>-->
-<!--                      <td>하림</td>-->
-<!--                      <td>30</td>-->
-<!--                      <td>4,500</td>-->
-<!--                      <td>135,000</td>-->
-<!--                      <td>2022-08-07</td>-->
-<!--                    </tr>-->
-<!--                    <tr>-->
-<!--                      <td>1</td>-->
-<!--                      <td>PS1902</td>-->
-<!--                      <td>100001</td>-->
-<!--                      <td>-->
-<!--                        <div class="img-info">-->
-<!--                          <div class="img-info__img">-->
-<!--                            <img src="../assets/images/chicken.jpg" alt="">-->
-<!--                          </div>-->
-<!--                        </div>-->
-<!--                      </td>-->
-<!--                      <td>닭다리</td>-->
-<!--                      <td>식재료</td>-->
-<!--                      <td>1kg</td>-->
-<!--                      <td>하림</td>-->
-<!--                      <td>30</td>-->
-<!--                      <td>4,500</td>-->
-<!--                      <td>135,000</td>-->
-<!--                      <td>2022-08-07</td>-->
-<!--                    </tr>-->
-<!--                  </table>-->
-<!--                </div>-->
-<!--              </td>-->
-<!--            </tr>-->
+            <div th:each="receive : ${ receive }">
+              <tr class="detail-main">
+                <td>1</td>
+                <td th:text="${ receive.recCode }"></td>
+                <td th:if="${ receive.countRecCode != 0}" th:text="|외 ${ receive.countRecCode }개 품목|"></td>
+                <td th:if="${ receive.countRecCode == 0}" th:text="${receive.countRecCode }"></td>
+                <td th:text="${ receive.sumRecTotalAmount }"></td>
+                <td th:text="${ receive.sumRecTotalMoney }"></td>
+                <td th:text="${ receive.stringRecDate }"></td>
+                <td th:text="${ receive.employee.empName }"></td>
+              </tr>
+              <tr class="detail-sub-tr">
+                <td class="detail-sub-td  p-0" colspan="9">
+                  <div class="detail-sub"  style="display: none">
+                    <table width="100%">
+                      <thead>
+                      <tr>
+                        <th>번호</th>
+                        <th>입고 번호</th>
+                        <th>상품코드</th>
+                        <th>썸네일</th>
+                        <th>상품명</th>
+                        <th>카테고리</th>
+                        <th>규격</th>
+                        <th>제조사</th>
+                        <th>입고 수량</th>
+                        <th>입고 단가</th>
+                        <th>입고 금액</th>
+                        <th>입고일</th>
+                      </tr>
+                      </thead>
+                      <tr th:each="receiveItem : ${ receiveOfficeItemList }">
+                        <td>1</td>
+                        <td th:text="${ receiveItem.recCode }">PS1902</td>
+                        <td th:text="${ receiveItem.itemNo }">100001</td>
+                        <td>
+                          <div class="img-info">
+                            <div class="img-info__img">
+                              <img src="../assets/images/chicken.jpg" alt="">
+                            </div>
+                          </div>
+                        </td>
+                        <td th:text="${ receiveItem.itemName }">닭다리</td>
+                        <td th:text="${ receiveItem.categoryName }">식재료</td>
+                        <td th:text="${ receiveItem.itemStandard }">1kg</td>
+                        <td th:text="${ receiveItem.itemMake }">하림</td>
+                        <td th:text="${ receiveItem.stringRecAmount }">30</td>
+                        <td th:text="${ receiveItem.itemPurchase }">4,500</td>
+                        <td th:text="${ receiveItem.recMoney }">135,000</td>
+                        <td th:text="${ receiveItem.stringRecDate }">2022-08-07</td>
+                      </tr>
+                    </table>
+                  </div>
+                </td>
+              </tr>
+            </div>
             </tbody>
           </table>
         </div>
@@ -207,6 +170,13 @@
 
 <!-- datepicker js -->
 <!--<script src="/js/daterange.js"></script>-->
+
+<!-- 슬라이드 -->
+<!--<script>-->
+<!--  $(".detail-main").click(function() {-->
+<!--    $(this).next(".detail-sub-tr").find(".detail-sub").slideToggle(400);-->
+<!--  });-->
+<!--</script>-->
 
 <!-- 상품 상세 페이지 팝업 띄우기 -->
 <script type="text/javascript">
@@ -273,7 +243,9 @@
     });
 
     jb(".detail-main").click(function() {
-      jb(this).next(".detail-sub-tr").find(".detail-sub").slideToggle(400);
+      jb(this).next(".detail-sub-tr").find(".detail-sub").slideToggle(300);
+      jb(this).toggleClass('on').siblings().removeClass('on');
+      jb(this).next(".detail-sub-tr").find(".detail-sub").siblings(".detail-sub").slideUp(300);
     });
 
     $(function() {
