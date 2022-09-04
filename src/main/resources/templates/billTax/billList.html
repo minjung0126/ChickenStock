@@ -63,7 +63,7 @@
                     <tr th:each="tax : ${ taxBillList }" >
                       <td th:text="${ tax.taxNo }"></td>
                       <td th:text="${ tax.taxDate }"></td>
-                      <td><button onclick="openLayer('layerPop',140,430)" class="btn btn-warning me-1">세금계산서 확인하기</button>
+                      <td><button onclick="select()" class="btn btn-warning me-1">세금계산서 확인하기</button>
                         <div class="box" id="layerPop" style="width: auto; height: auto; margin: 0 auto; margin-top: 100px; padding-top: 50px; background-color: #fff; display:none;">
                           <table table id="taxTable" width='700' cellpadding='0' cellspacing='0' align='center'class='border_all'>
                            <tr>
@@ -255,14 +255,14 @@
               <!-- E: table --> <!-- S: paging -->
                   <div class="d-flex justify-content-center" id="pageBox">
                       <!-- 맨 앞으로 이동 버튼 -->
-                      <button class="btn btn-light"
+                      <button type="button" class="btn btn-light"
                               th:onclick="'location.href=\'/billTax/billList?currentPage='+ @{${selectCriteria.startPage}} + '\''"
                               th:disabled="${selectCriteria.pageNo == 1}"
                       >
                           <<
                       </button>
                       <!-- 이전 페이지 버튼 -->
-                      <button class="btn btn-light mx-1"
+                      <button type="button" class="btn btn-light mx-1"
                               th:onclick="'location.href=\'/billTax/billList?currentPage='+ @{${selectCriteria.pageNo - 1}} + '\''"
                               th:disabled="${selectCriteria.pageNo == 1}"
                       >
@@ -270,7 +270,7 @@
                       </button>
                       <!-- 숫자 버튼 -->
                       <th:block th:each="page : ${#numbers.sequence(selectCriteria.startPage, selectCriteria.endPage)}">
-                          <button class="btn btn-warning mx-1" disabled style="color:white"
+                          <button type="button" class="btn btn-warning mx-1" disabled style="color:white"
                                   th:text="${ page }"
                                   th:onclick="'location.href=\'/billTax/billList?currentPage='+ @{${page}} + '\''"
                                   th:disabled="${ selectCriteria.pageNo eq page }">
@@ -278,14 +278,14 @@
                       </th:block>
 
                       <!-- 다음 페이지 버튼 -->
-                      <button class="btn btn-light mx-1"
+                      <button type="button" class="btn btn-light mx-1"
                               th:onclick="'location.href=\'/billTax/billList?currentPage='+ @{${selectCriteria.pageNo + 1}} + '\''"
                               th:disabled="${selectCriteria.pageNo == selectCriteria.maxPage}"
                       >
                           >
                       </button>
                       <!-- 마지막 페이지로 이동 버튼 -->
-                      <button class="btn btn-light"
+                      <button type="button" class="btn btn-light"
                               th:onclick="'location.href=\'/billTax/billList?currentPage='+ @{${selectCriteria.maxPage}} + '\''"
                               th:disabled="${selectCriteria.pageNo == selectCriteria.maxPage}"
                       >
@@ -307,6 +307,12 @@
        $(this).next(".detail-sub-tr").find(".detail-sub").siblings(".detail-sub").slideUp(300);
     });
 
+    function select(e){
+        const idx = $("e.target.index");
+        console.log(idx);
+        openLayer('layerPop',140,430)
+    };
+
     function openLayer(IdName, tpos, lpos){
       var pop = document.getElementById(IdName);
       pop.style.display = "block";
@@ -316,7 +322,6 @@
     function closeLayer(IdName){
       var pop = document.getElementById(IdName);
       pop.style.display = "none";
-
     }
   </script>
   <!-- table js -->
