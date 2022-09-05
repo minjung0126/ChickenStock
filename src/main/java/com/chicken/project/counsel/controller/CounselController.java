@@ -1,15 +1,18 @@
 package com.chicken.project.counsel.controller;
 
+import com.chicken.project.counsel.model.dto.CounselApplyDTO;
 import com.chicken.project.counsel.model.dto.CounselDTO;
 import com.chicken.project.counsel.model.service.CounselService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
@@ -26,7 +29,7 @@ public class CounselController {
     }
 
     @GetMapping("/user/list")
-    public ModelAndView counselListPage(ModelAndView mv){
+    public ModelAndView userCounselListPage(ModelAndView mv){
 
         log.info("[CounselController] counsel : ");
 
@@ -38,6 +41,19 @@ public class CounselController {
         return mv;
     }
 
+    @GetMapping("/admin/list")
+    public ModelAndView adminCounselListPage(ModelAndView mv){
+
+        log.info("[CounselController] counsel : ");
+
+        List<CounselDTO> counselList = counselService.selectCounsel();
+
+        mv.addObject("counselList", counselList);
+        mv.setViewName("/counsel/admin/adminCounselList");
+
+        return mv;
+    }
+
     @GetMapping("/user/insert")
     public String counselInsertPage(){
 
@@ -45,7 +61,7 @@ public class CounselController {
     }
 
     @PostMapping("/user/insert")
-    public String counselInsert(@ModelAttribute CounselDTO counsel, RedirectAttributes rttr, ModelAndView mv){
+    public String userCounselInsert(@ModelAttribute CounselDTO counsel, RedirectAttributes rttr, ModelAndView mv){
 
         log.info("[CounselController] counsel : " + counsel);
 
@@ -55,5 +71,71 @@ public class CounselController {
         rttr.addFlashAttribute("message", "1:1 문의 등록 성공!");
 
         return "redirect:/counsel/user/list";
+    }
+
+    @GetMapping("/admin/detail")
+    public ModelAndView adminCounselDetail(ModelAndView mv, @RequestParam int counselNo){
+
+        log.info("[CounselController] counselNo : " + counselNo);
+
+        CounselDTO counsel = counselService.selectCounselByNo(counselNo);
+        CounselApplyDTO counselApply = counselService.selectCounselApplyByNo(counselNo);
+
+        mv.addObject("counsel", counsel);
+        mv.addObject("counselApply", counselApply);
+        mv.setViewName("/counsel/admin/adminCounselDetail");
+
+        return mv;
+    }
+
+    @GetMapping("/admin/insert")
+    public ModelAndView adminCounselInsertPage(ModelAndView mv, HttpServletRequest request){
+
+        int counselNo = Integer.parseInt(request.getParameter("counselNo"));
+
+        log.info("[CounselController] counselNo : " + counselNo);
+
+        CounselDTO counsel = counselService.selectCounselByNo(counselNo);
+
+        log.info("[CounselController] counsel : " + counsel);
+
+        mv.addObject("counsel", counsel);
+        mv.setViewName("/counsel/admin/adminCounselInsert");
+
+        return mv;
+    }
+
+    @PostMapping("/admin/insert")
+    public String adminCounselInsert(@RequestParam String answerContent,
+                                     HttpServletRequest request,
+                                     ModelAndView mv,
+                                     RedirectAttributes rttr){
+
+        int counselNo = Integer.parseInt(request.getParameter("counselNo"));
+
+        log.info("[CounselController] counselNo : " + counselNo);
+
+        counselService.insertCounselApply(answerContent, counselNo);
+
+        rttr.addFlashAttribute("message", "1:1문의 답변 등록 완료!");
+
+        return "redirect:/counsel/admin/list";
+    }
+
+    @GetMapping("/user/detail")
+    public ModelAndView userCounselPage(ModelAndView mv, @RequestParam int counselNo){
+
+        log.info("[CounselController] couneslNo : " + counselNo);
+
+        CounselDTO counsel = counselService.selectCounselByNo(counselNo);
+        CounselApplyDTO counselApply = counselService.selectCounselApplyByNo(counselNo);
+
+        mv.addObject("counsel", counsel);
+        mv.addObject("counselApply", counselApply);
+
+        mv.setViewName("/counsel/user/userCounselDetail");
+
+        return mv;
+
     }
 }

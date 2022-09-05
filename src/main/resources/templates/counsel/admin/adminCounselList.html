@@ -36,7 +36,7 @@
           <!-- 작업 영역 -->
           <!-- S: table -->
           <div class="container-fluid" style="margin-top:30px">
-            <h3>1:1 문의</h3>
+            <h3>가맹점 조회</h3>
 			      <br>
 
             <table class="table">
@@ -54,7 +54,7 @@
                   <th>문의 답변상태</th>
                 </tr>
               </thead>
-              <tbody style="cursor:pointer">
+              <tbody>
                 <tr th:each="counsel : ${ counselList }">
                   <td th:text="${ counsel.counselNo }"></td>
                   <td th:text="${ counsel.counselName }"></td>
@@ -80,9 +80,16 @@
 
         $tds[i].onclick = function () {
           const counselNo = this.parentNode.children[0].innerText;
-          location.href = "/counsel/user/detail?counselNo=" + counselNo
+          location.href = "/counsel/admin/detail?counselNo=" + counselNo
         }
       }
+    }
+  </script>
+  <script th:inline="javascript">
+    let message = [[${message}]];
+
+    if(message != null && message !== '') {
+      alert(message);
     }
   </script>
 </body>
