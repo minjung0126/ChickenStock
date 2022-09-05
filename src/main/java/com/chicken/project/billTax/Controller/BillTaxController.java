@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -74,15 +75,38 @@ public class BillTaxController {
 
         List<BillTaxDTO> taxBillList = billTaxService.selectTaxBillList(selectCriteria);
 
-        String recCode = taxBillList.get(0).getRecCode();
+        //String recCode = taxBillList.get(0).getRecCode();
 //        String recCode = "SI0001";
-        List<BillTaxDTO> taxListMenu = billTaxService.selectTaxMenuList(recCode);
+        Map<String, List<BillTaxDTO>> map = new HashMap<>();
+
+        for(int i = 0; i < taxBillList.size(); i++){
+            String recCode = taxBillList.get(i).getRecCode();
+            List<BillTaxDTO> taxListMenu = billTaxService.selectTaxMenuList(recCode);
+
+            map.put(recCode, taxListMenu);
+        }
+
+//        Map<String, List<BillTaxDTO>> map2 = new HashMap<>();
+//        for(int i = 0; i < taxBillList.size(); i++){
+//
+//            int taxBillTotalMoney = taxBillList.get(i).getRecTotalMoney();
+//            String num = String.valueOf(taxBillTotalMoney);
+//            char[] num2 = num.toCharArray();
+//
+//            map2.put(taxBillList.get(i).getRecCode(), num2)
+//            for(int j = 0; j <  num2.length; j++){
+//                System.out.println();
+//            }
+//        }
+
+        // List<BillTaxDTO> taxListMenu = billTaxService.selectTaxMenuList(recCode);
 
         log.info("[taxBillController] taxBillList = " + taxBillList);
-        log.info("[taxBillController] recCode = " + recCode);
+        log.info("[taxBillController] map = " + map);
+        //log.info("[taxBillController] recCode = " + recCode);
 
         mv.addObject("taxBillList", taxBillList);
-        mv.addObject("taxListMenu", taxListMenu);
+        mv.addObject("taxListMenu", map);
         mv.addObject("selectCriteria", selectCriteria);
         mv.setViewName("billTax/billList");
 
