@@ -20,38 +20,6 @@
     <script th:src="@{/js/common.js}"></script>
 
 </head>
-<script>
-    window.onload = function (){
-
-        let str = Number($("#test").children().eq(0).text());
-
-        let str2 = str.toString();
-
-        let last = str2.charAt(0);
-        let last1 = str2.charAt(1);
-        let last2 = str2.charAt(2);
-        let last3 = str2.charAt(3);
-        let last4 = str2.charAt(4);
-        let last5 = str2.charAt(5);
-        let last6 = str2.charAt(6);
-        let last7 = str2.charAt(7);
-        let last8 = str2.charAt(8);
-        let last9 = str2.charAt(9);
-        let last10 = str2.charAt(10);
-
-        document.getElementById("test1").innerText = last10;
-        document.getElementById("test2").innerText = last9;
-        document.getElementById("test3").innerText = last8;
-        document.getElementById("test4").innerText = last7;
-        document.getElementById("test5").innerText = last6;
-        document.getElementById("test6").innerText = last5;
-        document.getElementById("test7").innerText = last4;
-        document.getElementById("test8").innerText = last3;
-        document.getElementById("test9").innerText = last2;
-        document.getElementById("test10").innerText = last1;
-        document.getElementById("test11").innerText = last;
-    }
-</script>
 <body>
 <div class="wrap">
     <!-- header -->
@@ -262,8 +230,8 @@
                                                             <td class='border_up' align='center' width='108'>외상미수금</td>
                                                             <td class='border_top' rowspan='2' align='center' width='143'>이 금액을 징수 함</td>
                                                         </tr>
-                                                        <tr id="test">
-                                                            <td class='border_up' align='center' width='122' height='25' th:text="${ tax.recTotalMoney }"></td>
+                                                        <tr>
+                                                            <td class='border_up' id="test" align='center' width='122' height='25' th:text="${ tax.recTotalMoney }"></td>
                                                             <td class='border_up' align='center' width='108'> V </td>
                                                             <td class='border_up' align='center' width='108'>&nbsp;</td>
                                                             <td class='border_up' align='center' width='108'>&nbsp;</td>
@@ -345,6 +313,37 @@
             $(e).siblings()[0].style.display = "block";
             $(e).siblings()[0].style.top = "120px";
             $(e).siblings()[0].style.left= "430px";
+
+            let str = Number($("#test").children().eq(0).text());
+
+            let str2 = str.toString();
+
+            window.console.log('${str2.length}');
+
+            let last = str2.charAt(str2.length-1);
+            let last1 = str2.charAt(str2.length-2);
+            let last2 = str2.charAt(str2.length-3);
+            let last3 = str2.charAt(str2.length-4);
+            let last4 = str2.charAt(str2.length-5);
+            let last5 = str2.charAt(str2.length-6);
+            let last6 = str2.charAt(str2.length-7);
+            let last7 = str2.charAt(str2.length-8);
+            let last8 = str2.charAt(str2.length-9);
+            let last9 = str2.charAt(str2.length-10);
+            let last10 = str2.charAt(str2.length-11);
+
+
+            document.getElementById("test1").innerText = last10;
+            document.getElementById("test2").innerText = last9;
+            document.getElementById("test3").innerText = last8;
+            document.getElementById("test4").innerText = last7;
+            document.getElementById("test5").innerText = last6;
+            document.getElementById("test6").innerText = last5;
+            document.getElementById("test7").innerText = last4;
+            document.getElementById("test8").innerText = last3;
+            document.getElementById("test9").innerText = last2;
+            document.getElementById("test10").innerText = last1;
+            document.getElementById("test11").innerText = last;
         }
 
         function closeLayer(e){

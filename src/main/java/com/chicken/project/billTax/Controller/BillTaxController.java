@@ -86,19 +86,6 @@ public class BillTaxController {
             map.put(recCode, taxListMenu);
         }
 
-//        Map<String, List<BillTaxDTO>> map2 = new HashMap<>();
-//        for(int i = 0; i < taxBillList.size(); i++){
-//
-//            int taxBillTotalMoney = taxBillList.get(i).getRecTotalMoney();
-//            String num = String.valueOf(taxBillTotalMoney);
-//            char[] num2 = num.toCharArray();
-//
-//            map2.put(taxBillList.get(i).getRecCode(), num2)
-//            for(int j = 0; j <  num2.length; j++){
-//                System.out.println();
-//            }
-//        }
-
         // List<BillTaxDTO> taxListMenu = billTaxService.selectTaxMenuList(recCode);
 
         log.info("[taxBillController] taxBillList = " + taxBillList);
