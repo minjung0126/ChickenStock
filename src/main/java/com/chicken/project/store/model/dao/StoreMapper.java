@@ -2,6 +2,7 @@ package com.chicken.project.store.model.dao;
 
 import com.chicken.project.store.model.dto.StoreDTO;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;
 
@@ -12,7 +13,11 @@ public interface StoreMapper {
 
     int insertStore(StoreDTO store);
 
+    StoreDTO selectStoreInfo(String username);
+
     StoreDTO selectStoreByName(String storeName);
 
     int updateStore(StoreDTO store);
+
+    String selectStoreId(UserDetails member);
 }

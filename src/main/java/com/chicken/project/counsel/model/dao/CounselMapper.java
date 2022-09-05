@@ -19,4 +19,6 @@ public interface CounselMapper {
     void updateCounsel(int counselNo);
 
     CounselApplyDTO selectCounselApplyByNo(int counselNo);
+
+    List<CounselDTO> selectCounselByStoreId(String storeId);
 }

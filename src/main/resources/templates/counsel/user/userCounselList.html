@@ -55,6 +55,7 @@
                 </tr>
               </thead>
               <tbody style="cursor:pointer">
+              <input type="hidden" name="storeId" th:value="${ counselList.storeId }">
                 <tr th:each="counsel : ${ counselList }">
                   <td th:text="${ counsel.counselNo }"></td>
                   <td th:text="${ counsel.counselName }"></td>

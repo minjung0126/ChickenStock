@@ -29,11 +29,13 @@ public class CounselController {
     }
 
     @GetMapping("/user/list")
-    public ModelAndView userCounselListPage(ModelAndView mv){
+    public ModelAndView userCounselListPage(ModelAndView mv, HttpServletRequest request){
 
-        log.info("[CounselController] counsel : ");
+        String storeId = request.getParameter("storeId");
 
-        List<CounselDTO> counselList = counselService.selectCounsel();
+        log.info("[CounselController] storeId : " + storeId);
+
+        List<CounselDTO> counselList = counselService.selectCounselByStoreId(storeId);
 
         mv.addObject("counselList", counselList);
         mv.setViewName("/counsel/user/userCounselList");
@@ -43,8 +45,6 @@ public class CounselController {
 
     @GetMapping("/admin/list")
     public ModelAndView adminCounselListPage(ModelAndView mv){
-
-        log.info("[CounselController] counsel : ");
 
         List<CounselDTO> counselList = counselService.selectCounsel();
 

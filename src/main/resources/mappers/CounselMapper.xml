@@ -77,4 +77,11 @@
           FROM COUNSEL_APPLY
          WHERE COUNSEL_NO = #{ counselNo }
     </select>
+
+    <select id="selectCounselByStoreId" resultMap="counselResultMap">
+        SELECT
+               *
+          FROM COUNSEL
+         WHERE STORE_ID = #{ storeId }
+    </select>
 </mapper>
