@@ -1,31 +1,31 @@
 package com.chicken.project.member.model.service;
 
-import com.chicken.project.empList.model.dao.EmployeeMapper;
-import com.chicken.project.empList.model.dto.EmployeeDTO;
-import com.chicken.project.member.model.dao.MemberMapper;
+import com.chicken.project.member.model.dao.EmployeeMapper;
+import com.chicken.project.member.model.dto.EmployeeDTO;
 import com.chicken.project.store.model.dao.StoreMapper;
-import com.chicken.project.store.model.dto.StoreDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
-public class MemberServiceImpl implements MemberService{
+public class EmployeeServiceImpl implements EmployeeService {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
-
-    private final MemberMapper memberMapper;
 
     private final EmployeeMapper employeeMapper;
 
     private final StoreMapper storeMapper;
 
     @Autowired
-    public MemberServiceImpl(MemberMapper memberMapper, EmployeeMapper employeeMapper, StoreMapper storeMapper) {
-        this.memberMapper = memberMapper;
+    public EmployeeServiceImpl( EmployeeMapper employeeMapper, StoreMapper storeMapper) {
+
         this.employeeMapper = employeeMapper;
         this.storeMapper = storeMapper;
     }
@@ -47,23 +47,21 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String empId) throws UsernameNotFoundException {
 
-//        MemeberDTO member = memberMapper
-//
-//        if(empInfo != null){
-//
-//            EmployeeDTO member = empInfo;
-//        } else {
-//
-//            StoreDTO member = storeInfo;
-//        }
-//
-//        if(member == null){
-//            throw new UsernameNotFoundException("직원 정보가 존재하지 않습니다.");
-//        }
+        EmployeeDTO member = employeeMapper.selectEmpInfo(empId);
 
-        return null;
+        System.out.println("member = " + member);
+
+        if(member == null){
+            throw new UsernameNotFoundException("직원 정보가 존재하지 않습니다.");
+        }
+
+        List<GrantedAuthority> authorities = new ArrayList<>();
+
+
+
+        return member;
     };
 
 

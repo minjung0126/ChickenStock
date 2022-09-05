@@ -1,7 +1,7 @@
 package com.chicken.project.empList.model.service;
 
-import com.chicken.project.empList.model.dao.EmployeeMapper;
-import com.chicken.project.empList.model.dto.EmployeeDTO;
+import com.chicken.project.member.model.dao.EmployeeMapper;
+import com.chicken.project.member.model.dto.EmployeeDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

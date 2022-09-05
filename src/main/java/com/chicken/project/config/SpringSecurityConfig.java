@@ -1,6 +1,6 @@
 package com.chicken.project.config;
 
-import com.chicken.project.member.model.service.MemberService;
+import com.chicken.project.member.model.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,12 +17,12 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableWebSecurity
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private MemberService memberService;
+    private EmployeeService employeeService;
 
     @Autowired
-    public SpringSecurityConfig(MemberService memberService){
+    public SpringSecurityConfig(EmployeeService employeeService){
 
-        this.memberService = memberService;
+        this.employeeService = employeeService;
     }
 
     @Bean
@@ -41,14 +41,16 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // 페이지 접근 권한
-        http.csrf().disable()
-                .authorizeRequests()
-                .anyRequest().permitAll();
+//        http
+//                .authorizeRequests()
+//                .anyRequest().permitAll();
         // 로그인 로그아웃 설정
-        http
+        http.csrf().disable()
                 .formLogin()
-                .loginPage("/member/login")
-                .successForwardUrl("/member/moveMain")
+                .loginPage("/member/employee/login")
+                .successForwardUrl("/main/admin_main")
+                .usernameParameter("empId")
+                .passwordParameter("empPwd")
             .and()
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/member/logout"))
@@ -56,9 +58,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .invalidateHttpSession(true);
     }
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-
-//        auth.UserDetailsService(memberService).passwordEncoder(passwordEncoder());
-    }
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//
+//        auth.userDetailsService(employeeService).passwordEncoder(passwordEncoder());
+//    }
 }

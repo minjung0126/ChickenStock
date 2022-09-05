@@ -1,6 +1,6 @@
-package com.chicken.project.empList.model.dao;
+package com.chicken.project.member.model.dao;
 
-import com.chicken.project.empList.model.dto.EmployeeDTO;
+import com.chicken.project.member.model.dto.EmployeeDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.security.core.userdetails.UserDetails;
 

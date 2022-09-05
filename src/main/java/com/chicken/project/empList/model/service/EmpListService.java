@@ -1,7 +1,6 @@
 package com.chicken.project.empList.model.service;
 
-import com.chicken.project.empList.model.dto.EmployeeDTO;
-import org.springframework.transaction.annotation.Transactional;
+import com.chicken.project.member.model.dto.EmployeeDTO;
 
 import java.util.List;
 

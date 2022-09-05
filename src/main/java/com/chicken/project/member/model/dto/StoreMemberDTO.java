@@ -1,7 +1,5 @@
 package com.chicken.project.member.model.dto;
 
-import com.chicken.project.empList.model.dto.EmployeeDTO;
-import com.chicken.project.store.model.dto.StoreDTO;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -15,14 +13,17 @@ import java.util.Collection;
 @Setter
 @ToString
 @RequiredArgsConstructor
-public class MemberDTO implements UserDetails {
+public class StoreMemberDTO implements UserDetails {
 
-    private String memberId;
-    private String memberPwd;
-    private String memberType;
-
-    private EmployeeDTO employeeDTO;
-    private StoreDTO storeDTO;
+    private String storeName;
+    private String storeAccount;
+    private String storeRep;
+    private String storeAddress;
+    private String storePhone;
+    private String storeEmail;
+    private String storeId;
+    private String storePwd;
+    private String storeNo;
 
 
     @Override
@@ -32,12 +33,12 @@ public class MemberDTO implements UserDetails {
 
     @Override
     public String getPassword() {
-        return getMemberPwd();
+        return getStorePwd();
     }
 
     @Override
     public String getUsername() {
-        return getMemberId();
+        return getStoreId();
     }
 
     @Override
