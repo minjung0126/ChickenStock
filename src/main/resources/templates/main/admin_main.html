@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
@@ -38,7 +38,7 @@
         <a href="" title=""><img src="../assets/images/logo.png" alt="logo"/></a>
       </div>
       <div class="logout_area">
-        <button class="btn btn-outline-light">로그아웃</button>
+        <button class="btn btn-outline-light" onclick="location.href='/member/logout'">로그아웃</button>
       </div>
       <div class="user_area">
         <span>관리자</span>님, 환영합니다.

@@ -21,12 +21,9 @@ public class MemberController {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    private final PasswordEncoder passwordEncoder;
-
     private final MemberService memberService;
 
-    public MemberController(PasswordEncoder passwordEncoder, MemberService memberService) {
-        this.passwordEncoder = passwordEncoder;
+    public MemberController( MemberService memberService) {
         this.memberService = memberService;
     }
 
