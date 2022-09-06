@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class EmployeeServiceImpl implements EmployeeService {
+public class MemberServiceImpl implements MemberService {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
@@ -25,7 +25,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final StoreMemberMapper storeMapper;
 
     @Autowired
-    public EmployeeServiceImpl(EmployeeMapper employeeMapper, StoreMemberMapper storeMapper) {
+    public MemberServiceImpl(EmployeeMapper employeeMapper, StoreMemberMapper storeMapper) {
 
         this.employeeMapper = employeeMapper;
         this.storeMapper = storeMapper;
@@ -41,15 +41,16 @@ public class EmployeeServiceImpl implements EmployeeService {
         StoreMemberDTO storeMember = storeMapper.selectStoreInfo(username);
 
         log.info("[EmployeeService] member = " + empMember);
+        log.info("[EmployeeService] storeMember = " + storeMember);
 
-        EmployeeImpl member = null;
-
+        AdminImpl member = null;
+        StoreImpl store = null;
         if(empMember != null){
 
             List<GrantedAuthority> authorities = new ArrayList<>();
 
             if(empMember.getEmpRoleList() != null) {
-
+                log.info("[empMember] check = " + empMember);
                 List<EmpRoleDTO> roleList = empMember.getEmpRoleList();
 
                 for(int i = 0; i < roleList.size(); i++){
@@ -59,52 +60,33 @@ public class EmployeeServiceImpl implements EmployeeService {
                 }
             }
 
-            member = new EmployeeImpl(empMember.getEmpId(), empMember.getEmpPwd(), authorities);
+            member = new AdminImpl(empMember.getEmpId(), empMember.getEmpPwd(), authorities);
             member.setDetails(empMember);
 
         } else if(storeMember != null){
-
+            log.info("[storeMember] check = " + storeMember);
             List<GrantedAuthority> authorities = new ArrayList<>();
 
-            if(member.getStoreRoleList() != null){
+            if(storeMember.getStoreRoleList() != null){
 
-                List<StoreRoleDTO> roleList = member.getStoreRoleList();
+                List<StoreRoleDTO> roleList = storeMember.getStoreRoleList();
 
                 for(int i = 0; i < roleList.size(); i++){
 
                     AuthDTO authority = roleList.get(i).getAuthority();
                     authorities.add(new SimpleGrantedAuthority(authority.getAuthName()));
                 }
-
-                member = new EmployeeImpl(member.getStoreId(), member.getStorePwd(), authorities);
-                member.setDetails(storeMember);
             }
+
+            store = new StoreImpl(storeMember.getStoreId(), storeMember.getStorePwd(), authorities);
+            store.setDetails(storeMember);
+            log.info("[storeMember] check = " + store);
         }
 
-        return member;
 
 
-//        if(empMember == null){
-//            throw new UsernameNotFoundException("직원 정보가 존재하지 않습니다.");
-//        }
+        return member != null? member: store;
 
-//        List<GrantedAuthority> authorities = new ArrayList<>();
-//
-//        if(member.getEmpRoleList() != null) {
-//
-//            List<EmpRoleDTO> roleList = member.getEmpRoleList();
-//
-//            for(int i = 0; i < roleList.size(); i++){
-//
-//                AuthDTO authority = roleList.get(i).getAuthority();
-//                authorities.add(new SimpleGrantedAuthority(authority.getAuthName()));
-//            }
-//        }
-//
-//        EmployeeImpl emp = new EmployeeImpl(member.getEmpId(), member.getEmpPwd(), authorities);
-//        emp.setDetails(member);
-
-//        return emp;
     }
 
 }

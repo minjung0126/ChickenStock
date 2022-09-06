@@ -1,2 +1,18 @@
-package com.chicken.project.member.model.dto;public class StoreRoleDTO {
+package com.chicken.project.member.model.dto;
+
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
+public class StoreRoleDTO {
+
+    private String authCode;
+    private String storeName;
+
+    private AuthDTO authority;
 }

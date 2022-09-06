@@ -4,22 +4,11 @@ import com.chicken.project.calendar.model.dto.CalendarDTO;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 
-public class EmployeeImpl extends User {
-
-    private String empId;
-    private String empName;
-    private String empPhone;
-    private String empEmail;
-    private String empPwd;
-    private java.util.Date birth;
-
-    private List<EmpRoleDTO> empRoleList;
-
-    private List<CalendarDTO> calendar;
-
-
+public class StoreImpl extends User {
     private String storeName;
     private String storeAccount;
     private String storeRep;
@@ -32,20 +21,8 @@ public class EmployeeImpl extends User {
 
     private List<StoreRoleDTO> storeRoleList;
 
-    public EmployeeImpl(String username, String password, Collection<? extends GrantedAuthority> authorities) {
+    public StoreImpl(String username, String password, Collection<? extends GrantedAuthority> authorities) {
         super(username, password, authorities);
-    }
-
-    public void setDetails(EmployeeDTO member) {
-        this.empId = member.getEmpId();
-        this.empName = member.getEmpName();
-        this.empPhone = member.getEmpPhone();
-        this.empEmail = member.getEmpEmail();
-        this.empPwd = member.getEmpPwd();
-        this.birth = member.getBirth();
-        this.empRoleList = member.getEmpRoleList();
-        this.calendar = member.getCalendar();
-
     }
 
     public void setDetails(StoreMemberDTO member) {
@@ -53,7 +30,7 @@ public class EmployeeImpl extends User {
         this.storeAccount = member.getStoreAccount();
         this.storeRep = member.getStoreRep();
         this.storeAddress = member.getStoreAddress();
-        this.storePhone = member.getStoreAddress();
+        this.storePhone = member.getStorePhone();
         this.storeEmail = member.getStoreEmail();
         this.storeId = member.getStoreId();
         this.storePwd = member.getStorePwd();
@@ -61,37 +38,6 @@ public class EmployeeImpl extends User {
         this.storeRoleList = member.getStoreRoleList();
     }
 
-    public String getEmpId() {
-        return empId;
-    }
-
-    public String getEmpName() {
-        return empName;
-    }
-
-    public String getEmpPhone() {
-        return empPhone;
-    }
-
-    public String getEmpEmail() {
-        return empEmail;
-    }
-
-    public String getEmpPwd() {
-        return empPwd;
-    }
-
-    public Date getBirth() {
-        return birth;
-    }
-
-    public List<EmpRoleDTO> getEmpRoleList() {
-        return empRoleList;
-    }
-
-    public List<CalendarDTO> getCalendar() {
-        return calendar;
-    }
 
     public String getStoreName() {
         return storeName;
@@ -135,16 +81,8 @@ public class EmployeeImpl extends User {
 
     @Override
     public String toString() {
-        return "EmployeeImpl{" +
-                "empId='" + empId + '\'' +
-                ", empName='" + empName + '\'' +
-                ", empPhone='" + empPhone + '\'' +
-                ", empEmail='" + empEmail + '\'' +
-                ", empPwd='" + empPwd + '\'' +
-                ", birth=" + birth +
-                ", empRoleList=" + empRoleList +
-                ", calendar=" + calendar +
-                ", storeName='" + storeName + '\'' +
+        return "StoreImpl{" +
+                "storeName='" + storeName + '\'' +
                 ", storeAccount='" + storeAccount + '\'' +
                 ", storeRep='" + storeRep + '\'' +
                 ", storeAddress='" + storeAddress + '\'' +

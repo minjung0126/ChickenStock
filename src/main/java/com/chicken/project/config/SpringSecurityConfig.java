@@ -1,6 +1,6 @@
 package com.chicken.project.config;
 
-import com.chicken.project.member.model.service.EmployeeService;
+import com.chicken.project.member.model.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,12 +18,12 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableWebSecurity
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private EmployeeService employeeService;
+    private MemberService memberService;
 
     @Autowired
-    public SpringSecurityConfig(EmployeeService employeeService){
+    public SpringSecurityConfig(MemberService memberService){
 
-        this.employeeService = employeeService;
+        this.memberService = memberService;
     }
 
     @Bean
@@ -46,15 +46,15 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(HttpMethod.GET,"calendar/**").hasRole("EMPLOYEE")
                 .antMatchers(HttpMethod.POST, "calendar/**").hasRole("ADMIN")
-                .antMatchers("/notice/admin/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, "calendar/**").hasRole("STORE")
+//                .antMatchers("/notice/admin/**").hasRole("ADMIN")
+//                .antMatchers("/notice/user/**").hasRole("STORE")
                 .anyRequest().permitAll()
         // 로그인 로그아웃 설정
           .and()
                 .formLogin()
-                .loginPage("/member/employee/login")
-                .successForwardUrl("/main/admin_main")
-                .usernameParameter("empId")
-                .passwordParameter("empPwd")
+                .loginPage("/member/login")
+                .successForwardUrl("/member/moveMain")
           .and()
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/member/logout"))
@@ -65,6 +65,6 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         System.out.println("확인");
-        auth.userDetailsService(employeeService).passwordEncoder(passwordEncoder());
+        auth.userDetailsService(memberService).passwordEncoder(passwordEncoder());
     }
 }
