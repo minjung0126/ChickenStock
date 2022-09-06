@@ -1,4 +1,4 @@
-package com.chicken.project.store.model.dto;
+package com.chicken.project.member.model.dto;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -8,12 +8,13 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.List;
 
 @Getter
 @Setter
 @ToString
 @RequiredArgsConstructor
-public class StoreDTO{
+public class StoreMemberDTO{
 
     private String storeName;
     private String storeAccount;
@@ -25,5 +26,6 @@ public class StoreDTO{
     private String storePwd;
     private String storeNo;
 
+    private List<StoreRoleDTO> storeRoleList;
 
 }
