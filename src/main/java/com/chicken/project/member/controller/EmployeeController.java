@@ -10,21 +10,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 
 @Controller
-@RequestMapping("/member/employee")
+@RequestMapping("/member/*")
 public class EmployeeController {
 
-    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     private final EmployeeService employeeService;
 
     @Autowired
     public EmployeeController(EmployeeService employeeService) {
+
         this.employeeService = employeeService;
     }
 
-    @GetMapping("/login")
-    public String login(){
+    @GetMapping("/employee/login")
+    public void login(){}
 
-        return "member/employee/login";
-    }
+    @GetMapping("/main/admin_main")
+    public void main(){}
 }

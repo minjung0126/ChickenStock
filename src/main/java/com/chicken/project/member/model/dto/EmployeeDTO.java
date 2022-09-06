@@ -1,20 +1,11 @@
 package com.chicken.project.member.model.dto;
 
 import com.chicken.project.calendar.model.dto.CalendarDTO;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.*;
+import java.util.Date;
+import java.util.List;
 
-@Getter
-@Setter
-@ToString
-@RequiredArgsConstructor
-public class EmployeeDTO implements UserDetails {
+public class EmployeeDTO {
 
     private String empId;
     private String empName;
@@ -27,38 +18,72 @@ public class EmployeeDTO implements UserDetails {
 
     private List<CalendarDTO> calendar;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+    public EmployeeDTO() {
     }
 
-    @Override
-    public String getPassword() {
-        return getEmpPwd();
+    public String getEmpId() {
+        return empId;
     }
 
-    @Override
-    public String getUsername() {
-        return getEmpId();
+    public String getEmpName() {
+        return empName;
     }
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
+    public String getEmpPhone() {
+        return empPhone;
     }
 
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
+    public String getEmpEmail() {
+        return empEmail;
     }
 
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
+    public String getEmpPwd() {
+        return empPwd;
     }
 
-    @Override
-    public boolean isEnabled() {
-        return true;
+    public Date getBirth() {
+        return birth;
     }
+
+    public List<EmpRoleDTO> getEmpRoleList() {
+        return empRoleList;
+    }
+
+    public List<CalendarDTO> getCalendar() {
+        return calendar;
+    }
+
+    public void setEmpId(String empId) {
+        this.empId = empId;
+    }
+
+    public void setEmpName(String empName) {
+        this.empName = empName;
+    }
+
+    public void setEmpPhone(String empPhone) {
+        this.empPhone = empPhone;
+    }
+
+    public void setEmpEmail(String empEmail) {
+        this.empEmail = empEmail;
+    }
+
+    public void setEmpPwd(String empPwd) {
+        this.empPwd = empPwd;
+    }
+
+    public void setBirth(Date birth) {
+        this.birth = birth;
+    }
+
+    public void setEmpRoleList(List<EmpRoleDTO> empRoleList) {
+        this.empRoleList = empRoleList;
+    }
+
+    public void setCalendar(List<CalendarDTO> calendar) {
+        this.calendar = calendar;
+    }
+
+
 }

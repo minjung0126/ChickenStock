@@ -1,12 +1,7 @@
 package com.chicken.project.member.model.service;
 
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
-public interface EmployeeService {
-    boolean selectEmpId(UserDetails member);
+public interface EmployeeService extends UserDetailsService{
 
-    boolean selectStoreId(UserDetails member);
-
-    UserDetails loadUserByUsername(String empId) throws UsernameNotFoundException;
 }

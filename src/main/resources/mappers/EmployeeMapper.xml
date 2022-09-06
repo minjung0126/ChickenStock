@@ -11,6 +11,7 @@
         <result property="empEmail" column="EMP_EMAIL"/>
         <result property="birth" column="EMP_BIRTH"/>
 
+        <collection property="empRoleList" resultMap="empRoleResultMap"/>
         <collection property="calendar" resultMap="calendarResultMap"/>
     </resultMap>
 
@@ -21,6 +22,18 @@
         <result property="endDay" column="CAL_END"/>
         <result property="content" column="CAL_CONTENT"/>
         <result property="groupNo" column="CAL_GROUP_NO"/>
+    </resultMap>
+
+    <resultMap id="authResultMap" type="AuthDTO">
+        <id property="authCode" column="AUTH_CODE"/>
+        <result property="authName" column="AUTH_NAME"/>
+    </resultMap>
+
+    <resultMap id="empRoleResultMap" type="EmpRoleDTO">
+        <result property="authCode" column="AUTH_CODE"/>
+        <result property="empId" column="EMP_ID"/>
+
+        <collection property="authority" resultMap="authResultMap"/>
     </resultMap>
 
     <select id="selectAllEmployee" resultMap="employeeResultMap">
@@ -57,14 +70,18 @@
 
     <select id="selectEmpInfo" resultMap="employeeResultMap">
         SELECT
-               EMP_ID
-             , EMP_NAME
-             , EMP_PHONE
-             , EMP_EMAIL
-             , EMP_PWD
-             , EMP_BIRTH
-          FROM EMPLOYEE
-         WHERE EMP_ID = #{ empId }
+               A.EMP_ID
+             , A.EMP_NAME
+             , A.EMP_PHONE
+             , A.EMP_EMAIL
+             , A.EMP_PWD
+             , A.EMP_BIRTH
+             , B.AUTH_CODE
+             , C.AUTH_NAME
+          FROM EMPLOYEE A
+          LEFT JOIN EMP_ROLE B ON (A.EMP_ID = B.EMP_ID)
+          LEFT JOIN AUTH_CODE C ON (B.AUTH_CODE = C.AUTH_CODE)
+         WHERE A.EMP_ID = #{ empId }
     </select>
 
 

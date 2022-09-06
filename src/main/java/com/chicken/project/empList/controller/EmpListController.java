@@ -62,7 +62,7 @@ public class EmpListController {
         log.info("[EmpListController] ========================================");
 
         emp.setEmpPhone(emp.getEmpPhone().replace("-",""));
-        //emp.setEmpPwd(passwordEncoder.encode(emp.getEmpPwd()));
+        emp.setEmpPwd(passwordEncoder.encode(emp.getEmpPwd()));
 
         log.info("[EmpListController] registEmp : " + emp);
 
