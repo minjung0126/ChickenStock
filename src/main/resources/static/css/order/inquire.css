@@ -123,19 +123,22 @@
     left: 15px;
 }
 
-/* 체크박스 */
-#checkBox {
+/* 품절 상품 제외 + 관심 상품만 */
+#itemCondition {
     position: absolute;
     left: 720px;
     top: 175px;
+    float: left;
 }
 
-#checkBox > label {
-    margin-right: 30px;
+#itemCondition > p {
+    margin-right: 15px;
+    display: inline-block;
+    cursor: pointer;
 }
 
 /* 담기 버튼 */
-#cart > .btn {
+#cartBox > .btn {
     height: 38px;
     position: absolute;
     left: 1000px;

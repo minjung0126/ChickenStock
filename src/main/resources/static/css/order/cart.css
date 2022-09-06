@@ -1,6 +1,6 @@
 .input-group {
-    display: 100%;
     position: relative;
+    display: 100%;
 }
 
 /* 입고 예정일, 발주 마감일, 현재 시각, 가용 금액, 장바구니 */
@@ -57,32 +57,25 @@
     display:inline-block;
 }
 
-/* 검색창 */
-.input-group > .form-control {
-    width: 300px;
-    margin-top: 17px;
-    position: absolute;
-    top: 110px;
-    left: 10px;
-}
 
-.input-group > .btn {
+/* 품절 상품 제외 */
+#itemCondition {
     position: absolute;
-    margin-top: 17px;
-    top: 110px;
-    left: 390px;
-}
-
-/* 체크박스 */
-#checkBox {
-    position: absolute;
-    left: 730px;
+    left: 750px;
     top: 135px;
+    text-align: center;
 }
 
-#checkBox > label {
-    margin-right: 30px;
+#itemCondition > p {
+    margin-right: 15px;
+    display: inline-block;
+    cursor: pointer;
 }
+
+#itemCondition > p:hover {
+    text-decoration: underline;
+}
+
 
 /* 주문 버튼 */
 #order > .btn {
@@ -120,6 +113,37 @@
 
  /* table */
  .table {
-    margin-top: 120px;
-
+    margin-top: 165px;
  }
+
+/* 검색 */
+.search-area {
+    width: 500px;
+    position: absolute;
+    top: 130px;
+    float: left;
+}
+
+#searchValue {
+    width: 250px;
+    position: absolute;
+    left: 120px;
+    display: inline-block;
+}
+
+#searchCondition {
+    height: 37px;
+    position: absolute;
+    left: 15px;
+}
+
+#searchBtn {
+    position: absolute;
+    left: 365px;
+}
+
+/* 페이징 */
+#pageBox {
+    margin-top: 30px;
+    margin-bottom: 100px;
+}
