@@ -1,16 +1,16 @@
 package com.chicken.project.billTax.model.dto;
 
-public class BillTaxDTO {
+public class tsBillTaxDTO {
 
-    private int taxNo;             // 세금계산서 번호
+    private int tsNo;             // 거래명세서 번호
+    private String tsDate;        // 거래명세서 발급일자
     private String storeNo;       // 가맹점 사업자등록번호
     private String storeName;      // 가맹점 이름
     private String storeAddress;   // 가맹점 주소
-    private String taxDate;        // 세금계산서 발급일자
+    private String storeRep;       // 가맹점주 명
     private String itemName;       // 품명
     private String itemStandard;   // 품목규격
     private int itemSales;         // 매출가격
-    private String storeRep;       // 가맹점주 명
     private String recDate;        // 입고일자
     private int recAmount;         // 수량
     private int recMoney;          // 품목병 입고금액
@@ -18,20 +18,22 @@ public class BillTaxDTO {
     private String recCode;        // 입고코드
     private int recSupply;         // 물품공급가액
     private int recTax;            // 물품 세액
+    private int tsRecSupply;       // 거래명세서 총 공급가액
+    private int tsRecTax;          // 거래명세서 총 공급가액
 
-    public BillTaxDTO() {
+    public tsBillTaxDTO() {
     }
 
-    public BillTaxDTO(int taxNo, String storeNo, String storeName, String storeAddress, String taxDate, String itemName, String itemStandard, int itemSales, String storeRep, String recDate, int recAmount, int recMoney, int recTotalMoney, String recCode, int recSupply, int recTax) {
-        this.taxNo = taxNo;
+    public tsBillTaxDTO(int tsNo, String tsDate, String storeNo, String storeName, String storeAddress, String storeRep, String itemName, String itemStandard, int itemSales, String recDate, int recAmount, int recMoney, int recTotalMoney, String recCode, int recSupply, int recTax, int tsRecSupply, int tsRecTax) {
+        this.tsNo = tsNo;
+        this.tsDate = tsDate;
         this.storeNo = storeNo;
         this.storeName = storeName;
         this.storeAddress = storeAddress;
-        this.taxDate = taxDate;
+        this.storeRep = storeRep;
         this.itemName = itemName;
         this.itemStandard = itemStandard;
         this.itemSales = itemSales;
-        this.storeRep = storeRep;
         this.recDate = recDate;
         this.recAmount = recAmount;
         this.recMoney = recMoney;
@@ -39,14 +41,24 @@ public class BillTaxDTO {
         this.recCode = recCode;
         this.recSupply = recSupply;
         this.recTax = recTax;
+        this.tsRecSupply = tsRecSupply;
+        this.tsRecTax = tsRecTax;
     }
 
-    public int getTaxNo() {
-        return taxNo;
+    public int getTsNo() {
+        return tsNo;
     }
 
-    public void setTaxNo(int taxNo) {
-        this.taxNo = taxNo;
+    public void setTsNo(int tsNo) {
+        this.tsNo = tsNo;
+    }
+
+    public String getTsDate() {
+        return tsDate;
+    }
+
+    public void setTsDate(String tsDate) {
+        this.tsDate = tsDate;
     }
 
     public String getStoreNo() {
@@ -73,12 +85,12 @@ public class BillTaxDTO {
         this.storeAddress = storeAddress;
     }
 
-    public String getTaxDate() {
-        return taxDate;
+    public String getStoreRep() {
+        return storeRep;
     }
 
-    public void setTaxDate(String taxDate) {
-        this.taxDate = taxDate;
+    public void setStoreRep(String storeRep) {
+        this.storeRep = storeRep;
     }
 
     public String getItemName() {
@@ -103,14 +115,6 @@ public class BillTaxDTO {
 
     public void setItemSales(int itemSales) {
         this.itemSales = itemSales;
-    }
-
-    public String getStoreRep() {
-        return storeRep;
-    }
-
-    public void setStoreRep(String storeRep) {
-        this.storeRep = storeRep;
     }
 
     public String getRecDate() {
@@ -169,18 +173,34 @@ public class BillTaxDTO {
         this.recTax = recTax;
     }
 
+    public int getTsRecSupply() {
+        return tsRecSupply;
+    }
+
+    public void setTsRecSupply(int tsRecSupply) {
+        this.tsRecSupply = tsRecSupply;
+    }
+
+    public int getTsRecTax() {
+        return tsRecTax;
+    }
+
+    public void setTsRecTax(int tsRecTax) {
+        this.tsRecTax = tsRecTax;
+    }
+
     @Override
     public String toString() {
-        return "BillTaxDTO{" +
-                "taxNo=" + taxNo +
+        return "tsBillTaxDTO{" +
+                "tsNo=" + tsNo +
+                ", tsDate='" + tsDate + '\'' +
                 ", storeNo='" + storeNo + '\'' +
                 ", storeName='" + storeName + '\'' +
                 ", storeAddress='" + storeAddress + '\'' +
-                ", taxDate='" + taxDate + '\'' +
+                ", storeRep='" + storeRep + '\'' +
                 ", itemName='" + itemName + '\'' +
                 ", itemStandard='" + itemStandard + '\'' +
                 ", itemSales=" + itemSales +
-                ", storeRep='" + storeRep + '\'' +
                 ", recDate='" + recDate + '\'' +
                 ", recAmount=" + recAmount +
                 ", recMoney=" + recMoney +
@@ -188,6 +208,9 @@ public class BillTaxDTO {
                 ", recCode='" + recCode + '\'' +
                 ", recSupply=" + recSupply +
                 ", recTax=" + recTax +
+                ", tsRecSupply=" + tsRecSupply +
+                ", tsRecTax=" + tsRecTax +
                 '}';
     }
 }
+

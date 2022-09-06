@@ -41,16 +41,6 @@
                     <h3>세금계산서</h3>
                     <br>
                     <div class="input-group mb-3 col-12 float-start">
-                        <select id="searchCondition" class="form-control col-2" style="max-width: max-content;">
-                            <option value="#">가맹점명</option>
-                        </select>
-                        <div id="reportrange" class="form-control" style="cursor: pointer; max-width: max-content;">
-                            <i class="fa fa-calendar"></i>
-                            <span class="date"><!-- 날짜 입력한 값 들어감 --></span>
-                        </div>
-                        <input class="form-control me-2 col-3" type="text" placeholder="검색어를 입력해주세요.">
-                        <button class="btn btn-warning" type="submit" style="color:#fff">검색</button>
-
                         <table class="table">
                             <thead>
                             <tr>
@@ -167,28 +157,28 @@
                                                         <tr>
                                                             <td class='border_up' align='center' width='85' height='25' th:text="${ tax.taxDate }"></td>
                                                             <td class='border_up' align='center' width='35'>&nbsp;</td>
-                                                            <td class='border_up' id="test1" align='center' width='20'></td>
-                                                            <td class='border_up' id="test2" align='center' width='20'></td>
-                                                            <td class='border_up' id="test3" align='center' width='20'></td>
-                                                            <td class='border_up' id="test4" align='center' width='20'></td>
-                                                            <td class='border_up' id="test5" align='center' width='20'></td>
-                                                            <td class='border_up' id="test6" align='center' width='20'></td>
-                                                            <td class='border_up' id="test7" align='center' width='20'></td>
-                                                            <td class='border_up' id="test8" align='center' width='20'></td>
-                                                            <td class='border_up' id="test9" align='center' width='20'></td>
-                                                            <td class='border_up' id="test10" align='center' width='20'></td>
-                                                            <td class='border_up' id="test11" align='center' width='20'></td>
+                                                            <td class='border_up test1' align='center' width='20'></td>
+                                                            <td class='border_up test2' align='center' width='20'></td>
+                                                            <td class='border_up test3' align='center' width='20'></td>
+                                                            <td class='border_up test4' align='center' width='20'></td>
+                                                            <td class='border_up test5' align='center' width='20'></td>
+                                                            <td class='border_up test6' align='center' width='20'></td>
+                                                            <td class='border_up test7' align='center' width='20'></td>
+                                                            <td class='border_up test8' align='center' width='20'></td>
+                                                            <td class='border_up test9' align='center' width='20'></td>
+                                                            <td class='border_up test10' align='center' width='20'></td>
+                                                            <td class='border_up test11' align='center' width='20'></td>
 
                                                             <td class='border_up' align='center' width='20'>&nbsp;</td>
-                                                            <td class='border_up' align='center' width='20'><script>document.write(tax9)</script></td>
-                                                            <td class='border_up' align='center' width='20'><script>document.write(tax8)</script></td>
-                                                            <td class='border_up' align='center' width='20'><script>document.write(tax7)</script></td>
-                                                            <td class='border_up' align='center' width='20'><script>document.write(tax6)</script></td>
-                                                            <td class='border_up' align='center' width='20'><script>document.write(tax5)</script></td>
-                                                            <td class='border_up' align='center' width='20'><script>document.write(tax4)</script></td>
-                                                            <td class='border_up' align='center' width='20'><script>document.write(tax3)</script></td>
-                                                            <td class='border_up' align='center' width='20'><script>document.write(tax2)</script></td>
-                                                            <td class='border_up' align='center' width='20'><script>document.write(tax1)</script></td>
+                                                            <td class='border_up tax1' align='center' width='20'></td>
+                                                            <td class='border_up tax2' align='center' width='20'></td>
+                                                            <td class='border_up tax3' align='center' width='20'></td>
+                                                            <td class='border_up tax4' align='center' width='20'></td>
+                                                            <td class='border_up tax5' align='center' width='20'></td>
+                                                            <td class='border_up tax6' align='center' width='20'></td>
+                                                            <td class='border_up tax7' align='center' width='20'></td>
+                                                            <td class='border_up tax8' align='center' width='20'></td>
+                                                            <td class='border_up tax9' align='center' width='20'></td>
                                                         </tr>
                                                     </table>
                                                 </td>
@@ -211,9 +201,9 @@
                                                             <td class='border_up' align='center' width='195' th:text="${ tax.itemName }"></td>
                                                             <td class='border_up' align='center' width='42' th:text="${ tax.itemStandard }"></td>
                                                             <td class='border_up' align='center' width='65' th:text="${ tax.recAmount }"></td>
-                                                            <td class='border_up' align='center' width='55' th:text="${ tax.itemSales }"></td>
-                                                            <td class='border_up' align='center' width='150'></td>
-                                                            <td class='border_up' align='center' width='83'></td>
+                                                            <td class='border_up' align='center' width='55' th:text="${#numbers.formatInteger(tax.itemSales, 3, 'COMMA') }"></td>
+                                                            <td class='border_up' align='center' width='150' th:text="${#numbers.formatInteger(tax.recSupply, 3, 'COMMA') }"></td>
+                                                            <td class='border_up' align='center' width='83' th:text="${#numbers.formatInteger(tax.recTax, 3, 'COMMA') }"></td>
                                                             <td class='border_top' align='center' width='60'>&nbsp;</td>
                                                         </tr>
                                                     </table>
@@ -231,7 +221,7 @@
                                                             <td class='border_top' rowspan='2' align='center' width='143'>이 금액을 징수 함</td>
                                                         </tr>
                                                         <tr>
-                                                            <td class='border_up' id="test" align='center' width='122' height='25' th:text="${ tax.recTotalMoney }"></td>
+                                                            <td class='border_up test' id="test" align='center' width='122' height='25' th:text="${#numbers.formatInteger(tax.recTotalMoney, 3, 'COMMA') }"></td>
                                                             <td class='border_up' align='center' width='108'> V </td>
                                                             <td class='border_up' align='center' width='108'>&nbsp;</td>
                                                             <td class='border_up' align='center' width='108'>&nbsp;</td>
@@ -314,36 +304,73 @@
             $(e).siblings()[0].style.top = "120px";
             $(e).siblings()[0].style.left= "430px";
 
-            let str = Number($("#test").children().eq(0).text());
+            let str = Number($(e).siblings().children().find(".test").text().replaceAll(',','')) / 1.1;
+            let str2 = Math.trunc(str);
+            let str3 = str2.toString();
 
-            let str2 = str.toString();
+            window.console.log('${str3.length}');
 
-            window.console.log('${str2.length}');
-
-            let last = str2.charAt(str2.length-1);
-            let last1 = str2.charAt(str2.length-2);
-            let last2 = str2.charAt(str2.length-3);
-            let last3 = str2.charAt(str2.length-4);
-            let last4 = str2.charAt(str2.length-5);
-            let last5 = str2.charAt(str2.length-6);
-            let last6 = str2.charAt(str2.length-7);
-            let last7 = str2.charAt(str2.length-8);
-            let last8 = str2.charAt(str2.length-9);
-            let last9 = str2.charAt(str2.length-10);
-            let last10 = str2.charAt(str2.length-11);
+            let last = str3.charAt(str3.length-1);
+            let last1 = str3.charAt(str3.length-2);
+            let last2 = str3.charAt(str3.length-3);
+            let last3 = str3.charAt(str3.length-4);
+            let last4 = str3.charAt(str3.length-5);
+            let last5 = str3.charAt(str3.length-6);
+            let last6 = str3.charAt(str3.length-7);
+            let last7 = str3.charAt(str3.length-8);
+            let last8 = str3.charAt(str3.length-9);
+            let last9 = str3.charAt(str3.length-10);
+            let last10 = str3.charAt(str3.length-11);
 
 
-            document.getElementById("test1").innerText = last10;
-            document.getElementById("test2").innerText = last9;
-            document.getElementById("test3").innerText = last8;
-            document.getElementById("test4").innerText = last7;
-            document.getElementById("test5").innerText = last6;
-            document.getElementById("test6").innerText = last5;
-            document.getElementById("test7").innerText = last4;
-            document.getElementById("test8").innerText = last3;
-            document.getElementById("test9").innerText = last2;
-            document.getElementById("test10").innerText = last1;
-            document.getElementById("test11").innerText = last;
+            for(let i = 0; i < document.getElementsByClassName("test1").length; i++){
+
+                document.getElementsByClassName("test1")[i].innerText = last10;
+                document.getElementsByClassName("test2")[i].innerText = last9;
+                document.getElementsByClassName("test3")[i].innerText = last8;
+                document.getElementsByClassName("test4")[i].innerText = last7;
+                document.getElementsByClassName("test5")[i].innerText = last6;
+                document.getElementsByClassName("test6")[i].innerText = last5;
+                document.getElementsByClassName("test7")[i].innerText = last4;
+                document.getElementsByClassName("test8")[i].innerText = last3;
+                document.getElementsByClassName("test9")[i].innerText = last2;
+                document.getElementsByClassName("test10")[i].innerText = last1;
+                document.getElementsByClassName("test11")[i].innerText = last;
+
+
+            }
+
+            let str4 = Number($(e).siblings().children().find(".test").text().replaceAll(',','')) / 11;
+            let str5 = Math.trunc(str4);
+            let str6 = str5.toString();
+
+            window.console.log('${str3.length}');
+
+            let tax1 = str6.charAt(str6.length-1);
+            let tax2 = str6.charAt(str6.length-2);
+            let tax3 = str6.charAt(str6.length-3);
+            let tax4 = str6.charAt(str6.length-4);
+            let tax5 = str6.charAt(str6.length-5);
+            let tax6 = str6.charAt(str6.length-6);
+            let tax7 = str6.charAt(str6.length-7);
+            let tax8 = str6.charAt(str6.length-8);
+            let tax9 = str6.charAt(str6.length-9);
+
+
+            for(let i = 0; i < document.getElementsByClassName("tax1").length; i++){
+
+                document.getElementsByClassName("tax1")[i].innerText = tax9;
+                document.getElementsByClassName("tax2")[i].innerText = tax8;
+                document.getElementsByClassName("tax3")[i].innerText = tax7;
+                document.getElementsByClassName("tax4")[i].innerText = tax6;
+                document.getElementsByClassName("tax5")[i].innerText = tax5;
+                document.getElementsByClassName("tax6")[i].innerText = tax4;
+                document.getElementsByClassName("tax7")[i].innerText = tax3;
+                document.getElementsByClassName("tax8")[i].innerText = tax2;
+                document.getElementsByClassName("tax9")[i].innerText = tax1;
+
+            }
+
         }
 
         function closeLayer(e){

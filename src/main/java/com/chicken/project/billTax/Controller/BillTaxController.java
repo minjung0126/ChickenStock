@@ -1,6 +1,7 @@
 package com.chicken.project.billTax.Controller;
 
 import com.chicken.project.billTax.model.dto.BillTaxDTO;
+import com.chicken.project.billTax.model.dto.tsBillTaxDTO;
 import com.chicken.project.billTax.model.service.BillTaxService;
 import com.chicken.project.common.paging.Pagenation;
 import com.chicken.project.common.paging.SelectCriteria;
@@ -96,6 +97,164 @@ public class BillTaxController {
         mv.addObject("taxListMenu", map);
         mv.addObject("selectCriteria", selectCriteria);
         mv.setViewName("billTax/billList");
+
+        return mv;
+    }
+
+    @GetMapping("/billtaxList")
+    public ModelAndView billTaxList(ModelAndView mv, HttpServletRequest request) {
+
+        String currentPage = request.getParameter("currentPage");
+
+        int pageNo = 1;
+
+        if(currentPage != null && !"".equals(currentPage)) {
+            pageNo = Integer.parseInt(currentPage);
+            if(pageNo <= 0) {
+
+                pageNo = 1;
+            }
+        }
+        String searchCondition = request.getParameter("searchCondition");
+        String searchValue = request.getParameter("searchValue");
+
+        Map<String, String> searchMap = new HashMap<>();
+        searchMap.put("searchCondition", searchCondition);
+        searchMap.put("searchValue", searchValue);
+
+        int totalCount = billTaxService.selectTotalCount(searchMap);
+
+        int limit = 6;
+        int buttonAmount = 5;
+
+        SelectCriteria selectCriteria = null;
+
+        if(searchCondition != null && !"".equals(searchCondition)) {
+            selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount, searchCondition, searchValue);
+        } else {
+            selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount);
+        }
+
+        List<BillTaxDTO> billTaxList = billTaxService.selectTaxBillList(selectCriteria);
+
+        Map<String, List<BillTaxDTO>> map = new HashMap<>();
+
+        for(int i = 0; i < billTaxList.size(); i++){
+            String recCode = billTaxList.get(i).getRecCode();
+            List<BillTaxDTO> taxListMenu = billTaxService.selectTaxMenuList(recCode);
+
+            map.put(recCode, taxListMenu);
+        }
+
+        mv.addObject("billTaxList", billTaxList);
+        mv.addObject("taxListMenu", map);
+        mv.addObject("selectCriteria", selectCriteria);
+        mv.setViewName("billTax/billtaxList");
+
+        return mv;
+    }
+    @GetMapping("/tsbillList")
+    public ModelAndView tsBillList(ModelAndView mv, HttpServletRequest request){
+
+        String currentPage = request.getParameter("currentPage");
+
+        int pageNo = 1;
+
+        if(currentPage != null && !"".equals(currentPage)) {
+            pageNo = Integer.parseInt(currentPage);
+            if(pageNo <= 0) {
+
+                pageNo = 1;
+            }
+        }
+        String searchCondition = request.getParameter("searchCondition");
+        String searchValue = request.getParameter("searchValue");
+
+        Map<String, String> searchMap = new HashMap<>();
+        searchMap.put("searchCondition", searchCondition);
+        searchMap.put("searchValue", searchValue);
+
+        int totalCount = billTaxService.selectTotalCount(searchMap);
+
+        int limit = 6;
+        int buttonAmount = 5;
+
+        SelectCriteria selectCriteria = null;
+
+        if(searchCondition != null && !"".equals(searchCondition)) {
+            selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount, searchCondition, searchValue);
+        } else {
+            selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount);
+        }
+
+        List<tsBillTaxDTO> tsBillTaxList = billTaxService.selectTsBillTaxList(selectCriteria);
+
+        Map<String, List<tsBillTaxDTO>> map = new HashMap<>();
+
+        for (int i = 0; i < tsBillTaxList.size(); i++) {
+            String recCode = tsBillTaxList.get(i).getRecCode();
+            List<tsBillTaxDTO> tsBillTaxListMenu = billTaxService.selectTsMenuList(recCode);
+
+            map.put(recCode, tsBillTaxListMenu);
+        }
+
+        mv.addObject("tsBillTaxList", tsBillTaxList);
+        mv.addObject("tsListMenu", map);
+        mv.addObject("selectCriteria", selectCriteria);
+        mv.setViewName("billTax/tsbillList");
+
+        return mv;
+    }
+
+    @GetMapping("/tsbilltaxList")
+    public ModelAndView tsBillTaxList(ModelAndView mv, HttpServletRequest request){
+
+        String currentPage = request.getParameter("currentPage");
+
+        int pageNo = 1;
+
+        if(currentPage != null && !"".equals(currentPage)) {
+            pageNo = Integer.parseInt(currentPage);
+            if(pageNo <= 0) {
+
+                pageNo = 1;
+            }
+        }
+        String searchCondition = request.getParameter("searchCondition");
+        String searchValue = request.getParameter("searchValue");
+
+        Map<String, String> searchMap = new HashMap<>();
+        searchMap.put("searchCondition", searchCondition);
+        searchMap.put("searchValue", searchValue);
+
+        int totalCount = billTaxService.selectTotalCount(searchMap);
+
+        int limit = 6;
+        int buttonAmount = 5;
+
+        SelectCriteria selectCriteria = null;
+
+        if(searchCondition != null && !"".equals(searchCondition)) {
+            selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount, searchCondition, searchValue);
+        } else {
+            selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount);
+        }
+
+        List<tsBillTaxDTO> tsTaxBillList = billTaxService.selectTsBillTaxList(selectCriteria);
+
+        Map<String, List<tsBillTaxDTO>> map = new HashMap<>();
+
+        for (int i = 0; i < tsTaxBillList.size(); i++) {
+            String recCode = tsTaxBillList.get(i).getRecCode();
+            List<tsBillTaxDTO> tsBillTaxListMenu = billTaxService.selectTsMenuList(recCode);
+
+            map.put(recCode, tsBillTaxListMenu);
+        }
+
+        mv.addObject("tsBillTaxList", tsTaxBillList);
+        mv.addObject("tsListMenu", map);
+        mv.addObject("selectCriteria", selectCriteria);
+        mv.setViewName("billTax/tsbilltaxList");
 
         return mv;
     }
