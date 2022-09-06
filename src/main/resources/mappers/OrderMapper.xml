@@ -102,6 +102,4 @@
           AND A.STORE_NAME = ${ storeName }
     </select>
 
-
-
 </mapper>

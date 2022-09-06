@@ -1,24 +1,14 @@
 package com.chicken.project.empList.model.service;
 
-import com.chicken.project.empList.model.dao.EmployeeMapper;
 import com.chicken.project.empList.model.dto.EmployeeDTO;
-import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Service
-public class EmpListService {
+public interface EmpListService {
+    /* 직원 정보 리스트 조회 */
+    List<EmployeeDTO> selectAllEmployee();
 
-    private final EmployeeMapper employeeMapper;
-
-    public EmpListService(EmployeeMapper employeeMapper) {
-        this.employeeMapper = employeeMapper;
-    }
-
-    public List<EmployeeDTO> selectAllEmployee() {
-
-        List<EmployeeDTO> empList = employeeMapper.selectAllEmployee();
-
-        return empList;
-    }
+    /* 직원 정보 등록 */
+    int registEmp(EmployeeDTO emp);
 }

@@ -13,12 +13,13 @@ public class ReleaseOrderDTO {
     private String relYn;
     private ItemInfoDTO itemInfoDTO;
     private ItemCategoryDTO itemCategoryDTO;
-
     private ReleaseItemFileDTO itemFileDTO;
+
+    private ReleaseItemFileDTO releaseItemFileDTO;
 
     public ReleaseOrderDTO() {}
 
-    public ReleaseOrderDTO(int orderNo, Date orderDate, int orderAmount, int cartNo, int itemNo, String storeName, String relYn, ItemInfoDTO itemInfoDTO, ItemCategoryDTO itemCategoryDTO, ReleaseItemFileDTO itemFileDTO) {
+    public ReleaseOrderDTO(int orderNo, Date orderDate, int orderAmount, int cartNo, int itemNo, String storeName, String relYn, ItemInfoDTO itemInfoDTO, ItemCategoryDTO itemCategoryDTO, ReleaseItemFileDTO releaseItemFileDTO) {
         this.orderNo = orderNo;
         this.orderDate = orderDate;
         this.orderAmount = orderAmount;
@@ -28,7 +29,7 @@ public class ReleaseOrderDTO {
         this.relYn = relYn;
         this.itemInfoDTO = itemInfoDTO;
         this.itemCategoryDTO = itemCategoryDTO;
-        this.itemFileDTO = itemFileDTO;
+        this.releaseItemFileDTO = releaseItemFileDTO;
     }
 
     public int getOrderNo() {
@@ -123,7 +124,7 @@ public class ReleaseOrderDTO {
                 ", relYn='" + relYn + '\'' +
                 ", itemInfoDTO=" + itemInfoDTO +
                 ", itemCategoryDTO=" + itemCategoryDTO +
-                ", itemFileDTO=" + itemFileDTO +
+                ", itemFileDTO=" + releaseItemFileDTO +
                 '}';
     }
 }
