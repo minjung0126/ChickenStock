@@ -32,7 +32,6 @@ mybatis:
                         com.chicken.project.store.model.dto, 
                         com.chicken.project.order.model.dto, 
                         com.chicken.project.receive.model.dto,
-                        com.chicken.project.empList.model.dto, 
                         com.chicken.project.calendar.model.dto,
                         com.chicken.project.release.model.dto,
                         com.chicken.project.account.model.dto,
