@@ -1,12 +1,14 @@
 package com.chicken.project.order.model.dto;
 
+import com.chicken.project.member.model.dto.StoreMemberDTO;
+
 import java.util.Date;
+import java.util.List;
 
 public class OrderDTO {
 
     /* ITEM_INFO, ITEM_FILE, ITEM_CATEGORY, STO_ITEM_INFO, INTEREST join */
     private int itemNo; //상품번호
-    private OrderItemFileDTO originName; //썸네일
     private String itemName; //상품명
     private int categoryNo; //카테고리 번호
     private String categoryName; //카테고리명
@@ -18,13 +20,15 @@ public class OrderDTO {
     private String itemSoldoutYn; //품절여부
     private String interYn; //관심여부
     private Date orderDate; //주문일
+    private OrderItemFileDTO itemFile;
+    private String storeName;
+    private int cartAmount;
 
     public OrderDTO() {
     }
 
-    public OrderDTO(int itemNo, OrderItemFileDTO originName, String itemName, int categoryNo, String categoryName, String itemStandard, String itemMake, int itemSales, int storeAmount, int orderAmount, String itemSoldoutYn, String interYn, Date orderDate) {
+    public OrderDTO(int itemNo, String itemName, int categoryNo, String categoryName, String itemStandard, String itemMake, int itemSales, int storeAmount, int orderAmount, String itemSoldoutYn, String interYn, Date orderDate, OrderItemFileDTO itemFile, String storeName, int cartAmount) {
         this.itemNo = itemNo;
-        this.originName = originName;
         this.itemName = itemName;
         this.categoryNo = categoryNo;
         this.categoryName = categoryName;
@@ -36,6 +40,9 @@ public class OrderDTO {
         this.itemSoldoutYn = itemSoldoutYn;
         this.interYn = interYn;
         this.orderDate = orderDate;
+        this.itemFile = itemFile;
+        this.storeName = storeName;
+        this.cartAmount = cartAmount;
     }
 
     public int getItemNo() {
@@ -44,14 +51,6 @@ public class OrderDTO {
 
     public void setItemNo(int itemNo) {
         this.itemNo = itemNo;
-    }
-
-    public OrderItemFileDTO getOriginName() {
-        return originName;
-    }
-
-    public void setOriginName(OrderItemFileDTO originName) {
-        this.originName = originName;
     }
 
     public String getItemName() {
@@ -142,11 +141,34 @@ public class OrderDTO {
         this.orderDate = orderDate;
     }
 
+    public OrderItemFileDTO getItemFile() {
+        return itemFile;
+    }
+
+    public void setItemFile(OrderItemFileDTO itemFile) {
+        this.itemFile = itemFile;
+    }
+
+    public String getStoreName() {
+        return storeName;
+    }
+
+    public void setStoreName(String storeName) {
+        this.storeName = storeName;
+    }
+
+    public int getCartAmount() {
+        return cartAmount;
+    }
+
+    public void setCartAmount(int cartAmount) {
+        this.cartAmount = cartAmount;
+    }
+
     @Override
     public String toString() {
         return "OrderDTO{" +
                 "itemNo=" + itemNo +
-                ", originName=" + originName +
                 ", itemName='" + itemName + '\'' +
                 ", categoryNo=" + categoryNo +
                 ", categoryName='" + categoryName + '\'' +
@@ -158,6 +180,9 @@ public class OrderDTO {
                 ", itemSoldoutYn='" + itemSoldoutYn + '\'' +
                 ", interYn='" + interYn + '\'' +
                 ", orderDate=" + orderDate +
+                ", itemFile=" + itemFile +
+                ", storeName='" + storeName + '\'' +
+                ", cartAmount=" + cartAmount +
                 '}';
     }
 }
