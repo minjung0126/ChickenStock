@@ -38,7 +38,8 @@ mybatis:
                         com.chicken.project.member.model.dto,
                         com.chicken.project.release.model.dto,
                         com.chicken.project.account.model.dto,
-                        com.chicken.project.counsel.model.dto
+                        com.chicken.project.counsel.model.dto,
+                        com.chicken.project.billTax.model.dto
 
 
 logging:
