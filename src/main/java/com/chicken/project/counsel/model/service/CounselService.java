@@ -36,9 +36,9 @@ public class CounselService {
         return counselMapper.selectCounselByNo(counselNo);
     }
 
-    public void insertCounselApply(String answerContent, int counselNo) {
+    public void insertCounselApply(String answerContent, int counselNo, String empName) {
 
-        int result = counselMapper.insertCounselApply(answerContent, counselNo);
+        int result = counselMapper.insertCounselApply(answerContent, counselNo, empName);
 
         if(result > 0){
 
@@ -51,8 +51,8 @@ public class CounselService {
         return counselMapper.selectCounselApplyByNo(counselNo);
     }
 
-    public List<CounselDTO> selectCounselByStoreId(String storeId) {
+    public List<CounselDTO> selectCounselByStoreName(String storeName) {
 
-        return counselMapper.selectCounselByStoreId(storeId);
+        return counselMapper.selectCounselByStoreName(storeName);
     }
 }

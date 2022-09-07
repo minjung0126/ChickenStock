@@ -137,6 +137,10 @@
     cursor: pointer;
 }
 
+#itemCondition > p:hover {
+    text-decoration: underline;
+}
+
 /* 담기 버튼 */
 #cartBox > .btn {
     height: 38px;
@@ -171,4 +175,14 @@
 #pageBox {
     margin-top: 30px;
     margin-bottom: 100px;
+}
+
+/* 카테고리 번호 */
+.emptyTbl {
+    color: white;
+}
+
+/* 관심 등록 메뉴 */
+#dotMenu {
+    margin-top: 12px;
 }

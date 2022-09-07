@@ -3,9 +3,12 @@ package com.chicken.project.counsel.controller;
 import com.chicken.project.counsel.model.dto.CounselApplyDTO;
 import com.chicken.project.counsel.model.dto.CounselDTO;
 import com.chicken.project.counsel.model.service.CounselService;
+import com.chicken.project.member.model.dto.StoreImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -29,13 +32,13 @@ public class CounselController {
     }
 
     @GetMapping("/user/list")
-    public ModelAndView userCounselListPage(ModelAndView mv, HttpServletRequest request){
+    public ModelAndView userCounselListPage(ModelAndView mv, @AuthenticationPrincipal User user){
 
-        String storeId = request.getParameter("storeId");
+        String storeName = ((StoreImpl) user).getStoreName();
 
-        log.info("[CounselController] storeId : " + storeId);
+        log.info("[CounselController] storeName : " + storeName);
 
-        List<CounselDTO> counselList = counselService.selectCounselByStoreId(storeId);
+        List<CounselDTO> counselList = counselService.selectCounselByStoreName(storeName);
 
         mv.addObject("counselList", counselList);
         mv.setViewName("/counsel/user/userCounselList");
@@ -112,10 +115,11 @@ public class CounselController {
                                      RedirectAttributes rttr){
 
         int counselNo = Integer.parseInt(request.getParameter("counselNo"));
+        String empName = request.getParameter("empName");
 
         log.info("[CounselController] counselNo : " + counselNo);
 
-        counselService.insertCounselApply(answerContent, counselNo);
+        counselService.insertCounselApply(answerContent, counselNo, empName);
 
         rttr.addFlashAttribute("message", "1:1문의 답변 등록 완료!");
 

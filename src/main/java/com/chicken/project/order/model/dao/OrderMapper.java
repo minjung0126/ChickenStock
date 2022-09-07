@@ -27,4 +27,12 @@ public interface OrderMapper {
     int deleteInterest(InterestDTO interest);
 
     int insertItemIntoCart(CartDTO cart);
+
+    int selectAvailableItemCount(Map<String, String> searchMap);
+
+    List<OrderDTO> selectAvailableItem(SelectCriteria selectCriteria);
+
+    int selectInterestItemCount(Map<String, String> searchMap);
+
+    List<OrderDTO> selectInterestItem(SelectCriteria selectCriteria);
 }

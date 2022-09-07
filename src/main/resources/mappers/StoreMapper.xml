@@ -67,4 +67,10 @@
         , DEFAULT
         )
     </insert>
+
+    <delete id="deleteBalanceStore">
+        DELETE
+          FROM BALANCE
+         WHERE STORE_NAME = #{ storeName }
+    </delete>
 </mapper>
