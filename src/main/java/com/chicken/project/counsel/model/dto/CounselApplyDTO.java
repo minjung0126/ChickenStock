@@ -7,15 +7,15 @@ public class CounselApplyDTO {
     private int counselNo;
     private String answerContent;
     private Date answerRegistDate;
-    private String empId;
+    private String empName;
 
     public CounselApplyDTO() {}
 
-    public CounselApplyDTO(int counselNo, String answerContent, Date answerRegistDate, String empId) {
+    public CounselApplyDTO(int counselNo, String answerContent, Date answerRegistDate, String empName) {
         this.counselNo = counselNo;
         this.answerContent = answerContent;
         this.answerRegistDate = answerRegistDate;
-        this.empId = empId;
+        this.empName = empName;
     }
 
     public int getCounselNo() {
@@ -42,12 +42,12 @@ public class CounselApplyDTO {
         this.answerRegistDate = answerRegistDate;
     }
 
-    public String getEmpId() {
-        return empId;
+    public String getEmpName() {
+        return empName;
     }
 
-    public void setEmpId(String empId) {
-        this.empId = empId;
+    public void setEmpName(String empName) {
+        this.empName = empName;
     }
 
     @Override
@@ -56,7 +56,7 @@ public class CounselApplyDTO {
                 "counselNo=" + counselNo +
                 ", answerContent='" + answerContent + '\'' +
                 ", answerRegistDate=" + answerRegistDate +
-                ", empId='" + empId + '\'' +
+                ", empName='" + empName + '\'' +
                 '}';
     }
 }

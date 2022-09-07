@@ -1,9 +1,8 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
   <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
-
   <title>chicken stock</title>
 
   <link rel="stylesheet" type="text/css" th:href="@{/css/common/common.css}"/>
@@ -12,12 +11,9 @@
   <link rel="stylesheet" type="text/css" th:href="@{/css/notice/notice.css}"/>
   <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
-  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-  <script type="text/javascript" th:src="@{/js/common.js}"></script>
 </head>
 <body>
   <div class="wrap">
-
     <!-- S: header -->
     <div th:include="common/userHeader.html"></div>
     <!-- E: header -->
@@ -55,7 +51,6 @@
                 </tr>
               </thead>
               <tbody style="cursor:pointer">
-              <input type="hidden" name="storeId" th:value="${ counselList.storeId }">
                 <tr th:each="counsel : ${ counselList }">
                   <td th:text="${ counsel.counselNo }"></td>
                   <td th:text="${ counsel.counselName }"></td>

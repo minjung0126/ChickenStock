@@ -5,7 +5,7 @@
 <mapper namespace="com.chicken.project.member.model.dao.StoreMemberMapper">
     <resultMap id="storeResultMap" type="StoreMemberDTO">
         <id property="storeName" column="STORE_NAME"/>
-        <id property="storeAccount" column="STORE_ACCOUNT"/>
+        <result property="storeAccount" column="STORE_ACCOUNT"/>
         <result property="storeRep" column="STORE_REP"/>
         <result property="storeAddress" column="STORE_ADDRESS"/>
         <result property="storePhone" column="STORE_PHONE"/>
@@ -31,17 +31,9 @@
 
     <select id="selectStoreInfo" resultMap="storeResultMap">
         SELECT
-               A.STORE_NAME
-             , A.STORE_ACCOUNT
-             , A.STORE_REP
-             , A.STORE_ADDRESS
-             , A.STORE_PHONE
-             , A.STORE_EMAIL
-             , A.STORE_ID
-             , A.STORE_PWD
-             , A.STORE_NO
-             , B.AUTH_CODE
-             , C.AUTH_NAME
+               A.*
+             , B.*
+             , C.*
           FROM STORE A
           LEFT JOIN STORE_ROLE B ON (A.STORE_NAME = B.STORE_NAME)
           LEFT JOIN AUTH_CODE C ON (B.AUTH_CODE = C.AUTH_CODE)

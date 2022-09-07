@@ -10,8 +10,6 @@
   <link rel="stylesheet" type="text/css" th:href="@{/css/notice/notice.css}"/>
   <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
-  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-  <script type="text/javascript" th:src="@{/js/common.js}"></script>
 </head>
 <body>
 <div class="wrap">
@@ -56,7 +54,7 @@
             <tr th:each="notice : ${ noticeList }" style="cursor:pointer">
               <td th:text="${ notice.noticeNo }"></td>
               <td th:text="${ notice.noticeName }"></td>
-              <td th:text="${ notice.empId }"></td>
+              <td th:text="${ notice.empName }"></td>
               <td th:text="${ notice.noticeCount }"></td>
               <td th:text="${ notice.noticeRegistDate }"></td>
             </tr>
@@ -74,7 +72,7 @@
               <option value="title">제목</option>
               <option value="content">내용</option>
             </select>
-            <input class="form-control me-2 col-4 mx-1" type="text" name="searchValue" placeholder="검색어를 입력해주세요.">
+            <input class="form-control me-2 col-4 mx-1" type="search" name="searchValue" placeholder="검색어를 입력해주세요.">
             <button class="btn btn-warning" type="submit" style="color:#fff">검색</button>
           </div>
         </form>
