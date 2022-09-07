@@ -1,11 +1,9 @@
 package com.chicken.project.empList.controller;
 
 import com.chicken.project.empList.model.service.EmpListServiceImpl;
-import com.chicken.project.empList.model.dto.EmployeeDTO;
+import com.chicken.project.member.model.dto.EmployeeDTO;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 @Controller
@@ -64,7 +63,7 @@ public class EmpListController {
         log.info("[EmpListController] ========================================");
 
         emp.setEmpPhone(emp.getEmpPhone().replace("-",""));
-        //emp.setEmpPwd(passwordEncoder.encode(emp.getEmpPwd()));
+        emp.setEmpPwd(passwordEncoder.encode(emp.getEmpPwd()));
 
         log.info("[EmpListController] registEmp : " + emp);
 

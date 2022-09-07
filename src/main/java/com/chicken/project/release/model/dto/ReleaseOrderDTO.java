@@ -13,6 +13,7 @@ public class ReleaseOrderDTO {
     private String relYn;
     private ItemInfoDTO itemInfoDTO;
     private ItemCategoryDTO itemCategoryDTO;
+    private ReleaseItemFileDTO itemFileDTO;
 
     private ReleaseItemFileDTO releaseItemFileDTO;
 
@@ -104,11 +105,11 @@ public class ReleaseOrderDTO {
     }
 
     public ReleaseItemFileDTO getItemFileDTO() {
-        return releaseItemFileDTO;
+        return itemFileDTO;
     }
 
-    public void setItemFileDTO(ReleaseItemFileDTO releaseItemFileDTO) {
-        this.releaseItemFileDTO = releaseItemFileDTO;
+    public void setItemFileDTO(ReleaseItemFileDTO itemFileDTO) {
+        this.itemFileDTO = itemFileDTO;
     }
 
     @Override
