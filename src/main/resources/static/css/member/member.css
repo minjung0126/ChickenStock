@@ -1,10 +1,10 @@
 *{margin: 0;padding: 0;}
 
 body{
-    background-color: #FAF2DE;  
+    background-color: #FAF2DE;
 }
 
-.wrap{ 
+.wrap{
     width: 450px;
     height: 600px;
     position: fixed;
@@ -31,7 +31,7 @@ body{
 
 .copyright{
     font-style: italic;
-    font-size: 12px ; 
+    font-size: 12px ;
     text-align: center;
     margin-top: 100px;
 }
@@ -51,8 +51,8 @@ body{
 }
 
 #btn{
-    width: 100%; 
-    border: none; 
+    width: 100%;
+    border: none;
     height: 50px;
     font-size: 20px;
     color: white;
@@ -62,8 +62,8 @@ body{
 
 /* login.html */
 .logo{
-        text-align: center;
-        margin-bottom: 25px;
+    text-align: center;
+    margin-bottom: 25px;
 }
 
 .logo img{

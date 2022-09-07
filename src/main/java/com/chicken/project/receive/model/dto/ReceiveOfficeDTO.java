@@ -1,13 +1,11 @@
 package com.chicken.project.receive.model.dto;
 
-
 import com.chicken.project.receive.model.dto.RecEmployeeDTO;
 import com.chicken.project.item.model.dto.ItemCategoryDTO;
 import com.chicken.project.item.model.dto.ItemFileDTO;
 import com.chicken.project.item.model.dto.ItemInfoDTO;
 
 import java.sql.Date;
-import java.util.List;
 
 public class ReceiveOfficeDTO {
 
@@ -25,12 +23,10 @@ public class ReceiveOfficeDTO {
     private ItemFileDTO itemFile;
     private RecEmployeeDTO employee;
 
-    private List<ReceiveOfficeItemDTO> receiveOfficeItemList;
-
     public ReceiveOfficeDTO() {
     }
 
-    public ReceiveOfficeDTO(String recCode, Date recDate, String empId, int sumRecTotalAmount, int countRecCode, String sumRecTotalMoney, String stringRecDate, ReceiveOfficeItemDTO receiveOfficeItem, ItemInfoDTO itemInfo, ItemCategoryDTO itemCategory, ItemFileDTO itemFile, RecEmployeeDTO employee, List<ReceiveOfficeItemDTO> receiveOfficeItemList) {
+    public ReceiveOfficeDTO(String recCode, Date recDate, String empId, int sumRecTotalAmount, int countRecCode, String sumRecTotalMoney, String stringRecDate, ReceiveOfficeItemDTO receiveOfficeItem, ItemInfoDTO itemInfo, ItemCategoryDTO itemCategory, ItemFileDTO itemFile, RecEmployeeDTO employee) {
         this.recCode = recCode;
         this.recDate = recDate;
         this.empId = empId;
@@ -43,7 +39,6 @@ public class ReceiveOfficeDTO {
         this.itemCategory = itemCategory;
         this.itemFile = itemFile;
         this.employee = employee;
-        this.receiveOfficeItemList = receiveOfficeItemList;
     }
 
     public String getRecCode() {
@@ -142,14 +137,6 @@ public class ReceiveOfficeDTO {
         this.employee = employee;
     }
 
-    public List<ReceiveOfficeItemDTO> getReceiveOfficeItemList() {
-        return receiveOfficeItemList;
-    }
-
-    public void setReceiveOfficeItemList(List<ReceiveOfficeItemDTO> receiveOfficeItemList) {
-        this.receiveOfficeItemList = receiveOfficeItemList;
-    }
-
     @Override
     public String toString() {
         return "ReceiveOfficeDTO{" +
@@ -165,7 +152,6 @@ public class ReceiveOfficeDTO {
                 ", itemCategory=" + itemCategory +
                 ", itemFile=" + itemFile +
                 ", employee=" + employee +
-                ", receiveOfficeItemList=" + receiveOfficeItemList +
                 '}';
     }
 }

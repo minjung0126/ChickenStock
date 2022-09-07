@@ -13,6 +13,7 @@ public class ReleaseOrderDTO {
     private String relYn;
     private ItemInfoDTO itemInfoDTO;
     private ItemCategoryDTO itemCategoryDTO;
+    private ReleaseItemFileDTO itemFileDTO;
 
     private ReleaseItemFileDTO releaseItemFileDTO;
 
