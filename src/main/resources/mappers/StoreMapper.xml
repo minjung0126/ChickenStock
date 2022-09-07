@@ -5,7 +5,7 @@
 <mapper namespace="com.chicken.project.store.model.dao.StoreMapper">
     <resultMap id="storeResultMap" type="StoreDTO">
         <id property="storeName" column="STORE_NAME"></id>
-        <id property="storeAccount" column="STORE_ACCOUNT"></id>
+        <result property="storeAccount" column="STORE_ACCOUNT"></result>
         <result property="storeRep" column="STORE_REP"></result>
         <result property="storeAddress" column="STORE_ADDRESS"></result>
         <result property="storePhone" column="STORE_PHONE"></result>
@@ -14,6 +14,11 @@
         <result property="storePwd" column="STORE_PWD"></result>
         <result property="storeNo" column="STORE_NO"></result>
         <result property="memberType" column="MEMBER_TYPE"></result>
+    </resultMap>
+
+    <resultMap id="balanceResultMap" type="BalanceDTO">
+        <id property="storeName" column="STORE_NAME"></id>
+        <result property="balance" column="BALANCE"></result>
     </resultMap>
 
     <select id="storeList" resultMap="storeResultMap">
@@ -30,6 +35,42 @@
     <delete id="deleteStore" parameterType="StoreDTO">
         DELETE
           FROM STORE
+         WHERE STORE_NAME = #{ storeName }
+    </delete>
+
+    <insert id="insertStore">
+        INSERT
+          INTO STORE
+        (
+          STORE_NAME, STORE_ACCOUNT, STORE_REP
+        , STORE_ADDRESS, STORE_PHONE, STORE_EMAIL
+        , STORE_ID, STORE_PWD, STORE_NO
+        )
+        VALUES
+        (
+          #{ storeName }, #{ storeAccount }, #{ storeRep }
+        , #{ storeAddress }, #{ storePhone }, #{ storeEmail }
+        , #{ storeId }, #{ storePwd }, #{ storeNo }
+        )
+    </insert>
+
+    <insert id="insertBalance">
+        INSERT
+          INTO BALANCE
+        (
+          STORE_NAME
+        , BALANCE
+        )
+        VALUES
+        (
+          #{ storeName }
+        , DEFAULT
+        )
+    </insert>
+
+    <delete id="deleteBalanceStore">
+        DELETE
+          FROM BALANCE
          WHERE STORE_NAME = #{ storeName }
     </delete>
 </mapper>

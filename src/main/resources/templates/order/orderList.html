@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
@@ -75,13 +76,14 @@
                 </form>
               </div>
 
-              <div id="checkBox">
-                <label><input type="checkbox" name="available" value="available"> 품절 상품 제외</label>
-                <label><input type="checkbox" name="interest" value="interest"> 관심 상품만</label>
+              <div id="itemCondition">
+                <p th:onclick="'location.href=\'/order/list/available\''">품절 상품 제외</p>
+                <p> | </p>
+                <p th:onclick="'location.href=\'/order/list/interest/select\''">관심 상품만 보기</p>
               </div>
 
-              <div id="cart">
-                <button class="btn btn-warning" type="submit" style="color:#fff" onclick="cartAlert()">선택 담기</button>
+              <div id="cartBox">
+                <button class="btn btn-warning" type="submit" style="color:#fff" id="cartBtn">선택 담기</button>
               </div>
 
             </div>
@@ -91,11 +93,11 @@
                 <tr>
                   <th>
                     <div class="form-check pb-3">
-                      <input type="checkbox" class="form-check-input" name="option" value='selectall' onclick='selectAll(this)' required/>
+                      <input type="checkbox" class="form-check-input" name="option" value='selectall' onclick='selectAll(this)'/>
                     </div>
                   </th>
                   <th style="width: 90px;">상품코드</th>
-                  <th style="width: 100px;">썸네일</th>
+                  <th style="width: 100px;">상품사진</th>
                   <th style="width: 145px;">상품명</th>
                   <th style="width: 145px;">카테고리</th>
                   <th style="width: 60px;">규격</th>
@@ -103,46 +105,60 @@
                   <th style="width: 100px;">판매가격</th>
                   <th style="width: 90px;">재고량</th>
                   <th style="width: 100px;">수량</th>
-                  <th style="width: 90px;">품절여부</th>
-                  <th style="width: 80px;">관심등록</th>
+                  <th style="width: 100px;">품절여부</th>
+                  <th style="width: 90px;">관심등록</th>
+                  <th style="width: 5px;" class="emptyTbl"></th>
+
                 </tr>
               </thead>
+              <form action="insetItemIntoCartForm" method="post" id="cartForm">
               <tbody>
                 <tr th:each="order : ${ orderList }">
                   <td>
                     <div class="form-check">
-                      <input type="checkbox" class="form-check-input" id="check" name="option" value="something">
+                      <input type="checkbox" class="form-check-input" id="check" name="cartCheckBox">
                       <label class="form-check-label" for="check"></label>
                     </div>
                   </td>
-                  <td th:text="${ order.itemNo }" id="itemNo">상품코드</td>
-                  <td>썸네일</td>
+                  <input type="hidden" th:value="${ order.categoryNo }"/>
+                  <!--<input type="text" name="storeName" th:value="${ #authentication.getPrincipal().getStoreName()}">-->
+                  <td th:text="${ order.itemNo }" id="itemNo" name="test">상품코드</td>
+                  <td>
+                    <div class="img-info">
+                      <div class="img-info__img">
+                        <img th:src="'/images/' + ${ order.itemFile.fileName }" alt="">
+                      </div>
+                    </div>
+                  </td>
                   <td th:text="${ order.itemName }">상품명</td>
                   <td th:text="${ order.categoryName }">카테고리</td>
                   <td th:text="${ order.itemStandard }">규격</td>
                   <td th:text="${ order.itemMake }">제조사(원산지)</td>
                   <td th:text="${ order.itemSales }">판매가격</td>
                   <td th:text="${ order.storeAmount }">재고량</td>
-                  <td><input type="text" id="amount" name="amount" size="6" placeholder="입력" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"></td>
+                  <td><input type="text" name="amount" size="6" placeholder="입력" id="cartAmount"
+                             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"></td>
                   <td th:text="${ order.itemSoldoutYn }">품절여부</td>
                   <td>
                     <div class="dropdown open">
                       <a href="javascript:void(0);" class="px-2" id="triggerId1" data-toggle="dropdown" aria-haspopup="true"
                           aria-expanded="false">
-                            <i class="fa fa-ellipsis-v"></i>
+                            <i class="fa fa-ellipsis-v" id="dotMenu"></i>
                       </a>
                       <div class="dropdown-menu" aria-labelledby="triggerId1">
                         <!-- <a class="dropdown-item" href="#"><i class="fa fa-eye mr-1"></i>View</a> -->
 
-                        <a class="dropdown-item" href="javascript:void(0);" th:onclick="interest(this.getAttribute('itemNo'))">
+                        <a class="dropdown-item" href="javascript:void(0);" th:field="*{ order.cartAmount }"
+                           th:itemNo="${order.itemNo}" th:categoryNo="${order.categoryNo}"
+                           th:onclick="interest(this.getAttribute('itemNo'),this.getAttribute('categoryNo'))">
                           <i class="fa-solid fa-heart-circle-plus"></i> 관심 등록</a>
-                        <a class="dropdown-item text-danger" href="#"><i class="fa fa-trash mr-1"></i> Delete</a>
-
                       </div>
                     </div>
                   </td>
+                  <td class="emptyTbl" th:text="${ order.categoryNo }">카테고리번호</td>
                 </tr>
               </tbody>
+              </form>
             </table>
 
           </div>
@@ -252,13 +268,18 @@
 
   <!-- 관심 설정 -->
   <script th:inline="javascript">
-
-
+    /*<![CDATA[*/
+    function interest(itemNo, categoryNo) {
+      alert(itemNo+"번 상품이 관심 추가 되었습니다.");
+      location.href= "list/interest/insert?itemNo="+itemNo+"&categoryNo="+categoryNo;
+    }
+    /*]]>*/
   </script>
 
-  <!-- 장바구니 담기 -->
+
+    <!-- 장바구니 담기 -->
   <script th:inline="javascript">
-    function cartAlert() {
+    function cartAlert(itemNo) {
       let result = confirm("선택 제품이 장바구니에 담겼습니다.\n장바구니로 이동하시겠습니까?");
       if(result == true) {
         location = url;
@@ -275,6 +296,37 @@
         checkbox.checked = selectAll.checked;
         })
     }
+  </script>
+
+  <!-- form Ajax-->
+  <script>
+  $("#cartBtn").click(function() {
+    var rowData = new Array();
+    var tdArr = new Array();
+    var checkbox = $("input[name=cartCheckBox]:checked");
+
+    checkbox.each(function(i) {
+      var tr = checkbox.parent().parent().eq(i);
+      var td = tr.children();
+
+      rowData.push(tr.text());
+
+      var itemNo = td.eq(1).text();
+      var cartAmount = td.eq(10).text;
+      var categoryNo = td.eq(13).text;
+
+      tdArr.push(itemNo);
+      tdArr.push(cartAmount);
+      tdArr.push(categoryNo);
+
+      console.log("itemNo : " + itemNo);
+      console.log("cartAmount " + cartAmount);
+      console.log("categoryNo : " + categoryNo);
+
+    });
+
+  });
+
   </script>
 </body>
 </html>

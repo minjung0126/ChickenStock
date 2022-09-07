@@ -5,17 +5,15 @@ public class OrderItemFileDTO {
     private int fileNo;
     private String originName;
     private String fileName;
-    private int categoryNo;
     private int itemNo;
 
     public OrderItemFileDTO() {
     }
 
-    public OrderItemFileDTO(int fileNo, String originName, String fileName, int categoryNo, int itemNo) {
+    public OrderItemFileDTO(int fileNo, String originName, String fileName, int itemNo) {
         this.fileNo = fileNo;
         this.originName = originName;
         this.fileName = fileName;
-        this.categoryNo = categoryNo;
         this.itemNo = itemNo;
     }
 
@@ -43,14 +41,6 @@ public class OrderItemFileDTO {
         this.fileName = fileName;
     }
 
-    public int getCategoryNo() {
-        return categoryNo;
-    }
-
-    public void setCategoryNo(int categoryNo) {
-        this.categoryNo = categoryNo;
-    }
-
     public int getItemNo() {
         return itemNo;
     }
@@ -61,13 +51,11 @@ public class OrderItemFileDTO {
 
     @Override
     public String toString() {
-        return "ItemFileDTO{" +
+        return "OrderItemFileDTO{" +
                 "fileNo=" + fileNo +
                 ", originName='" + originName + '\'' +
                 ", fileName='" + fileName + '\'' +
-                ", categoryNo=" + categoryNo +
                 ", itemNo=" + itemNo +
                 '}';
     }
 }
-

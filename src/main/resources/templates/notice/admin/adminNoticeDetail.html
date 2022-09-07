@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
@@ -11,8 +12,6 @@
   <link rel="stylesheet" type="text/css" th:href="@{/css/notice/notice.css}"/>
   <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
-  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-  <script type="text/javascript" th:src="@{/js/common.js}"></script>
 </head>
 <body>
   <div class="wrap">
@@ -54,7 +53,7 @@
                 </tr>
                 <tr>
                   <th>첨부파일</th>
-                  <td class="align-left" th:text="${ noticeDetail.noticeFile }" style="cursor:pointer"></td>
+                  <td class="align-left" ><a th:href="|/uploadFiles/${ noticeDetail.noticeFile.getFileName() }|" th:text="${ noticeDetail.noticeFile.getOriginName() }" download></a></td>
                 </tr>
               </tbody>
             </table>
@@ -63,9 +62,9 @@
 
           <!-- S: search -->          
           <div class="input-group mb-3 col-7 flex-right">
-            <button class="btn btn-warning ml-1" type="submit" style="color:#fff"
+            <button class="btn btn-warning ml-1" type="submit" style="color:#fff" th:if="${ #authentication.getPrincipal().getEmpName() eq noticeDetail.empName }"
                     th:onclick="'location.href=\'/notice/admin/update?noticeNo='+ @{${ noticeDetail.noticeNo }} + '\''">수정</button>
-            <button class="btn btn-warning ml-1" type="submit" style="color:#fff"
+            <button class="btn btn-warning ml-1" type="submit" style="color:#fff" th:if="${ #authentication.getPrincipal().getEmpName() eq noticeDetail.empName }"
                     th:onclick="'location.href=\'/notice/admin/delete?noticeNo='+ @{${ noticeDetail.noticeNo }} + '\''">삭제</button>
             <button class="btn btn-warning ml-1" type="submit" style="color:#fff"
                     th:onclick="'location.href=\'/notice/admin/list\''">이전</button>

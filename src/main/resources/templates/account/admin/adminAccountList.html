@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
@@ -59,14 +59,14 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-              <td>1</td>
-              <td>가맹점</td>
-              <td>1,000,000</td>
-              <td>2022.08.28</td>
+            <tr th:each="accountApply : ${ accountApplyList }">
+              <td th:text="${ accountApply.depositNum }"></td>
+              <td th:text="${ accountApply.storeName }"></td>
+              <td th:text="${ accountApply.accountDeposit.getAccountDeposit() }"></td>
+              <td th:text="${ accountApply.depositYn }"></td>
               <td>
-                <button class="btn btn-warning" style="color: #fff;">승인</button>
-                <button class="btn btn-warning" style="color: #fff;">반려</button>
+                <button class="btn btn-warning" type="submit" style="color: #fff;">승인</button>
+                <button class="btn btn-warning" type="submit" style="color: #fff;">반려</button>
               </td>
             </tr>
             </tbody>

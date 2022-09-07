@@ -9,10 +9,15 @@
         <result property="noticeContent" column="NOTICE_CONTENT"/>
         <result property="noticeRegistDate" column="NOTICE_REGIST_DATE"/>
         <result property="noticeModifyDate" column="NOTICE_MODIFY_DATE"/>
-        <result property="empId" column="EMP_ID"/>
+        <result property="empName" column="EMP_NAME"/>
+        <result property="noticeCount" column="NOTICE_COUNT"/>
 
         <collection property="noticeFile" ofType="NoticeFileDTO">
+            <result property="fileNo" column="FILE_NO"></result>
             <result property="originName" column="ORIGIN_NAME"/>
+            <result property="fileName" column="FILE_NAME"></result>
+            <result property="savedPath" column="SAVED_PATH"></result>
+            <result property="noticeNo" column="NOTICE_NO"></result>
         </collection>
     </resultMap>
 
@@ -29,11 +34,11 @@
                COUNT(*)
           FROM NOTICE A
       <if test="searchCondition == 'writer'">
-          JOIN EMPLOYEE B ON(A.EMP_ID = B.EMP_ID)
+          LEFT JOIN EMPLOYEE B ON(A.EMP_NAME = B.EMP_NAME)
       </if>
         <where>
             <if test="searchCondition == 'writer'">
-                B.EMP_ID LIKE '%' || #{ searchValue } || '%'
+                B.EMP_NAME LIKE '%' || #{ searchValue } || '%'
             </if>
             <if test="searchCondition == 'title'">
                 A.NOTICE_NAME LIKE '%' || #{ searchValue } || '%'
@@ -50,28 +55,31 @@
                A.RNUM
              , A.NOTICE_NO
              , A.NOTICE_NAME
-             , A.EMP_ID
+             , A.EMP_NAME
              , A.NOTICE_CONTENT
              , A.NOTICE_REGIST_DATE
-             , D.EMP_ID
+             , A.NOTICE_COUNT
+             , D.EMP_NAME
           FROM (SELECT ROWNUM RNUM
                      , B.NOTICE_NO
                      , B.NOTICE_NAME
-                     , B.EMP_ID
+                     , B.EMP_NAME
                      , B.NOTICE_CONTENT
+                     , B.NOTICE_COUNT
                      , B.NOTICE_REGIST_DATE
                   FROM (SELECT C.NOTICE_NO
                              , C.NOTICE_NAME
-                             , C.EMP_ID
+                             , C.EMP_NAME
                              , C.NOTICE_CONTENT
+                             , C.NOTICE_COUNT
                              , C.NOTICE_REGIST_DATE
                           FROM NOTICE C
         <if test="searchCondition == 'writer'">
-            JOIN EMPLOYEE D ON(C.EMP_ID = D.EMP_ID)
+            LEFT JOIN EMPLOYEE D ON(C.EMP_NAME = D.EMP_NAME)
         </if>
         <where>
             <if test="searchCondition == 'writer'">
-                D.EMP_ID LIKE '%' || #{ searchValue } || '%'
+                D.EMP_NAME LIKE '%' || #{ searchValue } || '%'
             </if>
             <if test="searchCondition == 'title'">
                 C.NOTICE_NAME LIKE '%' || #{ searchValue } || '%'
@@ -86,7 +94,7 @@
                   WHERE ROWNUM <= #{ endRow }
                   ]]>
         ) A
-        JOIN EMPLOYEE D ON (A.EMP_ID = D.EMP_ID)
+        LEFT JOIN EMPLOYEE D ON (A.EMP_NAME = D.EMP_NAME)
         WHERE A.RNUM >= #{ startRow }
         ORDER BY 1 ASC
     </select>
@@ -100,7 +108,7 @@
         , NOTICE_CONTENT
         , NOTICE_REGIST_DATE
         , NOTICE_MODIFY_DATE
-        , EMP_ID
+        , EMP_NAME
         )
         VALUES
         (
@@ -109,7 +117,7 @@
         , #{ noticeContent }
         , SYSDATE
         , NULL
-        , 'test01'
+        , #{ empName }
         )
     </insert>
 
@@ -200,4 +208,14 @@
         , #{ noticeNo }
         )
     </insert>
+
+    <update id="incrementNoticeCount">
+        UPDATE
+               NOTICE A
+           SET A.NOTICE_COUNT = (SELECT B.NOTICE_COUNT
+                                   FROM NOTICE B
+                                  WHERE B.NOTICE_NO = #{ noticeNo }
+                                ) + 1
+        WHERE A.NOTICE_NO = #{ noticeNo }
+    </update>
 </mapper>

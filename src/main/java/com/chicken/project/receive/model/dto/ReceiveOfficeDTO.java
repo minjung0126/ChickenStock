@@ -1,6 +1,6 @@
 package com.chicken.project.receive.model.dto;
 
-import com.chicken.project.member.model.dto.EmployeeDTO;
+import com.chicken.project.receive.model.dto.RecEmployeeDTO;
 import com.chicken.project.item.model.dto.ItemCategoryDTO;
 import com.chicken.project.item.model.dto.ItemFileDTO;
 import com.chicken.project.item.model.dto.ItemInfoDTO;
@@ -21,12 +21,12 @@ public class ReceiveOfficeDTO {
     private ItemInfoDTO itemInfo;
     private ItemCategoryDTO itemCategory;
     private ItemFileDTO itemFile;
-    private EmployeeDTO employee;
+    private RecEmployeeDTO employee;
 
     public ReceiveOfficeDTO() {
     }
 
-    public ReceiveOfficeDTO(String recCode, Date recDate, String empId, int sumRecTotalAmount, int countRecCode, String sumRecTotalMoney, String stringRecDate, ReceiveOfficeItemDTO receiveOfficeItem, ItemInfoDTO itemInfo, ItemCategoryDTO itemCategory, ItemFileDTO itemFile, EmployeeDTO employee) {
+    public ReceiveOfficeDTO(String recCode, Date recDate, String empId, int sumRecTotalAmount, int countRecCode, String sumRecTotalMoney, String stringRecDate, ReceiveOfficeItemDTO receiveOfficeItem, ItemInfoDTO itemInfo, ItemCategoryDTO itemCategory, ItemFileDTO itemFile, RecEmployeeDTO employee) {
         this.recCode = recCode;
         this.recDate = recDate;
         this.empId = empId;
@@ -129,11 +129,11 @@ public class ReceiveOfficeDTO {
         this.itemFile = itemFile;
     }
 
-    public EmployeeDTO getEmployee() {
+    public RecEmployeeDTO getEmployee() {
         return employee;
     }
 
-    public void setEmployee(EmployeeDTO employee) {
+    public void setEmployee(RecEmployeeDTO employee) {
         this.employee = employee;
     }
 

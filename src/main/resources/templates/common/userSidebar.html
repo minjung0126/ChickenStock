@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
 
   <title>chicken stock</title>
+  <script type="text/javascript" th:src="@{http://code.jquery.com/jquery-3.6.0.min.js}"></script>
+  <script th:src="@{/js/common.js}"></script>
 
 </head>
 <body>
@@ -46,20 +48,20 @@
             <a href="#" title=""><img src="/images/re.png" width="18px" height="18px"> 반품관리</a>
             <ul>
               <li>
-                <a href="../reItem/returnReItemList.html" title="">반품요청</a>
+                <a href="/reItem/user/insertReItem" title="">반품신청</a>
               </li>
               <li>
-                <a href="../reItem/storeReList.html" title="">반품요청목록조회</a>
+                <a href="/reItem/user/storeReList" title="">반품요청목록조회</a>
               </li>
             </ul>
           </div>
 
           <div class="accordion_dep type1 ">
-            <a href="../billTax/billList.html" title=""><img src="/images/tax.png" width="18px" height="18px"> 세금계산서</a>
+            <a href="/billTax/billList" title=""><img src="/images/tax.png" width="18px" height="18px"> 세금계산서</a>
           </div>
 
           <div class="accordion_dep type1 ">
-            <a href="../billTax/tsbillList.html" title=""><img src="/images/bill.png" width="18px" height="18px"> 거래명세서</a>
+            <a href="/billTax/tsbillList" title=""><img src="/images/bill.png" width="18px" height="18px"> 거래명세서</a>
           </div>
 
           <div class="accordion_dep type1 ">
@@ -69,6 +71,19 @@
           <div class="accordion_dep type1 ">
             <a href="/store/user/list" title=""><img src="/images/shop.png" width="18px" height="18px"> 가맹점 조회</a>
           </div>
+
+          <div class="accordion_dep type2">
+            <a href="#" title=""><img src="/images/phone.JPG" width="18px" height="18px"> 1:1 문의</a>
+            <ul>
+              <li>
+                <a href="/counsel/user/list" title="">내가 쓴 1:1 문의</a>
+              </li>
+              <li>
+                <a href="/counsel/user/insert" title="">1:1 문의 등록</a>
+              </li>
+            </ul>
+          </div>
+
         </div>
       </div>
       <!-- E: aside -->

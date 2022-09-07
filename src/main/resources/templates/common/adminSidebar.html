@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
 
   <title>chicken stock</title>
-
+  <script type="text/javascript" th:src="@{http://code.jquery.com/jquery-3.6.0.min.js}"></script>
+  <script th:src="@{/js/common.js}"></script>
 </head>
 <body>
 
@@ -31,7 +32,7 @@
           </div>
 
           <div class="accordion_dep type1 ">
-            <a href="#" title="">입고관리</a>
+            <a href="/receive/admin/list" title="">입고관리</a>
           </div>
 
           <div class="accordion_dep type1 ">
@@ -43,11 +44,11 @@
           </div>
 
           <div class="accordion_dep type1 ">
-            <a href="../billTax/billtaxList.html" title="">세금계산서</a>
+            <a href="/billTax/billtaxList" title="">세금계산서</a>
           </div>
 
           <div class="accordion_dep type1 ">
-            <a href="../billTax/tsbilltaxList.html" title="">거래명세서</a>
+            <a href="/billTax/tsbilltaxList"" title="">거래명세서</a>
           </div>
 
           <div class="accordion_dep type1 ">
@@ -58,12 +59,25 @@
             <a href="/notice/admin/list" title="">공지사항</a>
           </div>
 
+          <div class="accordion_dep type1 ">
+            <a href="/counsel/admin/list" title="">1:1 문의</a>
+          </div>
+
+          <div class="accordion_dep type2">
+            <a href="#" title="">예치금 관리</a>
+            <ul>
+              <li>
+                <a href="/account/admin/list" title="">입금 신청내역 조회</a>
+              </li>
+              <li>
+                <a href="" title="">가맹점 잔액조회</a>
+              </li>
+            </ul>
+          </div>
+
           <div class="accordion_dep type2">
             <a href="#" title="">관리자메뉴</a>
             <ul style="display: block;">
-              <li>
-                <a href="/account/admin/list" title="">예치금관리</a>
-              </li>
               <li>
                 <a href="/notice/admin/insert" title="">공지사항 작성</a>
               </li>
@@ -77,7 +91,6 @@
              </li>
             </ul>
           </div>
-
         </div>
       </div>
       <!-- E: aside -->

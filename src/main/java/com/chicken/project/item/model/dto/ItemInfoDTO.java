@@ -1,5 +1,7 @@
 package com.chicken.project.item.model.dto;
 
+import com.chicken.project.release.model.dto.ItemCategoryDTO;
+
 public class ItemInfoDTO {
 
     private int itemNo;
@@ -11,11 +13,12 @@ public class ItemInfoDTO {
     private String itemMake;
     private int categoryNo;
     private int itemAmount;
+    private String soldout;
 
     public ItemInfoDTO() {
     }
 
-    public ItemInfoDTO(int itemNo, String itemName, String itemStandard, int itemPurchase, int itemSales, String itemSoldoutYn, String itemMake, int categoryNo, int itemAmount) {
+    public ItemInfoDTO(int itemNo, String itemName, String itemStandard, int itemPurchase, int itemSales, String itemSoldoutYn, String itemMake, int categoryNo, int itemAmount, String soldout) {
         this.itemNo = itemNo;
         this.itemName = itemName;
         this.itemStandard = itemStandard;
@@ -25,6 +28,7 @@ public class ItemInfoDTO {
         this.itemMake = itemMake;
         this.categoryNo = categoryNo;
         this.itemAmount = itemAmount;
+        this.soldout = soldout;
     }
 
     public int getItemNo() {
@@ -99,6 +103,14 @@ public class ItemInfoDTO {
         this.itemAmount = itemAmount;
     }
 
+    public String getSoldout() {
+        return soldout;
+    }
+
+    public void setSoldout(String soldout) {
+        this.soldout = soldout;
+    }
+
     @Override
     public String toString() {
         return "ItemInfoDTO{" +
@@ -111,6 +123,7 @@ public class ItemInfoDTO {
                 ", itemMake='" + itemMake + '\'' +
                 ", categoryNo=" + categoryNo +
                 ", itemAmount=" + itemAmount +
+                ", soldout='" + soldout + '\'' +
                 '}';
     }
 }

@@ -16,6 +16,8 @@ public class ReItemController {
     @GetMapping("/user/storeReList")
     public void SreItem(){
 
+//        <a href="/reItem/user/reviseReItem">가맹점 반품신청 수정</a>
+
     }
     @GetMapping("/user/reviseReItem")
     public void RreItem(){

@@ -15,7 +15,7 @@ public class BillTaxService {
     public BillTaxMapper billTaxMapper;
 
     public BillTaxService(BillTaxMapper billTaxMapper) {
-      this.billTaxMapper = billTaxMapper;
+        this.billTaxMapper = billTaxMapper;
     }
 
     // 세금계산서 페이징+리스트
