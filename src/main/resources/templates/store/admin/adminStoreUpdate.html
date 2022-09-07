@@ -12,6 +12,8 @@
   <link rel="stylesheet" type="text/css" th:href="@{/css/notice/notice.css}"/>
   <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
+  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+  <script type="text/javascript" th:src="@{/js/common.js}"></script>
 </head>
 <body>
   <div class="wrap">
@@ -46,51 +48,52 @@
                 <tbody>
                   <tr>
                     <th>가맹점 명</th>
-                    <td th:value="${ store.storeName }">
-                      <input type="text" name="storeName"/>
+                    <td>
+                      <input type="hidden" name="storeId" th:value="${ store.storeId }"/>
+                      <input type="text" name="storeName" th:value="${ store.storeName }"/>
                     </td>
                   </tr>
                   <tr>
                     <th>계좌번호</th>
-                    <td th:value="${ store.storeAccount }">
-                      <input type="text" name="storeAccount"/>
+                    <td>
+                      <input type="text" name="storeAccount" th:value="${ store.storeAccount }"/>
                     </td>
                   </tr>
                   <tr>
                     <th>대표자 명</th>
-                    <td th:value="${ store.storeRep }">
-                      <input type="text" name="storeRep"/>
+                    <td>
+                      <input type="text" name="storeRep" th:value="${ store.storeRep }"/>
                     </td>
                   </tr>
                   <tr>
                     <th>주소</th>
-                    <td th:value="${ store.storeAddress }">
-                      <input type="text" name="storeAddress"/>
+                    <td>
+                      <input type="text" name="storeAddress" th:value="${ store.storeAddress }"/>
                     </td>
                   </tr>
                   <tr>
                     <th>전화번호</th>
-                    <td th:value="${ store.storePhone }">
-                      <input type="text" name="storePhone"/>
+                    <td>
+                      <input type="text" name="storePhone" th:value="${ store.storePhone }"/>
                     </td>
                   </tr>
                   <tr>
                     <th>이메일</th>
-                    <td th:value="${ store.storeEmail }">
-                      <input type="text" name="storeEmail"/>
+                    <td>
+                      <input type="text" name="storeEmail" th:value="${ store.storeEmail }"/>
                     </td>
                   </tr>
                   <tr>
                     <th>사업자 등록번호</th>
-                    <td th:value="${ store.storeNo }">
-                      <input type="text" name="storeNo"/>
+                    <td>
+                      <input type="text" name="storeNo" th:value="${ store.storeNo }"/>
                     </td>
                   </tr>
                 </tbody>
               </table>
                 <div class="input-group mb-3 col-7 flex-right">
                   <button class="btn btn-warning ml-1" type="submit" style="color:#fff">수정</button>
-                  <button class="btn btn-warning ml-1" type="submit" style="color:#fff"
+                  <button class="btn btn-warning ml-1" type="reset" style="color:#fff"
                           th:onclick="'location.href=\'/store/admin/list\''">취소</button>
                 </div>
             </form>
@@ -99,7 +102,6 @@
         </div>
       </div> 
       <!-- E: main layout -->
-      
     </div>
     <!-- E: container -->
   </div>

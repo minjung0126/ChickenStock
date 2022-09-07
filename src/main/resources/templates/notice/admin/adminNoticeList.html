@@ -10,6 +10,8 @@
   <link rel="stylesheet" type="text/css" th:href="@{/css/notice/notice.css}"/>
   <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
+  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+  <script type="text/javascript" th:src="@{/js/common.js}"></script>
 </head>
 <body>
 <div class="wrap">
@@ -39,12 +41,14 @@
               <col style="">
               <col style="width:100px">
               <col style="width:100px">
+              <col style="width:100px">
             </colgroup>
             <thead>
             <tr>
               <th>번호</th>
               <th>제목</th>
               <th>작성자</th>
+              <th>조회수</th>
               <th class="th1">등록일</th>
             </tr>
             </thead>
@@ -53,6 +57,7 @@
               <td th:text="${ notice.noticeNo }"></td>
               <td th:text="${ notice.noticeName }"></td>
               <td th:text="${ notice.empId }"></td>
+              <td th:text="${ notice.noticeCount }"></td>
               <td th:text="${ notice.noticeRegistDate }"></td>
             </tr>
             </tbody>
@@ -134,7 +139,7 @@
     }
   }
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/.ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <script th:inline="javascript">
   let message = [[${message}]];
