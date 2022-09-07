@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
@@ -43,7 +43,7 @@
 
           <!-- S: text area -->
           <div class="text-area">
-            <strong>가맹점</strong> <span>현재 잔액</span> <strong>500,000</strong>원
+            <span>가맹점 명</span> <span>현재 잔액</span> <span></span>원
           </div>
           <!-- E: text area -->
 
@@ -69,11 +69,11 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-              <td>1</td>
-              <td>2022.08.28</td>
-              <td>1,000,000</td>
-              <td>대기</td>
+            <tr th:each="account : ${ accountList }">
+              <td th:text="${ account.depositNum }"></td>
+              <td th:text="${ account.accountDate }"></td>
+              <td th:text="${ account.accountDeposit }"></td>
+              <td th:text="${ account.accountYn }"></td>
             </tr>
             </tbody>
           </table>
@@ -103,7 +103,7 @@
         </tr>
         <tr>
           <th>입금액</th>
-          <td><input type="text"></td>
+          <td><input type="text" name="accountDeposit"></td>
         </tr>
         <tr>
           <th>현재 잔액</th>
@@ -112,8 +112,8 @@
         </tbody>
       </table>
       <div class="btn-area">
-        <button class="btn btn-cancel">취소</button>
         <button class="btn btn-warning" style="color: #fff;">확인</button>
+        <button class="btn btn-cancel">취소</button>
       </div>
     </div>
   </div>

@@ -20,4 +20,6 @@ public interface StoreMapper {
     int updateStore(StoreDTO store);
 
     String selectStoreId(UserDetails member);
+
+    void insertBalance(String storeName);
 }

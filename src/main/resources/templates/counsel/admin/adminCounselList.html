@@ -54,7 +54,7 @@
                   <th>문의 답변상태</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody style="cursor:pointer">
                 <tr th:each="counsel : ${ counselList }">
                   <td th:text="${ counsel.counselNo }"></td>
                   <td th:text="${ counsel.counselName }"></td>
