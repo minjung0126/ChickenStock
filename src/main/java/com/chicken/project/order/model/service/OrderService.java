@@ -95,6 +95,31 @@ public class OrderService {
     public List<CartDTO> selectCartItem(SelectCriteria selectCriteria) {
 
         return orderMapper.selectCartItem(selectCriteria);
+    }
+
+    public int selectAvailableItemCount(Map<String, String> searchMap) {
+
+        int result = orderMapper.selectAvailableItemCount(searchMap);
+        
+        return result;
+    }
+
+    public List<OrderDTO> selectAvailableItem(SelectCriteria selectCriteria) {
+
+        return orderMapper.selectAvailableItem(selectCriteria);
+    }
+
+    public int selectInterestItemCount(Map<String, String> searchMap) {
+
+        int result = orderMapper.selectInterestItemCount(searchMap);
+
+        return result;
+    }
+
+
+    public List<OrderDTO> selectInterestItem(SelectCriteria selectCriteria) {
+
+        return orderMapper.selectInterestItem(selectCriteria);
 
     }
 }
