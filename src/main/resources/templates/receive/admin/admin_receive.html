@@ -18,8 +18,6 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"/>
 
-    <!--  <script th:src="@{/js/common.js}"></script>-->
-
 </head>
 <body>
 <div class="wrap">
@@ -292,14 +290,14 @@
             jb(this).next(".detail-sub-tr").find(".detail-sub").slideToggle(300);
             jb(this).toggleClass('on').siblings().removeClass('on');
             jb(this).next(".detail-sub-tr").find(".detail-sub").siblings(".detail-sub").slideUp(300);
-
-            var str = "";
-            var tdArr = new Array();
-
-            var tr = $(this);
-            var td = tr.children();
-
-            alert(tr.text());
+            //
+            // var str = "";
+            // var tdArr = new Array();
+            //
+            // var tr = $(this);
+            // var td = tr.children();
+            //
+            // alert(tr.text());
 
         });
 
