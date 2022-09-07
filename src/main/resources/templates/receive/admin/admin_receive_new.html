@@ -181,9 +181,9 @@
                             <td th:text="${ receive.itemNo }">100001</td>
                             <td th:text="${ receive.itemStandard }">ea</td>
                             <td th:text="${ receive.itemAmount }">1000</td>
-                            <td align="center"><input type="number" class="form-control col-10" min="1" max="1000"></td>
-                            <td th:text="${ receive.itemPurchase }">4,500</td>
-                            <td>450,000</td>
+                            <td align="center"><input type="number" class="form-control col-10 receiveAmount" id="receiveAmount" name="receiveAmount" min="1" max="1000" value="1" onchange="inputValueChange();"></td>
+                            <td th:text="${ receive.itemPurchase }" id="itemPurchase">4,500</td>
+                            <td id="receiveTotalMoney" th:value="${ receive.itemPurchase}">450,000</td>
                             <td><button class="btn btn-light" type="submit" style="color:#fff; background-color: #ccc;">삭제</button></td>
                         </tr>
                         </tbody>
@@ -412,6 +412,22 @@
     function closeLayer(IdName){
         var pop = document.getElementById(IdName);
         pop.style.display = "none";
+    }
+</script>
+
+<!-- 자동계산  -->
+<script>
+    function inputValueChange(){
+        var inputValue;
+        var inputValue = document.getElementById('receiveAmount').value;
+        console.log(inputValue);
+
+        var itemPurchase = 100;
+        var receiveTotalMoney = inputValue * itemPurchase;
+        document.getElementById('receiveTotalMoney').innerText
+            = receiveTotalMoney;
+
+
     }
 </script>
 </body>
