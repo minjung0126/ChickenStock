@@ -114,7 +114,7 @@ public class ReceiveController {
     }
 
     @GetMapping("/admin/list/new")
-    public ModelAndView receiveNew(HttpServletRequest request, ModelAndView mv, @RequestParam ){
+    public ModelAndView receiveNew(HttpServletRequest request, ModelAndView mv){
 
         log.info("");
         log.info("");
@@ -167,8 +167,8 @@ public class ReceiveController {
         List<ReceiveOfficeDTO> receiveOfficeItemList = receiveService.selectAllItem(selectCriteria);
 
 
-        List<Integer> receiveItemNo =
-        List<ReceiveOfficeItemDTO> receiveOfficeChooseItemList = receiveService.selectChooseItem(receiveItemNo);
+//        List<Integer> receiveItemNo =
+//        List<ReceiveOfficeItemDTO> receiveOfficeChooseItemList = receiveService.selectChooseItem(receiveItemNo);
 
         log.info("[ReceiveController] receiveOfficeItemList : " + receiveOfficeItemList);
 
