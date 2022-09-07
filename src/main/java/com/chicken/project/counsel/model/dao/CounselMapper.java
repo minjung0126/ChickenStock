@@ -14,11 +14,11 @@ public interface CounselMapper {
 
     CounselDTO selectCounselByNo(int counselNo);
 
-    int insertCounselApply(String answerContent, int counselNo);
+    int insertCounselApply(String answerContent, int counselNo, String empName);
 
     void updateCounsel(int counselNo);
 
     CounselApplyDTO selectCounselApplyByNo(int counselNo);
 
-    List<CounselDTO> selectCounselByStoreId(String storeId);
+    List<CounselDTO> selectCounselByStoreName(String storeName);
 }

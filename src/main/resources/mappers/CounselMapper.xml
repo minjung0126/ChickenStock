@@ -9,7 +9,7 @@
         <result property="counselName" column="COUNSEL_NAME"/>
         <result property="counselContent" column="COUNSEL_CONTENT"/>
         <result property="counselRegistDate" column="COUNSEL_REGIST_DATE"/>
-        <result property="storeId" column="STORE_ID"/>
+        <result property="storeName" column="STORE_NAME"/>
         <result property="counselYn" column="COUNSEL_YN"/>
     </resultMap>
 
@@ -17,7 +17,7 @@
         <id property="counselNo" column="COUNSEL_NO"/>
         <result property="answerContent" column="ANSWER_CONTENT"/>
         <result property="answerRegistDate" column="ANSWER_REGIST_DATE"/>
-        <result property="empId" column="EMP_ID"/>
+        <result property="empName" column="EMP_NAME"/>
     </resultMap>
 
     <insert id="insertCounsel">
@@ -25,12 +25,12 @@
           INTO COUNSEL
         (
           COUNSEL_NO, COUNSEL_NAME, COUNSEL_CONTENT
-        , COUNSEL_REGIST_DATE, STORE_ID, COUNSEL_YN
+        , COUNSEL_REGIST_DATE, STORE_NAME, COUNSEL_YN
         )
         VALUES
         (
           SEQ_COUNSEL_NO.NEXTVAL, #{ counselName }, #{ counselContent }
-        , SYSDATE, 'alstn0743', DEFAULT
+        , SYSDATE, #{ storeName }, DEFAULT
         )
     </insert>
 
@@ -54,16 +54,17 @@
           COUNSEL_NO
         , ANSWER_CONTENT
         , ANSWER_REGIST_DATE
-        , EMP_ID
+        , EMP_NAME
         )
         VALUES
         (
           #{ counselNo }
         , #{ answerContent }
         , SYSDATE
-        , 'test01'
+        , #{ empName }
         )
     </insert>
+
     <update id="updateCounsel">
         UPDATE
                COUNSEL
@@ -78,10 +79,10 @@
          WHERE COUNSEL_NO = #{ counselNo }
     </select>
 
-    <select id="selectCounselByStoreId" resultMap="counselResultMap">
+    <select id="selectCounselByStoreName" resultMap="counselResultMap">
         SELECT
                *
           FROM COUNSEL
-         WHERE STORE_ID = #{ storeId }
+         WHERE STORE_NAME = #{ storeName }
     </select>
 </mapper>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
   <meta charset="utf-8"/>
   <title>chicken stock</title>
@@ -10,8 +11,6 @@
   <link rel="stylesheet" type="text/css" th:href="@{/css/notice/notice.css}"/>
   <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
-  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-  <script type="text/javascript" th:src="@{/js/common.js}"></script>
 </head>
 <body>
   <div class="wrap">
@@ -50,6 +49,7 @@
                     <td>
                       <span th:text="${ counsel.counselName }"></span>
                       <input type="hidden" name="counselNo" th:value="${ counsel.counselNo }"/>
+                      <input type="hidden" name="empName" th:value="${ #authentication.getPrincipal().getEmpName()}">
                     </td>
                   </tr>
                   <tr>
