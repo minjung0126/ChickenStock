@@ -8,8 +8,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/reItem/*")
 public class ReItemController {
 
-    @GetMapping("/returnRItemList")
-    public void ReturnReList(){
+    @GetMapping("/user/insertReItem")
+    public void reItem(){
 
     }
+
+    @GetMapping("/user/storeReList")
+    public void SreItem(){
+
+    }
+    @GetMapping("/user/reviseReItem")
+    public void RreItem(){
+
+    }
+
 }
