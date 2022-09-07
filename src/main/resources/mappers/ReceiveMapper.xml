@@ -44,6 +44,7 @@
         <result property="categoryNo" column="CATEGORY_NO"/>
         <result property="itemAmount" column="ITEM_AMOUNT"/>
         <result property="soldout" column="soldout"/>
+        <association property="itemFile" resultMap="itemFileResultMap"/>
     </resultMap>
 
     <resultMap id="itemCategoryResultMap" type="com.chicken.project.item.model.dto.ItemCategoryDTO">
@@ -131,11 +132,13 @@
              , I.ITEM_SALES
              , I.ITEM_AMOUNT
              , I.ITEM_MAKE
+             , IF.FILE_NAME
              , CASE WHEN I.ITEM_AMOUNT = 0 THEN '품절'
                     ELSE '보유'
                END soldout
         FROM ITEM_INFO I
         JOIN ITEM_CATEGORY IC ON (I.CATEGORY_NO = IC.CATEGORY_NO)
+        JOIN ITEM_FILE IF ON (I.ITEM_NO = IF.ITEM_NO)
       ORDER BY 1
     </select>
 
@@ -144,5 +147,21 @@
                COUNT(*)
           FROM ITEM_INFO I
           JOIN ITEM_CATEGORY IC ON(I.CATEGORY_NO = IC.CATEGORY_NO)
+    </select>
+
+    <select id="selectRegistReceive" parameterType="hashMap" resultMap="itemInfoResultMap">
+        SELECT
+               IF.FILE_NAME
+             , I.ITEM_NAME
+             , I.ITEM_NO
+             , I.ITEM_STANDARD
+             , I.ITEM_AMOUNT
+             , I.ITEM_PURCHASE
+          FROM ITEM_INFO I
+          JOIN ITEM_FILE IF ON(IF.ITEM_NO = I.ITEM_NO)
+         WHERE I.ITEM_NO IN 
+         <foreach collection="itemNoList" item="itemNo" open="(" separator=", " close=")">
+             #{ itemNo }
+         </foreach>
     </select>
 </mapper>

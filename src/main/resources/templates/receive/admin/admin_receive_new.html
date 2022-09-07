@@ -45,9 +45,10 @@
                     <h3>입고 등록</h3>
                     <br>
                     <div class="col-12 d-flex justify-content-end">
-                        <button class="btn btn-warning mx-2 open-btn" type="submit" onclick="openLayer('layerPop',7, 12)" style="color:#fff;">품목 불러오기</button>
+                        <button class="btn btn-warning mx-2 open-btn" type="button" onclick="openLayer('layerPop',7, 12)" style="color:#fff;">품목 불러오기</button>
                         <button class="btn btn-light" type="submit" onclick="deleteItem()" style="color:#fff; background-color: #ccc;">선택 삭제</button>
                     </div>
+                    <form method="post" action="/admin/list/new1">
                     <div id="layerPop" class="p-5" style="display:none; width: 75%; height: 800px; position: absolute; z-index: 1; overflow: scroll;">
                         <!-- <h2 class="mb-5">품목 관리</h2> -->
                         <!-- <h3 class="mb-4">품목 선택</h3> -->
@@ -72,15 +73,15 @@
 
                         </div>
                         <div class="mt-3 d-flex justify-content-end">
-                            <div id="result"></div>
-                            <button class="btn btn-warning me-1" type="submit" style="color: #fff;" onclick='getCheckboxValue()'>품목 선택</button>
+                            <input type="hidden" name="itemNoList" id="result">
+                            <button class="btn btn-warning me-1" type="button" style="color: #fff;" onclick='getCheckboxValue()'>품목 선택</button>
                         </div>
                         <table class="table">
                             <thead>
                             <tr>
                                 <th>
                                     <div class="form-check pb-3">
-                                        <input type="checkbox" class="form-check-input" name="option" value='selectall' onclick='selectAll(this)' required/>
+                                        <input type="checkbox" class="form-check-input" name="option1" value='selectall' onclick='selectAll(this)' required/>
                                     </div>
                                 </th>
                                 <th>상품코드</th>
@@ -99,7 +100,7 @@
                             <tr th:each="receiveItem : ${ receiveOfficeItemList }">
                                 <td>
                                     <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" name="option" value="something" th:value="${ receiveItem.itemNo }">
+                                        <input type="checkbox" class="form-check-input" name="option2" value="something" th:value="${ receiveItem.itemNo }">
                                         <label class="form-check-label" for="check"></label>
                                     </div>
                                 </td>
@@ -107,7 +108,7 @@
                                 <td>
                                     <div class="img-info">
                                         <div class="img-info__img">
-                                            <img src="../assets/images/chicken.jpg" alt="">
+                                            <img th:src="'/images/' + ${ receiveItem.itemFile.fileName }" src="../assets/images/chicken.jpg" alt="">
                                         </div>
                                     </div>
                                 </td>
@@ -138,6 +139,7 @@
                             </a>
                         </div>
                     </div>
+                    </form>
 
                     <table class="table">
                         <thead>
@@ -160,27 +162,27 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
+                        <tr th:each="receive, stat : ${ registReceiveList }">
                             <td>
                                 <div class="form-check">
                                     <input type="checkbox" class="form-check-input" id="check" name="option" value="something">
                                     <label class="form-check-label" for="check"></label>
                                 </div>
                             </td>
-                            <td>1</td>
+                            <td th:text="${ stat.count }">1</td>
                             <td>
                                 <div class="img-info">
                                     <div class="img-info__img">
-                                        <img src="../assets/images/chicken.jpg" alt="">
+                                        <img th:src="'/images/' + ${ receive.itemFile.fileName }" src="../assets/images/chicken.jpg" alt="">
                                     </div>
                                 </div>
                             </td>
-                            <td>닭다리</td>
-                            <td>100001</td>
-                            <td>ea</td>
-                            <td>1000</td>
+                            <td th:text="${ receive.itemName }">닭다리</td>
+                            <td th:text="${ receive.itemNo }">100001</td>
+                            <td th:text="${ receive.itemStandard }">ea</td>
+                            <td th:text="${ receive.itemAmount }">1000</td>
                             <td align="center"><input type="number" class="form-control col-10" min="1" max="1000"></td>
-                            <td>4,500</td>
+                            <td th:text="${ receive.itemPurchase }">4,500</td>
                             <td>450,000</td>
                             <td><button class="btn btn-light" type="submit" style="color:#fff; background-color: #ccc;">삭제</button></td>
                         </tr>
@@ -199,7 +201,7 @@
 
                 <!-- E: table -->
                 <div class="col-12 d-flex justify-content-center mb-4">
-                    <button class="btn btn-light" type="submit" style="color:#fff; background-color: #ccc;" onclick="location.href='admin_receive.html'">취소</button>
+                    <button class="btn btn-light" type="button" style="color:#fff; background-color: #ccc;" onclick="location.href='/admin/list/new'">취소</button>
                     <button class="btn btn-warning mx-2" type="submit" style="color:#fff;" onclick="insertReceive()">입고</button>
                 </div>
 
@@ -286,8 +288,19 @@
 
 <!-- 체크 박스 전체 선택 -->
 <script type="text/javascript">
-    function selectAll(selectAll)  {
-        const checkboxes = document.getElementsByName('option');
+    function selectAll1(selectAll)  {
+        const checkboxes = document.getElementsByName('option1');
+
+        checkboxes.forEach((checkbox) => {
+            checkbox.checked = selectAll.checked;
+        })
+    }
+</script>
+
+<!-- 체크 박스 전체 선택 -->
+<script type="text/javascript">
+    function selectAll2(selectAll)  {
+        const checkboxes = document.getElementsByName('option2');
 
         checkboxes.forEach((checkbox) => {
             checkbox.checked = selectAll.checked;
@@ -299,25 +312,52 @@
 <script>
     function getCheckboxValue()  {
         // 선택된 목록 가져오기
-        const query = 'input[name="option"]:checked';
+        const query = 'input[name="option2"]:checked';
         const selectedEls =
             document.querySelectorAll(query);
 
         // 선택된 목록에서 value 찾기
         let result = '';
-        let arr = [];
+        let itemNoVal = [];
         selectedEls.forEach((el) => {
-            arr[arr.length] = el.value;
+            itemNoVal[itemNoVal.length] = el.value;
             result += el.value + ' ';
         });
 
         // 출력
         document.getElementById('result').innerText
-            = result;
+            = itemNoVal;
 
-        alert(arr);
+        // alert(itemNoVal);
+        closeLayer('layerPop');
 
+        let form = document.createElement('form');
 
+        let itemNoList = document.createElement('input');
+        itemNoList.setAttribute('type', 'hidden');
+        itemNoList.setAttribute('name', 'itemNoList');
+        itemNoList.setAttribute('value', itemNoVal.toString());
+        form.appendChild(itemNoList);
+        form.setAttribute('method', 'post');
+        form.setAttribute('action', '/receive/admin/list/new');
+        document.body.appendChild(form);
+        form.submit();
+
+        // $.ajax({
+        //             url: "receive/admin/list/new",
+        //             // dataType: "json",
+        //             // contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        //             type: "post",
+        //             data: {
+        //                 itemNo: itemNoVal
+        //             },
+        //             success: function (data) {
+        //                 console.log("success", data);
+        //             },
+        //             error: function () {
+        //                 alert("error");
+        //             }
+        //         });
 
         // location.href = "/receive/admin/list/new?itemNo=" + arr;
 

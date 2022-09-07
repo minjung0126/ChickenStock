@@ -82,7 +82,7 @@
                                 <tbody>
                                 <div th:each="receive, stat : ${ receiveOfficeList }">
                                     <tr class="detail-main" th:value="${ receive.recCode }">
-                                        <td>1</td>
+                                        <td th:text="${ stat.count }">1</td>
                                         <td th:text="${ receive.recCode }"></td>
                                         <td th:if="${ receive.countRecCode != 0}"
                                             th:text="|${ receiveOffice[stat.index].get(0).itemName } 외 ${ receive.countRecCode }개 품목|"></td>
