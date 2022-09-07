@@ -1,13 +1,13 @@
 package com.chicken.project.release.model.service;
 
 import com.chicken.project.release.model.dao.ReleaseMapper;
-import com.chicken.project.release.model.dto.ReleaseDTO;
-import com.chicken.project.release.model.dto.ReleaseOrderDTO;
+import com.chicken.project.release.model.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ReleaseServiceImpl implements ReleaseService{
@@ -19,18 +19,19 @@ public class ReleaseServiceImpl implements ReleaseService{
 
         this.releaseMapper = releaseMapper;
     }
-    @Override
-    public List<ReleaseOrderDTO> releaseOrderSelectN() {
 
-        List<ReleaseOrderDTO> orderDTO = releaseMapper.releaseOrderSelectN();
+    @Override
+    public List<ReleaseOrderDTO> releaseOrderSelect(ReleaseSelectCriteria releaseSelectCriteria) {
+
+        List<ReleaseOrderDTO> orderDTO = releaseMapper.releaseOrderSelect(releaseSelectCriteria);
 
         return orderDTO;
     }
 
     @Override
-    public List<ReleaseOrderDTO> releaseOrderSelectY() {
+    public List<ReleaseOrderDTO> releaseOrderSelectN() {
 
-        List<ReleaseOrderDTO> orderDTO = releaseMapper.releaseOrderSelectY();
+        List<ReleaseOrderDTO> orderDTO = releaseMapper.releaseOrderSelectN();
 
         return orderDTO;
     }
@@ -45,36 +46,43 @@ public class ReleaseServiceImpl implements ReleaseService{
 
     @Override
     @Transactional
-    public int releaseItemUpdateY(ReleaseOrderDTO storeOrderDTO) {
+    public int releaseItemInsert(ReleaseItemInfoDTO releaseItemInfoDTO, ReleaseItemDTO releaseItemDTO, StoreOrderDTO storeOrderDTO, ReleaseCartDTO releaseCartDTO, int relCode, int totalItemMoney) {
+        int result = releaseMapper.releaseItemInsert(releaseItemInfoDTO, releaseItemDTO, storeOrderDTO, releaseCartDTO, relCode, totalItemMoney);
 
-        int result = releaseMapper.releaseItemUpdateY(storeOrderDTO);
+        return result;
+    }
+
+    @Override
+    public int cartYnUpdateR(ReleaseCartDTO releaseCartDTO) {
+
+        int result = releaseMapper.cartYnUpdateR(releaseCartDTO);
 
         return result;
     }
 
     @Override
     @Transactional
-    public int releaseItemInsert(ReleaseOrderDTO storeOrderDTO, int relCode, int totalItemMoney) {
+    public int releaseItemUpdateN(ReleaseItemDTO releaseItemDTO) {
 
-        int result = releaseMapper.releaseItemInsert(storeOrderDTO, relCode, totalItemMoney);
-
-        return result;
-    }
-
-    @Override
-    @Transactional
-    public int releaseItemUpdateN(ReleaseOrderDTO storeOrderDTO) {
-
-        int result = releaseMapper.releaseItemUpdateN(storeOrderDTO);
+        int result = releaseMapper.releaseItemUpdateN(releaseItemDTO);
 
         return result;
     }
 
     @Override
     @Transactional
-    public int releaseItemDelete(ReleaseOrderDTO storeOrderDTO, int relCode) {
+    public int cartYnUpdateN(ReleaseCartDTO releaseCartDTO) {
 
-        int result = releaseMapper.releaseItemDelete(storeOrderDTO, relCode);
+        int result = releaseMapper.cartYnUpdateN(releaseCartDTO);
+
+        return result;
+    }
+
+    @Override
+    @Transactional
+    public int releaseItemDelete(ReleaseItemInfoDTO releaseItemInfoDTO, ReleaseCartDTO releaseCartDTO, ReleaseItemDTO releaseItemDTO, StoreOrderDTO storeOrderDTO, int relCode) {
+
+        int result = releaseMapper.releaseItemDelete(releaseItemInfoDTO, releaseCartDTO, releaseItemDTO, storeOrderDTO,  relCode);
 
         return result;
     }
@@ -114,10 +122,45 @@ public class ReleaseServiceImpl implements ReleaseService{
     }
 
     @Override
-    public List<ReleaseOrderDTO> releaseItemListSelect() {
+    @Transactional
+    public List<ReleaseOrderDTO> releaseItemListSelect(int relCode) {
 
-        List<ReleaseOrderDTO> releaseItemListSelect = releaseMapper.releaseItemListSelect();
+        List<ReleaseOrderDTO> releaseItemListSelect = releaseMapper.releaseItemListSelect(relCode);
 
         return releaseItemListSelect;
+    }
+
+    @Override
+    public List<ReleaseOrderDTO> releaseSelect2(int relCode) {
+
+        List<ReleaseOrderDTO> releaseItemListSelect = releaseMapper.releaseItemListSelect2(relCode);
+
+        return releaseItemListSelect;
+    }
+
+    @Override
+    @Transactional
+    public int itemAmountUpdate(Map<String, Integer> itemAmountUpdate) {
+
+        int result = releaseMapper.itemAmountUpdate(itemAmountUpdate);
+
+        return result;
+    }
+
+    @Override
+    @Transactional
+    public int relItemHistoryInsert(Map<String, Integer> itemAmountUpdate) {
+
+        int result = releaseMapper.relItemHistoryInsert(itemAmountUpdate);
+
+        return result;
+    }
+
+    @Override
+    public int relAmountSumSelect(int relCodeDetail) {
+
+        int relAmountSum = releaseMapper.relAmountSumSelect(relCodeDetail);
+
+        return relAmountSum;
     }
 }

@@ -4,126 +4,93 @@ import java.sql.Date;
 
 public class ReleaseOrderDTO {
 
-    private int orderNo;
-    private java.sql.Date orderDate;
-    private int orderAmount;
-    private int cartNo;
-    private int itemNo;
-    private String storeName;
-    private String relYn;
-    private ItemInfoDTO itemInfoDTO;
-    private ItemCategoryDTO itemCategoryDTO;
 
-    private ItemFileDTO itemFileDTO;
+    private ReleaseItemInfoDTO releaseItemInfoDTO;
+    private ReleaseItemCategoryDTO releaseItemCategoryDTO;
+    private ReleaseCartDTO releaseCartDTO;
+    private ReleaseItemFileDTO releaseItemFileDTO;
+    private StoreOrderDTO storeOrderDTO;
+    private ReleaseCartHandlerDTO releaseCartHandlerDTO;
+    private ReleaseItemDTO releaseItemDTO;
 
     public ReleaseOrderDTO() {}
 
-    public ReleaseOrderDTO(int orderNo, Date orderDate, int orderAmount, int cartNo, int itemNo, String storeName, String relYn, ItemInfoDTO itemInfoDTO, ItemCategoryDTO itemCategoryDTO, ItemFileDTO itemFileDTO) {
-        this.orderNo = orderNo;
-        this.orderDate = orderDate;
-        this.orderAmount = orderAmount;
-        this.cartNo = cartNo;
-        this.itemNo = itemNo;
-        this.storeName = storeName;
-        this.relYn = relYn;
-        this.itemInfoDTO = itemInfoDTO;
-        this.itemCategoryDTO = itemCategoryDTO;
-        this.itemFileDTO = itemFileDTO;
+    public ReleaseOrderDTO(ReleaseItemInfoDTO releaseItemInfoDTO, ReleaseItemCategoryDTO releaseItemCategoryDTO, ReleaseCartDTO releaseCartDTO, ReleaseItemFileDTO releaseItemFileDTO, StoreOrderDTO storeOrderDTO, ReleaseCartHandlerDTO releaseCartHandlerDTO, ReleaseItemDTO releaseItemDTO) {
+        this.releaseItemInfoDTO = releaseItemInfoDTO;
+        this.releaseItemCategoryDTO = releaseItemCategoryDTO;
+        this.releaseCartDTO = releaseCartDTO;
+        this.releaseItemFileDTO = releaseItemFileDTO;
+        this.storeOrderDTO = storeOrderDTO;
+        this.releaseCartHandlerDTO = releaseCartHandlerDTO;
+        this.releaseItemDTO = releaseItemDTO;
     }
 
-    public int getOrderNo() {
-        return orderNo;
+    public ReleaseItemInfoDTO getReleaseItemInfoDTO() {
+        return releaseItemInfoDTO;
     }
 
-    public void setOrderNo(int orderNo) {
-        this.orderNo = orderNo;
+    public void setReleaseItemInfoDTO(ReleaseItemInfoDTO releaseItemInfoDTO) {
+        this.releaseItemInfoDTO = releaseItemInfoDTO;
     }
 
-    public Date getOrderDate() {
-        return orderDate;
+    public ReleaseItemCategoryDTO getReleaseItemCategoryDTO() {
+        return releaseItemCategoryDTO;
     }
 
-    public void setOrderDate(Date orderDate) {
-        this.orderDate = orderDate;
+    public void setReleaseItemCategoryDTO(ReleaseItemCategoryDTO releaseItemCategoryDTO) {
+        this.releaseItemCategoryDTO = releaseItemCategoryDTO;
     }
 
-    public int getOrderAmount() {
-        return orderAmount;
+    public ReleaseCartDTO getReleaseCartDTO() {
+        return releaseCartDTO;
     }
 
-    public void setOrderAmount(int orderAmount) {
-        this.orderAmount = orderAmount;
+    public void setReleaseCartDTO(ReleaseCartDTO releaseCartDTO) {
+        this.releaseCartDTO = releaseCartDTO;
     }
 
-    public int getCartNo() {
-        return cartNo;
+    public ReleaseItemFileDTO getReleaseItemFileDTO() {
+        return releaseItemFileDTO;
     }
 
-    public void setCartNo(int cartNo) {
-        this.cartNo = cartNo;
+    public void setReleaseItemFileDTO(ReleaseItemFileDTO releaseItemFileDTO) {
+        this.releaseItemFileDTO = releaseItemFileDTO;
     }
 
-    public int getItemNo() {
-        return itemNo;
+    public StoreOrderDTO getStoreOrderDTO() {
+        return storeOrderDTO;
     }
 
-    public void setItemNo(int itemNo) {
-        this.itemNo = itemNo;
+    public void setStoreOrderDTO(StoreOrderDTO storeOrderDTO) {
+        this.storeOrderDTO = storeOrderDTO;
     }
 
-    public String getStoreName() {
-        return storeName;
+    public ReleaseCartHandlerDTO getReleaseCartHandlerDTO() {
+        return releaseCartHandlerDTO;
     }
 
-    public void setStoreName(String storeName) {
-        this.storeName = storeName;
+    public void setReleaseCartHandlerDTO(ReleaseCartHandlerDTO releaseCartHandlerDTO) {
+        this.releaseCartHandlerDTO = releaseCartHandlerDTO;
     }
 
-    public String getRelYn() {
-        return relYn;
+    public ReleaseItemDTO getReleaseItemDTO() {
+        return releaseItemDTO;
     }
 
-    public void setRelYn(String relYn) {
-        this.relYn = relYn;
-    }
-
-    public ItemInfoDTO getItemInfoDTO() {
-        return itemInfoDTO;
-    }
-
-    public void setItemInfoDTO(ItemInfoDTO itemInfoDTO) {
-        this.itemInfoDTO = itemInfoDTO;
-    }
-
-    public ItemCategoryDTO getItemCategoryDTO() {
-        return itemCategoryDTO;
-    }
-
-    public void setItemCategoryDTO(ItemCategoryDTO itemCategoryDTO) {
-        this.itemCategoryDTO = itemCategoryDTO;
-    }
-
-    public ItemFileDTO getItemFileDTO() {
-        return itemFileDTO;
-    }
-
-    public void setItemFileDTO(ItemFileDTO itemFileDTO) {
-        this.itemFileDTO = itemFileDTO;
+    public void setReleaseItemDTO(ReleaseItemDTO releaseItemDTO) {
+        this.releaseItemDTO = releaseItemDTO;
     }
 
     @Override
     public String toString() {
         return "ReleaseOrderDTO{" +
-                "orderNo=" + orderNo +
-                ", orderDate=" + orderDate +
-                ", orderAmount=" + orderAmount +
-                ", cartNo=" + cartNo +
-                ", itemNo=" + itemNo +
-                ", storeName='" + storeName + '\'' +
-                ", relYn='" + relYn + '\'' +
-                ", itemInfoDTO=" + itemInfoDTO +
-                ", itemCategoryDTO=" + itemCategoryDTO +
-                ", itemFileDTO=" + itemFileDTO +
+                "releaseItemInfoDTO=" + releaseItemInfoDTO +
+                ", releaseItemCategoryDTO=" + releaseItemCategoryDTO +
+                ", releaseCartDTO=" + releaseCartDTO +
+                ", releaseItemFileDTO=" + releaseItemFileDTO +
+                ", storeOrderDTO=" + storeOrderDTO +
+                ", releaseCartHandlerDTO=" + releaseCartHandlerDTO +
+                ", releaseItemDTO=" + releaseItemDTO +
                 '}';
     }
 }
