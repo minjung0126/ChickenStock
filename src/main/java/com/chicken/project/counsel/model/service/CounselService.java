@@ -50,4 +50,9 @@ public class CounselService {
 
         return counselMapper.selectCounselApplyByNo(counselNo);
     }
+
+    public List<CounselDTO> selectCounselByStoreId(String storeId) {
+
+        return counselMapper.selectCounselByStoreId(storeId);
+    }
 }

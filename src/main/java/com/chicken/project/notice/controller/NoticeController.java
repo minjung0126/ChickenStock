@@ -302,7 +302,6 @@ public class NoticeController {
                 new File(filePath + "\\" + changeName + ext).delete();
             }
         }
-
         rttr.addFlashAttribute("message", "공지사항 수정 성공!");
 
         return "redirect:/notice/admin/list";

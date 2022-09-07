@@ -8,6 +8,7 @@ import com.chicken.project.store.model.dto.StoreDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Service("storeService")
@@ -44,6 +45,9 @@ public class StoreService {
 
         if(!(result > 0)){
             throw new StoreInsertException("가맹점 등록 실패!");
+        } else {
+
+            storeMapper.insertBalance(store.getStoreName());
         }
     }
 

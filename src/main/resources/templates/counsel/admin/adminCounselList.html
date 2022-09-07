@@ -19,14 +19,14 @@
   <div class="wrap">
 
     <!-- S: header -->
-    <div th:include="common/userHeader.html"></div>
+    <div th:include="common/adminHeader.html"></div>
     <!-- E: header -->
 
     <!-- S: container -->
     <div class="container px-0">
 
       <!-- S: aside -->
-      <div th:replace="common/userSidebar.html"></div>
+      <div th:replace="common/adminSidebar.html"></div>
       <!-- E: aside -->
 
       <!-- S: main layout -->
@@ -54,7 +54,7 @@
                   <th>문의 답변상태</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody style="cursor:pointer">
                 <tr th:each="counsel : ${ counselList }">
                   <td th:text="${ counsel.counselNo }"></td>
                   <td th:text="${ counsel.counselName }"></td>
