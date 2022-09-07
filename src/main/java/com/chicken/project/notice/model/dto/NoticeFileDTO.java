@@ -61,6 +61,12 @@ public class NoticeFileDTO {
 
     @Override
     public String toString() {
-        return originName;
+        return "NoticeFileDTO{" +
+                "fileNo=" + fileNo +
+                ", originName='" + originName + '\'' +
+                ", fileName='" + fileName + '\'' +
+                ", savedPath='" + savedPath + '\'' +
+                ", noticeNo=" + noticeNo +
+                '}';
     }
 }

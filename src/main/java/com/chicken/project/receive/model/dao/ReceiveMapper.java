@@ -10,6 +10,7 @@ import java.util.Map;
 
 @Mapper
 public interface ReceiveMapper {
+
     List<ReceiveOfficeDTO> selectAllReceive(SelectCriteria selectCriteria);
 
     List<ReceiveOfficeItemDTO> selectAllReceiveItem(String recCode);
@@ -19,4 +20,8 @@ public interface ReceiveMapper {
     int selectItemTotalCount(Map<String, String> searchMap);
 
     List<ReceiveOfficeDTO> selectAllItem(SelectCriteria selectCriteria);
+
+    List<ReceiveOfficeDTO> selectAllReceive();
+    List<ReceiveOfficeItemDTO> selectAllReceiveItem();
+
 }

@@ -2,8 +2,6 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
-
   <title>chicken stock</title>
 
   <link rel="stylesheet" type="text/css" th:href="@{/css/common/common.css}"/>
@@ -36,40 +34,39 @@
           <!-- 작업 영역 -->
           <!-- S: table -->
           <div class="container-fluid" style="margin-top:30px">
-            <h3>공지사항</h3>
+            <h3>1:1 문의 작성</h3>
 			      <br>
 
-            <table class="table">
-              <colgroup>
-                <col style="width:170px">
-                <col>
-              </colgroup>
-              <tbody>
-                <tr>
-                  <th>제목</th>
-                  <td class="align-left" th:text="${ noticeDetail.noticeName }"></td>
-                </tr>
-                <tr>
-                  <th>내용</th>
-                  <td class="align-left" th:text="${ noticeDetail.noticeContent }"></td>
-                </tr>
-                <tr>
-                  <th>첨부파일</th>
-                  <td class="align-left" ><a th:href="|/uploadFiles/${ noticeDetail.noticeFile.getFileName() }|" th:text="${ noticeDetail.noticeFile.getOriginName() }" download></a></td>
-                </tr>
-              </tbody>
-            </table>
+            <form th:action="@{/counsel/user/insert}" method="post">
+              <table class="table">
+                <colgroup>
+                  <col style="width:170px">
+                  <col>
+                </colgroup>
+                <tbody>
+                  <tr>
+                    <th>제목</th>
+                    <td>
+                      <input type="text" name="counselName" placeholder="제목을 입력하세요"/>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>내용</th>
+                    <td>
+                      <textarea name="counselContent"></textarea>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+                <div class="input-group mb-3 col-7">
+                  <button class="btn btn-warning ml-1" type="submit" style="color:#fff" >등록</button>
+                  <button class="btn btn-warning ml-1" type="submit" style="color:#fff">취소</button>
+                </div>
+            </form>
           </div>
-          <!-- E: table -->
-
-          <!-- S: search -->          
-          <div class="input-group mb-3 col-7 flex-right">
-            <button class="btn btn-warning ml-1" type="submit" style="color:#fff" th:onclick="'location.href=\'/notice/user/list\''">이전</button>
-          </div>	
-          <!-- E: search -->      
         </div>
-      </div> 
-      <!-- E: main layout -->
+        <!-- E: table -->
+        <!-- E: main layout -->
       
     </div>
     <!-- E: container -->

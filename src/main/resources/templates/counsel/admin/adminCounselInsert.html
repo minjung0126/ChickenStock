@@ -34,48 +34,44 @@
           <!-- 작업 영역 -->
           <!-- S: table -->
           <div class="container-fluid" style="margin-top:30px">
-            <h3>공지사항 수정</h3>
+            <h3>1:1 문의 답변 작성</h3>
 			      <br>
 
-            <form th:action="@{/notice/admin/update}" method="post" enctype="multipart/form-data">
+            <form th:action="@{/counsel/admin/insert}" method="post">
               <table class="table">
                 <colgroup>
                   <col style="width:170px">
                   <col>
+                  <col>
                 </colgroup>
                 <tbody>
-                <input type="hidden" name="noticeNo" th:value="${ noticeDetail.noticeNo }">
-                <input type="hidden" name="originName" th:value="${ noticeDetail.noticeFile}">
                   <tr>
                     <th>제목</th>
                     <td>
-                      <input type="text" name="noticeName" th:value="${ noticeDetail.noticeName }"/>
+                      <span th:text="${ counsel.counselName }"></span>
+                      <input type="hidden" name="counselNo" th:value="${ counsel.counselNo }"/>
                     </td>
                   </tr>
                   <tr>
-                    <th>내용</th>
+                    <th>문의 내용</th>
                     <td>
-                      <textarea name="noticeContent" th:text="${ noticeDetail.noticeContent }"></textarea>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th>첨부파일</th>
-                    <td class="align-left">
-                      <input type="file" name="file"/>
+                      <span th:text="${ counsel.counselContent }"></span>
+                      <textarea name="answerContent"></textarea>
                     </td>
                   </tr>
                 </tbody>
               </table>
                 <div class="input-group mb-3 col-7">
-                  <button class="btn btn-warning ml-1" type="submit" style="color:#fff">수정</button>
-                  <button class="btn btn-warning ml-1" type="button" style="color:#fff">이전</button>
+                  <button class="btn btn-warning ml-1" type="submit" style="color:#fff" >답변 등록</button>
+                  <button class="btn btn-warning ml-1" type="submit" style="color:#fff"
+                          th:onclick="'location.href=\'/counsel/admin/list\''">취소</button>
                 </div>
             </form>
           </div>
         </div>
         <!-- E: table -->
         <!-- E: main layout -->
-      </div>
+      
     </div>
     <!-- E: container -->
   </div>

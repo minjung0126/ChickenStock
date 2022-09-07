@@ -37,10 +37,11 @@ public class ReceiveService {
         return receiveMapper.selectAllReceiveItem(recCode);
     }
 
-
     public int selectItemTotalCount(Map<String, String> searchMap) {
 
-        return receiveMapper.selectItemTotalCount(searchMap);
+        int result = receiveMapper.selectItemTotalCount(searchMap);
+
+        return result;
     }
 
     public List<ReceiveOfficeDTO> selectAllItem(SelectCriteria selectCriteria) {

@@ -1,6 +1,7 @@
 package com.chicken.project.receive.model.dto;
 
-import com.chicken.project.empList.model.dto.EmployeeDTO;
+
+import com.chicken.project.receive.model.dto.RecEmployeeDTO;
 import com.chicken.project.item.model.dto.ItemCategoryDTO;
 import com.chicken.project.item.model.dto.ItemFileDTO;
 import com.chicken.project.item.model.dto.ItemInfoDTO;
@@ -12,7 +13,7 @@ public class ReceiveOfficeDTO {
 
     private String recCode;
     private java.sql.Date recDate;
-    private String memberId;
+    private String empId;
     private int sumRecTotalAmount; // 총 입고 수량
     private int countRecCode; // 입고 상품 종류 개수
     private String sumRecTotalMoney; // 총 입고 금액
@@ -22,17 +23,17 @@ public class ReceiveOfficeDTO {
     private ItemInfoDTO itemInfo;
     private ItemCategoryDTO itemCategory;
     private ItemFileDTO itemFile;
-    private EmployeeDTO employee;
+    private RecEmployeeDTO employee;
 
     private List<ReceiveOfficeItemDTO> receiveOfficeItemList;
 
     public ReceiveOfficeDTO() {
     }
 
-    public ReceiveOfficeDTO(String recCode, Date recDate, String memberId, int sumRecTotalAmount, int countRecCode, String sumRecTotalMoney, String stringRecDate, ReceiveOfficeItemDTO receiveOfficeItem, ItemInfoDTO itemInfo, ItemCategoryDTO itemCategory, ItemFileDTO itemFile, EmployeeDTO employee, List<ReceiveOfficeItemDTO> receiveOfficeItemList) {
+    public ReceiveOfficeDTO(String recCode, Date recDate, String empId, int sumRecTotalAmount, int countRecCode, String sumRecTotalMoney, String stringRecDate, ReceiveOfficeItemDTO receiveOfficeItem, ItemInfoDTO itemInfo, ItemCategoryDTO itemCategory, ItemFileDTO itemFile, RecEmployeeDTO employee, List<ReceiveOfficeItemDTO> receiveOfficeItemList) {
         this.recCode = recCode;
         this.recDate = recDate;
-        this.memberId = memberId;
+        this.empId = empId;
         this.sumRecTotalAmount = sumRecTotalAmount;
         this.countRecCode = countRecCode;
         this.sumRecTotalMoney = sumRecTotalMoney;
@@ -61,12 +62,12 @@ public class ReceiveOfficeDTO {
         this.recDate = recDate;
     }
 
-    public String getMemberId() {
-        return memberId;
+    public String getEmpId() {
+        return empId;
     }
 
-    public void setMemberId(String memberId) {
-        this.memberId = memberId;
+    public void setEmpId(String empId) {
+        this.empId = empId;
     }
 
     public int getSumRecTotalAmount() {
@@ -133,11 +134,11 @@ public class ReceiveOfficeDTO {
         this.itemFile = itemFile;
     }
 
-    public EmployeeDTO getEmployee() {
+    public RecEmployeeDTO getEmployee() {
         return employee;
     }
 
-    public void setEmployee(EmployeeDTO employee) {
+    public void setEmployee(RecEmployeeDTO employee) {
         this.employee = employee;
     }
 
@@ -154,7 +155,7 @@ public class ReceiveOfficeDTO {
         return "ReceiveOfficeDTO{" +
                 "recCode='" + recCode + '\'' +
                 ", recDate=" + recDate +
-                ", memberId='" + memberId + '\'' +
+                ", empId='" + empId + '\'' +
                 ", sumRecTotalAmount=" + sumRecTotalAmount +
                 ", countRecCode=" + countRecCode +
                 ", sumRecTotalMoney='" + sumRecTotalMoney + '\'' +

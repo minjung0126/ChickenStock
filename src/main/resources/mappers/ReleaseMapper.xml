@@ -13,7 +13,7 @@
         <result property="relYn" column="REL_YN"/>
         <association property="itemInfoDTO" resultMap="itemInfoResultMap"/>
         <association property="itemCategoryDTO" resultMap="itemCategoryResultMap"/>
-        <association property="itemFileDTO" resultMap="itemFileResultMap"/>
+        <association property="releaseItemFileDTO" resultMap="itemFileResultMap"/>
     </resultMap>
 
     <resultMap id="itemInfoResultMap" type="ItemInfoDTO">

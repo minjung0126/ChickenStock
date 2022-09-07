@@ -2,8 +2,6 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
-
   <title>chicken stock</title>
 
   <link rel="stylesheet" type="text/css" th:href="@{/css/common/common.css}"/>
@@ -19,14 +17,14 @@
   <div class="wrap">
 
     <!-- S: header -->
-    <div th:include="common/adminHeader.html"></div>
+    <div th:include="common/userHeader.html"></div>
     <!-- E: header -->
 
     <!-- S: container -->
     <div class="container px-0">
 
       <!-- S: aside -->
-      <div th:replace="common/adminSidebar.html"></div>
+      <div th:replace="common/userSidebar.html"></div>
       <!-- E: aside -->
 
       <!-- S: main layout -->
@@ -36,72 +34,50 @@
           <!-- 작업 영역 -->
           <!-- S: table -->
           <div class="container-fluid" style="margin-top:30px">
-            <h3>가맹점 정보 수정</h3>
+            <h3>1:1 문의 내용</h3>
 			      <br>
 
-            <form th:action="@{/store/admin/update}" method="post">
               <table class="table">
                 <colgroup>
                   <col style="width:170px">
                   <col>
+                  <col>
                 </colgroup>
                 <tbody>
                   <tr>
-                    <th>가맹점 명</th>
+                    <th>제목</th>
                     <td>
-                      <input type="hidden" name="storeId" th:value="${ store.storeId }"/>
-                      <input type="text" name="storeName" th:value="${ store.storeName }"/>
+                      <input type="hidden" name="counselNo" th:value="${ counsel.counselNo }"/>
+                      <input type="text" name="counselName" th:value="${ counsel.counselName }"/>
                     </td>
                   </tr>
                   <tr>
-                    <th>계좌번호</th>
+                    <th>문의 내용</th>
                     <td>
-                      <input type="text" name="storeAccount" th:value="${ store.storeAccount }"/>
+                      <textarea th:text="${ counsel.counselContent }"></textarea>
                     </td>
                   </tr>
-                  <tr>
-                    <th>대표자 명</th>
+                  <tr th:if="${ counsel.counselYn == '답변 완료' }">
+                    <th>답변 내용</th>
                     <td>
-                      <input type="text" name="storeRep" th:value="${ store.storeRep }"/>
+                      <textarea th:text="${ counselApply.answerContent }"></textarea>
                     </td>
                   </tr>
-                  <tr>
-                    <th>주소</th>
+                  <tr th:if="${ counsel.counselYn == '답변 대기' }">
+                    <th>답변 내용</th>
                     <td>
-                      <input type="text" name="storeAddress" th:value="${ store.storeAddress }"/>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th>전화번호</th>
-                    <td>
-                      <input type="text" name="storePhone" th:value="${ store.storePhone }"/>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th>이메일</th>
-                    <td>
-                      <input type="text" name="storeEmail" th:value="${ store.storeEmail }"/>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th>사업자 등록번호</th>
-                    <td>
-                      <input type="text" name="storeNo" th:value="${ store.storeNo }"/>
                     </td>
                   </tr>
                 </tbody>
               </table>
-                <div class="input-group mb-3 col-7 flex-right">
-                  <button class="btn btn-warning ml-1" type="submit" style="color:#fff">수정</button>
+                <div class="input-group mb-3 col-7">
                   <button class="btn btn-warning ml-1" type="reset" style="color:#fff"
-                          th:onclick="'location.href=\'/store/admin/list\''">취소</button>
+                          th:onclick="'location.href=\'/counsel/user/list\''">이전</button>
                 </div>
-            </form>
           </div>
-          <!-- E: table -->
         </div>
-      </div> 
-      <!-- E: main layout -->
+        <!-- E: table -->
+        <!-- E: main layout -->
     </div>
     <!-- E: container -->
   </div>

@@ -10,24 +10,16 @@ import com.chicken.project.notice.model.service.NoticeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.util.UriUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 @Controller
@@ -143,7 +135,7 @@ public class NoticeController {
         return "/notice/admin/adminNoticeInsert";
     }
 
-    @PostMapping("/admin/noticeInsert")
+    @PostMapping("/admin/insert")
     public String noticeInsert(@ModelAttribute NoticeDTO notice,
                                @RequestParam(value="file", required=false) MultipartFile file,
                                RedirectAttributes rttr
@@ -177,7 +169,7 @@ public class NoticeController {
             savedPath = filePath + "/" + changeName + ext;
 
             noticeFile.setOriginName(originFileName);
-            noticeFile.setFileName(changeName);
+            noticeFile.setFileName(changeName + ext);
             noticeFile.setSavedPath(savedPath);
 
             int result = noticeService.noticeInsert(notice);
@@ -212,24 +204,6 @@ public class NoticeController {
         mv.setViewName("/notice/admin/adminNoticeDetail");
 
         return mv;
-    }
-
-    @GetMapping("/attach/{noticeNo}")
-    public ResponseEntity<Resource> downloadAttach(@PathVariable int noticeNo) throws MalformedURLException {
-
-        log.info("[NoticeController] noticeNo : " + noticeNo);
-
-        noticeNo = Integer.parseInt(String.valueOf(noticeNo));
-
-        NoticeFileDTO file = noticeService.selectFileByName(noticeNo);
-
-        UrlResource resource = new UrlResource("file : " + file.getSavedPath());
-
-        String encodedFileName = UriUtils.encode(file.getOriginName(), StandardCharsets.UTF_8);
-
-        String contentDisposition = "attachment; filename=\"" + encodedFileName + "\"";
-
-        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,contentDisposition).body(resource);
     }
 
     @GetMapping("/user/detail")

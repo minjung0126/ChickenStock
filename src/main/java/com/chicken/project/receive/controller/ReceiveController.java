@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -105,6 +106,7 @@ public class ReceiveController {
         }
 
         mv.addObject("receiveOffice", receiveOffice);
+
         mv.setViewName("receive/admin/admin_receive");
         log.info("[ReceiveController] =========================================================");
 
@@ -112,7 +114,7 @@ public class ReceiveController {
     }
 
     @GetMapping("/admin/list/new")
-    public ModelAndView receiveNew(HttpServletRequest request, ModelAndView mv){
+    public ModelAndView receiveNew(HttpServletRequest request, ModelAndView mv, @RequestParam ){
 
         log.info("");
         log.info("");
@@ -163,6 +165,10 @@ public class ReceiveController {
 
         /* 조회해 온다 */
         List<ReceiveOfficeDTO> receiveOfficeItemList = receiveService.selectAllItem(selectCriteria);
+
+
+        List<Integer> receiveItemNo =
+        List<ReceiveOfficeItemDTO> receiveOfficeChooseItemList = receiveService.selectChooseItem(receiveItemNo);
 
         log.info("[ReceiveController] receiveOfficeItemList : " + receiveOfficeItemList);
 
