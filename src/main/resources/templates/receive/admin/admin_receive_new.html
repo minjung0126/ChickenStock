@@ -47,6 +47,7 @@
                     <div class="col-12 d-flex justify-content-end">
                         <button class="btn btn-warning mx-2 open-btn" type="button" onclick="openLayer('layerPop',7, 12)" style="color:#fff;">품목 불러오기</button>
                         <button class="btn btn-light" type="submit" onclick="deleteItem()" style="color:#fff; background-color: #ccc;">선택 삭제</button>
+                        <div id="result2"></div>
                     </div>
                     <form method="post" action="/admin/list/new1">
                     <div id="layerPop" class="p-5" style="display:none; width: 75%; height: 800px; position: absolute; z-index: 1; overflow: scroll;">
@@ -81,7 +82,7 @@
                             <tr>
                                 <th>
                                     <div class="form-check pb-3">
-                                        <input type="checkbox" class="form-check-input" name="option1" value='selectall' onclick='selectAll(this)' required/>
+                                        <input type="checkbox" class="form-check-input" name="option" value='' onclick='selectAll(this)' required/>
                                     </div>
                                 </th>
                                 <th>상품코드</th>
@@ -100,7 +101,7 @@
                             <tr th:each="receiveItem : ${ receiveOfficeItemList }">
                                 <td>
                                     <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" name="option2" value="something" th:value="${ receiveItem.itemNo }">
+                                        <input type="checkbox" class="form-check-input" name="option" value="" th:value="${ receiveItem.itemNo }">
                                         <label class="form-check-label" for="check"></label>
                                     </div>
                                 </td>
@@ -141,12 +142,12 @@
                     </div>
                     </form>
 
-                    <table class="table">
+                    <table class="table" id="receiveTable">
                         <thead>
                         <tr>
                             <th>
                                 <div class="form-check pb-3">
-                                    <input type="checkbox" class="form-check-input" name="option" value='selectall' onclick='selectAll(this)' required/>
+                                    <input type="checkbox" class="form-check-input" name="option2" onclick='selectAll2(this)' required/>
                                 </div>
                             </th>
                             <th>번호</th>
@@ -165,7 +166,7 @@
                         <tr th:each="receive, stat : ${ registReceiveList }">
                             <td>
                                 <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="check" name="option" value="something">
+                                    <input type="checkbox" class="form-check-input" name="option2"  th:value="${ receive.itemNo }"/>
                                     <label class="form-check-label" for="check"></label>
                                 </div>
                             </td>
@@ -182,8 +183,8 @@
                             <td th:text="${ receive.itemStandard }">ea</td>
                             <td th:text="${ receive.itemAmount }">1000</td>
                             <td align="center"><input type="number" class="form-control col-10 receiveAmount" id="receiveAmount" name="receiveAmount" min="1" max="1000" value="1" onchange="inputValueChange();"></td>
-                            <td th:text="${ receive.itemPurchase }" id="itemPurchase">4,500</td>
-                            <td id="receiveTotalMoney" th:value="${ receive.itemPurchase}">450,000</td>
+                            <td th:text="${ receive.itemPurchase }" id="itemPurchase" class="itemPurchase">4,500</td>
+                            <td id="receiveTotalMoney" th:value="${ receive.itemPurchase}" th:text="${ receive.itemPurchase }"></td>
                             <td><button class="btn btn-light" type="submit" style="color:#fff; background-color: #ccc;">삭제</button></td>
                         </tr>
                         </tbody>
@@ -198,7 +199,7 @@
                         </tfoot>
                     </table>
                 </div>
-
+                <div class="test"></div>
                 <!-- E: table -->
                 <div class="col-12 d-flex justify-content-center mb-4">
                     <button class="btn btn-light" type="button" style="color:#fff; background-color: #ccc;" onclick="location.href='/admin/list/new'">취소</button>
@@ -288,8 +289,8 @@
 
 <!-- 체크 박스 전체 선택 -->
 <script type="text/javascript">
-    function selectAll1(selectAll)  {
-        const checkboxes = document.getElementsByName('option1');
+    function selectAll(selectAll)  {
+        const checkboxes = document.getElementsByName('option');
 
         checkboxes.forEach((checkbox) => {
             checkbox.checked = selectAll.checked;
@@ -297,7 +298,6 @@
     }
 </script>
 
-<!-- 체크 박스 전체 선택 -->
 <script type="text/javascript">
     function selectAll2(selectAll)  {
         const checkboxes = document.getElementsByName('option2');
@@ -308,11 +308,11 @@
     }
 </script>
 
-<!-- 선택된 체크박스 값 가져오기 -->
+<!-- 선택된 체크박스 값 가져오기 (추가) -->
 <script>
     function getCheckboxValue()  {
         // 선택된 목록 가져오기
-        const query = 'input[name="option2"]:checked';
+        const query = 'input[name="option"]:checked';
         const selectedEls =
             document.querySelectorAll(query);
 
@@ -364,6 +364,63 @@
 
     }
 </script>
+
+<!-- 선택한 체크박스 값 가져오기 (삭제) -->
+<!--<script>-->
+<!--    function getCheckboxValue()  {-->
+<!--        // 선택된 목록 가져오기-->
+<!--        const query = 'input[name="option2"]:checked';-->
+<!--        const selectedEls =-->
+<!--            document.querySelectorAll(query);-->
+
+<!--        // 선택된 목록에서 value 찾기-->
+<!--        let result = '';-->
+<!--        let itemNoVal = [];-->
+<!--        selectedEls.forEach((el) => {-->
+<!--            itemNoVal[itemNoVal.length] = el.value;-->
+<!--            result += el.value + ' ';-->
+<!--        });-->
+
+<!--        // 출력-->
+<!--        document.getElementById('result2').innerText-->
+<!--            = itemNoVal;-->
+
+<!--        alert(itemNoVal);-->
+
+
+<!--        let form = document.createElement('form');-->
+
+<!--        let itemNoList = document.createElement('input');-->
+<!--        itemNoList.setAttribute('type', 'hidden');-->
+<!--        itemNoList.setAttribute('name', 'itemNoList');-->
+<!--        itemNoList.setAttribute('value', itemNoVal.toString());-->
+<!--        form.appendChild(itemNoList);-->
+<!--        form.setAttribute('method', 'post');-->
+<!--        form.setAttribute('action', '/receive/admin/list/new');-->
+<!--        document.body.appendChild(form);-->
+<!--        form.submit();-->
+
+<!--        // $.ajax({-->
+<!--        //             url: "receive/admin/list/new",-->
+<!--        //             // dataType: "json",-->
+<!--        //             // contentType: "application/x-www-form-urlencoded; charset=UTF-8",-->
+<!--        //             type: "post",-->
+<!--        //             data: {-->
+<!--        //                 itemNo: itemNoVal-->
+<!--        //             },-->
+<!--        //             success: function (data) {-->
+<!--        //                 console.log("success", data);-->
+<!--        //             },-->
+<!--        //             error: function () {-->
+<!--        //                 alert("error");-->
+<!--        //             }-->
+<!--        //         });-->
+
+<!--        // location.href = "/receive/admin/list/new?itemNo=" + arr;-->
+
+
+<!--    }-->
+<!--</script>-->
 
 <!-- 선택 삭제 버튼 메시지 띄우기 -->
 <script>
@@ -418,17 +475,74 @@
 <!-- 자동계산  -->
 <script>
     function inputValueChange(){
+
         var inputValue;
         var inputValue = document.getElementById('receiveAmount').value;
         console.log(inputValue);
 
-        var itemPurchase = 100;
+        var itemPurchase = document.getElementById('receiveTable').rows[1].cells[8].innerText
         var receiveTotalMoney = inputValue * itemPurchase;
         document.getElementById('receiveTotalMoney').innerText
             = receiveTotalMoney;
-
-
     }
 </script>
+
+<!-- 개별 삭제 -->
+<!--<script>-->
+<!--    $('.saveBtn').on('click', function() {-->
+
+<!--        //현재 row의 정보 가져오기-->
+<!--        var thisRow = $(this).closest('tr');-->
+
+<!--        //주소 input 값 가져오기-->
+<!--        var addr = thisRow.find('td:eq(0)').find('input').val();-->
+<!--        //섦졍 input 값 가져오기-->
+<!--        var txt = thisRow.find('td:eq(1)').find('input').val();-->
+
+<!--        alert(addr + ", " + txt + "을(를) 클릭하였습니다.");-->
+
+<!--    })-->
+<!--</script>-->
+
+<!--<script>-->
+<!--    function rowClicked() {-->
+
+<!--        var table =document.getElementById('receiveTable');-->
+<!--        var rowList = table.rows; // *1)rows collection-->
+
+<!--        for (i=1; i<rowList.length; i++) {//thead부분 제외.-->
+
+<!--            var row = rowList[i];-->
+<!--            var tdsNum = row.childElementCount;// 자식요소 갯수 구하기.-->
+
+<!--            row.onclick = function(){-->
+<!--                return function(){-->
+
+<!--                    var str = "";-->
+<!--                    for (var j = 0; j < tdsNum; j++){//row안에 있는 값 순차대로 가져오기.-->
+
+<!--                        var row_value = this.cells[j].innerHTML; //*2)cells collection-->
+<!--                        str += row_value+' ';//값을 하나의 text값으로 만듦-->
+
+<!--                    };//td for-->
+
+<!--                    document.querySelector('.test').innerText =str;//p태그 안에 값 넣어주기.-->
+
+<!--                };//return-->
+<!--            }(row);//onclick-->
+<!--        }//for-->
+
+<!--    }//function-->
+
+<!--    window.onload = rowClicked();-->
+<!--</script>-->
+
+<!--<script>-->
+<!--    $('#receiveTable').on("click", "tr", function(){-->
+<!--       -->
+<!--        console.log($(this).find("td:eq(0)").te)-->
+<!--    });-->
+<!--</script>-->
+
 </body>
 </html>

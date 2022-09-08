@@ -31,6 +31,7 @@
         <result property="itemPurchase" column="itemPurchase"/>
         <result property="recMoney" column="recMoney"/>
         <result property="stringRecDate" column="stringRecDate"/>
+        <result property="fileName" column="FILE_NAME"/>
     </resultMap>
 
     <resultMap id="itemInfoResultMap" type="com.chicken.project.item.model.dto.ItemInfoDTO">
@@ -110,6 +111,7 @@
              , IC.CATEGORY_NAME
              , I.ITEM_STANDARD
              , I.ITEM_MAKE
+             , IF.FILE_NAME
              , TO_CHAR(RI.REC_AMOUNT, '999,999,999') stringRecAmount
              , TO_CHAR(I.ITEM_PURCHASE, '999,999,999') itemPurchase
              , TO_CHAR(RI.REC_AMOUNT * I.ITEM_PURCHASE, '999,999,999,999,999,999') recMoney
@@ -118,6 +120,7 @@
                  JOIN RECEIVE_OFFICE_ITEM RI ON(RO.REC_CODE = RI.REC_CODE)
                  JOIN ITEM_INFO I ON (RI.ITEM_NO = I.ITEM_NO)
                  JOIN ITEM_CATEGORY IC ON (I.CATEGORY_NO = IC.CATEGORY_NO)
+                 JOIN ITEM_FILE IF ON (I.ITEM_NO = IF.ITEM_NO)
         WHERE RO.REC_CODE = #{ recCode }
         ORDER BY 1, 2
     </select>
