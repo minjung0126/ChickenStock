@@ -30,10 +30,13 @@ public class StoreService {
     @Transactional
     public void deleteStore(String storeName) throws StoreDeleteException {
 
-        int result = storeMapper.deleteStore(storeName);
+        int result = storeMapper.deleteBalanceStore(storeName);
 
         if(!(result > 0)){
             throw new StoreDeleteException("가맹점 정보 삭제에 실패하셨습니다.");
+        } else {
+
+            storeMapper.deleteStore(storeName);
         }
     }
 

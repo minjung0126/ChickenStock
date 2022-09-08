@@ -104,12 +104,12 @@ public class ReleaseOrderDTO {
         this.itemCategoryDTO = itemCategoryDTO;
     }
 
-    public ReleaseItemFileDTO getItemFileDTO() {
-        return itemFileDTO;
+    public ReleaseItemFileDTO getReleaseItemFileDTO() {
+        return releaseItemFileDTO;
     }
 
-    public void setItemFileDTO(ReleaseItemFileDTO itemFileDTO) {
-        this.itemFileDTO = itemFileDTO;
+    public void setReleaseItemFileDTO(ReleaseItemFileDTO releaseItemFileDTO) {
+        this.releaseItemFileDTO = releaseItemFileDTO;
     }
 
     @Override
@@ -124,7 +124,7 @@ public class ReleaseOrderDTO {
                 ", relYn='" + relYn + '\'' +
                 ", itemInfoDTO=" + itemInfoDTO +
                 ", itemCategoryDTO=" + itemCategoryDTO +
-                ", itemFileDTO=" + releaseItemFileDTO +
+                ", releaseItemFileDTO=" + releaseItemFileDTO +
                 '}';
     }
 }
