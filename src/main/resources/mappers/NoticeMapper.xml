@@ -218,4 +218,11 @@
                                 ) + 1
         WHERE A.NOTICE_NO = #{ noticeNo }
     </update>
+
+    <select id="selectMainNotice" resultMap="noticeResultMap">
+        SELECT
+               *
+          FROM NOTICE
+         ORDER BY NOTICE_NO DESC
+    </select>
 </mapper>

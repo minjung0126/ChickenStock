@@ -49,8 +49,10 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "calendar/**").hasRole("STORE")
                 .antMatchers("/counsel/admin/**").hasRole("ADMIN")
                 .antMatchers("/counsel/user/**").hasRole("STORE")
-//                .antMatchers("/notice/admin/**").hasRole("ADMIN")
-//                .antMatchers("/notice/user/**").hasRole("STORE")
+                .antMatchers("/notice/admin/**").hasRole("ADMIN")
+                .antMatchers("/notice/user/**").hasRole("STORE")
+                .antMatchers("/store/admin/**").hasRole("ADMIN")
+                .antMatchers("/store/user/**").hasRole("STORE")
                 .anyRequest().permitAll()
         // 로그인 로그아웃 설정
           .and()

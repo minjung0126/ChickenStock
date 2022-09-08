@@ -123,4 +123,9 @@ public class NoticeService {
 
         return noticeMapper.deleteNoticeFile(noticeNo);
     }
+
+    public List<NoticeDTO> selectMainNotice() {
+
+        return noticeMapper.selectMainNotice();
+    }
 }
