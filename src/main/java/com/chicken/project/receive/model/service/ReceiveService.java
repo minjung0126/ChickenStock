@@ -4,6 +4,7 @@ import com.chicken.project.common.paging.SelectCriteria;
 import com.chicken.project.receive.model.dao.ReceiveMapper;
 import com.chicken.project.receive.model.dto.ReceiveOfficeDTO;
 import com.chicken.project.receive.model.dto.ReceiveOfficeItemDTO;
+import com.chicken.project.release.model.dto.ItemInfoDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -47,5 +48,10 @@ public class ReceiveService {
     public List<ReceiveOfficeDTO> selectAllItem(SelectCriteria selectCriteria) {
 
         return receiveMapper.selectAllItem(selectCriteria);
+    }
+
+    public List<ItemInfoDTO> selectRegistReceive(List<String> itemNoList) {
+
+        return receiveMapper.selectRegistReceive(itemNoList);
     }
 }
