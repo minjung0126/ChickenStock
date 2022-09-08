@@ -5,10 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
 
   <title>chicken stock</title>
-
-  <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script th:src="@{js/common.js}"/>
+  <script type="text/javascript" th:src="@{http://code.jquery.com/jquery-3.6.0.min.js}"></script>
+  <script th:src="@{/js/common.js}"></script>
 </head>
+<body>
+
 <body>
 
       <!-- S: aside -->
@@ -16,7 +17,7 @@
         <div class="accordion">
           <!-- 하위 메뉴가 없을때 -->
           <div class="accordion_dep type1 ">
-            <a href="#" title="">홈</a>
+            <a th:href="@{/member/moveMain}" title="">홈</a>
           </div>
           <!-- 하위 메뉴가 있을때 -->
           <div class="accordion_dep type2">
@@ -29,7 +30,7 @@
           </div>
 
           <div class="accordion_dep type1 ">
-            <a href="#" title="">품목관리</a>
+            <a href="/item/admin/list" title="">품목관리</a>
           </div>
 
           <div class="accordion_dep type1 ">
@@ -49,7 +50,7 @@
           </div>
 
           <div class="accordion_dep type1 ">
-            <a href="/billTax/tsbilltaxList"" title="">거래명세서</a>
+            <a href="/billTax/tsbilltaxList" title="">거래명세서</a>
           </div>
 
           <div class="accordion_dep type1 ">
@@ -78,7 +79,7 @@
 
           <div class="accordion_dep type2">
             <a href="#" title="">관리자메뉴</a>
-            <ul style="display: block;">
+            <ul>
               <li>
                 <a href="/notice/admin/insert" title="">공지사항 작성</a>
               </li>

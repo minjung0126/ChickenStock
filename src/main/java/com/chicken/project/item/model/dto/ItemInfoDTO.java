@@ -15,10 +15,12 @@ public class ItemInfoDTO {
     private int itemAmount;
     private String soldout;
 
+    private ItemFileDTO itemFile;
+
     public ItemInfoDTO() {
     }
 
-    public ItemInfoDTO(int itemNo, String itemName, String itemStandard, int itemPurchase, int itemSales, String itemSoldoutYn, String itemMake, int categoryNo, int itemAmount, String soldout) {
+    public ItemInfoDTO(int itemNo, String itemName, String itemStandard, int itemPurchase, int itemSales, String itemSoldoutYn, String itemMake, int categoryNo, int itemAmount, String soldout, ItemFileDTO itemFile) {
         this.itemNo = itemNo;
         this.itemName = itemName;
         this.itemStandard = itemStandard;
@@ -29,6 +31,7 @@ public class ItemInfoDTO {
         this.categoryNo = categoryNo;
         this.itemAmount = itemAmount;
         this.soldout = soldout;
+        this.itemFile = itemFile;
     }
 
     public int getItemNo() {
@@ -111,6 +114,14 @@ public class ItemInfoDTO {
         this.soldout = soldout;
     }
 
+    public ItemFileDTO getItemFile() {
+        return itemFile;
+    }
+
+    public void setItemFile(ItemFileDTO itemFile) {
+        this.itemFile = itemFile;
+    }
+
     @Override
     public String toString() {
         return "ItemInfoDTO{" +
@@ -124,6 +135,7 @@ public class ItemInfoDTO {
                 ", categoryNo=" + categoryNo +
                 ", itemAmount=" + itemAmount +
                 ", soldout='" + soldout + '\'' +
+                ", itemFile=" + itemFile +
                 '}';
     }
 }
