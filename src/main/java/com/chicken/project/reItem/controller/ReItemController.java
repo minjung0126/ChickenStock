@@ -79,7 +79,38 @@ public class ReItemController {
 
     // 본사 반품서 리스트 보기
     @GetMapping("/admin/adminReList")
-    public void ReList(){
+    public ModelAndView ReList(ModelAndView mv, HttpServletRequest request, @RequestParam(defaultValue = "1") int currentPage){
+
+        int pageNo = currentPage;
+
+        String searchCondition = request.getParameter("searchCondition");
+        String searchValue = request.getParameter("searchValue");
+
+        Map<String, String> searchMap = new HashMap<>();
+        searchMap.put("searchCondition", searchCondition);
+        searchMap.put("searchValue", searchValue);
+
+        int totalCount = reItemService.selectTotalCount(searchMap);
+
+        int limit = 6;
+        int buttonAmount = 5;
+
+        SelectCriteria selectCriteria = null;
+
+        if(searchCondition != null && !"".equals(searchCondition)) {
+            selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount, searchCondition, searchValue);
+        } else {
+            selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount);
+        }
+
+        List<ReListDTO> storeReturnList = reItemService.selectReturnList(selectCriteria);
+
+        mv.addObject("returnList",storeReturnList);
+        mv.addObject("selectCriteria", selectCriteria);
+
+        return mv;
+
+
 //<a href="/reItem//admin/adminReItem">본사 반품서 리스트 상세보기</a>
     }
 

@@ -29,4 +29,11 @@ public class ReItemService {
 
         return reList;
     }
+
+    public List<ReListDTO> selectReturnList(SelectCriteria selectCriteria) {
+
+        List<ReListDTO> returnList = reItemMapper.selectReturnList(selectCriteria);
+
+        return returnList;
+    }
 }

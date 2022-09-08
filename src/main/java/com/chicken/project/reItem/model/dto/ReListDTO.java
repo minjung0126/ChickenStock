@@ -8,18 +8,20 @@ public class ReListDTO {
     private String rDoneDate;           // 반품 완료일
     private String storeName;           // 가맹점 이름
     private String storeRep;            // 가맹점주 이름
+    private String rProgress;           // 반품진행상태
 
 
     public ReListDTO() {
     }
 
-    public ReListDTO(int rNo, String rDate, String returnProgress, String rDoneDate, String storeName, String storeRep) {
+    public ReListDTO(int rNo, String rDate, String returnProgress, String rDoneDate, String storeName, String storeRep, String rProgress) {
         this.rNo = rNo;
         this.rDate = rDate;
         this.returnProgress = returnProgress;
         this.rDoneDate = rDoneDate;
         this.storeName = storeName;
         this.storeRep = storeRep;
+        this.rProgress = rProgress;
     }
 
     public int getrNo() {
@@ -70,6 +72,14 @@ public class ReListDTO {
         this.storeRep = storeRep;
     }
 
+    public String getrProgress() {
+        return rProgress;
+    }
+
+    public void setrProgress(String rProgress) {
+        this.rProgress = rProgress;
+    }
+
     @Override
     public String toString() {
         return "ReListDTO{" +
@@ -79,6 +89,7 @@ public class ReListDTO {
                 ", rDoneDate='" + rDoneDate + '\'' +
                 ", storeName='" + storeName + '\'' +
                 ", storeRep='" + storeRep + '\'' +
+                ", rProgress='" + rProgress + '\'' +
                 '}';
     }
 }

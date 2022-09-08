@@ -15,4 +15,7 @@ public interface ReItemMapper {
 
     // 가맹점 반품서 리스트
     List<ReListDTO> selectReList(SelectCriteria selectCriteria);
+
+    // 본사로 들어온 반품서 리스트
+    List<ReListDTO> selectReturnList(SelectCriteria selectCriteria);
 }

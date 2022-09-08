@@ -61,35 +61,13 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>ㅇㅇ가맹점</td>
-                            <td>조혜리</td>
-                            <td>2022-08-19</td>
-                            <td>대기중</td>
-                            <td>-</td>
-                            <td>
-                                <button class="btn btn-warning me-1" onclick="location.href='returnRe.html'">상세보기</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>ㅎㅎ가맹점</td>
-                            <td>주이슬</td>
-                            <td>2022-08-19</td>
-                            <td>반품완료</td>
-                            <td>폐기</td>
-                            <td>
-                                <button class="btn btn-warning me-1" onclick="location.href='returnRe.html'">상세보기</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>ㅜㅜ가맹점</td>
-                            <td>이예빈</td>
-                            <td>2022-08-19</td>
-                            <td>반품완료</td>
-                            <td>제품 재등록</td>
+                        <tr th:each=" tr : ${ returnList }">
+                            <td th:text="${ tr.rNo }"></td>
+                            <td th:text="${ tr.storeName }"></td>
+                            <td th:text="${ tr.storeRep }"></td>
+                            <td th:text="${ tr.rDate }"></td>
+                            <td th:text="${ tr.returnProgress }">대기중</td>
+                            <td th:text="${ re.rProgress }"></td>
                             <td>
                                 <button class="btn btn-warning me-1" onclick="location.href='returnRe.html'">상세보기</button>
                             </td>
