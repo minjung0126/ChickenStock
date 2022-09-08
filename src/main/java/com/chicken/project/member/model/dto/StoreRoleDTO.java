@@ -13,6 +13,7 @@ public class StoreRoleDTO {
 
     private String authCode;
     private String storeName;
+    private String storeId;
 
     private AuthDTO authority;
 }

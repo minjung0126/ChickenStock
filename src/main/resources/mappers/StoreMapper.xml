@@ -21,6 +21,12 @@
         <result property="balance" column="BALANCE"></result>
     </resultMap>
 
+    <resultMap id="storeRoleResultMap" type="StoreRoleDTO">
+        <id property="storeName" column="STORE_NAME"></id>
+        <result property="authCode" column="AUTH_CODE"></result>
+        <result property="storeId" column="STORE_ID"></result>
+    </resultMap>
+
     <select id="storeList" resultMap="storeResultMap">
         SELECT
                STORE_NAME
@@ -35,6 +41,12 @@
     <delete id="deleteStore" parameterType="StoreDTO">
         DELETE
           FROM STORE
+         WHERE STORE_NAME = #{ storeName }
+    </delete>
+
+    <delete id="deleteStoreRole">
+        DELETE
+          FROM STORE_ROLE
          WHERE STORE_NAME = #{ storeName }
     </delete>
 
@@ -60,11 +72,29 @@
         (
           STORE_NAME
         , BALANCE
+        , STORE_ID
         )
         VALUES
         (
           #{ storeName }
         , DEFAULT
+        , #{ storeId }
+        )
+    </insert>
+
+    <insert id="insertStoreRole">
+        INSERT
+          INTO STORE_ROLE
+        (
+          AUTH_CODE
+        , STORE_NAME
+        , STORE_ID
+        )
+        VALUES
+        (
+          '3'
+        , #{ storeName }
+        , #{ sotreId }
         )
     </insert>
 
@@ -73,4 +103,38 @@
           FROM BALANCE
          WHERE STORE_NAME = #{ storeName }
     </delete>
+
+    <select id="selectStoreByName" resultMap="storeResultMap">
+        SELECT
+               *
+          FROM STORE
+         WHERE STORE_NAME = #{ storeName }
+    </select>
+
+    <update id="updateStore">
+        UPDATE
+               STORE
+        <trim prefix="SET" prefixOverrides=",">
+            <if test="storeAccount != null and storeAccount !=''">
+                , STORE_ACCOUNT = #{ storeAccount }
+            </if>
+            <if test="storeRep != null and storeRep !=''">
+                , STORE_REP = #{ storeRep }
+            </if>
+            <if test="storeAddress != null and storeAddress !=''">
+                , STORE_ADDRESS = #{ storeAddress }
+            </if>
+            <if test="storePhone != null and storePhone !=''">
+                , STORE_PHONE = #{ storePhone }
+            </if>
+            <if test="storeEmail != null and storeEmail !=''">
+                , STORE_EMAIL = #{ storeEmail }
+            </if>
+            <if test="storeNo != null and storeNo !=''">
+                , STORE_NO = #{ storeNo }
+            </if>
+        </trim>
+        WHERE STORE_ID = #{ storeId }
+    </update>
+
 </mapper>
