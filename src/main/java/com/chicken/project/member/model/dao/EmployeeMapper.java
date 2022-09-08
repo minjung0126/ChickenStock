@@ -1,5 +1,6 @@
 package com.chicken.project.member.model.dao;
 
+import com.chicken.project.member.model.dto.EmpRoleDTO;
 import com.chicken.project.member.model.dto.EmployeeDTO;
 import org.apache.ibatis.annotations.Mapper;
 

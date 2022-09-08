@@ -93,6 +93,7 @@
                 <th>이메일</th>
                 <th>전화번호</th>
                 <th>생년월일</th>
+                <th>권한여부</th>
                 <th>권한부여</th>
               </tr>
               </thead>
@@ -104,7 +105,8 @@
                 <td th:text="${ emp.empEmail }"></td>
                 <td th:text="${ emp.empPhone }"></td>
                 <td th:text="${ emp.birth }"></td>
-                <td><button class="btn btn-warning" onclick="test();" style="color: white;">권한 부여</button></td>
+                <td th:text="${ emp.empRole }"></td>
+                <td><button id="authBtn" class="btn btn-warning" type="submit" onclick="test();" style="color: white;">권한 부여</button></td>
               </tr>
               </tbody>
             </table>
@@ -130,18 +132,42 @@
     <!-- E: container -->
   </div>
   <script>
+    //권한 부여 버튼
     function test() {
       if (!confirm("관리자 권한을 부여하시겠습니까?")) {
-        alert("취소");
+        return true;
       } else {
-        alert("관리자 권한이 부여되었습니다.");
+        return false;
       }
     };
+    $('#authBtn').on('submit',function (e){
+      e.preventDefault();
+      if(confirm('관리자 권한을 부여하시겠습니까?'))
+      {
+        $.ajax({
+          type: "POST",
+          url: "/empList/empList",
+          data : data,
+          contentType: false,
+          success:function (data){
+            window.location.replace('url');
+          },
+          error:function (data){
+            alert('권한부여에 실패하셨습니다.');
+          }
+        });
+      } else {
+          return false;
+      }
 
+    })
+
+    // 권한 추가 모달창
     function regist(){
       $("#registModal").modal("show");
     };
 
+    // 모달 알림창
     const result = "${msg}"
     if(result == "success"){
       alert("직원 정보 등록에 성공하셨습니다.")

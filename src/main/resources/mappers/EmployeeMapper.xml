@@ -10,6 +10,7 @@
         <result property="empPhone" column="EMP_PHONE"/>
         <result property="empEmail" column="EMP_EMAIL"/>
         <result property="birth" column="EMP_BIRTH"/>
+        <result property="empRole" column="EMP_ROLE"/>
 
         <collection property="empRoleList" resultMap="empRoleResultMap"/>
         <collection property="calendar" resultMap="calendarResultMap"/>
@@ -38,12 +39,18 @@
 
     <select id="selectAllEmployee" resultMap="employeeResultMap">
         SELECT
-               A.EMP_ID
-             , A.EMP_NAME
-             , A.EMP_PHONE
-             , A.EMP_EMAIL
-             , A.EMP_BIRTH
-          FROM EMPLOYEE A
+            DISTINCT
+                     A.EMP_ID
+                   , A.EMP_NAME
+                   , A.EMP_PHONE
+                   , A.EMP_EMAIL
+                   , A.EMP_BIRTH
+                   , DECODE((SELECT COUNT(A1.EMP_ID)
+                               FROM EMPLOYEE A1
+                               JOIN EMP_ROLE B1 ON(A1.EMP_ID = B1.EMP_ID)
+                              WHERE A1.EMP_ID = A.EMP_ID), 1, 'N', 2,'Y') AS EMP_ROLE
+            FROM EMPLOYEE A
+            JOIN EMP_ROLE B ON(A.EMP_ID = B.EMP_ID)
     </select>
 
     <insert id="insertEmployee" parameterType="EmployeeDTO">

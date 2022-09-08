@@ -21,6 +21,7 @@ public class EmployeeDTO {
     private String empEmail;
     private String empPwd;
     private java.sql.Date birth;
+    private String empRole;
 
     private List<EmpRoleDTO> empRoleList;
 

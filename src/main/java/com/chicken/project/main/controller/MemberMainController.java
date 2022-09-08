@@ -7,13 +7,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 
 @Controller
 @RequestMapping("/member/*")
-public class MemberMain {
+public class MemberMainController {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
@@ -29,20 +30,17 @@ public class MemberMain {
 
             if(((AdminImpl)user).getEmpRoleList().get(0).getAuthCode().equals("1") || ((AdminImpl)user).getEmpRoleList().get(0).getAuthCode().equals("2")){
 
-
                 url = "/main/admin_main";
-
             }
         }
 
         if(user instanceof StoreImpl){
 
            if(((StoreImpl)user).getStoreRoleList().get(0).getAuthCode().equals("3")){
-                System.out.println("확인용 = " + url);
+
                 url = "/main/user_main";
             }
         }
-//        System.out.println("((MemberImpl)user = " + ((MemberImpl)user).getEmpRoleList().get(0).getAuthCode());
 
         return url;
     }
