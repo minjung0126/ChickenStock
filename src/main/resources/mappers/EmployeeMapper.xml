@@ -55,7 +55,7 @@
 
     <insert id="insertEmployee" parameterType="EmployeeDTO">
         INSERT
-          INTO EMPLOYEE A
+          INTO EMPLOYEE
         (
           EMP_ID
         , EMP_NAME
@@ -72,6 +72,19 @@
         , #{ empEmail }
         , #{ empPwd }
         , #{ birth }
+        )
+    </insert>
+    <insert id="insertEmpRole" parameterType="EmpRoleDTO">
+        INSERT
+          INTO EMP_ROLE
+        (
+          AUTH_CODE
+        , EMP_ID
+        )
+        VALUES
+        (
+          '2'
+        , #{ empId }
         )
     </insert>
 
@@ -97,6 +110,27 @@
               EMP_ID
          FROM EMPLOYEE
         WHERE EMP_ID = #{ empId }
+    </select>
+
+    <insert id="insertAuth" parameterType="EmpRoleDTO">
+       INSERT
+         INTO EMP_ROLE A
+       (
+         AUTH_CODE
+       , EMP_ID
+       )
+       VALUES
+       (
+         '1'
+       , #{ empId }
+       )
+    </insert>
+
+    <select id="selectCkAdminAuth" resultType="_int">
+        SELECT
+               COUNT(*)
+          FROM EMP_ROLE A
+         WHERE A.EMP_ID = #{ empId }
     </select>
 
 </mapper>

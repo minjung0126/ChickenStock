@@ -10,6 +10,9 @@ import java.util.List;
 public interface EmployeeMapper {
     List<EmployeeDTO> selectAllEmployee();
     int insertEmployee(EmployeeDTO emp);
+    int insertEmpRole(EmployeeDTO emp);
     EmployeeDTO selectEmpInfo(String empId);
+    int selectCkAdminAuth(String empId);
+    int insertAuth(String empId);
 
 }

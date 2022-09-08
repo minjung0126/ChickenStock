@@ -14,4 +14,8 @@ public interface EmpListService {
     @Transactional
     int registEmp(EmployeeDTO emp);
 
+    int selectCkAdminAuth(String empId);
+
+    int insertAuth(String empId);
+
 }
