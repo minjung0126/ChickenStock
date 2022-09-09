@@ -67,8 +67,6 @@ public class ReItemController {
         mv.addObject("selectCriteria", selectCriteria);
 
         return mv;
-//        <a href="/reItem/user/reviseReItem">가맹점 반품신청 수정</a>
-
     }
 
     // 가맹점 반품서 수정
@@ -110,8 +108,10 @@ public class ReItemController {
 
         return mv;
 
+    }
+    @GetMapping("/admin/adminReItem")
+    public void RRE(){
 
-//<a href="/reItem//admin/adminReItem">본사 반품서 리스트 상세보기</a>
     }
 
 
