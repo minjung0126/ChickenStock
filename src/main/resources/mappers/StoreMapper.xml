@@ -41,17 +41,12 @@
          WHERE STORE_YN = 'Y'
     </select>
 
-    <delete id="deleteStore" parameterType="StoreDTO">
-        DELETE
-          FROM STORE
+    <update id="deleteStore" parameterType="StoreDTO">
+        UPDATE
+               STORE
+           SET STORE_YN = 'N'
          WHERE STORE_NAME = #{ storeName }
-    </delete>
-
-    <delete id="deleteStoreRole">
-        DELETE
-          FROM STORE_ROLE
-         WHERE STORE_NAME = #{ storeName }
-    </delete>
+    </update>
 
     <insert id="insertStore">
         INSERT
@@ -97,15 +92,9 @@
         (
           '3'
         , #{ storeName }
-        , #{ sotreId }
+        , #{ storeId }
         )
     </insert>
-
-    <delete id="deleteBalanceStore">
-        DELETE
-          FROM BALANCE
-         WHERE STORE_NAME = #{ storeName }
-    </delete>
 
     <select id="selectStoreByName" resultMap="storeResultMap">
         SELECT
