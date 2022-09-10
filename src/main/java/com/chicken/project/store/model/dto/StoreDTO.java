@@ -24,6 +24,7 @@ public class StoreDTO{
     private String storeId;
     private String storePwd;
     private String storeNo;
+    private String storeYn;
 
 
 }
