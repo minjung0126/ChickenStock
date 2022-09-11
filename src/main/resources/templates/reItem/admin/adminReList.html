@@ -70,7 +70,7 @@
                             <td th:text="${ re.returnProgress }"></td>
                             <td th:text="${ re.rProgress }"></td>
                             <td>
-                                <button class="btn btn-warning me-1" onclick="location.href='/reItem/admin/adminReItem'">상세보기</button>
+                                <button class="btn btn-warning me-1" th:onclick="|location.href='@{/reItem/admin/adminReItem(rNo=${ re.rNo })}'|">상세보기</button>
                             </td>
                         </tr>
                         </tbody>

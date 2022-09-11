@@ -2,6 +2,7 @@ package com.chicken.project.reItem.model.service;
 
 import com.chicken.project.common.paging.SelectCriteria;
 import com.chicken.project.reItem.model.dao.ReItemMapper;
+import com.chicken.project.reItem.model.dto.ReItemDTO;
 import com.chicken.project.reItem.model.dto.ReListDTO;
 import org.springframework.stereotype.Service;
 
@@ -35,5 +36,19 @@ public class ReItemService {
         List<ReListDTO> returnList = reItemMapper.selectReturnList(selectCriteria);
 
         return returnList;
+    }
+
+    public ReItemDTO selectReturnItem(String rNo) {
+
+        ReItemDTO reItem = reItemMapper.selectReturnItem(rNo);
+
+        return reItem;
+    }
+
+    public List<ReItemDTO> selectReturnItemS(String rNo) {
+
+        List<ReItemDTO> reItems = reItemMapper.selectReItems(rNo);
+
+        return reItems;
     }
 }

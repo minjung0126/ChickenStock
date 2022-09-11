@@ -2,10 +2,14 @@ package com.chicken.project.reItem.controller;
 
 import com.chicken.project.common.paging.Pagenation;
 import com.chicken.project.common.paging.SelectCriteria;
+import com.chicken.project.reItem.model.dto.ReItemDTO;
 import com.chicken.project.reItem.model.dto.ReListDTO;
 import com.chicken.project.reItem.model.service.ReItemService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,6 +25,8 @@ import java.util.Map;
 public class ReItemController {
 
     private final ReItemService reItemService;
+
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     public ReItemController(ReItemService reItemService) {
@@ -110,8 +116,20 @@ public class ReItemController {
 
     }
     @GetMapping("/admin/adminReItem")
-    public void RRE(){
+    public ModelAndView ReAcceptance(ModelAndView mv, HttpServletRequest request, Model model){
 
+        String rNo = request.getParameter("rNo");
+        model.addAttribute("rNo",rNo);
+        log.info("rNo 확인 " + rNo);
+
+        ReItemDTO reItem = reItemService.selectReturnItem(rNo);
+        List<ReItemDTO> reItems = reItemService.selectReturnItemS(rNo);
+
+        mv.addObject("reItem",reItem);
+        mv.addObject("reItems", reItems);
+        mv.setViewName("/reItem/admin/adminReItem");
+
+        return mv;
     }
 
 
