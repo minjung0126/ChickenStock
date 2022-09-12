@@ -4,7 +4,7 @@ public class StoreItemDTO {
 
     private int itemNo; // 품목번호
     private String itemName; // 품목이름
-    private int categoryName;  // 카테고리이름
+    private String categoryName;  // 카테고리이름
     private String itemStandard; // 품목규격
     private String itemMake; // 제조사
     private String itemSales; // 매출단가
@@ -14,7 +14,7 @@ public class StoreItemDTO {
     public StoreItemDTO() {
     }
 
-    public StoreItemDTO(int itemNo, String itemName, int categoryName, String itemStandard, String itemMake, String itemSales, String originName, int storeAmount) {
+    public StoreItemDTO(int itemNo, String itemName, String categoryName, String itemStandard, String itemMake, String itemSales, String originName, int storeAmount) {
         this.itemNo = itemNo;
         this.itemName = itemName;
         this.categoryName = categoryName;
@@ -41,11 +41,11 @@ public class StoreItemDTO {
         this.itemName = itemName;
     }
 
-    public int getCategoryName() {
+    public String getCategoryName() {
         return categoryName;
     }
 
-    public void setCategoryName(int categoryName) {
+    public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
     }
 
@@ -94,7 +94,7 @@ public class StoreItemDTO {
         return "StoreItemDTO{" +
                 "itemNo=" + itemNo +
                 ", itemName='" + itemName + '\'' +
-                ", categoryName=" + categoryName +
+                ", categoryName='" + categoryName + '\'' +
                 ", itemStandard='" + itemStandard + '\'' +
                 ", itemMake='" + itemMake + '\'' +
                 ", itemSales='" + itemSales + '\'' +

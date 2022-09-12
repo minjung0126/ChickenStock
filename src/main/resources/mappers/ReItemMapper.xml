@@ -26,6 +26,16 @@
         <result property="itemSales" column="ITEM_SALES"/>
         <result property="originName" column="ORIGIN_NAME"/>
     </resultMap>
+    <resultMap id="storeItemResultMap" type="StoreItemDTO">
+        <id property="itemNo" column="ITEM_NO"/>
+        <result property="itemName" column="ITEM_NAME"/>
+        <result property="categoryName" column="CATEGORY_NAME"/>
+        <result property="itemStandard" column="ITEM_STANDARD"/>
+        <result property="itemMake" column="ITEM_MAKE"/>
+        <result property="itemSales" column="ITEM_SALES"/>
+        <result property="originName" column="ORIGIN_NAME"/>
+        <result property="storeAmount" column="STORE_AMOUNT"/>
+    </resultMap>
 
     <select id="selectTotalCount" resultType="_int" parameterType="hashmap">
         SELECT
@@ -156,5 +166,22 @@
                  JOIN ITEM_INFO II ON(II.ITEM_NO = RII.ITEM_NO)
                  LEFT JOIN ITEM_CATEGORY IC ON(IC.CATEGORY_NO = II.CATEGORY_NO)
         WHERE RI.R_NO = #{ rNo }
+    </select>
+
+    <select id="selectItem" resultMap="storeItemResultMap">
+        SELECT
+               SII.ITEM_NO
+             , II.ITEM_NAME
+             , IC.CATEGORY_NAME
+             , II.ITEM_STANDARD
+             , II.ITEM_MAKE
+             , II.ITEM_SALES
+             , IFF.ORIGIN_NAME
+             , SII.STORE_AMOUNT
+          FROM STO_ITEM_INFO SII
+          JOIN ITEM_FILE IFF ON (IFF.ITEM_NO = SII.ITEM_NO)
+          JOIN ITEM_INFO II ON(II.ITEM_NO = SII.ITEM_NO)
+          JOIN ITEM_CATEGORY IC ON(IC.CATEGORY_NO = II.CATEGORY_NO)
+         WHERE SII.STORE_NAME = #{ storeName }
     </select>
 </mapper>

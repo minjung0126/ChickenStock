@@ -3,6 +3,7 @@ package com.chicken.project.reItem.model.dao;
 import com.chicken.project.common.paging.SelectCriteria;
 import com.chicken.project.reItem.model.dto.ReItemDTO;
 import com.chicken.project.reItem.model.dto.ReListDTO;
+import com.chicken.project.reItem.model.dto.StoreItemDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -23,4 +24,6 @@ public interface ReItemMapper {
     ReItemDTO selectReturnItem(String rNo);
 
     List<ReItemDTO> selectReItems(String rNo);
+
+    List<StoreItemDTO> selectItem(String storeName);
 }

@@ -2,13 +2,17 @@ package com.chicken.project.reItem.controller;
 
 import com.chicken.project.common.paging.Pagenation;
 import com.chicken.project.common.paging.SelectCriteria;
+import com.chicken.project.member.model.dto.StoreImpl;
 import com.chicken.project.reItem.model.dto.ReItemDTO;
 import com.chicken.project.reItem.model.dto.ReListDTO;
 import com.chicken.project.reItem.model.dto.StoreItemDTO;
 import com.chicken.project.reItem.model.service.ReItemService;
+import org.apache.catalina.Store;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,13 +40,13 @@ public class ReItemController {
 
     // 가맹점 반품서작성
     @GetMapping("/user/insertReItem")
-    public ModelAndView reItem(ModelAndView mv, HttpServletRequest request){
+    public ModelAndView reItem(ModelAndView mv, HttpServletRequest request, @AuthenticationPrincipal StoreImpl storeImpl){
 
-    List<StoreItemDTO> storeItem = reItemService.selectItem("로그인세션");
+        List<StoreItemDTO> storeItem = reItemService.selectItem(storeImpl.getStoreName());
 
-
-
-
+        mv.addObject("storeItems", storeItem);
+        mv.setViewName("reItem/user/insertReItem");
+        return mv;
     }
 
     // 가맹점 반품서 리스트
@@ -125,7 +129,6 @@ public class ReItemController {
 
         String rNo = request.getParameter("rNo");
         model.addAttribute("rNo",rNo);
-        log.info("rNo 확인 " + rNo);
 
         ReItemDTO reItem = reItemService.selectReturnItem(rNo);
         List<ReItemDTO> reItems = reItemService.selectReturnItemS(rNo);

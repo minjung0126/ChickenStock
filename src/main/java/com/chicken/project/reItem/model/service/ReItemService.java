@@ -4,6 +4,7 @@ import com.chicken.project.common.paging.SelectCriteria;
 import com.chicken.project.reItem.model.dao.ReItemMapper;
 import com.chicken.project.reItem.model.dto.ReItemDTO;
 import com.chicken.project.reItem.model.dto.ReListDTO;
+import com.chicken.project.reItem.model.dto.StoreItemDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -50,5 +51,12 @@ public class ReItemService {
         List<ReItemDTO> reItems = reItemMapper.selectReItems(rNo);
 
         return reItems;
+    }
+
+    public List<StoreItemDTO> selectItem(String storeName) {
+
+        List<StoreItemDTO> storeItems = reItemMapper.selectItem(storeName);
+
+        return storeItems;
     }
 }
