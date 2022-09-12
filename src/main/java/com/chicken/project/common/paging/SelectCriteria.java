@@ -12,6 +12,8 @@ public class SelectCriteria {
     private int endRow;					//DB 조회 시 최신글부터 조회해야 하는 행의 마지막 수
     private String searchCondition;		//검색 조건
     private String searchValue;			//검색어
+    private String startDate;
+    private String endDate;
 
     public SelectCriteria() {}
 
@@ -29,6 +31,23 @@ public class SelectCriteria {
         this.endRow = endRow;
         this.searchCondition = searchCondition;
         this.searchValue = searchValue;
+    }
+
+    public SelectCriteria(int pageNo, int totalCount, int limit, int buttonAmount, int maxPage, int startPage, int endPage, int startRow, int endRow, String searchCondition, String searchValue, String startDate, String endDate) {
+        super();
+        this.pageNo = pageNo;
+        this.totalCount = totalCount;
+        this.limit = limit;
+        this.buttonAmount = buttonAmount;
+        this.maxPage = maxPage;
+        this.startPage = startPage;
+        this.endPage = endPage;
+        this.startRow = startRow;
+        this.endRow = endRow;
+        this.searchCondition = searchCondition;
+        this.searchValue = searchValue;
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 
     public int getPageNo() {
@@ -119,6 +138,22 @@ public class SelectCriteria {
         this.searchValue = searchValue;
     }
 
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
+
     @Override
     public String toString() {
         return "SelectCriteria [pageNo=" + pageNo + ", totalCount=" + totalCount + ", limit=" + limit
@@ -126,4 +161,5 @@ public class SelectCriteria {
                 + endPage + ", startRow=" + startRow + ", endRow=" + endRow + ", searchCondition=" + searchCondition
                 + ", searchValue=" + searchValue + "]";
     }
+
 }
