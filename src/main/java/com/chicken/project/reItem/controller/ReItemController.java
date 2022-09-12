@@ -4,6 +4,7 @@ import com.chicken.project.common.paging.Pagenation;
 import com.chicken.project.common.paging.SelectCriteria;
 import com.chicken.project.reItem.model.dto.ReItemDTO;
 import com.chicken.project.reItem.model.dto.ReListDTO;
+import com.chicken.project.reItem.model.dto.StoreItemDTO;
 import com.chicken.project.reItem.model.service.ReItemService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,7 +36,10 @@ public class ReItemController {
 
     // 가맹점 반품서작성
     @GetMapping("/user/insertReItem")
-    public void reItem(){
+    public ModelAndView reItem(ModelAndView mv, HttpServletRequest request){
+
+    List<StoreItemDTO> storeItem = reItemService.selectItem("로그인세션");
+
 
 
 
@@ -115,6 +119,7 @@ public class ReItemController {
         return mv;
 
     }
+    // 본사 반품 상세보기
     @GetMapping("/admin/adminReItem")
     public ModelAndView ReAcceptance(ModelAndView mv, HttpServletRequest request, Model model){
 
