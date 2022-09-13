@@ -16,6 +16,9 @@ public class ReceiveOfficeDTO {
     private int countRecCode; // 입고 상품 종류 개수
     private String sumRecTotalMoney; // 총 입고 금액
     private String stringRecDate; // 입고일 ('yyyy-dd-mm')
+    private String empName;
+    private String maxRecCode;
+    private int rNum;
 
     private ReceiveOfficeItemDTO receiveOfficeItem;
     private ItemInfoDTO itemInfo;
@@ -26,7 +29,7 @@ public class ReceiveOfficeDTO {
     public ReceiveOfficeDTO() {
     }
 
-    public ReceiveOfficeDTO(String recCode, Date recDate, String empId, int sumRecTotalAmount, int countRecCode, String sumRecTotalMoney, String stringRecDate, ReceiveOfficeItemDTO receiveOfficeItem, ItemInfoDTO itemInfo, ItemCategoryDTO itemCategory, ItemFileDTO itemFile, RecEmployeeDTO employee) {
+    public ReceiveOfficeDTO(String recCode, Date recDate, String empId, int sumRecTotalAmount, int countRecCode, String sumRecTotalMoney, String stringRecDate, String empName, String maxRecCode, int rNum, ReceiveOfficeItemDTO receiveOfficeItem, ItemInfoDTO itemInfo, ItemCategoryDTO itemCategory, ItemFileDTO itemFile, RecEmployeeDTO employee) {
         this.recCode = recCode;
         this.recDate = recDate;
         this.empId = empId;
@@ -34,6 +37,9 @@ public class ReceiveOfficeDTO {
         this.countRecCode = countRecCode;
         this.sumRecTotalMoney = sumRecTotalMoney;
         this.stringRecDate = stringRecDate;
+        this.empName = empName;
+        this.maxRecCode = maxRecCode;
+        this.rNum = rNum;
         this.receiveOfficeItem = receiveOfficeItem;
         this.itemInfo = itemInfo;
         this.itemCategory = itemCategory;
@@ -97,6 +103,30 @@ public class ReceiveOfficeDTO {
         this.stringRecDate = stringRecDate;
     }
 
+    public String getEmpName() {
+        return empName;
+    }
+
+    public void setEmpName(String empName) {
+        this.empName = empName;
+    }
+
+    public String getMaxRecCode() {
+        return maxRecCode;
+    }
+
+    public void setMaxRecCode(String maxRecCode) {
+        this.maxRecCode = maxRecCode;
+    }
+
+    public int getrNum() {
+        return rNum;
+    }
+
+    public void setrNum(int rNum) {
+        this.rNum = rNum;
+    }
+
     public ReceiveOfficeItemDTO getReceiveOfficeItem() {
         return receiveOfficeItem;
     }
@@ -147,6 +177,9 @@ public class ReceiveOfficeDTO {
                 ", countRecCode=" + countRecCode +
                 ", sumRecTotalMoney='" + sumRecTotalMoney + '\'' +
                 ", stringRecDate='" + stringRecDate + '\'' +
+                ", empName='" + empName + '\'' +
+                ", maxRecCode='" + maxRecCode + '\'' +
+                ", rNum=" + rNum +
                 ", receiveOfficeItem=" + receiveOfficeItem +
                 ", itemInfo=" + itemInfo +
                 ", itemCategory=" + itemCategory +

@@ -2,6 +2,8 @@ package com.chicken.project.receive.controller;
 
 import com.chicken.project.common.paging.Pagenation;
 import com.chicken.project.common.paging.SelectCriteria;
+import com.chicken.project.exception.receive.ReceiveInsertException;
+import com.chicken.project.exception.receive.ReceiveUpdateException;
 import com.chicken.project.receive.model.dto.ReceiveOfficeDTO;
 import com.chicken.project.receive.model.dto.ReceiveOfficeItemDTO;
 import com.chicken.project.receive.model.service.ReceiveService;
@@ -12,12 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping("/receive")
@@ -32,7 +32,7 @@ public class ReceiveController {
     }
 
     @GetMapping("/admin/list")
-    public ModelAndView receiveList(HttpServletRequest request, ModelAndView mv){
+    public ModelAndView receiveList(HttpServletRequest request, ModelAndView mv, @RequestParam(value="startDate", required = false) String startDate, @RequestParam(value="endDate", required = false) String endDate){
 
         log.info("");
         log.info("");
@@ -54,6 +54,10 @@ public class ReceiveController {
         Map<String, String> searchMap = new HashMap<>();
         searchMap.put("searchCondition", searchCondition);
         searchMap.put("searchValue", searchValue);
+        if(startDate != null && endDate != null){
+            searchMap.put("startDate", startDate);
+            searchMap.put("endDate", endDate);
+        }
 
         log.info("[ReceiveController] 컨트롤러에서 검색조건 확인하기 : " + searchMap);
         /*
@@ -65,7 +69,12 @@ public class ReceiveController {
         log.info("[ReceiveController] totalBoardCount : " + totalCount);
 
         /* 한 페이지에 보여 줄 게시물 수 */
-        int limit = 10;		//얘도 파라미터로 전달받아도 된다.
+        int limit;		//얘도 파라미터로 전달받아도 된다.
+        if(searchCondition != null && !"".equals(searchCondition)) {
+            limit = totalCount;
+        } else{
+            limit = 10;
+        }
 
         /* 한 번에 보여질 페이징 버튼의 갯수 */
         int buttonAmount = 5;
@@ -74,7 +83,7 @@ public class ReceiveController {
         SelectCriteria selectCriteria = null;
 
         if(searchCondition != null && !"".equals(searchCondition)) {
-            selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount, searchCondition, searchValue);
+            selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount, searchCondition, searchValue, startDate, endDate);
         } else {
             selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount);
         }
@@ -111,8 +120,8 @@ public class ReceiveController {
         return mv;
     }
 
-    @GetMapping(value = "/admin/list/new")
-    public ModelAndView receiveNew(HttpServletRequest request, ModelAndView mv){
+    @GetMapping(value = "/admin/list/regist")
+    public ModelAndView receiveRegist(HttpServletRequest request, ModelAndView mv){
 
         log.info("");
         log.info("");
@@ -179,8 +188,8 @@ public class ReceiveController {
         return mv;
     }
 
-    @PostMapping(value = "/admin/list/new")
-    public ModelAndView receiveNewItem(HttpServletRequest request, ModelAndView mv, @RequestParam("itemNoList") String itemNo){
+    @PostMapping(value = "/admin/list/regist")
+    public ModelAndView receiveRegistItem(HttpServletRequest request, ModelAndView mv, @RequestParam("itemNoList") String itemNo){
 
 
         log.info("");
@@ -233,6 +242,7 @@ public class ReceiveController {
         /* 품목 리스트 전체 조회 */
         List<ReceiveOfficeDTO> receiveOfficeItemList = receiveService.selectAllItem(selectCriteria);
 
+        /* 선택한 품목 리스트 조회 */
         String[] itemNoArray = itemNo.split(",");
         List<String> itemNoList = new ArrayList<>();
 
@@ -241,7 +251,7 @@ public class ReceiveController {
             itemNoList.add(itemNoArray[i]);
         }
         System.out.println(itemNoList);
-
+        
         List<ItemInfoDTO> registReceiveList = receiveService.selectRegistReceive(itemNoList);
 
         mv.addObject("receiveOfficeItemList", receiveOfficeItemList);
@@ -251,6 +261,38 @@ public class ReceiveController {
         mv.setViewName("receive/admin/admin_receive_new");
 
         return mv;
+    }
+
+    @PostMapping("/admin/regist")
+    public String receiveRegist(ModelAndView mv, RedirectAttributes rttr, @RequestParam("registList") String registItemNo, @RequestParam("empName") String empName) throws ReceiveInsertException, ReceiveUpdateException {
+
+        log.info("[empName]" + empName);
+        receiveService.insertReceiveOffice(empName);
+
+        System.out.println(registItemNo);
+        String[] registList = registItemNo.split(",");
+//        List<HashMap<String, Object>> registItemList = new ArrayList<>();
+        HashMap<String, Object> registHashMap = new HashMap<>();
+        for(int i = 0; i < registList.length; i++){
+
+            String[] registItem = registList[i].split(" ");
+
+            registHashMap.put("itemNo", registItem[0]);
+            registHashMap.put("amount", registItem[1]);
+            receiveService.insertReceiveOfficeItem(registHashMap);
+            receiveService.insertItemHistory(registHashMap);
+            List<ReceiveOfficeDTO> recCode = receiveService.selectMaxCode();
+            System.out.println(recCode);
+            registHashMap.put("recCode", recCode.get(0).getMaxRecCode());
+//            receiveService.updateItem(registHashMap);
+            System.out.println(registHashMap.get("recCode"));
+        }
+
+        rttr.addFlashAttribute("message", "입고 등록에 성공하셨습니다!");
+
+        mv.addObject("registHashMap", registHashMap);
+
+        return "redirect:/receive/admin/list";
     }
 
 }

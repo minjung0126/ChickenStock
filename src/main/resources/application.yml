@@ -14,8 +14,12 @@ spring:
       enabled: false
     livereload:
       enabled: true
+    remote:
+      restart:
+        enabled: true
   freemarker:
     cache: false
+
   servlet:
     multipart:
       max-file-size: 50MB
@@ -24,6 +28,7 @@ spring:
   thymeleaf:
     prefix: classpath:/templates/
     suffix: .html
+    cache: false
 
 # mybatis config
 mybatis:
