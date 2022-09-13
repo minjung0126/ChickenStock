@@ -36,17 +36,18 @@
                 <div class="container-fluid" style="margin-top:30px">
                     <h3>반품 관리</h3>
                     <br>
-                    <div class="input-group mb-3 col-7">
-                        <select id="searchCondition" class="form-control" style="display: none ">
-                            <option value="date">날짜</option>
-                        </select>
-                        <input type="date" class="form-control col-2" id="searchValue" name="searchValue" value="">
-                        <button class="btn btn-light" type="button" disabled>~</button>
-                        <input type="date" class="form-control col-2" id="searchValue" name="searchValue" value="">
-                        <button class="btn btn-light px-3" type="button" disabled></button>
-                        <input class="form-control me-2 col-4" type="text" placeholder="검색어를 입력해주세요.">
-                        <button class="btn btn-warning" type="submit" style="color:#fff">검색</button>
-                    </div>
+                    <form id="searchForm" th:action="@{ /reItem/admin/adminReList }" method="get" style="display: inline-block">
+                        <div class="input-group mb-3 col-12 float-start">
+                            <select id="searchCondition" name="searchCondition" class="form-control col-2" style="max-width: max-content; display: inline-block;">
+                                <option> - 선택 - </option>
+                                <option name="STORE_NAME store" value="storeName">가맹점명</option>
+                                <option name="RETURN_PROGRESS returnProgress" value="returnProgress">반품상태</option>
+                                <option name="R_PROGRESS rProgress" value="rProgress">처리상태</option>
+                            </select>
+                            <input class="form-control me-2 col-4" type="search" id="searchValue" name="searchValue" placeholder="내용을 입력해주세요." style="max-width: max-content;">
+                            <button class="btn btn-warning" type="submit" style="color:#fff">검색</button>
+                        </div>
+                    </form>
 
                     <table class="table">
                         <thead>
@@ -66,10 +67,10 @@
                             <td th:text="${ re.storeName }"></td>
                             <td th:text="${ re.storeRep }"></td>
                             <td th:text="${ re.rDate }"></td>
-                            <td th:text="${ re.returnProgress }">대기중</td>
+                            <td th:text="${ re.returnProgress }"></td>
                             <td th:text="${ re.rProgress }"></td>
                             <td>
-                                <button class="btn btn-warning me-1" onclick="location.href='returnRe.html'">상세보기</button>
+                                <button class="btn btn-warning me-1" th:onclick="|location.href='@{/reItem/admin/adminReItem(rNo=${ re.rNo })}'|">상세보기</button>
                             </td>
                         </tr>
                         </tbody>

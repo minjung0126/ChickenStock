@@ -2,10 +2,19 @@ package com.chicken.project.reItem.controller;
 
 import com.chicken.project.common.paging.Pagenation;
 import com.chicken.project.common.paging.SelectCriteria;
+import com.chicken.project.member.model.dto.StoreImpl;
+import com.chicken.project.reItem.model.dto.ReItemDTO;
 import com.chicken.project.reItem.model.dto.ReListDTO;
+import com.chicken.project.reItem.model.dto.StoreItemDTO;
 import com.chicken.project.reItem.model.service.ReItemService;
+import org.apache.catalina.Store;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,6 +31,8 @@ public class ReItemController {
 
     private final ReItemService reItemService;
 
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
+
     @Autowired
     public ReItemController(ReItemService reItemService) {
         this.reItemService = reItemService;
@@ -29,11 +40,18 @@ public class ReItemController {
 
     // 가맹점 반품서작성
     @GetMapping("/user/insertReItem")
-    public void reItem(){
+    public ModelAndView reItem(ModelAndView mv, HttpServletRequest request, @AuthenticationPrincipal StoreImpl storeImpl){
 
+        List<StoreItemDTO> storeItem = reItemService.selectItem(storeImpl.getStoreName());
 
-
+        mv.addObject("storeItems", storeItem);
+        mv.setViewName("reItem/user/insertReItem");
+        return mv;
     }
+
+    public
+
+
 
     // 가맹점 반품서 리스트
     @GetMapping("/user/storeReList")
@@ -67,8 +85,6 @@ public class ReItemController {
         mv.addObject("selectCriteria", selectCriteria);
 
         return mv;
-//        <a href="/reItem/user/reviseReItem">가맹점 반품신청 수정</a>
-
     }
 
     // 가맹점 반품서 수정
@@ -110,8 +126,22 @@ public class ReItemController {
 
         return mv;
 
+    }
+    // 본사 반품 상세보기
+    @GetMapping("/admin/adminReItem")
+    public ModelAndView ReAcceptance(ModelAndView mv, HttpServletRequest request, Model model){
 
-//<a href="/reItem//admin/adminReItem">본사 반품서 리스트 상세보기</a>
+        String rNo = request.getParameter("rNo");
+        model.addAttribute("rNo",rNo);
+
+        ReItemDTO reItem = reItemService.selectReturnItem(rNo);
+        List<ReItemDTO> reItems = reItemService.selectReturnItemS(rNo);
+
+        mv.addObject("reItem",reItem);
+        mv.addObject("reItems", reItems);
+        mv.setViewName("/reItem/admin/adminReItem");
+
+        return mv;
     }
 
 

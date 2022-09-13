@@ -38,21 +38,20 @@
                 <div class="container-fluid" style="margin-top:30px">
                     <h3><i class="fa-solid fa-list-check"></i> 반품신청 내역</h3>
                     <br>
-                    <div class="input-group mb-3 col-12">
+                    <div class="input-group mb-3 col-12" style="height: 200px">
                         <div class="dateList1"> 반품 신청일 :
-                            <span id="dueDate">2022-08-20</span>
+                            <span id="dueDate" th:text="${ reItem.rDate }"></span>
                         </div>
                         <div class="dateList2" style="font-weight: bold;"> 반품사유 :
-                            <span id="deadline">유통기한이 너무 짧음</span>
+                            <span id="deadline" th:text="${ reItem.rReason }"></span>
                         </div>
-                        <div class="dateList3"> 환급예정금액
-                            <span id="deadline">100000원</span>
+                        <div class="dateList3"> 환급예정금액 :
+                            <span id="deadline">계산식 넣기</span>
                         </div>
                     </div>
                     <table class="table">
                         <thead>
                         <tr>
-                            <th>번호</th>
                             <th>상품코드</th>
                             <th>썸네일</th>
                             <th>상품명</th>
@@ -61,49 +60,33 @@
                             <th>제조사(원산지)</th>
                             <th>판매가격</th>
                             <th>반품수량</th>
+                            <th>반품금액</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>100000</td>
+                        <tr th:each="re : ${ reItems }">
+                            <td th:text="${ re.itemNo }"></td>
                             <td>
                                 <div class="img-info">
                                     <div class="img-info__img">
-                                        <img src="/images/chicken.jpg" alt="">
+                                        <img alt="" th:src="${ re.originName }">
                                     </div>
                                 </div>
                             </td>
-                            <td>닭다리</td>
-                            <td>식재료</td>
-                            <td>1kg</td>
-                            <td>하림(국내산)</td>
-                            <td>6,000</td>
-                            <td>10</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>100001</td>
-                            <td>
-                                <div class="img-info">
-                                    <div class="img-info__img">
-                                        <img src="/images/chicken.jpg" alt="">
-                                    </div>
-                                </div>
-                            </td>
-                            <td>닭다리</td>
-                            <td>식재료</td>
-                            <td>10kg</td>
-                            <td>하림(국내산)</td>
-                            <td>60,000</td>
-                            <td>10</td>
+                            <td th:text="${ re.itemName }"></td>
+                            <td th:text="${ re.categoryName }"></td>
+                            <td th:text="${ re.itemStandard }"></td>
+                            <td th:text="${ re.itemMake }"></td>
+                            <td th:text="${ re.itemSales }"></td>
+                            <td th:text="${ re.returnCount }"></td>
+                            <td th:text="${ re.returnAccount }"></td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
                 <!-- E: table -->
                 <button class="btn btn-warning me-1" type="submit" style="position: absolute; right: 270px;">반품 승인</button>
-                <button class="btn btn-warning me-1" style="position: absolute; right: 180px;" onclick="location.href='returnRItemList.html'">뒤로가기</button>
+                <button class="btn btn-warning me-1" style="position: absolute; right: 180px;" onclick="location.href='/reItem/admin/adminReList'">뒤로가기</button>
             </div>
         </div>
         <!-- E: main layout -->
