@@ -37,5 +37,5 @@ public interface ReceiveMapper {
 
     List<ReceiveOfficeDTO> selectMaxCode();
 
-//    int updateItem(HashMap<String, Object> registHashMap);
+    int updateItem(HashMap<String, Object> registHashMap);
 }

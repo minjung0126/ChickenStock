@@ -284,7 +284,8 @@ public class ReceiveController {
             List<ReceiveOfficeDTO> recCode = receiveService.selectMaxCode();
             System.out.println(recCode);
             registHashMap.put("recCode", recCode.get(0).getMaxRecCode());
-//            receiveService.updateItem(registHashMap);
+
+            receiveService.updateItem(registHashMap);
             System.out.println(registHashMap.get("recCode"));
         }
 
