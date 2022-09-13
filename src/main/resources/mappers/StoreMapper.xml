@@ -13,12 +13,19 @@
         <result property="storeId" column="STORE_ID"></result>
         <result property="storePwd" column="STORE_PWD"></result>
         <result property="storeNo" column="STORE_NO"></result>
+        <result property="storeYn" column="STORE_YN"></result>
         <result property="memberType" column="MEMBER_TYPE"></result>
     </resultMap>
 
     <resultMap id="balanceResultMap" type="BalanceDTO">
         <id property="storeName" column="STORE_NAME"></id>
         <result property="balance" column="BALANCE"></result>
+    </resultMap>
+
+    <resultMap id="storeRoleResultMap" type="StoreRoleDTO">
+        <id property="storeName" column="STORE_NAME"></id>
+        <result property="authCode" column="AUTH_CODE"></result>
+        <result property="storeId" column="STORE_ID"></result>
     </resultMap>
 
     <select id="storeList" resultMap="storeResultMap">
@@ -29,14 +36,17 @@
              , STORE_ADDRESS
              , STORE_PHONE
              , STORE_EMAIL
+             , STORE_YN
           FROM STORE
+         WHERE STORE_YN = 'Y'
     </select>
 
-    <delete id="deleteStore" parameterType="StoreDTO">
-        DELETE
-          FROM STORE
+    <update id="deleteStore" parameterType="StoreDTO">
+        UPDATE
+               STORE
+           SET STORE_YN = 'N'
          WHERE STORE_NAME = #{ storeName }
-    </delete>
+    </update>
 
     <insert id="insertStore">
         INSERT
@@ -44,13 +54,13 @@
         (
           STORE_NAME, STORE_ACCOUNT, STORE_REP
         , STORE_ADDRESS, STORE_PHONE, STORE_EMAIL
-        , STORE_ID, STORE_PWD, STORE_NO
+        , STORE_ID, STORE_PWD, STORE_NO, STORE_YN
         )
         VALUES
         (
           #{ storeName }, #{ storeAccount }, #{ storeRep }
         , #{ storeAddress }, #{ storePhone }, #{ storeEmail }
-        , #{ storeId }, #{ storePwd }, #{ storeNo }
+        , #{ storeId }, #{ storePwd }, #{ storeNo }, DEFAULT
         )
     </insert>
 
@@ -60,17 +70,63 @@
         (
           STORE_NAME
         , BALANCE
+        , STORE_ID
         )
         VALUES
         (
           #{ storeName }
         , DEFAULT
+        , #{ storeId }
         )
     </insert>
 
-    <delete id="deleteBalanceStore">
-        DELETE
-          FROM BALANCE
+    <insert id="insertStoreRole">
+        INSERT
+          INTO STORE_ROLE
+        (
+          AUTH_CODE
+        , STORE_NAME
+        , STORE_ID
+        )
+        VALUES
+        (
+          '3'
+        , #{ storeName }
+        , #{ storeId }
+        )
+    </insert>
+
+    <select id="selectStoreByName" resultMap="storeResultMap">
+        SELECT
+               *
+          FROM STORE
          WHERE STORE_NAME = #{ storeName }
-    </delete>
+    </select>
+
+    <update id="updateStore">
+        UPDATE
+               STORE
+        <trim prefix="SET" prefixOverrides=",">
+            <if test="storeAccount != null and storeAccount !=''">
+                , STORE_ACCOUNT = #{ storeAccount }
+            </if>
+            <if test="storeRep != null and storeRep !=''">
+                , STORE_REP = #{ storeRep }
+            </if>
+            <if test="storeAddress != null and storeAddress !=''">
+                , STORE_ADDRESS = #{ storeAddress }
+            </if>
+            <if test="storePhone != null and storePhone !=''">
+                , STORE_PHONE = #{ storePhone }
+            </if>
+            <if test="storeEmail != null and storeEmail !=''">
+                , STORE_EMAIL = #{ storeEmail }
+            </if>
+            <if test="storeNo != null and storeNo !=''">
+                , STORE_NO = #{ storeNo }
+            </if>
+        </trim>
+        WHERE STORE_ID = #{ storeId }
+    </update>
+
 </mapper>
