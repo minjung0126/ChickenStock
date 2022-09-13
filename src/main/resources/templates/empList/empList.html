@@ -111,15 +111,47 @@
         </div>
         <!-- E: table -->
         <!-- S: paging -->
-        <div class="d-flex justify-content-center col-12" >
-          <button type="button" class="btn btn-light disabled" id="startPage"><<</button>
-          <button type="button" class="btn btn-light mx-1 disabled"><</button>
-          <button type="button" class="btn btn-warning mx-1" disabled style="color:white">1</button>
-          <button type="button" class="btn btn-light mx-1">2</button>
-          <button type="button" class="btn btn-light mx-1">></button>
-          <button type="button" class="btn btn-light mx-1" id="maxPage">>></button>
-        </div>
+        <!-- S: paging -->
+        <div class="pagingArea" align="center">
+          <!-- 맨 앞으로 이동 버튼 -->
+          <button class="btn btn-light mx-1" style="cursor:pointer"
+                  th:onclick="'location.href=\'/notice/admin/list?currentPage='+ @{${selectCriteria.startPage}} + '\''"
+                  th:disabled="${selectCriteria.pageNo == 1}"
+          >
+            <<
+          </button>
+          <!-- 이전 페이지 버튼 -->
+          <button class="btn btn-light" style="cursor:pointer"
+                  th:onclick="'location.href=\'/notice/admin/list?currentPage='+ @{${selectCriteria.pageNo - 1}} + '\''"
+                  th:disabled="${selectCriteria.pageNo == 1}"
+          >
+            <
+          </button>
+          <!-- 숫자 버튼 -->
+          <th:block th:each="page : ${#numbers.sequence(selectCriteria.startPage, selectCriteria.endPage)}">
+            <button class="btn btn-warning mx-1" style="cursor:pointer; color: black;background: transparent; border: 1px solid"
+                    th:text="${ page }"
+                    th:onclick="'location.href=\'/notice/admin/list?currentPage='+ @{${page}} + '\''"
+                    th:disabled="${ selectCriteria.pageNo eq page }">
+            </button>
+          </th:block>
 
+          <!-- 다음 페이지 버튼 -->
+          <button class="btn btn-light mx-1" style="cursor:pointer"
+                  th:onclick="'location.href=\'/notice/admin/list?currentPage='+ @{${selectCriteria.pageNo + 1}} + '\''"
+                  th:disabled="${selectCriteria.pageNo == selectCriteria.maxPage}"
+          >
+            >
+          </button>
+          <!-- 마지막 페이지로 이동 버튼 -->
+          <button class="btn btn-light mx-1" style="cursor:pointer"
+                  th:onclick="'location.href=\'/notice/admin/list?currentPage='+ @{${selectCriteria.maxPage}} + '\''"
+                  th:disabled="${selectCriteria.pageNo == selectCriteria.maxPage}"
+          >
+            >>
+          </button>
+        </div>
+        <!-- E: paging -->
         <!-- E: paging -->
 
       </div>
