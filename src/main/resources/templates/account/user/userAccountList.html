@@ -96,7 +96,7 @@
         <tbody>
         <tr>
           <th>가맹점 명</th>
-          <td>가맹점</td>
+          <td th:text="${ #authentication.getPrincipal().getStoreName() }"></td>
         </tr>
         <tr>
           <th>입금액</th>

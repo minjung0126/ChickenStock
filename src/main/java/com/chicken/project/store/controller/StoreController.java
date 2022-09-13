@@ -30,14 +30,14 @@ public class StoreController {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    public StoreController(StoreService storeService, PasswordEncoder passwordEncoder){
+    public StoreController(StoreService storeService, PasswordEncoder passwordEncoder) {
 
         this.storeService = storeService;
         this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping("/admin/list")
-    public ModelAndView storeListPage(ModelAndView mv){
+    public ModelAndView storeListPage(ModelAndView mv) {
 
         List<StoreDTO> storeList = storeService.storeList();
 
@@ -48,7 +48,7 @@ public class StoreController {
     }
 
     @GetMapping("/user/list")
-    public ModelAndView userStoreListPage(ModelAndView mv){
+    public ModelAndView userStoreListPage(ModelAndView mv) {
 
         List<StoreDTO> storeList = storeService.storeList();
 
@@ -71,7 +71,7 @@ public class StoreController {
     }
 
     @GetMapping("/admin/insert")
-    public String insertStorePage(){
+    public String insertStorePage() {
 
         return "/store/admin/adminStoreInsert";
     }
@@ -94,7 +94,7 @@ public class StoreController {
     }
 
     @GetMapping("/admin/update")
-    public ModelAndView updateStorePage(HttpServletRequest request, RedirectAttributes rttr, ModelAndView mv){
+    public ModelAndView updateStorePage(HttpServletRequest request, RedirectAttributes rttr, ModelAndView mv) {
 
         String storeName = request.getParameter("storeName");
 
