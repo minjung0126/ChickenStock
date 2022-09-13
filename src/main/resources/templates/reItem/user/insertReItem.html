@@ -73,7 +73,7 @@
                             <option value="date">유통기한이 지난(짧은) 상품 배송</option>
                         </select>
                         <input type="text" class="release-input title" value="총반품액" style="width: 120px; text-align: center; margin-right: 2px;" readonly>
-                        <input type="text" class="release-input" th:name="totalMoney" th:value="${ totalMoney }" style="width: 150px; background-color: #f5f5f9" readonly>
+                        <input type="text" id="returnTotalMoney" class="returnTotalMoney"  style="width: 150px; background-color: #f5f5f9" readonly>
                         <button type="button" class="btn btn-warning mx-1" style="color: #fff; margin-left: 10px;" onclick="deleteConfirm()">반품신청</button>
                     </div>
                     <div class="tableWrapper">
@@ -105,10 +105,11 @@
                                 <td th:text="${ sItem.categoryName }"></td>
                                 <td th:text="${ sItem.itemStandard }"></td>
                                 <td th:text="${ sItem.itemMake }"></td>
-                                <td th:text="${ sItem.itemSales }"></td>
+                                <td id="itemPurchase" class="itemPurchase" th:text="|${ #numbers.formatInteger(sItem.itemSales, 0, 'COMMA') }원|"></td>
                                 <td th:text="${ sItem.storeAmount }"></td>
-                                <td >
-                                    <input type="number" style="width:60px; text-align: center; border: 1px solid rgb(255, 255, 255); border-bottom: 1px solid;" >
+                                <td>
+                                    <input type="number" style="width:60px; text-align: center; border: 1px solid rgb(255, 255, 255); border-bottom: 1px solid;" class="returnAmount" id="returnAmount" name="returnAmount" onchange="inputValueChange(this);">
+                                    <input hidden id="returnItemMoney" class="returnItemMoney" value="returnItemMoney">
                                     <button type="submit" style="border : none; background-color: #fff;"></button>
                                 </td>
                             </tr>
@@ -131,6 +132,31 @@
         if(result == true) {
             alert("반품신청이 완료되었습니다.");
         }
+    }
+</script>
+<script>
+    function inputValueChange(check){
+
+        console.log(check);
+
+        // 반품수량
+        let inputValue = $(check.parentElement)[0].children[0].value;
+        console.log(inputValue);
+
+        // 입고금액
+        let itemPurchase = parseInt(check.parentElement.parentElement.children[6].innerText.replace(/[^0-9]/gi, ''));
+        let returnItemMoney = inputValue * itemPurchase;
+        $(check.parentElement.parentElement.children[8]).innerText = returnItemMoney.toLocaleString('ko-KR') + "원";
+        // 총 입고수량 & 총 입고금액
+        let inputValueTot = document.getElementsByClassName('returnAmount');
+
+        let returnTotalMoney = 0;
+        for(let i = 0; i < inputValueTot.length; i++){
+            returnTotalMoney += returnItemMoney[i];
+        }
+        console.log(returnTotalMoney);
+        document.getElementById('returnTotalMoney').innerText = returnTotalMoney.toLocaleString('ko-KR') + "원";
+
     }
 </script>
 <!-- table js -->

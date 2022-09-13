@@ -6,6 +6,7 @@ import com.chicken.project.receive.model.dto.ReceiveOfficeItemDTO;
 import com.chicken.project.release.model.dto.ItemInfoDTO;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,6 +24,18 @@ public interface ReceiveMapper {
     List<ReceiveOfficeDTO> selectAllItem(SelectCriteria selectCriteria);
 
     List<ReceiveOfficeDTO> selectAllReceive();
+
     List<ReceiveOfficeItemDTO> selectAllReceiveItem();
+
     List<ItemInfoDTO> selectRegistReceive(List<String> itemNoList);
+
+    int insertReceiveOffice(String empName);
+
+    int insertReceiveOfficeItem(HashMap<String, Object> registHashMap);
+
+    int insertItemHistory(HashMap<String, Object> registHashMap);
+
+    List<ReceiveOfficeDTO> selectMaxCode();
+
+//    int updateItem(HashMap<String, Object> registHashMap);
 }

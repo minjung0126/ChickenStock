@@ -137,35 +137,11 @@
     function deleteForm() {
         var result = confirm("반품신청을 삭제하시겠습니까?");
         if(result == true) {
-            로직로직로직로직
+            /*로직로직로직로직*/
             alert("해당 신청서가 삭제되었습니다.");
         }
     }
 </script>
-<!--<script th:inline="javascript">-->
-<!--    /*<![CDATA[*/-->
-
-<!--    // 게시글 삭제-->
-<!--    function removeCheck() {-->
-<!--        const no = [[ ${news.no} ]];-->
-<!--        if ( !confirm("게시글을 삭제할까요?") ) {-->
-<!--            return false;-->
-<!--        }-->
-
-<!--        const formHtml = `-->
-<!--                    <form id="deleteForm" action="/notice/news/delete?no=${no}" method="get">-->
-<!--                        <input type="hidden" id="no" name="no" value="${no}" />-->
-<!--                    </form>-->
-<!--                `;-->
-<!--        const doc = new DOMParser().parseFromString(formHtml, 'text/html');-->
-<!--        const form = doc.body.firstChild;-->
-<!--        document.body.append(form);-->
-<!--        document.getElementById('deleteForm').submit();-->
-<!--    }-->
-
-<!--    /*]]>*/-->
-<!--</script>-->
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 </body>
