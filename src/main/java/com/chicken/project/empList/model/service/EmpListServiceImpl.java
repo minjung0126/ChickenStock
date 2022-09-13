@@ -1,10 +1,10 @@
 package com.chicken.project.empList.model.service;
 
+import com.chicken.project.common.paging.SelectCriteria;
 import com.chicken.project.member.model.dao.EmployeeMapper;
 import com.chicken.project.member.model.dto.EmployeeDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,9 +23,9 @@ public class EmpListServiceImpl implements EmpListService {
 
     /* 직원 정보 리스트 조회 */
     @Override
-    public List<EmployeeDTO> selectAllEmployee() {
+    public List<EmployeeDTO> selectAllEmployee(SelectCriteria criteria) {
 
-        List<EmployeeDTO> empList = employeeMapper.selectAllEmployee();
+        List<EmployeeDTO> empList = employeeMapper.selectAllEmployee(criteria);
 
         return empList;
     }
@@ -81,4 +81,11 @@ public class EmpListServiceImpl implements EmpListService {
     }
 
 
+    @Override
+    public int selectTotalEmpList() {
+
+        int result = employeeMapper.selectTotalEmpList();
+
+        return result;
+    }
 }

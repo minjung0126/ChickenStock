@@ -97,9 +97,9 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="emp: ${ empList }">
-              <td>1</td>
-              <td class="empId" th:text="${ emp.empId }"></td>
+            <tr th:each="emp: ${ empList } "name="">
+              <td class="empId" th:text="${ emp.rnum }"></td>
+              <td th:text="${ emp.empId }"></td>
               <td th:text="${ emp.empName }"></td>
               <td th:text="${ emp.empEmail }"></td>
               <td th:text="${ emp.empPhone }"></td>

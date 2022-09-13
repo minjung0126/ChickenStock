@@ -27,5 +27,7 @@ public class EmployeeDTO {
 
     private List<CalendarDTO> calendar;
 
+    private int rnum;
+
 
 }

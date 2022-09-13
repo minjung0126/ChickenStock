@@ -11,6 +11,7 @@
         <result property="empEmail" column="EMP_EMAIL"/>
         <result property="birth" column="EMP_BIRTH"/>
         <result property="empRole" column="EMP_ROLE"/>
+        <result property="rnum" column="RNUM"/>
 
         <collection property="empRoleList" resultMap="empRoleResultMap"/>
         <collection property="calendar" resultMap="calendarResultMap"/>
@@ -131,6 +132,49 @@
                COUNT(*)
           FROM EMP_ROLE A
          WHERE A.EMP_ID = #{ empId }
+    </select>
+
+    <select id="selectTotalEmpList" resultType="_int">
+        SELECT
+              A.RNUM
+            , A.EMP_ID
+            , A.EMP_NAME
+            , A.EMP_PHONE
+            , A.EMP_EMAIL
+            , A.EMP_BIRTH
+            , DECODE((SELECT COUNT(A1.EMP_ID)
+                     FROM EMPLOYEE A1
+                              JOIN EMP_ROLE B1 ON(A1.EMP_ID = B1.EMP_ID)
+                     WHERE A1.EMP_ID = A.EMP_ID), 1, 'N', 2,'Y') AS EMP_ROLE
+          FROM ( SELECT ROWNUM RNUM
+              C.EMP_ID
+            , C.EMP_NAME
+            , C.EMP_PHONE
+            , C.EMP_EMAIL
+            , C.EMP_BIRTH
+            , DECODE((SELECT COUNT(C1.EMP_ID)
+                     FROM EMPLOYEE C1
+                              JOIN EMP_ROLE D1 ON(C1.EMP_ID = D1.EMP_ID)
+                     WHERE C1.EMP_ID = C.EMP_ID), 1, 'N', 2,'Y') AS EMP_ROLE
+            FROM ( SELECT DISTINCT
+                  E.EMP_ID
+                , E.EMP_NAME
+                , E.EMP_PHONE
+                , E.EMP_EMAIL
+                , E.EMP_BIRTH
+                , DECODE((SELECT COUNT(E1.EMP_ID)
+                         FROM EMPLOYEE E1
+                                  JOIN EMP_ROLE F1 ON(E1.EMP_ID = F1.EMP_ID)
+                         WHERE E1.EMP_ID = E.EMP_ID), 1, 'N', 2,'Y') AS EMP_ROLE
+                FROM EMPLOYEE E
+            ) C
+            <![CDATA[
+                    WHERE ROWNUM <= #{ endRow }
+                ]]>
+          ) A
+            JOIN EMP_ROLE B ON(A.EMP_ID = B.EMP_ID)
+           WHERE A.RNUM >= #{ startRow }
+           ORDER BY 1 ASC
     </select>
 
 </mapper>
