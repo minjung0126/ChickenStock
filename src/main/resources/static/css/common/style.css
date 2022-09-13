@@ -40,10 +40,10 @@ a:hover{
 	background: #fff;
 }
 .table tbody tr td:nth-child(1) {
-	border-radius: 10px 10px 10px 10px;
+	border-radius: 10px 0px 0px 10px;
 }
 .table tbody tr td:nth-last-child(1) {
-	border-radius: 10px 10px 10px 10px;
+	border-radius: 0px 10px 10px 0px;
 }
 
 .img-info {

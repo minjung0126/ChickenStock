@@ -7,12 +7,15 @@ public class ReleaseSelectCriteria {
     private String searchDate2;
     private String searchValue;
 
+    private String searchCategory;
+
     public ReleaseSelectCriteria() {}
 
-    public ReleaseSelectCriteria(String searchDate, String searchDate2, String searchValue) {
+    public ReleaseSelectCriteria(String searchDate, String searchDate2, String searchValue, String searchCategory) {
         this.searchDate = searchDate;
         this.searchDate2 = searchDate2;
         this.searchValue = searchValue;
+        this.searchCategory = searchCategory;
     }
 
     public String getSearchDate() {
@@ -39,12 +42,21 @@ public class ReleaseSelectCriteria {
         this.searchValue = searchValue;
     }
 
+    public String getSearchCategory() {
+        return searchCategory;
+    }
+
+    public void setSearchCategory(String searchCategory) {
+        this.searchCategory = searchCategory;
+    }
+
     @Override
     public String toString() {
         return "ReleaseSelectCriteria{" +
                 "searchDate='" + searchDate + '\'' +
                 ", searchDate2='" + searchDate2 + '\'' +
                 ", searchValue='" + searchValue + '\'' +
+                ", searchCategory='" + searchCategory + '\'' +
                 '}';
     }
 }

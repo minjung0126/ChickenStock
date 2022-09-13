@@ -12,10 +12,11 @@ public class ReleaseOrderDTO {
     private StoreOrderDTO storeOrderDTO;
     private ReleaseCartHandlerDTO releaseCartHandlerDTO;
     private ReleaseItemDTO releaseItemDTO;
+    private ReleaseItemHistroyDTO releaseItemHistroyDTO;
 
     public ReleaseOrderDTO() {}
 
-    public ReleaseOrderDTO(ReleaseItemInfoDTO releaseItemInfoDTO, ReleaseItemCategoryDTO releaseItemCategoryDTO, ReleaseCartDTO releaseCartDTO, ReleaseItemFileDTO releaseItemFileDTO, StoreOrderDTO storeOrderDTO, ReleaseCartHandlerDTO releaseCartHandlerDTO, ReleaseItemDTO releaseItemDTO) {
+    public ReleaseOrderDTO(ReleaseItemInfoDTO releaseItemInfoDTO, ReleaseItemCategoryDTO releaseItemCategoryDTO, ReleaseCartDTO releaseCartDTO, ReleaseItemFileDTO releaseItemFileDTO, StoreOrderDTO storeOrderDTO, ReleaseCartHandlerDTO releaseCartHandlerDTO, ReleaseItemDTO releaseItemDTO, ReleaseItemHistroyDTO releaseItemHistroyDTO) {
         this.releaseItemInfoDTO = releaseItemInfoDTO;
         this.releaseItemCategoryDTO = releaseItemCategoryDTO;
         this.releaseCartDTO = releaseCartDTO;
@@ -23,6 +24,7 @@ public class ReleaseOrderDTO {
         this.storeOrderDTO = storeOrderDTO;
         this.releaseCartHandlerDTO = releaseCartHandlerDTO;
         this.releaseItemDTO = releaseItemDTO;
+        this.releaseItemHistroyDTO = releaseItemHistroyDTO;
     }
 
     public ReleaseItemInfoDTO getReleaseItemInfoDTO() {
@@ -81,6 +83,14 @@ public class ReleaseOrderDTO {
         this.releaseItemDTO = releaseItemDTO;
     }
 
+    public ReleaseItemHistroyDTO getReleaseItemHistroyDTO() {
+        return releaseItemHistroyDTO;
+    }
+
+    public void setReleaseItemHistroyDTO(ReleaseItemHistroyDTO releaseItemHistroyDTO) {
+        this.releaseItemHistroyDTO = releaseItemHistroyDTO;
+    }
+
     @Override
     public String toString() {
         return "ReleaseOrderDTO{" +
@@ -91,6 +101,7 @@ public class ReleaseOrderDTO {
                 ", storeOrderDTO=" + storeOrderDTO +
                 ", releaseCartHandlerDTO=" + releaseCartHandlerDTO +
                 ", releaseItemDTO=" + releaseItemDTO +
+                ", releaseItemHistroyDTO=" + releaseItemHistroyDTO +
                 '}';
     }
 }

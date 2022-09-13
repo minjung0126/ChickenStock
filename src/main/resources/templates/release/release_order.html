@@ -107,7 +107,7 @@
                 </tr>
               </thead>
               <tbody class="release-tbody-delete">
-                <tr th:each="order : ${ orderList }" th:each="order2 : ${ orderListN }" class="release-tr-add">
+                <tr th:each="order : ${ orderList }" class="release-tr-add">
                   <form th:action="@{ /release/orderInsertUpdate }" method="post">
                     <td th:text="${ order.releaseItemInfoDTO.itemNo }"></td>
                     <td th:text="${ order.releaseItemInfoDTO.itemName }"></td>
@@ -208,7 +208,7 @@
                 <input type="hidden" th:name="orderDate" th:value="${ orderN.releaseItemDTO.relItemRequestDate }">
                 <input type="hidden" th:name="orderNo" th:value="${ orderN.releaseItemDTO.orderNo }">
                 <input type="hidden" th:name="relCodeDetail" th:value="${ orderN.releaseItemDTO.relCodeDetail}">
-                <input type="hidden" th:name="cartNo" th:value="${  }">
+                <input type="hidden" th:name="cartNo" th:value="${ orderN.releaseCartDTO.cartNo  }">
                 <input type="hidden" th:name="relCode" th:value="${ relCode }">
             </form>
             </tr>

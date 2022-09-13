@@ -11,6 +11,7 @@
         <association property="releaseItemFileDTO" resultMap="itemFileResultMap"/>
         <association property="storeOrderDTO" resultMap="storeOrderResultMap"/>
         <association property="releaseItemDTO" resultMap="releaseItemResultMap"/>
+        <association property="releaseItemHistroyDTO" resultMap="releaseItemHistroyResultMap"/>
     </resultMap>
 
     <resultMap id="cartResultMap" type="ReleaseCartDTO">
@@ -87,6 +88,13 @@
         <result property="orderDate" column="ORDER_DATE"/>
     </resultMap>
 
+    <resultMap id="releaseItemHistroyResultMap" type="ReleaseItemHistroyDTO">
+        <result property="relAmountDetail" column="REL_AMOUNT_DETAIL"/>
+        <result property="relDateDetail" column="REL_DATE_DETAIL"/>
+        <result property="relCodeDetail" column="REL_CODE_DETAIL"/>
+        <result property="relSumAmount" column="REL_SUM_AMOUNT"/>
+    </resultMap>
+
     <select id="releaseOrderSelect" resultMap="releaseOrderResultMap">
         SELECT
                *
@@ -101,13 +109,13 @@
                 &amp;&amp; searchDate != null &amp;&amp; !searchDate.equals('')
                 &amp;&amp; searchDate2 != null &amp;&amp; !searchDate2.equals('')">
                   AND A.STORE_NAME LIKE '%' || #{ searchValue } || '%'
-                  AND C.ORDER_DATE BETWEEN TO_DATE(#{ searchDate }, 'YYYY-MM-DD')
-                  AND TO_DATE(#{ searchDate2 }, 'YYYY-MM-DD')
+                  AND TO_CHAR(C.ORDER_DATE, 'YYYY-MM-DD') BETWEEN #{ searchDate }
+                  AND #{ searchDate2 }
               </when>
               <when test="searchDate != null &amp;&amp; !searchDate.equals('')
                 &amp;&amp; searchDate2 != null &amp;&amp; !searchDate2.equals('')">
-                  AND C.ORDER_DATE BETWEEN TO_DATE(#{ searchDate }, 'YYYY-MM-DD')
-                  AND TO_DATE(#{ searchDate2 }, 'YYYY-MM-DD')
+                  AND TO_CHAR(C.ORDER_DATE, 'YYYY-MM-DD') BETWEEN #{ searchDate }
+                  AND #{ searchDate2 }
               </when>
               <when test="searchValue != null &amp;&amp; !searchValue.equals('')">
                   AND A.STORE_NAME LIKE '%' || #{ searchValue } || '%'
@@ -123,6 +131,8 @@
           JOIN ITEM_INFO B ON(A.ITEM_NO = B.ITEM_NO)
           JOIN ITEM_CATEGORY C ON(B.CATEGORY_NO = C.CATEGORY_NO)
           JOIN ITEM_FILE D ON(B.ITEM_NO = D.ITEM_NO)
+          JOIN REL_ORD_HANDLER E ON(A.REL_CODE_DETAIL = E.REL_CODE_DETAIL)
+          JOIN CART F ON(E.CART_NO = F.CART_NO)
          WHERE A.REL_LIST_YN = 'N'
     </select>
 
@@ -233,74 +243,82 @@
         SELECT
                *
           FROM RELEASE
+          <if test="searchCategory == 'searchStoreName'">
+            WHERE STORE_NAME LIKE '%' || #{ searchValue } || '%'
+          </if>
+          <if test="searchCategory == 'searchRelRegistDate'">
+            WHERE TO_CHAR(REL_LIST_DATE, 'YYYY-MM-DD') BETWEEN #{ searchDate }
+              AND #{ searchDate2 }
+          </if>
+          <if test="searchCategory == 'searchRelDate'">
+            WHERE TO_CHAR(REL_DATE, 'YYYY-MM-DD') BETWEEN #{ searchDate }
+              AND #{ searchDate2 }
+          </if>
+          <if test="searchCategory == 'relDateStoreName'">
+            WHERE STORE_NAME LIKE '%'|| #{ searchValue } || '%'
+              AND TO_CHAR(REL_DATE, 'YYYY-MM-DD') BETWEEN #{ searchDate }
+              AND #{ searchDate2 }
+          </if>
+          <if test="searchCategory == 'registDateStoreName'">
+            WHERE STORE_NAME LIKE '%' || #{ searchValue } || '%'
+              AND TO_CHAR(REL_LIST_DATE, 'YYYY-MM-DD') BETWEEN #{ searchDate }
+              AND #{ searchDate2 }
+          </if>
       ORDER BY REL_CODE DESC
     </select>
 
-    <select id="releaseItemListSelect" resultMap="releaseOrderResultMap">
+    <select id="releaseSelect2" resultMap="releaseOrderResultMap">
         SELECT
-               A.CART_AMOUNT
+            A.REL_YN
+             , A.REL_AMOUNT
+             , A.REL_CODE
              , A.ITEM_NO
+             , A.ORDER_AMOUNT
+             , A.REL_DATE
+             , A.RELITEM_REQUEST_DATE
              , A.STORE_NAME
-             , A.CART_NO
-             , B.ORDER_NO
-             , C.ORDER_DATE
-             , D.REL_CODE
-             , D.REL_AMOUNT
-             , D.REL_YN
-             , D.TOTAL_MONEY
-             , D.REL_DATE
-             , D.REL_CODE_DETAIL
-             , E.ITEM_NAME
-             , E.ITEM_STANDARD
-             , E.ITEM_PURCHASE
-             , E.ITEM_SALES
-             , E.ITEM_MAKE
-             , E.ITEM_AMOUNT
-             , F.CATEGORY_NAME
-             , G.FILE_NAME
-          FROM CART A
-          JOIN ORDER_HANDLER B ON(A.CART_NO = B.CART_NO)
-          JOIN STORE_ORDER C ON(B.ORDER_NO = C.ORDER_NO)
-          JOIN RELEASE_ITEM D ON(A.ITEM_NO  = D.ITEM_NO)
-          JOIN ITEM_INFO E ON(A.ITEM_NO = E.ITEM_NO)
-          JOIN ITEM_CATEGORY F ON(E.CATEGORY_NO = F.CATEGORY_NO)
-          JOIN ITEM_FILE G ON(E.ITEM_NO = G.ITEM_NO)
-         WHERE A.REL_YN ='F'
-           AND D.REL_CODE = #{ relCode }
+             , A.TOTAL_MONEY
+             , A.REL_LIST_YN
+             , B.ITEM_NAME
+             , B.ITEM_STANDARD
+             , B.ITEM_PURCHASE
+             , B.ITEM_SALES
+             , B.ITEM_MAKE
+             , B.ITEM_AMOUNT
+             , C.CATEGORY_NAME
+             , D.FILE_NAME
+             , A.REL_CODE_DETAIL
+             , B.ITEM_SOLDOUT_YN
+             , SUM(E.REL_AMOUNT_DETAIL) REL_SUM_AMOUNT
+        FROM RELEASE_ITEM A
+                 JOIN ITEM_INFO B ON(A.ITEM_NO = B.ITEM_NO)
+                 JOIN ITEM_CATEGORY C ON(B.CATEGORY_NO = C.CATEGORY_NO)
+                 JOIN ITEM_FILE D ON(B.ITEM_NO = D.ITEM_NO)
+                 LEFT JOIN RELEASE_ITEM_HISTORY E ON (A.REL_CODE_DETAIL = E.REL_CODE_DETAIL)
+        GROUP BY A.REL_YN
+               , A.REL_AMOUNT
+               , A.REL_CODE
+               , A.ITEM_NO
+               , A.ORDER_AMOUNT
+               , A.REL_DATE
+               , A.RELITEM_REQUEST_DATE
+               , A.STORE_NAME
+               , A.TOTAL_MONEY
+               , A.REL_LIST_YN
+               , B.ITEM_NAME
+               , B.ITEM_STANDARD
+               , B.ITEM_PURCHASE
+               , B.ITEM_SALES
+               , B.ITEM_MAKE
+               , B.ITEM_AMOUNT
+               , C.CATEGORY_NAME
+               , D.FILE_NAME
+               , A.REL_CODE_DETAIL
+               , B.ITEM_SOLDOUT_YN
+        HAVING A.REL_CODE = #{ relCode }
+        ORDER BY A.REL_CODE_DETAIL
     </select>
 
-    <select id="releaseItemListSelect2" resultMap="releaseOrderResultMap">
-        SELECT
-            A.CART_AMOUNT
-             , A.ITEM_NO
-             , A.STORE_NAME
-             , A.CART_NO
-             , B.ORDER_NO
-             , C.ORDER_DATE
-             , D.REL_CODE
-             , D.REL_AMOUNT
-             , D.REL_YN
-             , D.TOTAL_MONEY
-             , D.REL_DATE
-             , D.REL_CODE_DETAIL
-             , E.ITEM_NAME
-             , E.ITEM_STANDARD
-             , E.ITEM_PURCHASE
-             , E.ITEM_SALES
-             , E.ITEM_MAKE
-             , E.ITEM_AMOUNT
-             , F.CATEGORY_NAME
-             , G.FILE_NAME
-        FROM CART A
-                 JOIN ORDER_HANDLER B ON(A.CART_NO = B.CART_NO)
-                 JOIN STORE_ORDER C ON(B.ORDER_NO = C.ORDER_NO)
-                 JOIN RELEASE_ITEM D ON(A.ITEM_NO  = D.ITEM_NO)
-                 JOIN ITEM_INFO E ON(A.ITEM_NO = E.ITEM_NO)
-                 JOIN ITEM_CATEGORY F ON(E.CATEGORY_NO = F.CATEGORY_NO)
-                 JOIN ITEM_FILE G ON(E.ITEM_NO = G.ITEM_NO)
-        WHERE A.REL_YN ='F'
-          AND D.REL_CODE = #{ relCode }
-    </select>
     <update id="itemAmountUpdate">
         UPDATE ITEM_INFO A
            SET A.ITEM_AMOUNT = #{ amountUpdate }
@@ -321,4 +339,38 @@
         , #{ relCodeDetail }
         )
     </insert>
+
+    <update id="releaseItemUpdateY">
+        UPDATE RELEASE_ITEM
+        SET REL_YN = 'Y'
+          , REL_DATE = SYSDATE
+      WHERE REL_YN = 'N'
+        AND REL_DATE is null
+        AND REL_CODE_DETAIL = #{ relCodeDetail }
+    </update>
+
+    <select id="relAmountSumSelect" resultType="_int">
+        SELECT
+            SUM(REL_AMOUNT_DETAIL)
+        FROM RELEASE_ITEM_HISTORY
+        GROUP BY REL_CODE_DETAIL
+        HAVING REL_CODE_DETAIL = #{ relCodeDetail }
+    </select>
+
+    <select id="relItemSelectY" resultMap="releaseItemResultMap">
+        SELECT
+               REL_YN
+          FROM RELEASE_ITEM
+         WHERE REL_CODE = #{ relCode }
+    </select>
+
+    <update id="relYnUpdate">
+        UPDATE RELEASE
+           SET REL_YN = 'Y'
+             , REL_DATE = SYSDATE
+         WHERE REL_YN = 'N'
+           AND REL_DATE IS NULL
+           AND REL_CODE = #{ relCode }
+    </update>
+
 </mapper>

@@ -114,26 +114,17 @@ public class ReleaseServiceImpl implements ReleaseService{
     }
 
     @Override
-    public List<ReleaseDTO> releaseSelect() {
+    public List<ReleaseDTO> releaseSelect(ReleaseSelectCriteria selectCriteria) {
 
-        List<ReleaseDTO> releaseSelect = releaseMapper.releaseSelect();
+        List<ReleaseDTO> releaseSelect = releaseMapper.releaseSelect(selectCriteria);
 
         return releaseSelect;
     }
 
     @Override
-    @Transactional
-    public List<ReleaseOrderDTO> releaseItemListSelect(int relCode) {
-
-        List<ReleaseOrderDTO> releaseItemListSelect = releaseMapper.releaseItemListSelect(relCode);
-
-        return releaseItemListSelect;
-    }
-
-    @Override
     public List<ReleaseOrderDTO> releaseSelect2(int relCode) {
 
-        List<ReleaseOrderDTO> releaseItemListSelect = releaseMapper.releaseItemListSelect2(relCode);
+        List<ReleaseOrderDTO> releaseItemListSelect = releaseMapper.releaseSelect2(relCode);
 
         return releaseItemListSelect;
     }
@@ -157,10 +148,28 @@ public class ReleaseServiceImpl implements ReleaseService{
     }
 
     @Override
-    public int relAmountSumSelect(int relCodeDetail) {
+    @Transactional
+    public int releaseItemUpdateY(Map<String, Integer> itemAmountUpdate) {
 
-        int relAmountSum = releaseMapper.relAmountSumSelect(relCodeDetail);
+        int result = releaseMapper.releaseItemUpdateY(itemAmountUpdate);
 
-        return relAmountSum;
+        return result;
+    }
+
+    @Override
+    @Transactional
+    public List<ReleaseItemDTO> relItemSelectY(int relCode) {
+
+        List<ReleaseItemDTO> relItemSelectY = releaseMapper.relItemSelectY(relCode);
+
+        return relItemSelectY;
+    }
+
+    @Override
+    @Transactional
+    public int relYnUpdate(int relCode) {
+
+        int relYnResult = releaseMapper.relYnUpdate(relCode);
+        return relYnResult;
     }
 }

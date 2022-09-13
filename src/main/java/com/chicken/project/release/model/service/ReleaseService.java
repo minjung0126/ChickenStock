@@ -12,7 +12,6 @@ public interface ReleaseService {
 
     List<ReleaseDTO> releaseDtoOrderSelect();
 
-
     Integer totalMoneySelect(Integer intRelCode);
 
     int releaseInsert(ReleaseDTO relDto);
@@ -25,13 +24,11 @@ public interface ReleaseService {
 
     int releaseItemUpdateF();
 
-    List<ReleaseDTO> releaseSelect();
+    List<ReleaseDTO> releaseSelect(ReleaseSelectCriteria selectCriteria);
 
     int releaseItemInsert(ReleaseItemInfoDTO releaseItemInfoDTO, ReleaseItemDTO releaseItemDTO, StoreOrderDTO storeOrderDTO, ReleaseCartDTO releaseCartDTO, int relCode, int totalItemMoney);
 
     int releaseItemDelete(ReleaseItemInfoDTO releaseItemInfoDTO, ReleaseCartDTO releaseCartDTO, ReleaseItemDTO releaseItemDTO, StoreOrderDTO storeOrderDTO, int relCode);
-
-    List<ReleaseOrderDTO> releaseItemListSelect(int relCode);
 
     List<ReleaseOrderDTO> releaseSelect2(int relCode);
 
@@ -39,8 +36,10 @@ public interface ReleaseService {
 
     int relItemHistoryInsert(Map<String, Integer> itemAmountUpdate);
 
-    int relAmountSumSelect(int relCodeDetail);
+    int releaseItemUpdateY(Map<String, Integer> itemAmountUpdate);
 
+    List<ReleaseItemDTO> relItemSelectY(int relCode);
 
+    int relYnUpdate(int relCode);
 
 }

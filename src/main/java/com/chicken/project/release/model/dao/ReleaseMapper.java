@@ -12,8 +12,6 @@ public interface ReleaseMapper {
     List<ReleaseOrderDTO> releaseOrderSelectN();
     List<ReleaseDTO> releaseDtoOrderSelect();
 
-    int releaseItemUpdateY(ReleaseCartDTO releaseCartDTO);
-    
     int releaseItemUpdateN(ReleaseItemDTO releaseOrderDTO);
 
     int cartYnUpdateR(ReleaseCartDTO releaseCartDTO);
@@ -26,21 +24,20 @@ public interface ReleaseMapper {
 
     int releaseItemUpdateF();
 
-    List<ReleaseDTO> releaseSelect();
-
     int releaseItemInsert(ReleaseItemInfoDTO releaseItemInfoDTO, ReleaseItemDTO releaseItemDTO, StoreOrderDTO storeOrderDTO, ReleaseCartDTO releaseCartDTO, int relCode, int totalItemMoney);
     int releaseItemDelete(ReleaseItemInfoDTO releaseItemInfoDTO, ReleaseCartDTO releaseCartDTO, ReleaseItemDTO releaseItemDTO, StoreOrderDTO storeOrderDTO, int relCode);
 
-    List<ReleaseOrderDTO> releaseItemListSelect(int relCode);
-
-    List<ReleaseOrderDTO> releaseItemListSelect2(int relCode);
+    List<ReleaseDTO> releaseSelect(ReleaseSelectCriteria selectCriteria);
+    List<ReleaseOrderDTO> releaseSelect2(int relCode);
 
     int itemAmountUpdate(Map<String, Integer> itemAmountUpdate);
 
     int relItemHistoryInsert(Map<String, Integer> itemAmountUpdate);
 
-    int relAmountSumSelect(int relCodeDetail);
+    int releaseItemUpdateY(Map<String, Integer> itemAmountUpdate);
 
+    List<ReleaseItemDTO> relItemSelectY(int relCode);
 
+    int relYnUpdate(int relCode);
 
 }

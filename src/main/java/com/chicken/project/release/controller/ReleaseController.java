@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +20,8 @@ import java.util.Map;
 public class ReleaseController {
 
     private final ReleaseService releaseService;
+    private RelItemDTO relItemDTO;
+
     @Autowired
     public ReleaseController(ReleaseService releaseService) {
 
@@ -124,18 +127,22 @@ public class ReleaseController {
     }
 
     @GetMapping("/releaseSelect")
-    public ModelAndView releaseSelect(ModelAndView mv){
+    public ModelAndView releaseSelect(ModelAndView mv, @ModelAttribute ReleaseSelectCriteria selectCriteria){
 
-        List<ReleaseDTO> releaseSelect = releaseService.releaseSelect();
+        List<ReleaseDTO> releaseSelect = releaseService.releaseSelect(selectCriteria);
+
+        System.out.println("selectCriteria : " + selectCriteria);
 
         List<List<ReleaseOrderDTO>> releaseSelectItem = new ArrayList<>();
+
         for(int i = 0; i < releaseSelect.size(); i++){
 
             int relCode = releaseSelect.get(i).getRelCode();
             List<ReleaseOrderDTO> releaseSelect2 = releaseService.releaseSelect2(relCode);
 
+            System.out.println("releaseSelect2 = " + releaseSelect2);
+            releaseSelectItem.add(releaseSelect2);
         }
-
 
         mv.addObject("releaseSelect", releaseSelect);
         mv.addObject("releaseSelectItem", releaseSelectItem);
@@ -143,38 +150,83 @@ public class ReleaseController {
         return mv;
     }
 
-    @PostMapping("/releaseItem")
-    public ModelAndView releaseItemInsertUpdate(ModelAndView mv, @RequestParam("itemAmount") int itemAmount,
-                                                                 @RequestParam("cartAmount") int cartAmount,
-                                                                 @RequestParam("itemNo") int itemNo,
-                                                                 @RequestParam("relCode") int relCode,
-                                                                 @RequestParam("relCodeDetail") int relCodeDetail,
-                                                                 @RequestParam("relAmount") int relAmount){
+    @RequestMapping(value="/releaseItem", method=RequestMethod.POST)
+    @ResponseBody
+    public void releaseItemInsertUpdate(@ModelAttribute RelItemDTO relItemDTO, HttpServletResponse response) {
+
+        response.setContentType("application/x-www-form-urlencoded");
+        System.out.println("relItemDTO :" + relItemDTO);
+
+        System.out.println("itemAmount : " + relItemDTO.getItemAmount());
+        System.out.println("orderAmount : " + relItemDTO.getOrderAmount());
+        System.out.println("itemNo : " + relItemDTO.getItemNo());
+        System.out.println("relCode : " + relItemDTO.getRelCode());
+        System.out.println("relCodeDetail : " + relItemDTO.getRelCodeDetail());
+        System.out.println("relSumAmount : " + relItemDTO.getRelSumAmount());
+        System.out.println("relAmount : " + relItemDTO.getRelAmount());
+
+        int itemAmount = Integer.parseInt(relItemDTO.getItemAmount());
+        int orderAmount = Integer.parseInt(relItemDTO.getOrderAmount());
+        int itemNo = Integer.parseInt(relItemDTO.getItemNo());
+        int relCode = Integer.parseInt(relItemDTO.getRelCode());
+        int relCodeDetail = Integer.parseInt(relItemDTO.getRelCodeDetail());
+        int relSumAmount = Integer.parseInt(relItemDTO.getRelSumAmount());
+        int relAmount = Integer.parseInt(relItemDTO.getRelAmount());
 
         int amountUpdate = itemAmount - relAmount;
+        int relSum = relAmount + relSumAmount;
 
         System.out.println("itemAmount : " + itemAmount);
-        System.out.println("cartAmount : " + cartAmount);
+        System.out.println("cartAmount : " + orderAmount);
         System.out.println("relAmount : " + relAmount);
         System.out.println("itemNo : " + itemNo);
         System.out.println("itemAmountUpdate : " + amountUpdate);
         System.out.println("relCode : " + relCode);
         System.out.println("relCodeDetail : " + relCodeDetail);
+        System.out.println("relSum : " + relSum);
 
         Map<String, Integer> itemAmountUpdate = new HashMap<>();
         itemAmountUpdate.put("itemAmount", itemAmount);
-        itemAmountUpdate.put("cartAmount", cartAmount);
+        itemAmountUpdate.put("cartAmount", orderAmount);
         itemAmountUpdate.put("relAmount", relAmount);
         itemAmountUpdate.put("amountUpdate", amountUpdate);
         itemAmountUpdate.put("itemNo", itemNo);
         itemAmountUpdate.put("relCode", relCode);
         itemAmountUpdate.put("relCodeDetail", relCodeDetail);
+
         System.out.println("itemAmountInsert : " + itemAmountUpdate);
 
         int result1 = releaseService.itemAmountUpdate(itemAmountUpdate);
-        int result2 = releaseService.relItemHistoryInsert(itemAmountUpdate);
 
-        mv.setViewName("redirect:/release/releaseSelect");
-        return mv;
+
+        if(orderAmount != relSum) {
+
+            int result2 = releaseService.relItemHistoryInsert(itemAmountUpdate);
+
+        } else {
+
+            int result2 = releaseService.relItemHistoryInsert(itemAmountUpdate);
+            int result3 = releaseService.releaseItemUpdateY(itemAmountUpdate);
+            List<ReleaseItemDTO> relItemSelectY = releaseService.relItemSelectY(relCode);
+
+            int sum = 0;
+            for(int i = 0; i < relItemSelectY.size(); i++){
+
+                if(relItemSelectY.get(i).getRelYn().equals("Y")){
+
+                    sum++;
+                } else {
+
+                    break;
+                }
+
+                System.out.println("sum :" + sum);
+
+                if(sum == relItemSelectY.size()){
+
+                    int relYnResult = releaseService.relYnUpdate(relCode);
+                }
+            }
+        }
     }
 }
