@@ -5,6 +5,7 @@ import com.chicken.project.reItem.model.dto.ReItemDTO;
 import com.chicken.project.reItem.model.dto.ReListDTO;
 import com.chicken.project.reItem.model.dto.StoreItemDTO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -14,8 +15,7 @@ public interface ReItemMapper {
 
     // 페이징
     int selectTotalCount(Map<String, String> searchMap);
-
-    // 가맹점 반품서 리스트
+    // 가맹점 반품서 리스트 확인
     List<ReListDTO> selectReList(SelectCriteria selectCriteria);
 
     // 본사로 들어온 반품서 리스트
@@ -26,4 +26,11 @@ public interface ReItemMapper {
     List<ReItemDTO> selectReItems(String rNo);
 
     List<StoreItemDTO> selectItem(String storeName);
+
+    int insertReturnItems(ReItemDTO reItemDTO);
+
+    int insertRItem(Map<String, Object> maps);
+
+
+    int insertProgress(ReItemDTO reItemDTO);
 }
