@@ -14,11 +14,16 @@ public class ItemInfoDTO {
     private int categoryNo;
     private int itemAmount;
     private String soldout;
+    private String categoryName;
+
+    private int rNum;
+
+    private ItemFileDTO itemFile;
 
     public ItemInfoDTO() {
     }
 
-    public ItemInfoDTO(int itemNo, String itemName, String itemStandard, int itemPurchase, int itemSales, String itemSoldoutYn, String itemMake, int categoryNo, int itemAmount, String soldout) {
+    public ItemInfoDTO(int itemNo, String itemName, String itemStandard, int itemPurchase, int itemSales, String itemSoldoutYn, String itemMake, int categoryNo, int itemAmount, String soldout, String categoryName, int rNum, ItemFileDTO itemFile) {
         this.itemNo = itemNo;
         this.itemName = itemName;
         this.itemStandard = itemStandard;
@@ -29,6 +34,9 @@ public class ItemInfoDTO {
         this.categoryNo = categoryNo;
         this.itemAmount = itemAmount;
         this.soldout = soldout;
+        this.categoryName = categoryName;
+        this.rNum = rNum;
+        this.itemFile = itemFile;
     }
 
     public int getItemNo() {
@@ -111,6 +119,30 @@ public class ItemInfoDTO {
         this.soldout = soldout;
     }
 
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
+    public int getrNum() {
+        return rNum;
+    }
+
+    public void setrNum(int rNum) {
+        this.rNum = rNum;
+    }
+
+    public ItemFileDTO getItemFile() {
+        return itemFile;
+    }
+
+    public void setItemFile(ItemFileDTO itemFile) {
+        this.itemFile = itemFile;
+    }
+
     @Override
     public String toString() {
         return "ItemInfoDTO{" +
@@ -124,6 +156,9 @@ public class ItemInfoDTO {
                 ", categoryNo=" + categoryNo +
                 ", itemAmount=" + itemAmount +
                 ", soldout='" + soldout + '\'' +
+                ", categoryName='" + categoryName + '\'' +
+                ", rNum=" + rNum +
+                ", itemFile=" + itemFile +
                 '}';
     }
 }

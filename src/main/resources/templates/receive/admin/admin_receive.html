@@ -35,35 +35,38 @@
 
         <!-- S: main layout -->
         <div class="main_layout">
-            <div class="main_layout_inner">
+            <div class="main_layout_inner" style="margin-bottom: 40px;">
 
                 <!-- 작업 영역 -->
                 <!-- S: table -->
                 <div class="container-fluid" style="margin-top:30px">
                     <h3>입고 관리</h3>
                     <br>
-                    <form>
+                    <form action="/receive/admin/list">
                         <div>
                             <div class="input-group mb-3 col-12 float-start">
-                                <select id="searchCondition" class="form-control col-2" style="max-width: max-content;">
+                                <select id="searchCondition" name="searchCondition" class="form-control col-2" style="max-width: max-content;">
                                     <option value="itemName">상품명</option>
-                                    <option value="date" th:name="date">입고일</option>
                                 </select>
                                 <div id="reportrange" class="form-control" style="cursor: pointer; max-width: max-content;">
                                     <i class="fa fa-calendar"></i>
-                                    <span class="date"><!-- 날짜 입력한 값 들어감 --></span>
+                                    <span class="date" style="margin-left: 7px;">
+                                        <!-- 날짜 입력한 값 들어감 -->
+                                    </span>
+                                    <input type="hidden" id="startDate" name="startDate">
+                                    <input type="hidden" id="endDate" name="endDate">
                                 </div>
 
                                 <!-- <button class="btn btn-light px-3" type="button" disabled></button> -->
                                 <!-- <select id="searchCondition" class="form-control col-1" style="max-width: max-content;">
                                   <option value="date">상품명</option>
                                 </select> -->
-                                <input class="form-control me-2 col-3" type="text" placeholder="검색어를 입력해주세요.">
+                                <input class="form-control me-2 col-3" type="text" name="searchValue" id="searchValue" placeholder="검색어를 입력해주세요.">
                                 <button class="btn btn-warning" type="submit" style="color:#fff">검색</button>
                             </div>
                             <div class="col-12 d-flex justify-content-end">
                                 <button class="btn btn-warning mx-2" type="button"
-                                        onclick="location.href='/receive/admin/list/new';" style="color:#fff;">입고 등록
+                                        onclick="location.href='/receive/admin/list/regist';" style="color:#fff;">입고 등록
                                 </button>
                             </div>
 
@@ -82,7 +85,7 @@
                                 <tbody>
                                 <div th:each="receive, stat : ${ receiveOfficeList }">
                                     <tr class="detail-main" th:value="${ receive.recCode }">
-                                        <td>1</td>
+                                        <td th:text="${ receive.rNum }">1</td>
                                         <td th:text="${ receive.recCode }"></td>
                                         <td th:if="${ receive.countRecCode != 0}"
                                             th:text="|${ receiveOffice[stat.index].get(0).itemName } 외 ${ receive.countRecCode }개 품목|"></td>
@@ -114,14 +117,14 @@
                                                         <th>입고일</th>
                                                     </tr>
                                                     </thead>
-                                                    <tr th:each="receive3 : ${ receive2 }">
-                                                        <td>1</td>
+                                                    <tr th:each="receive3, stat : ${ receive2 }">
+                                                        <td th:text="${ stat.count }">1</td>
                                                         <td th:text="${ receive3.recCode }"></td>
                                                         <td th:text="${ receive3.itemNo }"></td>
                                                         <td>
                                                             <div class="img-info">
                                                                 <div class="img-info__img">
-                                                                    <img src="../assets/images/chicken.jpg" alt="">
+                                                                    <img th:src="'/images/' + ${ receive3.fileName }" src="../assets/images/chicken.jpg" alt="">
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -159,14 +162,14 @@
                 <!-- 페이지 처리 -->
                 <div class="pagingArea" align="center">
                     <!-- 맨 앞으로 이동 버튼 -->
-                    <button class="btn btn-light mx-1" style="cursor:pointer"
+                    <button class="btn btn-light mx-1" style="cursor:pointer; background: #ccc; color: #fff;"
                             th:onclick="'location.href=\'/receive/admin/list?currentPage='+ @{${selectCriteria.startPage}} + '\''"
                             th:disabled="${selectCriteria.pageNo == 1}"
                     >
                         <<
                     </button>
                     <!-- 이전 페이지 버튼 -->
-                    <button class="btn btn-light" style="cursor:pointer"
+                    <button class="btn btn-light" style="cursor:pointer; background: #ccc; color: #fff;"
                             th:onclick="'location.href=\'/receive/admin/list?currentPage='+ @{${selectCriteria.pageNo - 1}} + '\''"
                             th:disabled="${selectCriteria.pageNo == 1}"
                     >
@@ -182,14 +185,14 @@
                     </th:block>
 
                     <!-- 다음 페이지 버튼 -->
-                    <button class="btn btn-light mx-1" style="cursor:pointer"
+                    <button class="btn btn-light mx-1" style="cursor:pointer; background: #ccc; color: #fff;"
                             th:onclick="'location.href=\'/receive/admin/list?currentPage='+ @{${selectCriteria.pageNo + 1}} + '\''"
                             th:disabled="${selectCriteria.pageNo == selectCriteria.maxPage}"
                     >
                         >
                     </button>
                     <!-- 마지막 페이지로 이동 버튼 -->
-                    <button class="btn btn-light mx-1" style="cursor:pointer"
+                    <button class="btn btn-light mx-1" style="cursor:pointer; background: #ccc; color: #fff;"
                             th:onclick="'location.href=\'/receive/admin/list?currentPage='+ @{${selectCriteria.maxPage}} + '\''"
                             th:disabled="${selectCriteria.pageNo == selectCriteria.maxPage}"
                     >
@@ -303,11 +306,13 @@
 
         $(function () {
 
-            var start = moment();
-            var end = moment();
+            let start = moment();
+            let end = moment();
 
             function cb(start, end) {
-                jb('#reportrange span').html('&nbsp;&nbsp;' + start.format('YYYY-MM-DD') + ' ~ ' + end.format('YYYY-MM-DD'));
+                jb('#reportrange span').html(start.format('YYYY-MM-DD') + ' ~ ' + end.format('YYYY-MM-DD'));
+                jb('#reportrange #startDate').val(start.format('YYYY-MM-DD'));
+                jb('#reportrange #endDate').val(end.format('YYYY-MM-DD'));
             }
 
             $('#reportrange').daterangepicker({
@@ -353,14 +358,25 @@
                 },
                 startDate: start,
                 endDate: end,
-            }, cb);
+            }, cb)
 
             cb(start, end);
-
         });
     });
 
 </script>
+
+<!-- 날짜 -->
+<!--<script>-->
+<!--    $('#reportrange').on('apply.daterangepicker', function(ev, picker) {-->
+
+<!--        let startDate = picker.startDate.format('YYYY-MM-DD');-->
+<!--        let endDate = picker.endDate.format('YYYY-MM-DD');-->
+<!--        let result = startDate + "~" + endDate;-->
+<!--        console.log(result);-->
+<!--        document.getElementsByClassName('date').value = result;-->
+<!--    });-->
+<!--</script>-->
 
 <!-- 체크 박스 전체 선택 -->
 <script type="text/javascript">

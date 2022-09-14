@@ -14,14 +14,12 @@ public class ReceiveOfficeItemDTO {
     private String recMoney; // 입고금액
     private String stringRecDate; // 입고일
 
-
-
-
+    private String fileName;
 
     public ReceiveOfficeItemDTO() {
     }
 
-    public ReceiveOfficeItemDTO(String recCode, int itemNo, String itemName, String categoryName, String itemStandard, String itemMake, int recItemNo, int recAmount, String stringRecAmount, String itemPurchase, String recMoney, String stringRecDate) {
+    public ReceiveOfficeItemDTO(String recCode, int itemNo, String itemName, String categoryName, String itemStandard, String itemMake, int recItemNo, int recAmount, String stringRecAmount, String itemPurchase, String recMoney, String stringRecDate, String fileName) {
         this.recCode = recCode;
         this.itemNo = itemNo;
         this.itemName = itemName;
@@ -34,6 +32,7 @@ public class ReceiveOfficeItemDTO {
         this.itemPurchase = itemPurchase;
         this.recMoney = recMoney;
         this.stringRecDate = stringRecDate;
+        this.fileName = fileName;
     }
 
     public String getRecCode() {
@@ -132,6 +131,14 @@ public class ReceiveOfficeItemDTO {
         this.stringRecDate = stringRecDate;
     }
 
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
     @Override
     public String toString() {
         return "ReceiveOfficeItemDTO{" +
@@ -147,6 +154,7 @@ public class ReceiveOfficeItemDTO {
                 ", itemPurchase='" + itemPurchase + '\'' +
                 ", recMoney='" + recMoney + '\'' +
                 ", stringRecDate='" + stringRecDate + '\'' +
+                ", fileName='" + fileName + '\'' +
                 '}';
     }
 }
