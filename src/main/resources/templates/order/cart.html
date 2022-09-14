@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
@@ -77,11 +79,11 @@
             </div>
 
               <div id="addProduct">
-                <button class="btn btn-warning" style="color:#fff" onclick="linkToOrder()"><i class="fa-solid fa-magnifying-glass"></i> 제품 추가</button>
+                <button class="btn btn-warning" style="color:#fff" th:onclick="linkToOrder()"><i class="fa-solid fa-magnifying-glass"></i> 제품 추가</button>
               </div>
 
               <div id="order">
-                <button class="btn btn-warning" type="submit" style="color:#fff" onclick="orderConfirm()">주문하기</button>
+                <button class="btn btn-warning" type="submit" style="color:#fff" th:onclick="orderConfirm()">주문하기</button>
               </div>
             </div>
 
@@ -107,7 +109,7 @@
                 <td>
                   <div class="img-info">
                     <div class="img-info__img">
-                      <img src="../assets/images/chicken.jpg" alt="">
+                      <img th:src="'/images/' + ${ cart.itemFile.fileName }" alt="">
                     </div>
                   </div>
                 </td>
@@ -129,7 +131,7 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="triggerId1">
                       <!-- <a class="dropdown-item" href="#"><i class="fa fa-eye mr-1"></i>View</a> -->
-                      <a class="dropdown-item" href="#" onclick="interest()"><i class="fa-solid fa-heart-circle-plus"></i> 수정하기</a>
+                      <a class="dropdown-item" href="#" th:onclick="interest()"><i class="fa-solid fa-heart-circle-plus"></i> 수정하기</a>
                       <a class="dropdown-item text-danger" href="#"><i class="fa fa-trash mr-1"></i> Delete</a>
                     </div>
                   </div>
