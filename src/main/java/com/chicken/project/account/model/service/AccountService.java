@@ -23,11 +23,6 @@ public class AccountService {
         return accountMapper.selectAccountApplyList();
     }
 
-    public List<AccountDTO> selectAccountList() {
-
-        return accountMapper.selectAccountList();
-    }
-
     public BalanceDTO selectBalance(String storeName) {
 
         return accountMapper.selectBalance(storeName);
@@ -50,25 +45,6 @@ public class AccountService {
 
         return accountMapper.selectAccountListByStoreName(storeName);
     }
-
-//    @Transactional
-//    public int accountApplyUpdate(int depositNum, String storeName, int accountDeposit) {
-//
-//        int result = accountMapper.accountApplyUpdate(depositNum, storeName, accountDeposit);
-//
-//        if(result > 0){
-//
-//            int result2 = accountMapper.accountUpdate(depositNum);
-//
-//            if(result2 > 0){
-//
-//                int result3 = accountMapper.balanceUpdate(storeName, accountDeposit);
-//            }
-//        }
-//
-//        return result;
-//    }
-
 
     @Transactional
     public int accountApplyUpdate2(int depositNum) {
@@ -99,5 +75,10 @@ public class AccountService {
         }
 
         return result;
+    }
+
+    public List<BalanceDTO> balanceSelect() {
+
+        return accountMapper.balanceSelect();
     }
 }
