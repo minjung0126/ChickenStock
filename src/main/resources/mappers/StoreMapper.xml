@@ -70,13 +70,11 @@
         (
           STORE_NAME
         , BALANCE
-        , STORE_ID
         )
         VALUES
         (
           #{ storeName }
         , DEFAULT
-        , #{ storeId }
         )
     </insert>
 

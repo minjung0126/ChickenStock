@@ -31,6 +31,7 @@ public class CounselController {
         this.counselService = counselService;
     }
 
+    /* 유저 내가 쓴 1:1 문의 조회 */
     @GetMapping("/user/list")
     public ModelAndView userCounselListPage(ModelAndView mv, @AuthenticationPrincipal User user){
 
@@ -46,6 +47,7 @@ public class CounselController {
         return mv;
     }
 
+    /* 관리자 1:1 문의 조회 */
     @GetMapping("/admin/list")
     public ModelAndView adminCounselListPage(ModelAndView mv){
 
@@ -57,12 +59,14 @@ public class CounselController {
         return mv;
     }
 
+    /* 유저 1:1 문의 등록 페이지 이동 */
     @GetMapping("/user/insert")
     public String counselInsertPage(){
 
         return "/counsel/user/userCounselInsert";
     }
 
+    /* 유저 1:1 문의 등록 */
     @PostMapping("/user/insert")
     public String userCounselInsert(@ModelAttribute CounselDTO counsel, RedirectAttributes rttr, ModelAndView mv){
 
@@ -76,6 +80,7 @@ public class CounselController {
         return "redirect:/counsel/user/list";
     }
 
+    /* 관리자 1:1 문의 등록 상세페이지 */
     @GetMapping("/admin/detail")
     public ModelAndView adminCounselDetail(ModelAndView mv, @RequestParam int counselNo){
 
@@ -91,6 +96,7 @@ public class CounselController {
         return mv;
     }
 
+    /* 관리자 1:1 문의 답변 등록 페이지 이동 */
     @GetMapping("/admin/insert")
     public ModelAndView adminCounselInsertPage(ModelAndView mv, HttpServletRequest request){
 
@@ -108,6 +114,7 @@ public class CounselController {
         return mv;
     }
 
+    /* 관리자 1:1 문의 답변 등록 */
     @PostMapping("/admin/insert")
     public String adminCounselInsert(@RequestParam String answerContent,
                                      HttpServletRequest request,
@@ -126,6 +133,7 @@ public class CounselController {
         return "redirect:/counsel/admin/list";
     }
 
+    /* 유저 1:1 문의 상세페이지 */
     @GetMapping("/user/detail")
     public ModelAndView userCounselPage(ModelAndView mv, @RequestParam int counselNo){
 

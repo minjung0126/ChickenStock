@@ -23,6 +23,6 @@ public interface StoreMapper {
 
     int insertBalance(String storeName, String storeId);
 
-    void insertStoreRole(StoreDTO store);
+    int insertStoreRole(String storeName, String storeId);
 
 }

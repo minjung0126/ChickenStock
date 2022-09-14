@@ -3,13 +3,22 @@ package com.chicken.project.account.controller;
 import com.chicken.project.account.model.dto.AccountApplyDTO;
 import com.chicken.project.account.model.dto.AccountDTO;
 import com.chicken.project.account.model.service.AccountService;
+import com.chicken.project.member.model.dto.StoreImpl;
+import com.chicken.project.store.model.dto.BalanceDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
@@ -19,11 +28,13 @@ public class AccountController {
     private final AccountService accountService;
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
+    @Autowired
     public AccountController(AccountService accountService) {
 
         this.accountService = accountService;
     }
 
+    /* 관리자 입금신청 내역 조회 */
     @GetMapping("/admin/list")
     public ModelAndView accountAdminList(ModelAndView mv) {
 
@@ -35,16 +46,73 @@ public class AccountController {
         return mv;
     }
 
+    /* 유저 본인이 입금신청 한 내역 조회 */
     @GetMapping("/user/list")
-    public ModelAndView accountUserList(ModelAndView mv) {
+    public ModelAndView accountUserList(ModelAndView mv, @AuthenticationPrincipal User user) {
 
-        List<AccountDTO> accountList = accountService.selectAccountList();
+        String storeName = ((StoreImpl) user).getStoreName();
 
-        log.info("[AccountController] : accountList : " + accountList );
+        List<AccountDTO> accountList = accountService.selectAccountListByStoreName(storeName);
+        BalanceDTO balance = accountService.selectBalance(storeName);
+
+        log.info("[AccountController] accountList : " + accountList );
+        log.info("[AccountController] balance : " + balance);
 
         mv.addObject("accountList", accountList);
+        mv.addObject("balance", balance);
+
         mv.setViewName("/account/user/userAccountList");
 
         return mv;
     }
+
+    /* 유저 입금신청 */
+    @GetMapping("/user/insert")
+    public String userAccountInsert(@RequestParam int accountDeposit, RedirectAttributes rttr, @AuthenticationPrincipal User user){
+
+        log.info("[AccountController] accountDeposit : " + accountDeposit);
+
+        String storeName = ((StoreImpl) user).getStoreName();
+
+        log.info("[AccountController] storeName : " + storeName);
+
+        accountService.accountInsert(accountDeposit, storeName);
+
+        rttr.addFlashAttribute("message", "입금 신청을 하였습니다.");
+
+        return "redirect:/account/user/list";
+
+    }
+
+    /* 관리자 입금신청 승인 */
+    @GetMapping("/admin/update")
+    public String adminAccountApplyUpdate(@ModelAttribute AccountApplyDTO accountApply,HttpServletRequest request, RedirectAttributes rttr){
+
+        int accountDeposit = Integer.parseInt(request.getParameter("accountDeposit"));
+        String storeName = request.getParameter("storeName");
+
+        log.info("[AccountController] accountDeposit : " + accountDeposit);
+        log.info("[AccountController] storeName : " + storeName);
+        log.info("[AccountController] accountApply : " + accountApply);
+
+        accountService.balanceUpdate(accountApply, accountDeposit, storeName);
+
+        rttr.addFlashAttribute("message", "입금을 승인 하였습니다.");
+
+        return "redirect:/account/admin/list";
+    }
+
+    /* 관리자 입금신청 반려 */
+    @GetMapping("/admin/update2")
+    public String adminAccountApplyUpdate2(HttpServletRequest request, RedirectAttributes rttr){
+
+        int depositNum = Integer.parseInt(request.getParameter("depositNum"));
+
+        accountService.accountApplyUpdate2(depositNum);
+
+        rttr.addFlashAttribute("message", "입금을 반려 하였습니다.");
+
+        return "redirect:/account/admin/list";
+    }
+
 }
