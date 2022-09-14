@@ -36,5 +36,5 @@ public interface OrderMapper {
 
     int insertCartList(List<String> itemNoList);
 
-    int insertItemIntoCart(int itemNo, int cartAmount);
+    int insertItemIntoCart(int itemNo, int cartAmount, String storeName);
 }

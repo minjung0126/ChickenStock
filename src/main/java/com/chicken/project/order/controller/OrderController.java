@@ -2,6 +2,7 @@ package com.chicken.project.order.controller;
 
 import com.chicken.project.common.paging.Pagenation;
 import com.chicken.project.exception.order.InterestException;
+import com.chicken.project.member.model.dto.StoreImpl;
 import com.chicken.project.order.model.dto.CartDTO;
 import com.chicken.project.order.model.dto.InterestDTO;
 import com.chicken.project.order.model.dto.OrderDTO;
@@ -11,14 +12,13 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.ModelAndViewDefiningException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
@@ -37,9 +37,12 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    @GetMapping(value = "list")
-    public ModelAndView inquire(ModelAndView mv, HttpServletRequest request) {
+    @GetMapping(value = "/list")
+    public ModelAndView inquire(ModelAndView mv,
+                                HttpServletRequest request,
+                                @AuthenticationPrincipal User user) {
 
+        String storeName = ((StoreImpl) user).getStoreName();
         String currentPage = request.getParameter("currentPage");
 
         int pageNo = 1;
@@ -51,9 +54,12 @@ public class OrderController {
         String searchCondition = request.getParameter("searchCondition");
         String searchValue = request.getParameter("searchValue");
 
+
         Map<String, String> searchMap = new HashMap<>();
         searchMap.put("searchCondition", searchCondition);
         searchMap.put("searchValue", searchValue);
+        searchMap.put("storeName", storeName);
+
 
         int totalCount = orderService.selectTotalCount(searchMap);
 
@@ -63,9 +69,9 @@ public class OrderController {
         SelectCriteria selectCriteria = null;
 
         if (searchCondition != null && !"".equals(searchCondition)) {
-            selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount, searchCondition, searchValue);
+            selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount, searchCondition, searchValue, storeName);
         } else {
-            selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount);
+            selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount, storeName);
         }
 
         List<OrderDTO> orderList = orderService.selectAllItem(selectCriteria);
@@ -77,31 +83,33 @@ public class OrderController {
 
     }
 
-    @GetMapping("list/interest/insert")
-    public String interestControl(HttpServletRequest request, RedirectAttributes rttr) throws InterestException {
+    @ResponseBody
+    @PostMapping ("/list/interest/insert")
+    public String interestControl(HttpServletRequest request,
+                                        RedirectAttributes rttr,
+                                        @AuthenticationPrincipal User user
+                                  ) throws InterestException {
+
+        String storeName = ((StoreImpl) user).getStoreName();
 
         InterestDTO interest = new InterestDTO();
         OrderDTO order = new OrderDTO();
 
-        //itemNo, categoryNo 값 가져오기 + DTO에 저장
+        //itemNo 값 가져오기 + DTO에 저장
         int itemNo = Integer.parseInt(request.getParameter("itemNo"));
         interest.setItemNo(itemNo);
-        System.out.println(itemNo);
 
-        int categoryNo = Integer.parseInt(request.getParameter("categoryNo"));
-        interest.setCategoryNo(categoryNo);
-        System.out.println(categoryNo);
-
+        interest.setStoreName(storeName);
 
         //기존 관심 설정 여부 판단
         int interCheck = orderService.selectInterestCount(interest);
+        String interYn = "";
 
         //관심 설정이 되어 있으면 삭제를, 되어 있지 않으면 추가를 한다.
         if (interCheck == 0) {
             orderService.insertInterest(interest);
 
         } else if (interCheck == 1) {
-
             orderService.deleteInterest(interest);
         }
 
@@ -110,9 +118,12 @@ public class OrderController {
         return "redirect:/order/list";
     }
 
-    @GetMapping("list/interest/select")
-    public ModelAndView interestList(ModelAndView mv, HttpServletRequest request) {
+    @GetMapping("/list/interest/select")
+    public ModelAndView interestList(ModelAndView mv,
+                                     HttpServletRequest request,
+                                     @AuthenticationPrincipal User user) {
 
+        String storeName = ((StoreImpl) user).getStoreName();
         String currentPage = request.getParameter("currentPage");
 
         int pageNo = 1;
@@ -127,6 +138,7 @@ public class OrderController {
         Map<String, String> searchMap = new HashMap<>();
         searchMap.put("searchCondition", searchCondition);
         searchMap.put("searchValue", searchValue);
+        searchMap.put("storeName", storeName);
 
         int totalCount = orderService.selectInterestItemCount(searchMap);
 
@@ -136,9 +148,9 @@ public class OrderController {
         SelectCriteria selectCriteria = null;
 
         if (searchCondition != null && !"".equals(searchCondition)) {
-            selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount, searchCondition, searchValue);
+            selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount, searchCondition, searchValue, storeName);
         } else {
-            selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount);
+            selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount, storeName);
         }
 
         List<OrderDTO> orderList = orderService.selectInterestItem(selectCriteria);
@@ -151,9 +163,12 @@ public class OrderController {
     }
 
 
-    @GetMapping("list/available")
-    public ModelAndView availableList(ModelAndView mv, HttpServletRequest request) {
+    @GetMapping("/list/available")
+    public ModelAndView availableList(ModelAndView mv,
+                                      HttpServletRequest request,
+                                      @AuthenticationPrincipal User user) {
 
+        String storeName = ((StoreImpl) user).getStoreName();
         String currentPage = request.getParameter("currentPage");
 
         int pageNo = 1;
@@ -168,6 +183,7 @@ public class OrderController {
         Map<String, String> searchMap = new HashMap<>();
         searchMap.put("searchCondition", searchCondition);
         searchMap.put("searchValue", searchValue);
+        searchMap.put("storeName", storeName);
 
         int totalCount = orderService.selectAvailableItemCount(searchMap);
 
@@ -177,9 +193,9 @@ public class OrderController {
         SelectCriteria selectCriteria = null;
 
         if (searchCondition != null && !"".equals(searchCondition)) {
-            selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount, searchCondition, searchValue);
+            selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount, searchCondition, searchValue, storeName);
         } else {
-            selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount);
+            selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount, storeName);
         }
 
         List<OrderDTO> orderList = orderService.selectAvailableItem(selectCriteria);
@@ -191,9 +207,12 @@ public class OrderController {
 
     }
 
-    @GetMapping(value = "list/insert")
-    public ModelAndView insertCart (HttpServletRequest request, ModelAndView mv) {
+    @GetMapping(value = "/list/insert")
+    public ModelAndView insertCart (HttpServletRequest request,
+                                    ModelAndView mv,
+                                    @AuthenticationPrincipal User user) {
 
+        String storeName = ((StoreImpl) user).getStoreName();
         String currentPage = request.getParameter("currentPage");
 
         int pageNo = 1;
@@ -208,6 +227,7 @@ public class OrderController {
         Map<String, String> searchMap = new HashMap<>();
         searchMap.put("searchCondition", searchCondition);
         searchMap.put("searchValue", searchValue);
+        searchMap.put("storeName", storeName);
 
         int totalCount = orderService.selectCartTotalCount(searchMap);
 
@@ -217,9 +237,9 @@ public class OrderController {
         SelectCriteria selectCriteria = null;
 
         if (searchCondition != null && !"".equals(searchCondition)) {
-            selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount, searchCondition, searchValue);
+            selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount, searchCondition, searchValue, storeName);
         } else {
-            selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount);
+            selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount, storeName);
         }
 
         List<OrderDTO> orderList = orderService.selectAllItem(selectCriteria);
@@ -231,11 +251,13 @@ public class OrderController {
         return mv;
     }
 
-    @PostMapping(value="list/insert")
-    public ModelAndView insertCartList(HttpServletRequest request, ModelAndView mv,
-                                       @RequestParam("itemNoList") String itemNoList)
-            throws ParseException, InterestException {
+    @PostMapping(value="/list/insert")
+    public ModelAndView insertCartList(HttpServletRequest request,
+                                       ModelAndView mv,
+                                       @RequestParam("itemNoList") String itemNoList,
+                                       @AuthenticationPrincipal User user) throws InterestException, ParseException {
 
+        String storeName = ((StoreImpl) user).getStoreName();
         String currentPage = request.getParameter("currentPage");
 
         int pageNo = 1;
@@ -250,6 +272,8 @@ public class OrderController {
         Map<String, String> searchMap = new HashMap<>();
         searchMap.put("searchCondition", searchCondition);
         searchMap.put("searchValue", searchValue);
+        searchMap.put("storeName", storeName);
+
 
         int totalCount = orderService.selectCartTotalCount(searchMap);
 
@@ -259,9 +283,9 @@ public class OrderController {
         SelectCriteria selectCriteria = null;
 
         if (searchCondition != null && !"".equals(searchCondition)) {
-            selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount, searchCondition, searchValue);
+            selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount, searchCondition, searchValue, storeName);
         } else {
-            selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount);
+            selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount, storeName);
         }
 
         List<OrderDTO> orderList = orderService.selectAllItem(selectCriteria);
@@ -286,60 +310,68 @@ public class OrderController {
 
             cart.setItemNo(itemNo);
             cart.setCartAmount(cartAmount);
+            cart.setStoreName(storeName);
 
-            orderService.insertItemIntoCart(itemNo, cartAmount);
+            orderService.insertItemIntoCart(itemNo, cartAmount, storeName);
         }
 
         mv.addObject("orderList", orderList);
         mv.addObject("selectCriteria", selectCriteria);
         mv.addObject("cart", cart);
         mv.setViewName("order/orderList");
-        //redirect:/
 
         return mv;
     }
 
-    @GetMapping(value = "cart/list")
-    public ModelAndView cartList(ModelAndView mv, HttpServletRequest request) {
+    @GetMapping(value = "/cart/list")
+    public ModelAndView cartList(ModelAndView mv,
+                                 HttpServletRequest request,
+                                 @AuthenticationPrincipal User user) {
 
-            String currentPage = request.getParameter("currentPage");
+        String storeName = ((StoreImpl) user).getStoreName();
+        String currentPage = request.getParameter("currentPage");
 
-            int pageNo = 1;
+        System.out.println(storeName);
 
-            if (currentPage != null && !"".equals(currentPage)) {
-                pageNo = Integer.parseInt(currentPage);
-            }
+        int pageNo = 1;
 
-            String searchCondition = request.getParameter("searchCondition");
-            String searchValue = request.getParameter("searchValue");
+        if (currentPage != null && !"".equals(currentPage)) {
+            pageNo = Integer.parseInt(currentPage);
+        }
 
-            Map<String, String> searchMap = new HashMap<>();
-            searchMap.put("searchCondition", searchCondition);
-            searchMap.put("searchValue", searchValue);
+        String searchCondition = request.getParameter("searchCondition");
+        String searchValue = request.getParameter("searchValue");
 
-            int totalCount = orderService.selectCartTotalCount(searchMap);
+        Map<String, String> searchMap = new HashMap<>();
+        searchMap.put("searchCondition", searchCondition);
+        searchMap.put("searchValue", searchValue);
+        searchMap.put("storeName", storeName);
 
-            int limit = 10;
-            int buttonAmount = 5;
+        int totalCount = orderService.selectCartTotalCount(searchMap);
 
-            SelectCriteria selectCriteria = null;
+        int limit = 10;
+        int buttonAmount = 5;
 
-            if (searchCondition != null && !"".equals(searchCondition)) {
-                selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount, searchCondition, searchValue);
-            } else {
-                selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount);
-            }
+        SelectCriteria selectCriteria = null;
 
-            List<CartDTO> cartList = orderService.selectCartItem(selectCriteria);
+        if (searchCondition != null && !"".equals(searchCondition)) {
+            selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount, searchCondition, searchValue, storeName);
+        } else {
+            selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount, storeName);
+        }
 
-            mv.addObject("cartList", cartList);
-            mv.addObject("selectCriteria", selectCriteria);
-            mv.setViewName("order/cart");
-            return mv;
+        List<CartDTO> cartList = orderService.selectCartItem(selectCriteria);
+
+        mv.addObject("cartList", cartList);
+        mv.addObject("selectCriteria", selectCriteria);
+        mv.setViewName("order/cart");
+        return mv;
     }
 
-    @GetMapping("history")
-    public ModelAndView orderHistory(ModelAndView mv) {
+    @GetMapping("/history")
+    public ModelAndView orderHistory(ModelAndView mv, @AuthenticationPrincipal StoreImpl storeImpl) {
+
+        String storeName = storeImpl.getStoreName();
         List<OrderDTO> orderHistory = orderService.selectOrderHistory();
 
         mv.addObject("orderHistory", orderHistory);
