@@ -10,11 +10,12 @@ public class StoreItemDTO {
     private String itemSales; // 매출단가
     private String originName; //원본파일명
     private int storeAmount; // 재고수량
+    private int returnAccount; // 반품금액
 
     public StoreItemDTO() {
     }
 
-    public StoreItemDTO(int itemNo, String itemName, String categoryName, String itemStandard, String itemMake, String itemSales, String originName, int storeAmount) {
+    public StoreItemDTO(int itemNo, String itemName, String categoryName, String itemStandard, String itemMake, String itemSales, String originName, int storeAmount, int returnAccount) {
         this.itemNo = itemNo;
         this.itemName = itemName;
         this.categoryName = categoryName;
@@ -23,6 +24,7 @@ public class StoreItemDTO {
         this.itemSales = itemSales;
         this.originName = originName;
         this.storeAmount = storeAmount;
+        this.returnAccount = returnAccount;
     }
 
     public int getItemNo() {
@@ -89,6 +91,14 @@ public class StoreItemDTO {
         this.storeAmount = storeAmount;
     }
 
+    public int getReturnAccount() {
+        return returnAccount;
+    }
+
+    public void setReturnAccount(int returnAccount) {
+        this.returnAccount = returnAccount;
+    }
+
     @Override
     public String toString() {
         return "StoreItemDTO{" +
@@ -100,6 +110,7 @@ public class StoreItemDTO {
                 ", itemSales='" + itemSales + '\'' +
                 ", originName='" + originName + '\'' +
                 ", storeAmount=" + storeAmount +
+                ", returnAccount=" + returnAccount +
                 '}';
     }
 }

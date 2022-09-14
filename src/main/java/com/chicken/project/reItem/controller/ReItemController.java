@@ -8,6 +8,7 @@ import com.chicken.project.reItem.model.dto.ReListDTO;
 import com.chicken.project.reItem.model.dto.StoreItemDTO;
 import com.chicken.project.reItem.model.service.ReItemService;
 import org.apache.catalina.Store;
+import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +16,11 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,22 +48,56 @@ public class ReItemController {
         mv.setViewName("reItem/user/insertReItem");
         return mv;
     }
+    // 가맹점 반품서작성
+    @PostMapping("/user/insertReItem")
+    public ModelAndView reItems(HttpServletRequest request
+                                , String[] returnCount2
+                                , String[] itemNo2
+                                , @AuthenticationPrincipal StoreImpl storeImpl
+                                , @ModelAttribute ReItemDTO returnItems
+                                , ModelAndView mv
+                                , @RequestParam String rReason
+                                , @RequestParam int returnTotalMoney){
+
+        List<ReItemDTO> insertItem = new ArrayList<>();
+
+        for(int i = 0; i < returnCount2.length; i++){
+
+            ReItemDTO reI = new ReItemDTO();
+            reI.setItemNo(Integer.parseInt(itemNo2[i]));
+            reI.setReturnTotalMoney(returnTotalMoney);
+            reI.setrReason(rReason);
+
+            if(returnCount2[i] != "") {
+                reI.setReturnCount(Integer.parseInt(returnCount2[i]));
+                insertItem.add(reI);
+            }
+        }
+
+        log.info("확ㅇ이ㅣㅇ이ㅣ잉ㄴ : " + insertItem);
+
+        int sReItems = reItemService.insertReItem(insertItem, storeImpl.getStoreName());
+
+        mv.setViewName("redirect:/reItem/user/insertReItem");
+
+        return mv;
+    }
 
 
-
-
-    // 가맹점 반품서 리스트
+    // 가맹점 반품서 리스트 확인
     @GetMapping("/user/storeReList")
-    public ModelAndView returnList(ModelAndView mv, HttpServletRequest request, @RequestParam(defaultValue = "1") int currentPage){
+    public ModelAndView returnList(ModelAndView mv, HttpServletRequest request, @RequestParam(defaultValue = "1") int currentPage, @AuthenticationPrincipal StoreImpl storeImpl){
 
         int pageNo = currentPage;
 
         String searchCondition = request.getParameter("searchCondition");
         String searchValue = request.getParameter("searchValue");
+        String storeName = storeImpl.getStoreName();
 
         Map<String, String> searchMap = new HashMap<>();
         searchMap.put("searchCondition", searchCondition);
         searchMap.put("searchValue", searchValue);
+        searchMap.put("storeName", storeName);
 
         int totalCount = reItemService.selectTotalCount(searchMap);
 
@@ -73,9 +107,9 @@ public class ReItemController {
         SelectCriteria selectCriteria = null;
 
         if(searchCondition != null && !"".equals(searchCondition)) {
-            selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount, searchCondition, searchValue);
+            selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount, searchCondition, searchValue, storeName);
         } else {
-            selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount);
+            selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount, storeName);
         }
 
         List<ReListDTO> storeReList = reItemService.selectReList(selectCriteria);
@@ -134,7 +168,7 @@ public class ReItemController {
         model.addAttribute("rNo",rNo);
 
         ReItemDTO reItem = reItemService.selectReturnItem(rNo);
-        List<ReItemDTO> reItems = reItemService.selectReturnItemS(rNo);
+        List<ReItemDTO> reItems = reItemService.selectReturnItems(rNo);
 
         mv.addObject("reItem",reItem);
         mv.addObject("reItems", reItems);
