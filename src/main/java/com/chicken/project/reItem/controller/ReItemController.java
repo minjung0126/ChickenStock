@@ -184,8 +184,6 @@ public class ReItemController {
     public ModelAndView ReturnComplete(ModelAndView mv
                                         , HttpServletRequest request
                                         , @AuthenticationPrincipal AdminImpl adminImpl
-                                        , String[] returnCount2
-                                        , String[] itemNo2
                                         , @ModelAttribute ReItemDTO returnItems
                                         , @RequestParam String rNo
                                         , @RequestParam String storeName){
