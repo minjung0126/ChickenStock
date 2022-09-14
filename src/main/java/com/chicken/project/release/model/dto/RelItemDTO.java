@@ -10,15 +10,17 @@ public class RelItemDTO {
     private String relCode;
     private String relCodeDetail;
     private String relSumAmount;
+    private String relAmountInput;
     private String relAmount;
 
-    public RelItemDTO(String itemAmount, String orderAmount, String itemNo, String relCode, String relCodeDetail, String relSumAmount, String relAmount) {
+    public RelItemDTO(String itemAmount, String orderAmount, String itemNo, String relCode, String relCodeDetail, String relSumAmount, String relAmountInput, String relAmount) {
         this.itemAmount = itemAmount;
         this.orderAmount = orderAmount;
         this.itemNo = itemNo;
         this.relCode = relCode;
         this.relCodeDetail = relCodeDetail;
         this.relSumAmount = relSumAmount;
+        this.relAmountInput = relAmountInput;
         this.relAmount = relAmount;
     }
 
@@ -30,7 +32,9 @@ public class RelItemDTO {
         this.itemAmount = itemAmount;
     }
 
-    public String getOrderAmount() { return orderAmount; }
+    public String getOrderAmount() {
+        return orderAmount;
+    }
 
     public void setOrderAmount(String orderAmount) {
         this.orderAmount = orderAmount;
@@ -68,6 +72,14 @@ public class RelItemDTO {
         this.relSumAmount = relSumAmount;
     }
 
+    public String getRelAmountInput() {
+        return relAmountInput;
+    }
+
+    public void setRelAmountInput(String relAmountInput) {
+        this.relAmountInput = relAmountInput;
+    }
+
     public String getRelAmount() {
         return relAmount;
     }
@@ -79,13 +91,14 @@ public class RelItemDTO {
     @Override
     public String toString() {
         return "RelItemDTO{" +
-                "itemAmount=" + itemAmount +
-                ", orderAmount=" + orderAmount +
-                ", itemNo=" + itemNo +
-                ", relCode=" + relCode +
-                ", relCodeDetail=" + relCodeDetail +
-                ", relSumAmount=" + relSumAmount +
-                ", relAmount=" + relAmount +
+                "itemAmount='" + itemAmount + '\'' +
+                ", orderAmount='" + orderAmount + '\'' +
+                ", itemNo='" + itemNo + '\'' +
+                ", relCode='" + relCode + '\'' +
+                ", relCodeDetail='" + relCodeDetail + '\'' +
+                ", relSumAmount='" + relSumAmount + '\'' +
+                ", relAmountInput='" + relAmountInput + '\'' +
+                ", relAmount='" + relAmount + '\'' +
                 '}';
     }
 }

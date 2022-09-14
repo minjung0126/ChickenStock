@@ -10,10 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping("/release")
@@ -152,18 +149,11 @@ public class ReleaseController {
 
     @RequestMapping(value="/releaseItem", method=RequestMethod.POST)
     @ResponseBody
-    public void releaseItemInsertUpdate(@ModelAttribute RelItemDTO relItemDTO, HttpServletResponse response) {
+    public Object releaseItemInsertUpdate(@ModelAttribute RelItemDTO relItemDTO, HttpServletResponse response) {
 
-        response.setContentType("application/x-www-form-urlencoded");
+        response.setContentType("application/json");
+
         System.out.println("relItemDTO :" + relItemDTO);
-
-        System.out.println("itemAmount : " + relItemDTO.getItemAmount());
-        System.out.println("orderAmount : " + relItemDTO.getOrderAmount());
-        System.out.println("itemNo : " + relItemDTO.getItemNo());
-        System.out.println("relCode : " + relItemDTO.getRelCode());
-        System.out.println("relCodeDetail : " + relItemDTO.getRelCodeDetail());
-        System.out.println("relSumAmount : " + relItemDTO.getRelSumAmount());
-        System.out.println("relAmount : " + relItemDTO.getRelAmount());
 
         int itemAmount = Integer.parseInt(relItemDTO.getItemAmount());
         int orderAmount = Integer.parseInt(relItemDTO.getOrderAmount());
@@ -176,13 +166,14 @@ public class ReleaseController {
         int amountUpdate = itemAmount - relAmount;
         int relSum = relAmount + relSumAmount;
 
-        System.out.println("itemAmount : " + itemAmount);
-        System.out.println("cartAmount : " + orderAmount);
-        System.out.println("relAmount : " + relAmount);
-        System.out.println("itemNo : " + itemNo);
+        System.out.println("itemAmount : " + relItemDTO.getItemAmount());
+        System.out.println("orderAmount : " + relItemDTO.getOrderAmount());
+        System.out.println("itemNo : " + relItemDTO.getItemNo());
+        System.out.println("relCode : " + relItemDTO.getRelCode());
+        System.out.println("relCodeDetail : " + relItemDTO.getRelCodeDetail());
+        System.out.println("relSumAmount : " + relItemDTO.getRelSumAmount());
+        System.out.println("relAmount : " + relItemDTO.getRelAmount());
         System.out.println("itemAmountUpdate : " + amountUpdate);
-        System.out.println("relCode : " + relCode);
-        System.out.println("relCodeDetail : " + relCodeDetail);
         System.out.println("relSum : " + relSum);
 
         Map<String, Integer> itemAmountUpdate = new HashMap<>();
@@ -197,6 +188,7 @@ public class ReleaseController {
         System.out.println("itemAmountInsert : " + itemAmountUpdate);
 
         int result1 = releaseService.itemAmountUpdate(itemAmountUpdate);
+        int result4 = releaseService.itemHistoryInsert(relCode, itemNo);
 
 
         if(orderAmount != relSum) {
@@ -228,5 +220,21 @@ public class ReleaseController {
                 }
             }
         }
+
+        ReleaseOrderDTO relItemDetailAjax = releaseService.relItemDetailSelect(relCodeDetail);
+
+        System.out.println("relItemDetailAjax : " + relItemDetailAjax);
+        int reItemAmount = relItemDetailAjax.getReleaseItemInfoDTO().getItemAmount();
+        int reRelSumAmount = relItemDetailAjax.getReleaseItemHistroyDTO().getRelSumAmount();
+        java.sql.Date reRelDate = relItemDetailAjax.getReleaseItemDTO().getRelDate();
+        String reRelYn = relItemDetailAjax.getReleaseItemDTO().getRelYn();
+
+        Map<String, Object> ajaxMap = new HashMap<>();
+        ajaxMap.put("itemAmount", reItemAmount);
+        ajaxMap.put("relSumAmount", reRelSumAmount);
+        ajaxMap.put("relDate", reRelDate);
+        ajaxMap.put("relYn", reRelYn);
+
+        return ajaxMap;
     }
 }

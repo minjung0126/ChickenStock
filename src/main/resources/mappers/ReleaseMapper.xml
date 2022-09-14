@@ -323,8 +323,26 @@
         UPDATE ITEM_INFO A
            SET A.ITEM_AMOUNT = #{ amountUpdate }
          WHERE A.ITEM_NO = #{ itemNo }
-
     </update>
+
+    <insert id="itemHistoryInsert">
+        INSERT INTO ITEM_HISTORY
+        (
+          ITEM_MANAGE_NO
+        , REC_CODE
+        , ITEM_NO
+        , REL_CODE
+        , R_NO
+        )
+        VALUES
+        (
+          SEQ_ITEM_MANAGE_NO.NEXTVAL
+        , NULL
+        , #{ itemNo }
+        , #{ relCode }
+        , NULL
+        )
+    </insert>
     <insert id="relItemHistoryInsert">
         INSERT INTO RELEASE_ITEM_HISTORY
         (
@@ -372,5 +390,22 @@
            AND REL_DATE IS NULL
            AND REL_CODE = #{ relCode }
     </update>
+
+    <select id="relItemDetailSelect" resultMap="releaseOrderResultMap">
+        SELECT
+            A.REL_CODE_DETAIL
+             , A.REL_DATE
+             , A.REL_YN
+             , C.ITEM_AMOUNT
+             , SUM(B.REL_AMOUNT_DETAIL) REL_SUM_AMOUNT
+        FROM RELEASE_ITEM A
+                 LEFT JOIN RELEASE_ITEM_HISTORY B ON(A.REL_CODE_DETAIL = B.REL_CODE_DETAIL)
+                 LEFT JOIN ITEM_INFO C ON(A.ITEM_NO = C.ITEM_NO)
+        WHERE A.REL_CODE_DETAIL = #{ relCodeDetail }
+        GROUP BY A.REL_CODE_DETAIL
+               , A.REL_DATE
+               , A.REL_YN
+               , C.ITEM_AMOUNT
+    </select>
 
 </mapper>

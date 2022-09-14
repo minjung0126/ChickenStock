@@ -42,4 +42,7 @@ public interface ReleaseService {
 
     int relYnUpdate(int relCode);
 
+    ReleaseOrderDTO relItemDetailSelect(int relCodeDetail);
+
+    int itemHistoryInsert(int relCode, int itemNo);
 }

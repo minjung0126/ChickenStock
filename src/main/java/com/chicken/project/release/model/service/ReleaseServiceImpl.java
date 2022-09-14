@@ -172,4 +172,21 @@ public class ReleaseServiceImpl implements ReleaseService{
         int relYnResult = releaseMapper.relYnUpdate(relCode);
         return relYnResult;
     }
+
+    @Override
+    public ReleaseOrderDTO relItemDetailSelect(int relCodeDetail) {
+
+        ReleaseOrderDTO relItemDetailAjax = releaseMapper.relItemDetailSelect(relCodeDetail);
+
+        return relItemDetailAjax;
+    }
+
+    @Override
+    @Transactional
+    public int itemHistoryInsert(int relCode, int itemNo) {
+
+        int result = releaseMapper.itemHistoryInsert(relCode, itemNo);
+
+        return result;
+    }
 }
