@@ -37,6 +37,7 @@ public class NoticeController {
 
     }
 
+    /* 관리자 공지사항 조회 */
     @GetMapping("/admin/list")
     public ModelAndView adminNoticeList(ModelAndView mv, HttpServletRequest request){
 
@@ -84,6 +85,7 @@ public class NoticeController {
         return mv;
     }
 
+    /* 유저 공지사항 조회 */
     @GetMapping("/user/list")
     public ModelAndView userNoticeList(ModelAndView mv, HttpServletRequest request){
 
@@ -131,12 +133,14 @@ public class NoticeController {
         return mv;
     }
 
+    /* 관리자 공지사항 등록 페이지 이동 */
     @GetMapping("/admin/insert")
     public String noticeInsertPage(){
 
         return "/notice/admin/adminNoticeInsert";
     }
 
+    /* 관리자 공지사항 등록 */
     @PostMapping("/admin/insert")
     public String noticeInsert(@ModelAttribute NoticeDTO notice,
                                @RequestParam(value="file", required=false) MultipartFile file,
@@ -195,6 +199,7 @@ public class NoticeController {
         return "redirect:/notice/admin/list";
     }
 
+    /* 관리자 공지사항 상세페이지 */
     @GetMapping("/admin/detail")
     public ModelAndView adminNoticeDetail(ModelAndView mv, @RequestParam int noticeNo){
 
@@ -208,6 +213,7 @@ public class NoticeController {
         return mv;
     }
 
+    /* 유저 공지사항 상세페이지 */
     @GetMapping("/user/detail")
     public ModelAndView userNoticeDetail(ModelAndView mv, @RequestParam int noticeNo){
 
@@ -221,6 +227,7 @@ public class NoticeController {
         return mv;
     }
 
+    /* 관리자 공지사항 삭제 */
     @GetMapping("/admin/delete")
     public String deleteNotice(HttpServletRequest request, RedirectAttributes rttr) throws NoticeDeleteException {
 
@@ -233,6 +240,7 @@ public class NoticeController {
         return "redirect:/notice/admin/list";
     }
 
+    /* 관리자 공지사항 수정 페이지 이동 */
     @GetMapping("/admin/update")
     public ModelAndView updateNoticePage(HttpServletRequest request, ModelAndView mv) {
 
@@ -246,6 +254,7 @@ public class NoticeController {
         return mv;
     }
 
+    /* 관리자 공지사항 수정 */
     @PostMapping("/admin/update")
     public String updateNotice(@ModelAttribute NoticeDTO notice,
                                @RequestParam int noticeNo,
