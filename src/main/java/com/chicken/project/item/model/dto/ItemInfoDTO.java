@@ -1,7 +1,5 @@
 package com.chicken.project.item.model.dto;
 
-import com.chicken.project.release.model.dto.ItemCategoryDTO;
-
 public class ItemInfoDTO {
 
     private int itemNo;
