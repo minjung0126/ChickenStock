@@ -9,19 +9,17 @@ public class ReleaseDTO {
     private java.sql.Date relDate;
     private String relYn;
     private String storeName;
-    private String orderNo;
     private int totalMoney;
     private java.sql.Date relListDate;
 
     public ReleaseDTO() {}
 
-    public ReleaseDTO(int relCode, String relName, Date relDate, String relYn, String storeName, String orderNo, int totalMoney, Date relListDate) {
+    public ReleaseDTO(int relCode, String relName, Date relDate, String relYn, String storeName, int totalMoney, Date relListDate) {
         this.relCode = relCode;
         this.relName = relName;
         this.relDate = relDate;
         this.relYn = relYn;
         this.storeName = storeName;
-        this.orderNo = orderNo;
         this.totalMoney = totalMoney;
         this.relListDate = relListDate;
     }
@@ -66,14 +64,6 @@ public class ReleaseDTO {
         this.storeName = storeName;
     }
 
-    public String getOrderNo() {
-        return orderNo;
-    }
-
-    public void setOrderNo(String orderNo) {
-        this.orderNo = orderNo;
-    }
-
     public int getTotalMoney() {
         return totalMoney;
     }
@@ -98,7 +88,6 @@ public class ReleaseDTO {
                 ", relDate=" + relDate +
                 ", relYn='" + relYn + '\'' +
                 ", storeName='" + storeName + '\'' +
-                ", orderNo='" + orderNo + '\'' +
                 ", totalMoney=" + totalMoney +
                 ", relListDate=" + relListDate +
                 '}';

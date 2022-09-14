@@ -8,8 +8,6 @@ import com.chicken.project.store.model.service.StoreService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -26,14 +24,18 @@ import java.util.List;
 public class StoreController {
 
     private final StoreService storeService;
-    private final PasswordEncoder passwordEncoder;
+   // private final PasswordEncoder passwordEncoder;
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
+<<<<<<< HEAD
     public StoreController(StoreService storeService, PasswordEncoder passwordEncoder) {
+=======
+    public StoreController(StoreService storeService){
+>>>>>>> origin/jihwan
 
         this.storeService = storeService;
-        this.passwordEncoder = passwordEncoder;
+
     }
 
     /* 관리자 가맹점 조회 */
@@ -85,7 +87,7 @@ public class StoreController {
     public String insertStore(@ModelAttribute StoreDTO store, RedirectAttributes rttr, ModelAndView mv) throws StoreInsertException {
 
         store.setStorePhone(store.getStorePhone().replace("-", ""));
-        store.setStorePwd(passwordEncoder.encode(store.getStorePwd()));
+        //store.setStorePwd(passwordEncoder.encode(store.getStorePwd()));
 
         log.info("[StoreController] store : " + store);
 
