@@ -2,6 +2,7 @@ package com.chicken.project.reItem.controller;
 
 import com.chicken.project.common.paging.Pagenation;
 import com.chicken.project.common.paging.SelectCriteria;
+import com.chicken.project.member.model.dto.AdminImpl;
 import com.chicken.project.member.model.dto.StoreImpl;
 import com.chicken.project.reItem.model.dto.ReItemDTO;
 import com.chicken.project.reItem.model.dto.ReListDTO;
@@ -76,9 +77,11 @@ public class ReItemController {
 
         log.info("확ㅇ이ㅣㅇ이ㅣ잉ㄴ : " + insertItem);
 
-        int sReItems = reItemService.insertReItem(insertItem, storeImpl.getStoreName());
+        int result = reItemService.insertReItem(insertItem, storeImpl.getStoreName());
 
-        mv.setViewName("redirect:/reItem/user/insertReItem");
+        if(result > 0) {
+            mv.setViewName("redirect:/reItem/user/insertReItem");
+        }
 
         return mv;
     }
@@ -173,6 +176,31 @@ public class ReItemController {
         mv.addObject("reItem",reItem);
         mv.addObject("reItems", reItems);
         mv.setViewName("/reItem/admin/adminReItem");
+
+        return mv;
+    }
+    @PostMapping("/admin/adminReItem")
+    public ModelAndView ReturnComplete(ModelAndView mv
+                                        , HttpServletRequest request
+                                        , Model model
+                                        , @AuthenticationPrincipal AdminImpl adminImpl
+                                        , String[] returnCount2
+                                        , String[] itemNo2
+                                        , @ModelAttribute ReItemDTO returnItems){
+
+        String rNo = request.getParameter("rNo");
+        model.addAttribute("rNo",rNo);
+
+        String adminId = adminImpl.getEmpId();
+
+        log.info("값이 잘 나오나요? : " + returnItems);
+        log.info("값이 잘 나오나요?22 : " + rNo);
+        log.info("값이 잘 나오나요?33 : " +adminId);
+        log.info("값이 잘 나오나요?44 : " + returnCount2);
+        log.info("값이 잘 나오나요?55 : " + itemNo2);
+//        int result = reItemService.upadteComplete();
+
+
 
         return mv;
     }
