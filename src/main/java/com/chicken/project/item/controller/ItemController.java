@@ -106,54 +106,54 @@ public class ItemController {
     public String itemRegist(@ModelAttribute ItemInfoDTO item, @RequestParam(value="file", required = false) MultipartFile file, RedirectAttributes rttr) throws Exception{
 
         System.out.println("테스트용 : " + item);
-//        ItemFileDTO itemFile = new ItemFileDTO();
-//
-//        log.info("[itemController] ItemInfoDTO : " + item);
-//        log.info("[itemController] file : " + file);
-//
-//        String root = ResourceUtils.getURL("src/main/resources").getPath();
-//
-//        String filePath = root + "static/uploadFiles";
-//
-//        log.info("루트ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ" + filePath);
-//
-//        File mkdir = new File(filePath);
-//        if(!mkdir.exists()) {
-//            mkdir.mkdirs();
-//        }
-//
-//        String originFileName = "";
-//        String ext = "";
-//        String changeName = "";
-//        String savedPath = "";
-//
-//        if(file.getSize() > 0) {
-//            originFileName = file.getOriginalFilename();
-//            ext = originFileName.substring(originFileName.lastIndexOf("."));
-//            changeName = UUID.randomUUID().toString().replace("-",  "");
-//            savedPath = filePath + "/" + changeName + ext;
-//
-//            itemFile.setOriginName(originFileName);
-//            itemFile.setFileName(changeName + ext);
-//            itemFile.setSavedPath(savedPath);
-//
-//            int result = itemService.itemRegist(item);
-//
-//            if(result > 0) {
-//
-//                itemService.itemFileRegist(itemFile);
-//            }
-//
-//            try {
-//                file.transferTo(new File(filePath + "\\" + changeName + ext));
-//            } catch (IOException e) {
-//
-//                e.printStackTrace();
-//                new File(filePath + "\\" + changeName + ext).delete();
-//            }
-//        }
+        ItemFileDTO itemFile = new ItemFileDTO();
 
-        itemService.insertItem(item);
+        log.info("[itemController] ItemInfoDTO : " + item);
+        log.info("[itemController] file : " + file);
+
+        String root = ResourceUtils.getURL("src/main/resources").getPath();
+
+        String filePath = root + "static/itemImage";
+
+        log.info("루트ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ" + filePath);
+
+        File mkdir = new File(filePath);
+        if(!mkdir.exists()) {
+            mkdir.mkdirs();
+        }
+
+        String originFileName = "";
+        String ext = "";
+        String changeName = "";
+
+        if(file.getSize() > 0) {
+            originFileName = file.getOriginalFilename();
+            ext = originFileName.substring(originFileName.lastIndexOf("."));
+            changeName = UUID.randomUUID().toString().replace("-",  "");
+
+
+            itemFile.setOriginName(originFileName);
+            itemFile.setFileName(changeName + ext);
+
+            // 품목 등록
+            int result = itemService.insertItem(item);
+
+            // 품목 파일 등록
+            if(result > 0) {
+
+                itemService.insertFileRegist(itemFile);
+            }
+
+            try {
+                file.transferTo(new File(filePath + "\\" + changeName + ext));
+            } catch (IOException e) {
+
+                e.printStackTrace();
+                new File(filePath + "\\" + changeName + ext).delete();
+            }
+        }
+
+
 
         rttr.addFlashAttribute("message", "상품 등록 성공");
 

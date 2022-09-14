@@ -4,6 +4,7 @@ import com.chicken.project.common.paging.SelectCriteria;
 import com.chicken.project.exception.item.ItemInsertException;
 import com.chicken.project.item.model.dao.ItemMapper;
 import com.chicken.project.item.model.dto.ItemCategoryDTO;
+import com.chicken.project.item.model.dto.ItemFileDTO;
 import com.chicken.project.item.model.dto.ItemInfoDTO;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
@@ -69,5 +70,11 @@ public class ItemService {
     public int deleteItemFile(String itemNo) {
 
         return itemMapper.deleteItemFile(itemNo);
+    }
+
+    @Transactional
+    public int insertFileRegist(ItemFileDTO itemFile) {
+
+        return itemMapper.insertFileRegist(itemFile);
     }
 }

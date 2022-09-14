@@ -161,6 +161,27 @@
         )
     </insert>
 
+    <insert id="insertFileRegist">
+        <selectKey keyProperty="itemNo" order="BEFORE" resultType="_int">
+            SELECT
+                  SEQ_ITEM_NO.CURRVAL
+            FROM DUAL
+        </selectKey>
+        INSERT
+          INTO ITEM_FILE
+        (
+          ORIGIN_NAME
+        , FILE_NAME
+        , ITEM_NO
+        )
+        VALUES
+        (
+          #{ originName }
+        , #{ fileName }
+        , #{ itemNo }
+        )
+    </insert>
+
     <delete id="deleteItem">
         DELETE
           FROM ITEM_INFO
