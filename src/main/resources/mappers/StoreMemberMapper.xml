@@ -13,6 +13,7 @@
         <result property="storeId" column="STORE_ID"/>
         <result property="storePwd" column="STORE_PWD"/>
         <result property="storeNo" column="STORE_NO"/>
+        <result property="storeYn" column="STORE_YN"/>
 
         <collection property="storeRoleList" resultMap="storeRoleResultMap"/>
     </resultMap>
@@ -38,5 +39,6 @@
           LEFT JOIN STORE_ROLE B ON (A.STORE_NAME = B.STORE_NAME)
           LEFT JOIN AUTH_CODE C ON (B.AUTH_CODE = C.AUTH_CODE)
          WHERE A.STORE_ID = #{ username }
+           AND A.STORE_YN = 'Y'
     </select>
 </mapper>

@@ -9,7 +9,13 @@
         <result property="depositRegistDate" column="DEPOSIT_REGIST_DATE"/>
         <result property="depositYn" column="DEPOSIT_YN"/>
 
-        <association property="accountDeposit" resultMap="accountResultMap"/>
+        <collection property="accountDTO" ofType="AccountDTO">
+            <result property="storeName" column="STORE_NAME"/>
+            <result property="depositNum" column="DEPOSIT_NUM"/>
+            <result property="accountDate" column="ACCOUNT_DATE"/>
+            <result property="accountDeposit" column="ACCOUNT_DEPOSIT"/>
+            <result property="accountYn" column="ACCOUNT_YN"/>
+        </collection>
     </resultMap>
 
     <resultMap id="accountResultMap" type="AccountDTO">
@@ -20,17 +26,117 @@
         <result property="accountYn" column="ACCOUNT_YN"/>
     </resultMap>
 
+    <resultMap id="balanceResultMap" type="BalanceDTO">
+        <id property="storeName" column="STORE_NAME"></id>
+        <result property="balance" column="BALANCE"></result>
+
+        <collection property="accountDTO" ofType="AccountDTO">
+            <result property="storeName" column="STORE_NAME"/>
+            <result property="depositNum" column="DEPOSIT_NUM"/>
+            <result property="accountDate" column="ACCOUNT_DATE"/>
+            <result property="accountDeposit" column="ACCOUNT_DEPOSIT"/>
+            <result property="accountYn" column="ACCOUNT_YN"/>
+        </collection>
+    </resultMap>
+
     <select id="selectAccountApplyList" resultMap="accountApplyResultMap">
         SELECT
                A.*
              , B.ACCOUNT_DEPOSIT
           FROM ACCOUNT_APPLY A
-          JOIN ACCOUNT B ON (A.DEPOSIT_NUM = B.DEPOSIT_NUM)
+          LEFT JOIN ACCOUNT B ON (A.DEPOSIT_NUM = B.DEPOSIT_NUM)
     </select>
 
     <select id="selectAccountList" resultMap="accountResultMap">
         SELECT
                *
           FROM ACCOUNT
+    </select>
+
+    <select id="selectBalance" resultMap="balanceResultMap">
+        SELECT
+               *
+          FROM BALANCE
+         WHERE STORE_NAME = #{ storeName }
+    </select>
+
+    <insert id="accountInsert">
+        INSERT
+          INTO ACCOUNT
+        (
+          STORE_NAME, DEPOSIT_NUM, ACCOUNT_DATE
+        , ACCOUNT_DEPOSIT, ACCOUNT_YN
+        )
+        VALUES
+        (
+          #{ storeName }, SEQ_DEPOSIT_NUM.NEXTVAL, SYSDATE
+        , #{ accountDeposit }, '대기'
+        )
+    </insert>
+
+    <insert id="accountApplyInsert">
+        INSERT
+          INTO ACCOUNT_APPLY
+        (
+          STORE_NAME
+        , DEPOSIT_NUM
+        , DEPOSIT_REGIST_DATE
+        , DEPOSIT_YN
+        )
+        VALUES
+        (
+          #{ storeName }
+        , SEQ_DEPOSIT_NUM.CURRVAL
+        , SYSDATE
+        , '대기'
+        )
+    </insert>
+
+    <select id="selectAccountListByStoreName" resultMap="accountResultMap">
+        SELECT
+               *
+          FROM ACCOUNT
+         WHERE STORE_NAME = #{ storeName }
+    </select>
+
+    <update id="accountApplyUpdate">
+        UPDATE
+               ACCOUNT_APPLY
+           SET DEPOSIT_YN = '승인'
+         WHERE DEPOSIT_NUM = #{ depositNum }
+    </update>
+
+    <update id="accountUpdate">
+        UPDATE
+               ACCOUNT
+           SET ACCOUNT_YN = '승인'
+         WHERE DEPOSIT_NUM = #{ depositNum }
+    </update>
+
+    <update id="balanceUpdate">
+        UPDATE
+               BALANCE
+           SET BALANCE = #{ accountDeposit }
+         WHERE STORE_NAME = #{ storeName }
+    </update>
+
+    <update id="accountApplyUpdate2">
+        UPDATE
+               ACCOUNT_APPLY
+           SET DEPOSIT_YN = '반려'
+         WHERE DEPOSIT_NUM = #{ depositNum }
+    </update>
+
+    <update id="accountUpdate2">
+        UPDATE
+               ACCOUNT
+           SET ACCOUNT_YN = '반려'
+         WHERE DEPOSIT_NUM = #{ depositNum }
+    </update>
+
+    <select id="balanceSelect" resultMap="balanceResultMap">
+        SELECT
+               *
+          FROM BALANCE
     </select>
 </mapper>

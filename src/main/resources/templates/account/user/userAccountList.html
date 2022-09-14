@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
@@ -40,7 +41,8 @@
 
           <!-- S: text area -->
           <div class="text-area">
-            <span>가맹점 명</span> <span>현재 잔액</span> <span></span>원
+            <span th:text="${ #authentication.getPrincipal().getStoreName() }"></span> <span>현재 잔액</span> <span th:text="${ #numbers.formatInteger(balance.getBalance(), 0, 'COMMA') }"></span>원
+
           </div>
           <!-- E: text area -->
 
@@ -69,8 +71,9 @@
             <tr th:each="account : ${ accountList }">
               <td th:text="${ account.depositNum }"></td>
               <td th:text="${ account.accountDate }"></td>
-              <td th:text="${ account.accountDeposit }"></td>
+              <td th:text="${ #numbers.formatInteger(account.getAccountDeposit, 0, 'COMMA') }"></td>
               <td th:text="${ account.accountYn }"></td>
+              <input type="hidden" name="storeName" th:value="${ #authentication.getPrincipal().getStoreName()}">
             </tr>
             </tbody>
           </table>
@@ -85,35 +88,37 @@
   <!-- E: container -->
 
   <!-- S: popup -->
-  <div class="dimm"></div>
-  <div class="account_popup">
-    <h4>
-      입금 신청
-      <button class="btn-close"></button>
-    </h4>
-    <div class="popup_inner">
-      <table cellpadding="0" cellspacing="0">
-        <tbody>
-        <tr>
-          <th>가맹점 명</th>
-          <td>가맹점</td>
-        </tr>
-        <tr>
-          <th>입금액</th>
-          <td><input type="text" name="accountDeposit"></td>
-        </tr>
-        <tr>
-          <th>현재 잔액</th>
-          <td>500,000원</td>
-        </tr>
-        </tbody>
-      </table>
-      <div class="btn-area">
-        <button class="btn btn-warning" style="color: #fff;">확인</button>
-        <button class="btn btn-cancel">취소</button>
+  <form th:action="@{/account/user/insert }">
+    <div class="dimm"></div>
+    <div class="account_popup">
+      <h4>
+        입금 신청
+        <button class="btn-close"></button>
+      </h4>
+      <div class="popup_inner">
+        <table cellpadding="0" cellspacing="0">
+          <tbody>
+          <tr>
+            <th>가맹점 명</th>
+            <td th:text="${ #authentication.getPrincipal().getStoreName() }"></td>
+          </tr>
+          <tr>
+            <th>입금액</th>
+            <td><input type="text" name="accountDeposit"></td>
+          </tr>
+          <tr>
+            <th>현재 잔액</th>
+            <td th:text="${ balance.getBalance() }">원</td>
+          </tr>
+          </tbody>
+        </table>
+        <div class="btn-area">
+          <button class="btn btn-warning" style="color: #fff;" type="submit">확인</button>
+          <button class="btn btn-cancel" type="reset">취소</button>
+        </div>
       </div>
     </div>
-  </div>
+  </form>
   <!-- E: popup -->
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
@@ -129,6 +134,13 @@
       $(accountPop).fadeOut(300);
     });
   });
+</script>
+<script th:inline="javascript">
+  let message = [[${message}]];
+
+  if(message != null && message !== '') {
+    alert(message);
+  }
 </script>
 </body>
 </html>
