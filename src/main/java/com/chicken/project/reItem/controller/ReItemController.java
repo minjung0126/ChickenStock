@@ -76,7 +76,6 @@ public class ReItemController {
         }
 
         log.info("확ㅇ이ㅣㅇ이ㅣ잉ㄴ : " + insertItem);
-
         int result = reItemService.insertReItem(insertItem, storeImpl.getStoreName());
 
         if(result > 0) {

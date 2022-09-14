@@ -41,10 +41,11 @@
           <table class="table">
             <colgroup>
               <col style="width: 8%;">
-              <col style="width: 32%;">
-              <col style="width: 32%;">
-              <col style="width: 14%;">
-              <col style="width: 14%;">
+              <col style="width: 28%;">
+              <col style="width: 28%;">
+              <col style="width: 10%;">
+              <col style="width: 10%;">
+              <col style="width: 10%;">
             </colgroup>
             <thead>
             <tr>
@@ -53,17 +54,23 @@
               <th>입금액</th>
               <th>일시</th>
               <th>상태</th>
+              <th>확인</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="accountApply : ${ accountApplyList }">
               <td th:text="${ accountApply.depositNum }"></td>
               <td th:text="${ accountApply.storeName }"></td>
-              <td th:text="${ accountApply.accountDeposit.getAccountDeposit() }"></td>
+              <td th:text="${ #numbers.formatInteger(accountApply.getAccountDTO().getAccountDeposit(), 0, 'COMMA') }"></td>
+              <td th:text="${ accountApply.getDepositRegistDate() }"></td>
               <td th:text="${ accountApply.depositYn }"></td>
+              <input type="hidden" id="accountDeposit" th:value="${ accountApply.getAccountDTO().getAccountDeposit() }">
+              <input type="hidden" id="storeName" th:value="${ accountApply.getStoreName() }">
               <td>
-                <button class="btn btn-warning" type="submit" style="color: #fff;">승인</button>
-                <button class="btn btn-warning" type="submit" style="color: #fff;">반려</button>
+                <button class="btn btn-warning" type="submit" style="color: #fff;" th:if="${ accountApply.depositYn eq '대기' || accountApply.depositYn eq '반려'}"
+                        th:onclick="'location.href=\'/account/admin/update?depositNum=' + @{${ accountApply.depositNum }} + '&storeName='+ @{${ accountApply.storeName }} + '&accountDeposit='+ @{${ accountApply.getAccountDTO().getAccountDeposit() }} +'\''">승인</button>
+                <button class="btn btn-warning" type="submit" style="color: #fff;" th:if="${ accountApply.depositYn eq '대기'}"
+                        th:onclick="'location.href=\'/account/admin/update2?depositNum=' + @{${ accountApply.depositNum }} + '\''">반려</button>
               </td>
             </tr>
             </tbody>
@@ -78,6 +85,13 @@
   </div>
   <!-- E: container -->
 </div>
+<script th:inline="javascript">
+  let message = [[${message}]];
+
+  if(message != null && message !== '') {
+    alert(message);
+  }
+</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 </body>

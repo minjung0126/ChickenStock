@@ -30,14 +30,15 @@ public class StoreController {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    public StoreController(StoreService storeService, PasswordEncoder passwordEncoder){
+    public StoreController(StoreService storeService, PasswordEncoder passwordEncoder) {
 
         this.storeService = storeService;
         this.passwordEncoder = passwordEncoder;
     }
 
+    /* 관리자 가맹점 조회 */
     @GetMapping("/admin/list")
-    public ModelAndView storeListPage(ModelAndView mv){
+    public ModelAndView storeListPage(ModelAndView mv) {
 
         List<StoreDTO> storeList = storeService.storeList();
 
@@ -47,8 +48,9 @@ public class StoreController {
         return mv;
     }
 
+    /* 유저 가맹점 조회 */
     @GetMapping("/user/list")
-    public ModelAndView userStoreListPage(ModelAndView mv){
+    public ModelAndView userStoreListPage(ModelAndView mv) {
 
         List<StoreDTO> storeList = storeService.storeList();
 
@@ -58,6 +60,7 @@ public class StoreController {
         return mv;
     }
 
+    /* 관리자 가맹점 삭제 */
     @GetMapping("/admin/delete")
     public String deleteStore(HttpServletRequest request, RedirectAttributes rttr) throws Exception {
 
@@ -70,12 +73,14 @@ public class StoreController {
         return "redirect:/store/admin/list";
     }
 
+    /* 관리자 가맹점 등록 페이지 이동 */
     @GetMapping("/admin/insert")
-    public String insertStorePage(){
+    public String insertStorePage() {
 
         return "/store/admin/adminStoreInsert";
     }
 
+    /* 관리자 가맹점 등록 */
     @PostMapping("/admin/insert")
     public String insertStore(@ModelAttribute StoreDTO store, RedirectAttributes rttr, ModelAndView mv) throws StoreInsertException {
 
@@ -93,8 +98,9 @@ public class StoreController {
         return "redirect:/store/admin/list";
     }
 
+    /* 관리자 가맹점 정보 수정 페이지 이동 */
     @GetMapping("/admin/update")
-    public ModelAndView updateStorePage(HttpServletRequest request, RedirectAttributes rttr, ModelAndView mv){
+    public ModelAndView updateStorePage(HttpServletRequest request, RedirectAttributes rttr, ModelAndView mv) {
 
         String storeName = request.getParameter("storeName");
 
@@ -108,6 +114,7 @@ public class StoreController {
         return mv;
     }
 
+    /* 관리자 가맹점 정보 수정 */
     @PostMapping("/admin/update")
     public String updateStore(@ModelAttribute StoreDTO store, RedirectAttributes rttr) throws StoreUpdateException {
 

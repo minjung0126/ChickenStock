@@ -36,6 +36,7 @@ public class CounselService {
         return counselMapper.selectCounselByNo(counselNo);
     }
 
+    @Transactional
     public void insertCounselApply(String answerContent, int counselNo, String empName) {
 
         int result = counselMapper.insertCounselApply(answerContent, counselNo, empName);

@@ -21,10 +21,10 @@
           </div>
           <!-- 하위 메뉴가 있을때 -->
           <div class="accordion_dep type2">
-            <a href="#" title="">마이페이지</a>
+            <a th:href="@{/mypage/member_mypage}" title="">마이페이지</a>
             <ul>
               <li>
-                 <a href="#" title="">비밀번호 수정</a>
+                 <a th:href="@{/mypage/member_mypage}" title="">비밀번호 수정</a>
               </li>
             </ul>
           </div>
@@ -72,7 +72,7 @@
                 <a href="/account/admin/list" title="">입금 신청내역 조회</a>
               </li>
               <li>
-                <a href="" title="">가맹점 잔액조회</a>
+                <a href="/account/admin/balance" title="">가맹점 잔액조회</a>
               </li>
             </ul>
           </div>
@@ -87,7 +87,7 @@
                 <a href="/store/admin/insert" title="">가맹점 등록</a>
               </li>
               <li>
-                <a href="#" title="">일정관리</a>
+                <a th:href="@{/calendar/calendar}" title="">일정관리</a>
               <li>
                 <a th:href="@{/empList/empList}" title="">직원관리</a>
              </li>

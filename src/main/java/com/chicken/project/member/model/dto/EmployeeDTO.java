@@ -20,11 +20,14 @@ public class EmployeeDTO {
     private String empPhone;
     private String empEmail;
     private String empPwd;
-    private java.util.Date birth;
+    private java.sql.Date birth;
+    private String empRole;
 
     private List<EmpRoleDTO> empRoleList;
 
     private List<CalendarDTO> calendar;
+
+    private int rnum;
 
 
 }
