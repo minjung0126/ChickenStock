@@ -29,7 +29,7 @@ public class MemberMainController {
 
             if(((AdminImpl)user).getEmpRoleList().get(0).getAuthCode().equals("1") || ((AdminImpl)user).getEmpRoleList().get(0).getAuthCode().equals("2")){
 
-                url = "/main/admin_main";
+                url = "main/admin_main";
             }
         }
 
@@ -37,7 +37,7 @@ public class MemberMainController {
 
             if(((StoreImpl)user).getStoreRoleList().get(0).getAuthCode().equals("3")){
                 System.out.println("확인용 = " + url);
-                url = "/main/user_main";
+                url = "main/user_main";
             }
         }
 

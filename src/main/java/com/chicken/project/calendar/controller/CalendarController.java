@@ -22,7 +22,7 @@ public class CalendarController {
         this.calendarService = calendarService;
     }
 
-    @ResponseBody
+//    @ResponseBody
     @GetMapping("/calendar")
     public List<Map<String, Object>> selectCal(){
 
@@ -45,10 +45,9 @@ public class CalendarController {
         return data;
     }
 
-    @ResponseBody
-    @PostMapping("/calendar")
-    public String calendar(){
-
-        return null;
-    }
+//    @PostMapping("/calendar")
+//    public String calendar(){
+//
+//        return null;
+//    }
 }
