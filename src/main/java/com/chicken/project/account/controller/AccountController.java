@@ -115,4 +115,16 @@ public class AccountController {
         return "redirect:/account/admin/list";
     }
 
+    /* 관리자 가맹점 잔액 조회 */
+    @GetMapping("/admin/balance")
+    public ModelAndView adminBalanceSelect(ModelAndView mv){
+
+        List<BalanceDTO> balanceSelect = accountService.balanceSelect();
+
+        mv.addObject("balanceSelect", balanceSelect);
+        mv.setViewName("/account/admin/adminBalanceSelect");
+
+        return mv;
+    }
+
 }

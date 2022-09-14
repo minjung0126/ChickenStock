@@ -134,4 +134,9 @@
          WHERE DEPOSIT_NUM = #{ depositNum }
     </update>
 
+    <select id="balanceSelect" resultMap="balanceResultMap">
+        SELECT
+               *
+          FROM BALANCE
+    </select>
 </mapper>

@@ -11,7 +11,6 @@ import java.util.List;
 public interface AccountMapper {
     List<AccountApplyDTO> selectAccountApplyList();
 
-    List<AccountDTO> selectAccountList();
 
     BalanceDTO selectBalance(String storeName);
 
@@ -30,4 +29,6 @@ public interface AccountMapper {
     int accountApplyUpdate(AccountApplyDTO accountApply);
 
     int accountUpdate(AccountApplyDTO accountApply);
+
+    List<BalanceDTO> balanceSelect();
 }
