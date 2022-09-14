@@ -16,11 +16,12 @@ public class CartDTO {
     private int cartNo;
     private String relYn;
     private int storeAmount;
+    private OrderItemFileDTO itemFile;
 
     public CartDTO() {
     }
 
-    public CartDTO(int itemNo, String itemName, String categoryName, int categoryNo, String itemStandard, String itemMake, int itemSales, int cartAmount, String itemSoldoutYn, String cartYn, String storeName, int cartNo, String relYn, int storeAmount) {
+    public CartDTO(int itemNo, String itemName, String categoryName, int categoryNo, String itemStandard, String itemMake, int itemSales, int cartAmount, String itemSoldoutYn, String cartYn, String storeName, int cartNo, String relYn, int storeAmount, OrderItemFileDTO itemFile) {
         this.itemNo = itemNo;
         this.itemName = itemName;
         this.categoryName = categoryName;
@@ -35,6 +36,7 @@ public class CartDTO {
         this.cartNo = cartNo;
         this.relYn = relYn;
         this.storeAmount = storeAmount;
+        this.itemFile = itemFile;
     }
 
     public int getItemNo() {
@@ -149,6 +151,14 @@ public class CartDTO {
         this.storeAmount = storeAmount;
     }
 
+    public OrderItemFileDTO getItemFile() {
+        return itemFile;
+    }
+
+    public void setItemFile(OrderItemFileDTO itemFile) {
+        this.itemFile = itemFile;
+    }
+
     @Override
     public String toString() {
         return "CartDTO{" +
@@ -166,6 +176,7 @@ public class CartDTO {
                 ", cartNo=" + cartNo +
                 ", relYn='" + relYn + '\'' +
                 ", storeAmount=" + storeAmount +
+                ", itemFile=" + itemFile +
                 '}';
     }
 }

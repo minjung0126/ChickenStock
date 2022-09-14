@@ -7,6 +7,10 @@ import com.chicken.project.order.model.dto.InterestDTO;
 import com.chicken.project.order.model.dto.OrderDTO;
 import com.chicken.project.order.model.service.OrderService;
 import com.chicken.project.common.paging.SelectCriteria;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -145,6 +150,7 @@ public class OrderController {
 
     }
 
+
     @GetMapping("list/available")
     public ModelAndView availableList(ModelAndView mv, HttpServletRequest request) {
 
@@ -185,24 +191,112 @@ public class OrderController {
 
     }
 
-    @PostMapping("cart/insert")
-    public void cartInsert(@ModelAttribute CartDTO cart, RedirectAttributes rttr, HttpServletRequest request) {
+    @GetMapping(value = "list/insert")
+    public ModelAndView insertCart (HttpServletRequest request, ModelAndView mv) {
 
-        // CART_AMOUNT, CATEROGRY_NO, ITEM_NO, STORE_NAME 값 가져오기
-        int cartAmount = Integer.parseInt(request.getParameter("cartAmount"));
-        int categoryNo = Integer.parseInt(request.getParameter("categoryNo"));
-        int itemNo = Integer.parseInt(request.getParameter("itemNo"));
+        String currentPage = request.getParameter("currentPage");
 
-        // DTO 에 주입
-        cart.setCartAmount(cartAmount);
-        cart.setCategoryNo(categoryNo);
-        cart.setItemNo(itemNo);
+        int pageNo = 1;
 
-        System.out.println(cart);
+        if (currentPage != null && !"".equals(currentPage)) {
+            pageNo = Integer.parseInt(currentPage);
+        }
 
-        int result = orderService.insertItemIntoCart(cart);
+        String searchCondition = request.getParameter("searchCondition");
+        String searchValue = request.getParameter("searchValue");
 
+        Map<String, String> searchMap = new HashMap<>();
+        searchMap.put("searchCondition", searchCondition);
+        searchMap.put("searchValue", searchValue);
 
+        int totalCount = orderService.selectCartTotalCount(searchMap);
+
+        int limit = 10;
+        int buttonAmount = 5;
+
+        SelectCriteria selectCriteria = null;
+
+        if (searchCondition != null && !"".equals(searchCondition)) {
+            selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount, searchCondition, searchValue);
+        } else {
+            selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount);
+        }
+
+        List<OrderDTO> orderList = orderService.selectAllItem(selectCriteria);
+
+        mv.addObject("orderList", orderList);
+        mv.addObject("selectCriteria", selectCriteria);
+        mv.setViewName("order/orderList");
+
+        return mv;
+    }
+
+    @PostMapping(value="list/insert")
+    public ModelAndView insertCartList(HttpServletRequest request, ModelAndView mv,
+                                       @RequestParam("itemNoList") String itemNoList)
+            throws ParseException, InterestException {
+
+        String currentPage = request.getParameter("currentPage");
+
+        int pageNo = 1;
+
+        if (currentPage != null && !"".equals(currentPage)) {
+            pageNo = Integer.parseInt(currentPage);
+        }
+
+        String searchCondition = request.getParameter("searchCondition");
+        String searchValue = request.getParameter("searchValue");
+
+        Map<String, String> searchMap = new HashMap<>();
+        searchMap.put("searchCondition", searchCondition);
+        searchMap.put("searchValue", searchValue);
+
+        int totalCount = orderService.selectCartTotalCount(searchMap);
+
+        int limit = 10;
+        int buttonAmount = 5;
+
+        SelectCriteria selectCriteria = null;
+
+        if (searchCondition != null && !"".equals(searchCondition)) {
+            selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount, searchCondition, searchValue);
+        } else {
+            selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount);
+        }
+
+        List<OrderDTO> orderList = orderService.selectAllItem(selectCriteria);
+
+        System.out.println("itemNo = " + itemNoList);
+
+        JSONParser jsonParse = new JSONParser();
+
+        JSONArray jsonObj = (JSONArray) jsonParse.parse(itemNoList);
+
+        System.out.println("jsonObj = " + jsonObj);
+
+        CartDTO cart = new CartDTO();
+
+        for(int i = 0; i < jsonObj.size(); i++){
+
+            System.out.println("jsonObj.get(i).get(\"itemNo\") = " + ((JSONObject)jsonObj.get(i)).get("itemNo"));
+            System.out.println("jsonObj.get(i).get(\"cartAmount\") = " + ((JSONObject)jsonObj.get(i)).get("cartAmount"));
+
+            int itemNo = Integer.parseInt(((JSONObject)jsonObj.get(i)).get("itemNo").toString());
+            int cartAmount = Integer.parseInt(((JSONObject)jsonObj.get(i)).get("cartAmount").toString());
+
+            cart.setItemNo(itemNo);
+            cart.setCartAmount(cartAmount);
+
+            orderService.insertItemIntoCart(itemNo, cartAmount);
+        }
+
+        mv.addObject("orderList", orderList);
+        mv.addObject("selectCriteria", selectCriteria);
+        mv.addObject("cart", cart);
+        mv.setViewName("order/orderList");
+        //redirect:/
+
+        return mv;
     }
 
     @GetMapping(value = "cart/list")
