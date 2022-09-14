@@ -5,9 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
 
   <title>chicken stock</title>
-
-  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-  <script type="text/javascript" th:src="@{/js/common.js}"></script>
+  <script type="text/javascript" th:src="@{http://code.jquery.com/jquery-3.6.0.min.js}"></script>
+  <script th:src="@{/js/common.js}"></script>
 
 </head>
 <body>
@@ -18,14 +17,14 @@
 
           <!-- 하위 메뉴가 없을때 -->
           <div class="accordion_dep type1 ">
-            <a href="#" title=""><img src="/images/home.png" width="18px" height="18px"> 홈</a>
+            <a th:href="@{/member/moveMain}" title=""><img src="/images/home.png" width="18px" height="18px"> 홈</a>
           </div>
 
           <div class="accordion_dep type2">
             <a href="#" title=""><img src="/images/mypage.png" width="18px" height="18px"> 마이페이지</a>
             <ul>
               <li>                
-                 <a href="#" title="">예치금 관리</a>
+                 <a href="/account/user/list" title="">예치금 관리</a>
               </li>
               <li>                
                  <a href="#" title="">비밀번호 재설정</a>
@@ -72,6 +71,19 @@
           <div class="accordion_dep type1 ">
             <a href="/store/user/list" title=""><img src="/images/shop.png" width="18px" height="18px"> 가맹점 조회</a>
           </div>
+
+          <div class="accordion_dep type2">
+            <a href="#" title=""><img src="/images/phone.JPG" width="18px" height="18px"> 1:1 문의</a>
+            <ul>
+              <li>
+                <a href="/counsel/user/list" title="">내가 쓴 1:1 문의</a>
+              </li>
+              <li>
+                <a href="/counsel/user/insert" title="">1:1 문의 등록</a>
+              </li>
+            </ul>
+          </div>
+
         </div>
       </div>
       <!-- E: aside -->

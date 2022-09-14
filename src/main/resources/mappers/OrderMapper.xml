@@ -3,6 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.chicken.project.order.model.dao.OrderMapper">
+
     <resultMap id="orderResultMap" type="OrderDTO">
         <id property="itemNo" column="ITEM_NO"/>
         <result property="itemName" column="ITEM_NAME"/>
@@ -14,16 +15,42 @@
         <result property="storeAmount" column="STORE_AMOUNT"/>
         <result property="orderAmount" column="ORDER_AMOUNT"/>
         <result property="itemSoldoutYn" column="ITEM_SOLDOUT_YN"/>
-        <result property="interYn" column="INTER_YN"/>
         <result property="orderDate" column="ORDER_DATE"/>
+        <result property="storeName" column="STORE_NAME"/>
+        <result property="cartAmount" column="CART_AMOUNT"/>
+
+        <association property="itemFile" resultMap="itemFileResultMap"/>
+    </resultMap>
+
+    <resultMap id="itemFileResultMap" type="OrderItemFileDTO">
+        <id property="fileNo" column="FILE_NO"/>
+        <result property="originName" column="FILE_NAME"/>
+        <result property="fileName" column="FILE_NAME"/>
+        <result property="itemNo" column="ITEM_NO"/>
     </resultMap>
 
     <resultMap id="interestResultMap" type="InterestDTO">
-        <id property="interYn" column="INTER_YN"/>
-        <result property="interNo" column="INTER_NO"/>
+        <id property="interNo" column="INTER_NO"/>
         <result property="storeName" column="STORE_NAME"/>
         <result property="categoryNo" column="CATEGORY_NO"/>
         <result property="itemNo" column="ITEM_NO"/>
+    </resultMap>
+
+    <resultMap id="cartResultMap" type="CartDTO">
+        <id property="cartNo" column="CART_NO"/>
+        <result property="itemName" column="ITEM_NAME"/>
+        <result property="categoryName" column="CATEGORY_NAME"/>
+        <result property="categoryNo" column="CATEGORY_NO"/>
+        <result property="itemStandard" column="ITEM_STANDARD"/>
+        <result property="itemMake" column="ITEM_MAKE"/>
+        <result property="itemSales" column="ITEM_SALES"/>
+        <result property="cartAmount" column="CART_AMOUNT"/>
+        <result property="itemSoldoutYn" column="ITEM_SOLDOUT_YN"/>
+        <result property="cartYn" column="CART_YN"/>
+        <result property="storeAmount" column="STORE_AMOUNT"/>
+        <result property="storeName" column="STORE_NAME"/>
+        <result property="itemNo" column="ITEM_NO"/>
+        <result property="relYn" column="REL_YN"/>
     </resultMap>
 
     <select id="selectTotalCount" resultType="_int" parameterType="hashmap">
@@ -49,11 +76,15 @@
             , A.ITEM_NO
             , A.ITEM_NAME
             , D.CATEGORY_NAME
+            , A.CATEGORY_NO
             , A.ITEM_STANDARD
             , A.ITEM_MAKE
             , A.ITEM_SALES
             , E.STORE_AMOUNT
             , A.ITEM_SOLDOUT_YN
+            , F.FILE_NO
+            , F.ORIGIN_NAME
+            , F.FILE_NAME
         FROM (SELECT ROWNUM RNUM
             , B.ITEM_NO
             , B.ITEM_NAME
@@ -90,6 +121,7 @@
         ) A
         JOIN ITEM_CATEGORY D ON (A.CATEGORY_NO = D.CATEGORY_NO)
         LEFT JOIN STO_ITEM_INFO E ON (A.ITEM_NO = E.ITEM_NO)
+        LEFT JOIN ITEM_FILE F ON (A.ITEM_NO = F.ITEM_NO)
         WHERE A.RNUM >= #{ startRow }
         ORDER BY A.ITEM_NO ASC
     </select>
@@ -99,9 +131,280 @@
             COUNT(*)
          FROM INTEREST A
         WHERE A.ITEM_NO = ${ itemNo }
-          AND A.STORE_NAME = ${ storeName }
+          AND A.STORE_NAME = '종각점'
     </select>
 
+    <insert id="insertInterest" parameterType="InterestDTO">
+        INSERT INTO INTEREST
+        (
+              INTER_NO
+            , STORE_NAME
+            , CATEGORY_NO
+            , ITEM_NO
+        )
+        VALUES
+        (
+              934
+            , '종각점'
+            , ${ categoryNo }
+            , ${ itemNo }
+        )
+    </insert>
 
+    <delete id="deleteInterest" parameterType="InterestDTO">
+        DELETE FROM INTEREST
+         WHERE STORE_NAME = '종각점'
+           AND ITEM_NO = ${ itemNo }
+    </delete>
+
+    <insert id="insertItemIntoCart" parameterType="CartDTO">
+        INSERT INTO CART
+        (
+              CART_AMOUNT
+            , CATEGORY_NO
+            , ITEM_NO
+            , CART_NO
+            , STORE_NAME
+            , REL_YN
+            , CART_YN
+        )
+        VALUES
+        (
+              ${ cartAmount }
+            , ${ categoryNo }
+            , ${ itemNo }
+            , 1
+            , '종각점'
+            , 'N'
+            , 'Y'
+        )
+    </insert>
+
+    <select id="selectCartTotalCount" resultType="_int" parameterType="hashmap">
+        SELECT
+        COUNT(*)
+        FROM CART A
+        <if test="searchCondition == 'category'">
+            JOIN ITEM_CATEGORY B ON(A.CATEGORY_NO = B.CATEGORY_NO)
+        </if>
+        <if test="searchCondition == 'itemName'">
+            JOIN ITEM_INFO C (A.ITEM_NO = C.ITEM_NO)
+        </if>
+        <where>
+            <if test="searchCondition == 'category'">
+                B.CATEGORY_NAME LIKE '%' || #{ searchValue } || '%'
+            </if>
+            <if test="searchCondition == 'itemName'">
+                C.ITEM_NAME LIKE '%' || #{ searchValue } || '%'
+            </if>
+        </where>
+    </select>
+
+    <select id="selectCartItem" resultMap="cartResultMap">
+        SELECT
+              A.RNUM
+            , A.ITEM_NO
+            , F.ITEM_NAME
+            , D.CATEGORY_NAME
+            , A.CATEGORY_NO
+            , F.ITEM_STANDARD
+            , F.ITEM_MAKE
+            , F.ITEM_SALES
+            , E.STORE_AMOUNT
+            , F.ITEM_SOLDOUT_YN
+        FROM (SELECT ROWNUM RNUM
+            , B.CART_AMOUNT
+            , B.CATEGORY_NO
+            , B.ITEM_NO
+            , B.CART_NO
+            , B.CART_YN
+        FROM (SELECT
+              C.CART_AMOUNT
+            , C.CATEGORY_NO
+            , C.ITEM_NO
+            , C.CART_NO
+            , C.CART_YN
+        FROM CART C
+        <if test="searchCondition == 'category'">
+            JOIN ITEM_CATEGORY D ON(C.CATEGORY_NO = D.CATEGORY_NO)
+        </if>
+        <if test="searchCondition == 'itemName'">
+            JOIN ITEM_INFO F (C.ITEM_NO = F.ITEM_NO)
+        </if>
+        <where>
+            <if test="searchCondition == 'category'">
+                D.CATEGORY_NAME LIKE '%' || #{ searchValue } || '%'
+            </if>
+            <if test="searchCondition == 'itemName'">
+                F.ITEM_NAME LIKE '%' || #{ searchValue } || '%'
+            </if>
+        </where>
+        ORDER BY C.ITEM_NO ASC
+        ) B
+        <![CDATA[
+                  WHERE ROWNUM <= #{ endRow }
+                  ]]>
+        ) A
+        JOIN ITEM_CATEGORY D ON (A.CATEGORY_NO = D.CATEGORY_NO)
+        LEFT JOIN STO_ITEM_INFO E ON (A.ITEM_NO = E.ITEM_NO)
+        LEFT JOIN ITEM_INFO F ON (F.ITEM_NO = A.ITEM_NO)
+        WHERE A.RNUM >= #{ startRow }
+          AND E.STORE_NAME = '종각점'
+        ORDER BY A.ITEM_NO ASC
+    </select>
+
+    <select id="selectAvailableItemCount" resultType="_int" parameterType="hashmap">
+        SELECT
+        COUNT(*)
+        FROM ITEM_INFO A
+        <if test="searchCondition == 'category'">
+            JOIN ITEM_CATEGORY B ON(A.CATEGORY_NO = B.CATEGORY_NO)
+        </if>
+        <where>
+            <if test="searchCondition == 'category'">
+                B.CATEGORY_NAME LIKE '%' || #{ searchValue } || '%'
+            </if>
+            <if test="searchCondition == 'itemName'">
+                A.ITEM_NAME LIKE '%' || #{ searchValue } || '%'
+            </if>
+        AND A.ITEM_SOLDOUT_YN = 'N'
+        </where>
+    </select>
+
+    <select id="selectAvailableItem" resultMap="orderResultMap">
+        SELECT
+        A.RNUM
+        , A.ITEM_NO
+        , A.ITEM_NAME
+        , D.CATEGORY_NAME
+        , A.CATEGORY_NO
+        , A.ITEM_STANDARD
+        , A.ITEM_MAKE
+        , A.ITEM_SALES
+        , E.STORE_AMOUNT
+        , A.ITEM_SOLDOUT_YN
+        , F.FILE_NO
+        , F.ORIGIN_NAME
+        , F.FILE_NAME
+        FROM (SELECT ROWNUM RNUM
+        , B.ITEM_NO
+        , B.ITEM_NAME
+        , B.CATEGORY_NO
+        , B.ITEM_STANDARD
+        , B.ITEM_MAKE
+        , B.ITEM_SALES
+        , B.ITEM_SOLDOUT_YN
+        FROM (SELECT
+        C.ITEM_NO
+        , C.ITEM_NAME
+        , C.CATEGORY_NO
+        , C.ITEM_STANDARD
+        , C.ITEM_MAKE
+        , C.ITEM_SALES
+        , C.ITEM_SOLDOUT_YN
+        FROM ITEM_INFO C
+        <if test="searchCondition == 'category'">
+            JOIN ITEM_CATEGORY D ON(C.CATEGORY_NO = D.CATEGORY_NO)
+        </if>
+        <where>
+            <if test="searchCondition == 'category'">
+                D.CATEGORY_NAME LIKE '%' || #{ searchValue } || '%'
+            </if>
+            <if test="searchCondition == 'itemName'">
+                C.ITEM_NAME LIKE '%' || #{ searchValue } || '%'
+            </if>
+        </where>
+        ORDER BY C.ITEM_NO ASC
+        ) B
+        <![CDATA[
+                  WHERE ROWNUM <= #{ endRow }
+                  ]]>
+        ) A
+        JOIN ITEM_CATEGORY D ON (A.CATEGORY_NO = D.CATEGORY_NO)
+        LEFT JOIN STO_ITEM_INFO E ON (A.ITEM_NO = E.ITEM_NO)
+        LEFT JOIN ITEM_FILE F ON (A.ITEM_NO = F.ITEM_NO)
+        WHERE A.RNUM >= #{ startRow }
+        AND A.ITEM_SOLDOUT_YN = 'N'
+        ORDER BY A.ITEM_NO ASC
+    </select>
+
+    <select id="selectInterestItemCount" resultType="_int" parameterType="hashmap">
+        SELECT
+        COUNT(*)
+        FROM INTEREST A
+        <if test="searchCondition == 'category'">
+            JOIN ITEM_CATEGORY B ON(A.CATEGORY_NO = B.CATEGORY_NO)
+        </if>
+        <if test="searchCondition == 'itemName'">
+            JOIN ITEM_INFO C ON(A.CATEGORY_NO = C.CATEGORY_NO)
+        </if>
+        <where>
+            <if test="searchCondition == 'category'">
+                B.CATEGORY_NAME LIKE '%' || #{ searchValue } || '%'
+            </if>
+            <if test="searchCondition == 'itemName'">
+                C.ITEM_NAME LIKE '%' || #{ searchValue } || '%'
+            </if>
+            AND A.STORE_NAME = '종각점'
+        </where>
+    </select>
+
+    <select id="selectInterestItem" resultMap="orderResultMap">
+        SELECT
+        A.RNUM
+        , A.ITEM_NO
+        , A.ITEM_NAME
+        , D.CATEGORY_NAME
+        , A.CATEGORY_NO
+        , A.ITEM_STANDARD
+        , A.ITEM_MAKE
+        , A.ITEM_SALES
+        , E.STORE_AMOUNT
+        , A.ITEM_SOLDOUT_YN
+        , F.FILE_NO
+        , F.ORIGIN_NAME
+        , F.FILE_NAME
+        FROM (SELECT ROWNUM RNUM
+        , B.ITEM_NO
+        , B.ITEM_NAME
+        , B.CATEGORY_NO
+        , B.ITEM_STANDARD
+        , B.ITEM_MAKE
+        , B.ITEM_SALES
+        , B.ITEM_SOLDOUT_YN
+        FROM (SELECT
+          C.ITEM_NO
+        , C.ITEM_NAME
+        , C.CATEGORY_NO
+        , C.ITEM_STANDARD
+        , C.ITEM_MAKE
+        , C.ITEM_SALES
+        , C.ITEM_SOLDOUT_YN
+        FROM ITEM_INFO C
+        <if test="searchCondition == 'category'">
+            JOIN ITEM_CATEGORY D ON(C.CATEGORY_NO = D.CATEGORY_NO)
+        </if>
+        <where>
+            <if test="searchCondition == 'category'">
+                D.CATEGORY_NAME LIKE '%' || #{ searchValue } || '%'
+            </if>
+            <if test="searchCondition == 'itemName'">
+                C.ITEM_NAME LIKE '%' || #{ searchValue } || '%'
+            </if>
+        </where>
+        ORDER BY C.ITEM_NO ASC
+        ) B
+        <![CDATA[
+                  WHERE ROWNUM <= #{ endRow }
+                  ]]>
+        ) A
+        JOIN ITEM_CATEGORY D ON (A.CATEGORY_NO = D.CATEGORY_NO)
+        LEFT JOIN STO_ITEM_INFO E ON (A.ITEM_NO = E.ITEM_NO)
+        LEFT JOIN ITEM_FILE F ON (A.ITEM_NO = F.ITEM_NO)
+        LEFT JOIN INTEREST G ON (A.ITEM_NO = G.ITEM_NO)
+        WHERE A.RNUM >= #{ startRow }
+        AND G.STORE_NAME = '종각점'
+        ORDER BY A.ITEM_NO ASC
+    </select>
 
 </mapper>

@@ -2,7 +2,6 @@ package com.chicken.project.order.model.dto;
 
 public class InterestDTO {
 
-    private String interYn;
     private int interNo;
     private String storeName;
     private int categoryNo;
@@ -11,21 +10,13 @@ public class InterestDTO {
     public InterestDTO() {
     }
 
-    public InterestDTO(String interYn, int interNo, String storeName, int categoryNo, int itemNo) {
-        this.interYn = interYn;
+    public InterestDTO(int interNo, String storeName, int categoryNo, int itemNo) {
         this.interNo = interNo;
         this.storeName = storeName;
         this.categoryNo = categoryNo;
         this.itemNo = itemNo;
     }
 
-    public String getInterYn() {
-        return interYn;
-    }
-
-    public void setInterYn(String interYn) {
-        this.interYn = interYn;
-    }
 
     public int getInterNo() {
         return interNo;
@@ -62,7 +53,6 @@ public class InterestDTO {
     @Override
     public String toString() {
         return "InterestDTO{" +
-                "interYn='" + interYn + '\'' +
                 ", interNo=" + interNo +
                 ", storeName='" + storeName + '\'' +
                 ", categoryNo=" + categoryNo +

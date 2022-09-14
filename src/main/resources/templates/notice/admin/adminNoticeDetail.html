@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
@@ -52,7 +53,7 @@
                 </tr>
                 <tr>
                   <th>첨부파일</th>
-                  <td class="align-left" th:text="${ noticeDetail.noticeFile }" style="cursor:pointer"></td>
+                  <td class="align-left" ><a th:href="|/uploadFiles/${ noticeDetail.noticeFile.getFileName() }|" th:text="${ noticeDetail.noticeFile.getOriginName() }" download></a></td>
                 </tr>
               </tbody>
             </table>

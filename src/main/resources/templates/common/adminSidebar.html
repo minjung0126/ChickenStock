@@ -5,10 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
 
   <title>chicken stock</title>
-
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script type="text/javascript" th:src="@{/js/common.js}"></script>
-
+  <script type="text/javascript" th:src="@{http://code.jquery.com/jquery-3.6.0.min.js}"></script>
+  <script th:src="@{/js/common.js}"></script>
 </head>
 <body>
 
@@ -16,12 +14,12 @@
       <div class="aside">
         <div class="accordion">
           <!-- 하위 메뉴가 없을때 -->
-          <div class="accordion_dep type1">
-            <a href="#" title=""><img src="/images/home.png" width="18px" height="18px"> 홈</a>
+          <div class="accordion_dep type1 ">
+            <a th:href="@{/member/moveMain}" title="">홈</a>
           </div>
           <!-- 하위 메뉴가 있을때 -->
           <div class="accordion_dep type2">
-            <a href="#" title=""><img src="/images/mypage.png" width="18px" height="18px"> 마이페이지</a>
+            <a href="#" title="">마이페이지</a>
             <ul>
               <li>
                  <a href="#" title="">비밀번호 수정</a>
@@ -30,60 +28,72 @@
           </div>
 
           <div class="accordion_dep type1 ">
-            <a href="#" title=""><img src="/images/items.png" width="18px" height="18px"> 품목관리</a>
+            <a href="/item/admin/list" title="">품목관리</a>
           </div>
 
           <div class="accordion_dep type1 ">
-            <a href="#" title=""><img src="/images/container.png" width="18px" height="18px"> 입고관리</a>
+            <a href="/receive/admin/list" title="">입고관리</a>
           </div>
 
           <div class="accordion_dep type1 ">
-            <a href="#" title=""><img src="/images/cargo.png" width="18px" height="18px"> 출고관리</a>
+            <a href="#" title="">출고관리</a>
           </div>
 
           <div class="accordion_dep type1 ">
-            <a href="../return/returnRItemList.html" title=""><img src="/images/re.png" width="18px" height="18px">  반품관리</a>
+            <a href="../return/returnRItemList.html" title="">반품관리</a>
           </div>
 
           <div class="accordion_dep type1 ">
-            <a href="../billTax/billtaxList.html" title=""><img src="/images/tax.png" width="18px" height="18px"> 세금계산서</a>
+            <a href="../billTax/billtaxList.html" title="">세금계산서</a>
           </div>
 
           <div class="accordion_dep type1 ">
-            <a href="../billTax/tsbilltaxList.html" title=""><img src="/images/bill.png" width="18px" height="18px"> 거래명세서</a>
+            <a href="../billTax/tsbilltaxList.html" title="">거래명세서</a>
           </div>
 
           <div class="accordion_dep type1 ">
-            <a href="/store/admin/list" title=""><img src="/images/shop.png" width="18px" height="18px"> 가맹점관리</a>
+            <a href="/store/admin/list" title="">가맹점관리</a>
           </div>
 
           <div class="accordion_dep type1 ">
-            <a href="/notice/admin/list" title=""><img src="/images/notice.png" width="18px" height="18px"> 공지사항</a>
+            <a href="/notice/admin/list" title="">공지사항</a>
+          </div>
+
+          <div class="accordion_dep type1 ">
+            <a href="/counsel/admin/list" title="">1:1 문의</a>
           </div>
 
           <div class="accordion_dep type2">
-            <a href="#" title=""><img src="/images/admin.png" width="18px" height="18px"> 관리자메뉴</a>
-            <ul style="display: block;">
+            <a href="#" title="">예치금 관리</a>
+            <ul>
               <li>
-                <a href="#" title="">직원관리</a>
-             </li>
-              <li>
-                <a href="#" title="">예치금관리</a>
+                <a href="/account/admin/list" title="">입금 신청내역 조회</a>
               </li>
+              <li>
+                <a href="" title="">가맹점 잔액조회</a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="accordion_dep type2">
+            <a href="#" title="">관리자메뉴</a>
+            <ul>
               <li>
                 <a href="/notice/admin/insert" title="">공지사항 작성</a>
               </li>
               <li>
-                <a href="#" title="">가맹점 등록</a>
+                <a href="/store/admin/insert" title="">가맹점 등록</a>
               </li>
               <li>
                 <a href="#" title="">일정관리</a>
               <li>
+                <a th:href="@{/empList/empList}" title="">직원관리</a>
+             </li>
             </ul>
           </div>
         </div>
       </div>
-
       <!-- E: aside -->
+
 </body>
 </html>

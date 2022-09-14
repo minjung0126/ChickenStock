@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chicken.project.account.model.dao.AccountMapper">
+    <resultMap id="accountApplyResultMap" type="AccountApplyDTO">
+        <id property="storeName" column="STORE_NAME"/>
+        <result property="depositNum" column="DEPOSIT_NUM"/>
+        <result property="depositRegistDate" column="DEPOSIT_REGIST_DATE"/>
+        <result property="depositYn" column="DEPOSIT_YN"/>
+
+        <association property="accountDeposit" resultMap="accountResultMap"/>
+    </resultMap>
+
+    <resultMap id="accountResultMap" type="AccountDTO">
+        <id property="storeName" column="STORE_NAME"/>
+        <result property="depositNum" column="DEPOSIT_NUM"/>
+        <result property="accountDate" column="ACCOUNT_DATE"/>
+        <result property="accountDeposit" column="ACCOUNT_DEPOSIT"/>
+        <result property="accountYn" column="ACCOUNT_YN"/>
+    </resultMap>
+
+    <select id="selectAccountApplyList" resultMap="accountApplyResultMap">
+        SELECT
+               A.*
+             , B.ACCOUNT_DEPOSIT
+          FROM ACCOUNT_APPLY A
+          JOIN ACCOUNT B ON (A.DEPOSIT_NUM = B.DEPOSIT_NUM)
+    </select>
+
+    <select id="selectAccountList" resultMap="accountResultMap">
+        SELECT
+               *
+          FROM ACCOUNT
+    </select>
+</mapper>

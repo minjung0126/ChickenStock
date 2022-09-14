@@ -25,4 +25,14 @@ public interface NoticeMapper {
     int selectTotalCount(Map<String, String> searchMap);
 
     List<NoticeDTO> selectNoticeList(SelectCriteria selectCriteria);
+
+    NoticeFileDTO selectFileByName(int noticeNo);
+
+    int updateNotice(NoticeDTO notice);
+
+    int updateNoticeFile(NoticeFileDTO noticeFile);
+
+    int incrementNoticeCount(int noticeNo);
+
+    List<NoticeDTO> selectMainNotice();
 }

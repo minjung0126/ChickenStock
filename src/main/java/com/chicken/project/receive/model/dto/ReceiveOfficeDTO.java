@@ -1,12 +1,11 @@
 package com.chicken.project.receive.model.dto;
 
-import com.chicken.project.empList.model.dto.EmployeeDTO;
+import com.chicken.project.receive.model.dto.RecEmployeeDTO;
 import com.chicken.project.item.model.dto.ItemCategoryDTO;
 import com.chicken.project.item.model.dto.ItemFileDTO;
 import com.chicken.project.item.model.dto.ItemInfoDTO;
 
 import java.sql.Date;
-import java.util.List;
 
 public class ReceiveOfficeDTO {
 
@@ -17,17 +16,20 @@ public class ReceiveOfficeDTO {
     private int countRecCode; // 입고 상품 종류 개수
     private String sumRecTotalMoney; // 총 입고 금액
     private String stringRecDate; // 입고일 ('yyyy-dd-mm')
+    private String empName;
+    private String maxRecCode;
+    private int rNum;
 
     private ReceiveOfficeItemDTO receiveOfficeItem;
     private ItemInfoDTO itemInfo;
     private ItemCategoryDTO itemCategory;
     private ItemFileDTO itemFile;
-    private EmployeeDTO employee;
+    private RecEmployeeDTO employee;
 
     public ReceiveOfficeDTO() {
     }
 
-    public ReceiveOfficeDTO(String recCode, Date recDate, String empId, int sumRecTotalAmount, int countRecCode, String sumRecTotalMoney, String stringRecDate, ReceiveOfficeItemDTO receiveOfficeItem, ItemInfoDTO itemInfo, ItemCategoryDTO itemCategory, ItemFileDTO itemFile, EmployeeDTO employee) {
+    public ReceiveOfficeDTO(String recCode, Date recDate, String empId, int sumRecTotalAmount, int countRecCode, String sumRecTotalMoney, String stringRecDate, String empName, String maxRecCode, int rNum, ReceiveOfficeItemDTO receiveOfficeItem, ItemInfoDTO itemInfo, ItemCategoryDTO itemCategory, ItemFileDTO itemFile, RecEmployeeDTO employee) {
         this.recCode = recCode;
         this.recDate = recDate;
         this.empId = empId;
@@ -35,6 +37,9 @@ public class ReceiveOfficeDTO {
         this.countRecCode = countRecCode;
         this.sumRecTotalMoney = sumRecTotalMoney;
         this.stringRecDate = stringRecDate;
+        this.empName = empName;
+        this.maxRecCode = maxRecCode;
+        this.rNum = rNum;
         this.receiveOfficeItem = receiveOfficeItem;
         this.itemInfo = itemInfo;
         this.itemCategory = itemCategory;
@@ -98,6 +103,30 @@ public class ReceiveOfficeDTO {
         this.stringRecDate = stringRecDate;
     }
 
+    public String getEmpName() {
+        return empName;
+    }
+
+    public void setEmpName(String empName) {
+        this.empName = empName;
+    }
+
+    public String getMaxRecCode() {
+        return maxRecCode;
+    }
+
+    public void setMaxRecCode(String maxRecCode) {
+        this.maxRecCode = maxRecCode;
+    }
+
+    public int getrNum() {
+        return rNum;
+    }
+
+    public void setrNum(int rNum) {
+        this.rNum = rNum;
+    }
+
     public ReceiveOfficeItemDTO getReceiveOfficeItem() {
         return receiveOfficeItem;
     }
@@ -130,11 +159,11 @@ public class ReceiveOfficeDTO {
         this.itemFile = itemFile;
     }
 
-    public EmployeeDTO getEmployee() {
+    public RecEmployeeDTO getEmployee() {
         return employee;
     }
 
-    public void setEmployee(EmployeeDTO employee) {
+    public void setEmployee(RecEmployeeDTO employee) {
         this.employee = employee;
     }
 
@@ -147,7 +176,10 @@ public class ReceiveOfficeDTO {
                 ", sumRecTotalAmount=" + sumRecTotalAmount +
                 ", countRecCode=" + countRecCode +
                 ", sumRecTotalMoney='" + sumRecTotalMoney + '\'' +
-                ", StringRecDate='" + stringRecDate + '\'' +
+                ", stringRecDate='" + stringRecDate + '\'' +
+                ", empName='" + empName + '\'' +
+                ", maxRecCode='" + maxRecCode + '\'' +
+                ", rNum=" + rNum +
                 ", receiveOfficeItem=" + receiveOfficeItem +
                 ", itemInfo=" + itemInfo +
                 ", itemCategory=" + itemCategory +
