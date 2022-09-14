@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface EmpListService {
     /* 직원 정보 리스트 조회 */
-    List<EmployeeDTO> selectAllEmployee(SelectCriteria criteria);
+    List<EmployeeDTO> selectAllEmployee();
 
     /* 직원 정보 등록 */
     @Transactional
@@ -19,5 +19,4 @@ public interface EmpListService {
 
     int insertAuth(String empId);
 
-    int selectTotalEmpList();
 }

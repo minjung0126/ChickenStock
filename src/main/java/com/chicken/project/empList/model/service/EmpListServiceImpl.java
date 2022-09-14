@@ -5,6 +5,7 @@ import com.chicken.project.member.model.dao.EmployeeMapper;
 import com.chicken.project.member.model.dto.EmployeeDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,16 +17,16 @@ public class EmpListServiceImpl implements EmpListService {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
     private final EmployeeMapper employeeMapper;
 
-
+    @Autowired
     public EmpListServiceImpl(EmployeeMapper employeeMapper) {
         this.employeeMapper = employeeMapper;
     }
 
     /* 직원 정보 리스트 조회 */
     @Override
-    public List<EmployeeDTO> selectAllEmployee(SelectCriteria criteria) {
+    public List<EmployeeDTO> selectAllEmployee() {
 
-        List<EmployeeDTO> empList = employeeMapper.selectAllEmployee(criteria);
+        List<EmployeeDTO> empList = employeeMapper.selectAllEmployee();
 
         return empList;
     }
@@ -42,11 +43,11 @@ public class EmpListServiceImpl implements EmpListService {
 
         /* 직원 권한 추가 */
         int result2 = employeeMapper.insertEmpRole(emp);
-        
+
         int result = 0;
-        
+
         if(result1 > 0 && result2 > 0){
-            
+
             result = 1;
         }
 
@@ -56,7 +57,6 @@ public class EmpListServiceImpl implements EmpListService {
     }
 
     /* 관리자 권한 추가 */
-
     @Override
     public int selectCkAdminAuth(String empId) {
 
@@ -80,12 +80,4 @@ public class EmpListServiceImpl implements EmpListService {
         return result;
     }
 
-
-    @Override
-    public int selectTotalEmpList() {
-
-        int result = employeeMapper.selectTotalEmpList();
-
-        return result;
-    }
 }

@@ -44,9 +44,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         // 페이지 접근 권한
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET,"calendar/**").hasRole("EMPLOYEE")
-                .antMatchers(HttpMethod.POST, "calendar/**").hasRole("ADMIN")
-                .antMatchers(HttpMethod.GET, "calendar/**").hasRole("STORE")
+                .antMatchers("/calendar/**").hasRole("ADMIN")
                 .antMatchers("/counsel/admin/**").hasRole("ADMIN")
                 .antMatchers("/counsel/user/**").hasRole("STORE")
                 .antMatchers("/notice/admin/**").hasRole("ADMIN")

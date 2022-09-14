@@ -21,10 +21,39 @@
 
     <script>
 
+        import events from "./jszip";
+
         document.addEventListener('DOMContentLoaded', function() {
             var calendarEl = document.getElementById('calendar');
 
             var calendar = new FullCalendar.Calendar(calendarEl, {
+
+                events:function (){
+
+                    var cal = {"calName" : calName, "startDay" : startDay, "endDay" : endDay}
+                    $.ajax({
+                        url:"/calendar/calendar",
+                        type: "GET",
+                        data: {
+                            cal : cal
+                        },
+                        success: function (data){
+                            console.log(data);
+                            events.push({
+                               title : data.calName,
+                                start : data.startDay,
+                                end : data.endDay,
+                                color : 'blue'
+                            });
+                        },
+                        error: function (data){
+                            alert("일정 조회에 실패하셨습니다.")
+                        }
+                    })
+                },
+
+
+
                 googleCalendarApiKey: 'AIzaSyCDi0sVIXFLB5pKLfgmEgPvvieZ3a375dQ',
                 eventSources: [
                     {
@@ -45,17 +74,14 @@
                         }
                     }
                 },
-                events: [
-                    {
-                        groupId: 999,
-                        title: 'Conference',
-                        start: '2022-09-15',
-                        end: '2022-09-17',
-                    }
-                ],
-                footerToolbar:{
-                    right: 'addEventButton'
-                },
+                // events: [
+                //     {
+                //         groupId: 999,
+                //         title: 'Conference',
+                //         start: '2022-09-15',
+                //         end: '2022-09-17',
+                //     }
+                // ],
                 customButtons:{
                     addEventButton:{
                         text: '일정 추가',
@@ -133,11 +159,11 @@
                 <form action="" method="post">
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="taskId" class="col-form-label">일정 내용</label>
+                            <label class="col-form-label">일정 내용</label>
                             <input type="text" class="form-control" id="calendar_content" name="calendar_content">
-                            <label for="taskId" class="col-form-label">시작 날짜</label>
+                            <label class="col-form-label">시작 날짜</label>
                             <input type="date" class="form-control" id="calendar_start_date" name="calendar_start_date">
-                            <label for="taskId" class="col-form-label">종료 날짜</label>
+                            <label class="col-form-label">종료 날짜</label>
                             <input type="date" class="form-control" id="calendar_end_date" name="calendar_end_date">
                         </div>
                     </div>

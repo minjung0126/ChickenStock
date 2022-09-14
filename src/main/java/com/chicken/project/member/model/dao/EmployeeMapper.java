@@ -1,5 +1,6 @@
 package com.chicken.project.member.model.dao;
 
+import com.chicken.project.calendar.model.dto.CalendarDTO;
 import com.chicken.project.common.paging.SelectCriteria;
 import com.chicken.project.member.model.dto.EmpRoleDTO;
 import com.chicken.project.member.model.dto.EmployeeDTO;
@@ -9,12 +10,12 @@ import java.util.List;
 
 @Mapper
 public interface EmployeeMapper {
-    List<EmployeeDTO> selectAllEmployee(SelectCriteria criteria);
+    List<EmployeeDTO> selectAllEmployee();
     int insertEmployee(EmployeeDTO emp);
     int insertEmpRole(EmployeeDTO emp);
     EmployeeDTO selectEmpInfo(String empId);
     int selectCkAdminAuth(String empId);
     int insertAuth(String empId);
 
-    int selectTotalEmpList();
+    List<CalendarDTO> selectCalendar();
 }
