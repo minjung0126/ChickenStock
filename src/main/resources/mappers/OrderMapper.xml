@@ -143,18 +143,18 @@
             , CATEGORY_NO
             , ITEM_NO
         )
-        VALUES
-        (
+        SELECT
               SEQ_INTEREST_NO.NEXTVAL
             , #{ storeName }
-            , #{ categoryNo }
+            , A.CATEGORY_NO
             , #{ itemNo }
-        )
+         FROM ITEM_INFO A
+        WHERE ITEM_NO = ${ itemNo }
     </insert>
 
     <delete id="deleteInterest" parameterType="InterestDTO">
         DELETE FROM INTEREST
-         WHERE STORE_NAME = '종각점'
+         WHERE STORE_NAME = #{ storeName }
            AND ITEM_NO = ${ itemNo }
     </delete>
 
@@ -175,6 +175,7 @@
             <if test="searchCondition == 'itemName'">
                 C.ITEM_NAME LIKE '%' || #{ searchValue } || '%'
             </if>
+            AND A.STORE_NAME = #{ storeName }
         </where>
     </select>
 
@@ -335,7 +336,7 @@
             <if test="searchCondition == 'itemName'">
                 C.ITEM_NAME LIKE '%' || #{ searchValue } || '%'
             </if>
-            AND A.STORE_NAME = '#{ storeName }
+            AND A.STORE_NAME = #{ storeName }
         </where>
     </select>
 
@@ -412,7 +413,7 @@
             , A.CATEGORY_NO
             , ${ itemNo }
             , SEQ_CART_NO_TEST.NEXTVAL
-            , '신길점'
+            , #{ storeName }
             , 'Y'
          FROM ITEM_INFO A
         WHERE A.ITEM_NO = ${ itemNo }

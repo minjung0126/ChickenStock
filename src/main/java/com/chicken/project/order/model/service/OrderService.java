@@ -127,14 +127,8 @@ public class OrderService {
 
     }
 
-    @Transactional
-    public void insertItemIntoCart(int itemNo, int cartAmount) throws InterestException {
+    public void insertItemIntoCart(int itemNo, int cartAmount, String storeName) {
 
-        int result = orderMapper.insertItemIntoCart(itemNo, cartAmount);
-
-        if(!(result > 0)) {
-            throw new InterestException("장바구니 담기에 실패하셨습니다.");
-        }
-
+        orderMapper.insertItemIntoCart(itemNo, cartAmount, storeName);
     }
 }
