@@ -33,4 +33,11 @@ public interface ReItemMapper {
 
 
     int insertProgress(ReItemDTO reItemDTO);
+
+    int updateComplete(Map<String, Object> map);
+
+
+    int updateMoney(Map<String, Object> maps);
+
+    int updateProgress(int parseInt);
 }

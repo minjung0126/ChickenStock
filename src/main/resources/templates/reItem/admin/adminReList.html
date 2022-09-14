@@ -68,9 +68,11 @@
                             <td th:text="${ re.storeRep }"></td>
                             <td th:text="${ re.rDate }"></td>
                             <td th:text="${ re.returnProgress }"></td>
-                            <td th:text="${ re.rProgress }"></td>
+                            <td th:if="${ re.rProgress eq NULL }" th:text="${ re.rProgress }"></td>
+                            <td th:if="${ re.rProgress eq '폐기' }" th:text="${ re.rProgress }"></td>
+                            <td th:if="${ re.rProgress eq '재등록' }" ><button class="btn btn-warning me-1" type="button">재등록</button></td>
                             <td>
-                                <button class="btn btn-warning me-1" th:onclick="|location.href='@{/reItem/admin/adminReItem(rNo=${ re.rNo })}'|">상세보기</button>
+                                <button class="btn btn-warning me-1" th:onclick="|location.href='@{/reItem/admin/adminReItem(rNo=${ re.rNo }, storeName=${ re.storeName })}'|">상세보기</button>
                             </td>
                         </tr>
                         </tbody>

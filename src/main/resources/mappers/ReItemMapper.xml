@@ -11,6 +11,7 @@
         <result property="storeName" column="STORE_NAME"/>
         <result property="storeRep" column="STORE_REP"/>
         <result property="rProgress" column="R_PROGRESS"/>
+        <result property="empId" column="EMP_ID"/>
     </resultMap>
     <resultMap id="reItemResultMap" type="ReItemDTO">
         <id property="rNo" column="R_NO"/>
@@ -263,5 +264,31 @@
         , SEQ_PROGRESS_NO.NEXTVAL
         )
     </insert>
+
+    <update id="updateComplete" parameterType="ReListDTO">
+        UPDATE
+            RETURN_PROGRESS
+        SET R_DONE_DATE = SYSDATE
+          , EMP_ID = #{ adminId }
+          , R_PROGRESS = CASE WHEN '실수로 잘못 주문함' = (SELECT R_REASON FROM RETURN_ITEM WHERE R_REASON = '실수로 잘못 주문함' AND R_NO = #{ rNo }) THEN '재등록'
+                              WHEN '배송중 손상됨' = (SELECT R_REASON FROM RETURN_ITEM WHERE R_REASON = '배송중 손상됨' AND R_NO = #{ rNo }) THEN '폐기'
+                              WHEN '더이상 필요하지 않음' = (SELECT R_REASON FROM RETURN_ITEM WHERE R_REASON = '더이상 필요하지 않음' AND R_NO = #{ rNo }) THEN '재등록'
+                              WHEN '유통기한이 지난(짧은) 상품 배송' = (SELECT R_REASON FROM RETURN_ITEM WHERE R_REASON = '유통기한이 지난(짧은) 상품 배송' AND R_NO = #{ rNo }) THEN '폐기'
+                              ELSE '다시 확인이필요'
+                               END
+        WHERE R_NO = #{ rNo }
+    </update>
+
+    <update id="updateProgress" parameterType="ReItemDTO">
+        UPDATE RETURN_ITEM
+           SET RETURN_PROGRESS = '반품완료'
+         WHERE R_NO = #{ rNo }
+    </update>
+    <update id="updateMoney" parameterType="BalanceDTO">
+        UPDATE BALANCE
+        SET BALANCE = (SELECT RETURN_ACCOUNT FROM RETURN_ITEM WHERE R_NO = #{ rNo } AND  RETURN_PROGRESS = '반품완료') + BALANCE
+        WHERE STORE_NAME = #{ storeName }
+    </update>
+
 
 </mapper>

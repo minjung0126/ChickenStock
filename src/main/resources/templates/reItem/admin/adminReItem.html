@@ -51,6 +51,8 @@
                             <span id="deadline2" th:text="|${#numbers.formatInteger(reItem.returnTotalMoney, 3, 'COMMA') }원|"></span>
                             <input type="hidden" name="returnTotalMoney" th:value="${ reItem.returnTotalMoney }">
                         </div>
+                        <input type="hidden" name="rNo" th:value="${ rNo }">
+                        <input type="hidden" name="storeName" th:value="${ storeName }">
                     </div>
                     <table class="table">
                         <thead>
@@ -109,7 +111,7 @@
         }
 
         const formHtml = `
-                    <form id="updateForm" action="/reItem/admin/adminReItem" method="post">
+                    <form id="updateForm" action="/reItem/admin/adminReItem?" method="post">
                     </form>
                 `;
         const doc = new DOMParser().parseFromString(formHtml, 'text/html');

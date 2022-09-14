@@ -103,4 +103,36 @@ public class ReItemService {
         return result;
     }
 
+    public int updateComplete(ReItemDTO returnItems, String adminId, String rNo, String storeName) {
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("adminId", adminId);
+        map.put("rNo", Integer.parseInt(rNo));
+
+        int result = 0;
+
+        result = reItemMapper.updateComplete(map);  //본사 progress update
+
+        if(result > 0){
+
+            result = 0;
+
+            result = reItemMapper.updateProgress(Integer.parseInt(rNo));  // 대기 -> 반품완료
+
+            if(result > 0){
+
+                result = 0;
+
+                Map<String, Object> maps = new HashMap<>();
+                maps.put("rNo", Integer.parseInt(rNo));
+                maps.put("storeName", storeName);
+                maps.put("returnTotalMoney", returnItems.getReturnTotalMoney());
+
+                result = reItemMapper.updateMoney(maps);    // 예치금 올려주기
+            }
+
+        }
+
+        return result;
+    }
 }

@@ -164,10 +164,12 @@ public class ReItemController {
     }
     // 본사 반품 상세보기
     @GetMapping("/admin/adminReItem")
-    public ModelAndView ReAcceptance(ModelAndView mv, HttpServletRequest request, Model model){
+    public ModelAndView ReAcceptance(ModelAndView mv, HttpServletRequest request){
 
         String rNo = request.getParameter("rNo");
-        model.addAttribute("rNo",rNo);
+        String storeName = request.getParameter("storeName");
+        mv.addObject("rNo", rNo);
+        mv.addObject("storeName",storeName);
 
         ReItemDTO reItem = reItemService.selectReturnItem(rNo);
         List<ReItemDTO> reItems = reItemService.selectReturnItems(rNo);
@@ -181,25 +183,20 @@ public class ReItemController {
     @PostMapping("/admin/adminReItem")
     public ModelAndView ReturnComplete(ModelAndView mv
                                         , HttpServletRequest request
-                                        , Model model
                                         , @AuthenticationPrincipal AdminImpl adminImpl
                                         , String[] returnCount2
                                         , String[] itemNo2
-                                        , @ModelAttribute ReItemDTO returnItems){
-
-        String rNo = request.getParameter("rNo");
-        model.addAttribute("rNo",rNo);
+                                        , @ModelAttribute ReItemDTO returnItems
+                                        , @RequestParam String rNo
+                                        , @RequestParam String storeName){
 
         String adminId = adminImpl.getEmpId();
 
-        log.info("값이 잘 나오나요? : " + returnItems);
-        log.info("값이 잘 나오나요?22 : " + rNo);
-        log.info("값이 잘 나오나요?33 : " +adminId);
-        log.info("값이 잘 나오나요?44 : " + returnCount2);
-        log.info("값이 잘 나오나요?55 : " + itemNo2);
-//        int result = reItemService.upadteComplete();
+        int result = reItemService.updateComplete(returnItems, adminId, rNo, storeName);
 
+        log.info("result 값을 확인해주셍 : " + result);
 
+        mv.setViewName("redirect:/reItem/admin/adminReList");
 
         return mv;
     }
