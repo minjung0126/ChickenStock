@@ -189,4 +189,12 @@ public class ReleaseServiceImpl implements ReleaseService{
 
         return result;
     }
+
+    @Override
+    public int totalCount(ReleaseSelectCriteria selectCriteria) {
+
+        int result = releaseMapper.totalCount(selectCriteria);
+
+        return result;
+    }
 }

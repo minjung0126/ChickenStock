@@ -43,4 +43,6 @@ public interface ReleaseMapper {
     ReleaseOrderDTO relItemDetailSelect(int relCodeDetail);
 
     int itemHistoryInsert(int relCode, int itemNo);
+
+    int totalCount(ReleaseSelectCriteria selectCriteria);
 }
