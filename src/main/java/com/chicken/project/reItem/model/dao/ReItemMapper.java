@@ -48,4 +48,10 @@ public interface ReItemMapper {
     int insertHistory(ReItemDTO reItem);
 
     int updateRProgress(ReItemDTO reItem);
+
+    int deleteProgress(String rNo);
+
+    int deleteRItem(String rNo);
+
+    int deleteReturnItems(String rNo);
 }

@@ -70,6 +70,7 @@ public class ReItemService {
         return storeItems;
     }
 
+    // 가맹점 반품신청
     @Transactional
     public int insertReItem(List<ReItemDTO> insertItem, String storeName) {
 
@@ -77,7 +78,7 @@ public class ReItemService {
 
         result = reItemMapper.insertReturnItems(insertItem.get(0));
 
-        if(result > 0){ //insertReItem1 성공 시 insertReItem2 실행
+        if(result > 0){
 
             log.info("result 확인 : " + result);
             result = 0; //초기화
@@ -102,6 +103,7 @@ public class ReItemService {
 
         return result;
     }
+    // 본사 반품승인
     @Transactional
     public int updateComplete(ReItemDTO returnItems, String adminId, String rNo, String storeName) {
 
@@ -171,6 +173,29 @@ public class ReItemService {
             log.info("확인중입니다요"+reItem);
         }
 
+
+        return result;
+    }
+
+    public int deleteList(String rNo) {
+
+        int result = 0;
+
+        result = reItemMapper.deleteProgress(rNo);
+
+        if(result > 0 ){
+
+            result = 0;
+
+            result = reItemMapper.deleteRItem(rNo);
+
+            if(result > 0 ){
+
+                result = 0;
+
+                result = reItemMapper.deleteReturnItems(rNo);
+            }
+        }
 
         return result;
     }

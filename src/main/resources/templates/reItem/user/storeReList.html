@@ -66,17 +66,27 @@
                             <td th:text="${ re.rDate }"></td>
                             <td th:text="${ re.rDoneDate }"></td>
                             <td th:text="${ re.returnProgress }" ></td>
-                            <td>
+                            <td th:if="${ re.returnProgress eq '대기' }">
                                 <div class="dropdown open">
                                     <a href="#!" class="px-2" id="triggerId1" data-toggle="dropdown" aria-haspopup="true"
                                        aria-expanded="false">
                                         <i class="fa fa-ellipsis-v"></i>
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="triggerId1">
-                                        <a class="dropdown-item" href="#"><i class="fa fa-eye mr-1"></i>View</a>
                                         <a class="dropdown-item" href="/reItem/user/reviseReItem"><i class="fa fa-pencil mr-1"></i>수정</a>
-                                        <a class="dropdown-item text-danger" href="#" onclick="deleteForm()"><i class="fa fa-trash mr-1"></i>삭제</a>
+                                        <form id="deleteForm" th:action="@{/reItem/user/storeReList}" method="post">
+                                        <a  class="dropdown-item text-danger" onclick="deleteForm()"><i class="fa fa-trash mr-1"></i>삭제</a>
+                                            <input type="hidden" name="rNo" th:value="${ re.rNo }">
+                                        </form>
                                     </div>
+                                </div>
+                            </td>
+                            <td th:if="${ re.returnProgress eq '반품완료' }">
+                                <div class="dropdown open">
+                                    <a href="#!" class="px-2" id="triggerId2" data-toggle="dropdown" aria-haspopup="true"
+                                       aria-expanded="false">
+                                        <i class="fa fa-ellipsis-v"></i>
+                                    </a>
                                 </div>
                             </td>
                         </tr>
@@ -131,17 +141,25 @@
     </div>
     <!-- E: container -->
 </div>
-<!-- table js -->
-<!-- 장바구니 품목 삭제 -->
-<script type="text/javascript">
+<script th:inline="javascript">
+    /*<![CDATA[*/
+
+    // 게시글 삭제
     function deleteForm() {
-        var result = confirm("반품신청을 삭제하시겠습니까?");
-        if(result == true) {
-            /*로직로직로직로직*/
-            alert("해당 신청서가 삭제되었습니다.");
+        var result = confirm("해당 반품서를 삭제할까요?");
+
+        if (result) {
+
+            $('#deleteForm').submit();
+            alert('반품서 삭제가 완료되었습니다.');
+
+            return false;
         }
     }
+
+    /*]]>*/
 </script>
+<!-- table js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 </body>

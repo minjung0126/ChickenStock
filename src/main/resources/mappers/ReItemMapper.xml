@@ -327,4 +327,22 @@
             R_PROGRESS = '재등록 완료'
         WHERE R_NO = #{ rNo }
     </update>
+
+    <delete id="deleteProgress">
+        DELETE
+        FROM RETURN_PROGRESS RP
+        WHERE RP.R_NO = #{ rNo }
+    </delete>
+
+    <delete id="deleteRItem">
+        DELETE
+        FROM RETURN_ITEM_INFO RII
+        WHERE RII.REF_R_NO = #{ rNo }
+    </delete>
+
+    <delete id="deleteReturnItems">
+        DELETE
+        FROM RETURN_ITEM RI
+        WHERE RI.R_NO = #{ rNo }
+    </delete>
 </mapper>

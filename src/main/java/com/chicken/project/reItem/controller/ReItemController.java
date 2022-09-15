@@ -89,7 +89,11 @@ public class ReItemController {
 
     // 가맹점 반품서 리스트 확인
     @GetMapping("/user/storeReList")
-    public ModelAndView returnList(ModelAndView mv, HttpServletRequest request, @RequestParam(defaultValue = "1") int currentPage, @AuthenticationPrincipal StoreImpl storeImpl){
+    public ModelAndView returnList(ModelAndView mv
+                                    , HttpServletRequest request
+                                    , @RequestParam(defaultValue = "1") int currentPage
+                                    , @AuthenticationPrincipal StoreImpl storeImpl
+                                  ){
 
         int pageNo = currentPage;
 
@@ -129,6 +133,23 @@ public class ReItemController {
 
     }
 
+    // 가맹점 반품신청서 삭제
+    @PostMapping("/user/storeReList")
+    public ModelAndView DeleteReItem(ModelAndView mv, HttpServletRequest request){
+
+        String rNo = request.getParameter("rNo");
+        mv.addObject("rNo", rNo);
+
+        log.info("확인해주십쇼 : " + rNo);
+
+        int result = reItemService.deleteList(rNo);
+
+        if (result > 0){
+            mv.setViewName("redirect:/reItem/user/storeReList");
+        }
+
+        return mv;
+    }
     // 본사 반품서 리스트 보기
     @GetMapping("/admin/adminReList")
     public ModelAndView ReList(ModelAndView mv, HttpServletRequest request, @RequestParam(defaultValue = "1") int currentPage){
@@ -169,7 +190,6 @@ public class ReItemController {
 
         String rNo = request.getParameter("rNo");
         mv.addObject("rNo",rNo);
-        log.info("값님 들어오나여 : " + rNo);
 
         List<ReItemDTO> check = reItemService.selectList(rNo);
 
@@ -179,8 +199,9 @@ public class ReItemController {
 
         int result = reItemService.updateItem(maps);
 
-        log.info("화기기기기기기기 ㄴ : " + result);
-        mv.setViewName("redirect:/reItem/admin/adminReList");
+        if (result > 0) {
+            mv.setViewName("redirect:/reItem/admin/adminReList");
+        }
 
         return mv;
     }
@@ -208,6 +229,7 @@ public class ReItemController {
 
         return mv;
     }
+    // 본사 반품 상세보기 반품등록 해주기
     @PostMapping("/admin/adminReItem")
     public ModelAndView ReturnComplete(ModelAndView mv
                                         , @AuthenticationPrincipal AdminImpl adminImpl
@@ -218,8 +240,6 @@ public class ReItemController {
         String adminId = adminImpl.getEmpId();
 
         int result = reItemService.updateComplete(returnItems, adminId, rNo, storeName);
-
-        log.info("result 값을 확인해주셍 : " + result);
 
         mv.setViewName("redirect:/reItem/admin/adminReList");
 
