@@ -52,8 +52,7 @@ public class ReItemController {
     }
     // 가맹점 반품서작성
     @PostMapping("/user/insertReItem")
-    public ModelAndView reItems(HttpServletRequest request
-                                , String[] returnCount2
+    public ModelAndView reItems( String[] returnCount2
                                 , String[] itemNo2
                                 , @AuthenticationPrincipal StoreImpl storeImpl
                                 , @ModelAttribute ReItemDTO returnItems
@@ -128,8 +127,25 @@ public class ReItemController {
 
     // 가맹점 반품서 수정
     @GetMapping("/user/reviseReItem")
-    public void RreItem(){
+    public ModelAndView RreItem(@ModelAttribute ReItemDTO returnItems
+                                , ModelAndView mv
+                                , HttpServletRequest request
+                                ){
+        String rNo = request.getParameter("rNo");
+        mv.addObject("rNo", rNo);
 
+        log.info("혹시나 혹시나 혹시 나나나" + rNo);
+
+        ReItemDTO updateItem = reItemService.selectUpReItem(rNo);
+        List<ReItemDTO> updateItems = reItemService.selectReItems(rNo);
+
+
+        mv.addObject("updateItem", updateItem);
+        mv.addObject("updateItems",updateItems);
+
+
+
+        return mv;
     }
 
     // 가맹점 반품신청서 삭제

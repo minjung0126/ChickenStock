@@ -56,4 +56,10 @@ public interface ReItemMapper {
     int deleteReturnItems(String rNo);
 
     int updateAcount(Map<String, Object> maps);
+
+    int insertDeposit(Map<String, Object> maps);
+
+    ReItemDTO selectUpReItem(String rNo);
+
+    List<ReItemDTO> selectUpReItems(String rNo);
 }

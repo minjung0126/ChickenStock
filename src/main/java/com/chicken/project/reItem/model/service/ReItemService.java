@@ -56,7 +56,6 @@ public class ReItemService {
         return reItem;
     }
 
-
     public List<ReItemDTO> selectReturnItems(String rNo) {
 
         List<ReItemDTO> reItems = reItemMapper.selectReItems(rNo);
@@ -146,6 +145,12 @@ public class ReItemService {
                 maps.put("returnTotalMoney", returnItems.getReturnTotalMoney());
 
                 result = reItemMapper.updateMoney(maps);    // 예치금 올려주기
+
+                if(result > 0){
+
+                    result = 0;
+                    result = reItemMapper.insertDeposit(maps);
+                }
             }
 
         }
@@ -185,7 +190,7 @@ public class ReItemService {
                     result = reItemMapper.updateRProgress(reItem);
                 }
             }
-            log.info("확인중입니다요"+reItem);
+
         }
 
 
@@ -213,5 +218,20 @@ public class ReItemService {
         }
 
         return result;
+    }
+
+    // 가맹점 반품서 수정
+    public ReItemDTO selectUpReItem(String rNo) {
+
+        ReItemDTO upReItem = reItemMapper.selectUpReItem(rNo);
+
+        return upReItem;
+    }
+
+    public List<ReItemDTO> selectReItems(String rNo) {
+
+        List<ReItemDTO> reUpItems = reItemMapper.selectUpReItems(rNo);
+
+        return reUpItems;
     }
 }
