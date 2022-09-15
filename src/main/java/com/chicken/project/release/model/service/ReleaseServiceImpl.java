@@ -53,6 +53,7 @@ public class ReleaseServiceImpl implements ReleaseService{
     }
 
     @Override
+    @Transactional
     public int cartYnUpdateR(ReleaseCartDTO releaseCartDTO) {
 
         int result = releaseMapper.cartYnUpdateR(releaseCartDTO);
