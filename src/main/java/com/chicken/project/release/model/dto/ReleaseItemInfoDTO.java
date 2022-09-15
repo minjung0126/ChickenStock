@@ -1,6 +1,6 @@
 package com.chicken.project.release.model.dto;
 
-public class ItemInfoDTO {
+public class ReleaseItemInfoDTO {
 
     private int itemNo;
     private String itemName;
@@ -12,9 +12,9 @@ public class ItemInfoDTO {
     private int categoryNo;
     private int itemAmount;
 
-    public ItemInfoDTO() {}
+    public ReleaseItemInfoDTO() {}
 
-    public ItemInfoDTO(int itemNo, String itemName, String itemStandard, String itemPurchase, String itemSales, String itemSoldoutYn, String itemMake, int categoryNo, int itemAmount) {
+    public ReleaseItemInfoDTO(int itemNo, String itemName, String itemStandard, String itemPurchase, String itemSales, String itemSoldoutYn, String itemMake, int categoryNo, int itemAmount) {
         this.itemNo = itemNo;
         this.itemName = itemName;
         this.itemStandard = itemStandard;

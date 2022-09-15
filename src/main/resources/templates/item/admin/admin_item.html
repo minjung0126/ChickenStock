@@ -93,11 +93,11 @@
                 </div>
               </td>
               <td th:text="${ item.rNum }">1</td>
-              <td th:text="${ item.itemNo }">100000</td>
+              <td id="itemNo" class="itemNo" th:text="${ item.itemNo }" th:value="${ item.itemNo }">100000</td>
               <td>
                 <div class="img-info">
                   <div class="img-info__img">
-                    <img th:src="'/images/' + ${ item.itemFile.fileName }" alt="">
+                    <img th:src="'/itemImage/' + ${ item.itemFile.fileName }" alt="">
                   </div>
                 </div>
               </td>
@@ -186,6 +186,25 @@
   $(document).ready(function(){
     // 1. 상품 상세 조회
     $("tbody tr").click(function(){
+
+      // start
+      let row = $(this).closest('tr');
+      let itemNo = row.find("#itemNo").text();
+      console.log(itemNo);
+
+      let form = document.createElement('form');
+
+      let itemNoInput = document.createElement('input');
+      itemNoInput.setAttribute('type', 'hidden');
+      itemNoInput.setAttribute('name', 'itemNoInput');
+      itemNoInput.setAttribute('value', itemNo);
+
+      form.appendChild(itemNoInput);
+      form.setAttribute('method', 'get');
+      form.setAttribute('action', 'itemDetail');
+      document.body.appendChild(form);
+      form.submit();
+
       openLayer('layerPopDetail', 9, 10);
     });
     $("tbody tr input").click(function(event){
@@ -361,6 +380,8 @@
     });
   });
 </script>
+
+
 
 </body>
 </html>
