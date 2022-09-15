@@ -132,7 +132,7 @@ public class ReItemController {
         model.addAttribute("rNo",rNo);
 
         ReItemDTO reItem = reItemService.selectReturnItem(rNo);
-        List<ReItemDTO> reItems = reItemService.selectReturnItemS(rNo);
+        List<ReItemDTO> reItems = reItemService.selectReturnItems(rNo);
 
         mv.addObject("reItem",reItem);
         mv.addObject("reItems", reItems);

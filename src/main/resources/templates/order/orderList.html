@@ -141,7 +141,7 @@
                   <td th:text="|${ #numbers.formatInteger(order.itemSales, 0, 'COMMA') }원|">>판매가격</td>
                   <td th:text="${ order.storeAmount }">재고량</td>
                   <td align="center"><input type="number" name="cartAmount" size="6" placeholder="입력" id="cartAmount"
-                             class="cartAmount" min="1" max="1000" onchange="inputValueChange(this);"></td>
+                             class="cartAmount" min="1" max="1000"></td>
 
                   <td th:if="${ order.itemSoldoutYn eq 'Y' }" >
                     <span class="active-circle bg-danger"></span><span th:text="${ '품절' }"></span>

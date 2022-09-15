@@ -50,6 +50,7 @@
         <result property="storeAmount" column="STORE_AMOUNT"/>
         <result property="storeName" column="STORE_NAME"/>
         <result property="itemNo" column="ITEM_NO"/>
+        <result property="balance" column="BALANCE"/>
 
         <association property="itemFile" resultMap="itemFileResultMap"/>
     </resultMap>
@@ -194,6 +195,7 @@
             , A.FILE_NO
             , A.ORIGIN_NAME
             , A.FILE_NAME
+            , A.BALANCE
         FROM (SELECT
              ROWNUM RNUM
            , B.CART_AMOUNT
@@ -208,6 +210,7 @@
            , B.FILE_NO
            , B.ORIGIN_NAME
            , B.FILE_NAME
+           , B.BALANCE
         FROM (SELECT
              C.CART_AMOUNT
            , C.CATEGORY_NO
@@ -221,9 +224,11 @@
            , F.FILE_NO
            , F.ORIGIN_NAME
            , F.FILE_NAME
+           , G.BALANCE
         FROM CART C
         LEFT JOIN ITEM_INFO E ON (C.ITEM_NO = E.ITEM_NO)
         LEFT JOIN ITEM_FILE F ON (C.ITEM_NO = F.ITEM_NO)
+        LEFT JOIN BALANCE G ON (C.STORE_NAME = G.STORE_NAME)
             <if test="searchCondition == 'category'">
                 LEFT JOIN ITEM_CATEGORY D ON (C.CATEGORY_NO = D.CATEGORY_NO)
             </if>
@@ -235,6 +240,7 @@
                 E.ITEM_NAME LIKE '%' || #{ searchValue } || '%'
             </if>
             AND C.STORE_NAME = #{ storeName }
+            AND C.CART_YN = 'Y'
         </where>
         ORDER BY C.ITEM_NO ASC
         ) B
@@ -418,6 +424,18 @@
             , 'Y'
          FROM ITEM_INFO A
         WHERE A.ITEM_NO = ${ itemNo }
+    </insert>
+
+    <insert id="insertOrderItems" parameterType="cartDTO">
+        MERGE INTO CART A
+        USING DUAL
+        ON (A.CART_YN = 'Y')
+        WHEN MATCHED THEN
+        UPDATE SET A.STORE_NAME = #{ storeName }
+        DELETE WHERE A.STORE_NAME = #{ storeName }
+        WHEN NOT MATCHED THEN
+        INSERT (CART_AMOUNT, CATEGORY_NO, ITEM_NO, CART_NO, STORE_NAME, CART_YN)
+        VALUES (#{ cartAmount }, #{ categoryNo }, #{ itemNo }, SEQ_CART_NO_TEST.NEXTVAL, #{ storeName }, 'N')
     </insert>
 
 

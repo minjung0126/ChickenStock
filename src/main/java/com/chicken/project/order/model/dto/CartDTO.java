@@ -15,12 +15,13 @@ public class CartDTO {
     private String storeName;
     private int cartNo;
     private int storeAmount;
+    private int balance;
     private OrderItemFileDTO itemFile;
 
     public CartDTO() {
     }
 
-    public CartDTO(int itemNo, String itemName, String categoryName, int categoryNo, String itemStandard, String itemMake, int itemSales, int cartAmount, String itemSoldoutYn, String cartYn, String storeName, int cartNo, int storeAmount, OrderItemFileDTO itemFile) {
+    public CartDTO(int itemNo, String itemName, String categoryName, int categoryNo, String itemStandard, String itemMake, int itemSales, int cartAmount, String itemSoldoutYn, String cartYn, String storeName, int cartNo, int storeAmount, int balance, OrderItemFileDTO itemFile) {
         this.itemNo = itemNo;
         this.itemName = itemName;
         this.categoryName = categoryName;
@@ -34,6 +35,7 @@ public class CartDTO {
         this.storeName = storeName;
         this.cartNo = cartNo;
         this.storeAmount = storeAmount;
+        this.balance = balance;
         this.itemFile = itemFile;
     }
 
@@ -141,6 +143,14 @@ public class CartDTO {
         this.storeAmount = storeAmount;
     }
 
+    public int getBalance() {
+        return balance;
+    }
+
+    public void setBalance(int balance) {
+        this.balance = balance;
+    }
+
     public OrderItemFileDTO getItemFile() {
         return itemFile;
     }
@@ -165,6 +175,7 @@ public class CartDTO {
                 ", storeName='" + storeName + '\'' +
                 ", cartNo=" + cartNo +
                 ", storeAmount=" + storeAmount +
+                ", balance=" + balance +
                 ", itemFile=" + itemFile +
                 '}';
     }
