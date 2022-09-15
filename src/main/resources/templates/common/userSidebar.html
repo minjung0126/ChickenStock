@@ -23,11 +23,20 @@
           <div class="accordion_dep type2">
             <a href="#" title=""><img src="/images/mypage.png" width="18px" height="18px"> 마이페이지</a>
             <ul>
-              <li>                
-                 <a href="/account/user/list" title="">예치금 관리</a>
-              </li>
-              <li>                
+              <li>
                  <a th:href="@{/mypage/store_mypage}" title="">비밀번호 재설정</a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="accordion_dep type2">
+            <a href="#" title=""><img src="/images/money.png" width="18px" height="18px"> 예치금관리</a>
+            <ul>
+              <li>
+                <a href="/account/user/list" title="">입금신청</a>
+              </li>
+              <li>
+                <a href="/account/user/bank" title="">입출금 내역</a>
               </li>
             </ul>
           </div>
