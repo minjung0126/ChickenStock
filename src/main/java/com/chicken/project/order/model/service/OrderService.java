@@ -54,7 +54,7 @@ public class OrderService {
 
         int insert = orderMapper.insertInterest(interest);
 
-        if(!(insert > 0)) {
+        if (!(insert > 0)) {
 
             throw new InterestException("관심 등록에 실패하셨습니다.");
         }
@@ -62,24 +62,17 @@ public class OrderService {
         return insert;
     }
 
+    @Transactional
     public int deleteInterest(InterestDTO interest) throws InterestException {
 
         int delete = orderMapper.deleteInterest(interest);
 
-        if(!(delete > 0)) {
+        if (!(delete > 0)) {
 
             throw new InterestException("관심 삭제에 실패하셨습니다.");
         }
 
         return delete;
-
-    }
-
-    public int insertItemIntoCart(CartDTO cart) {
-
-        int result = orderMapper.insertItemIntoCart(cart);
-
-        return result;
 
     }
 
@@ -100,7 +93,7 @@ public class OrderService {
     public int selectAvailableItemCount(Map<String, String> searchMap) {
 
         int result = orderMapper.selectAvailableItemCount(searchMap);
-        
+
         return result;
     }
 
@@ -121,5 +114,27 @@ public class OrderService {
 
         return orderMapper.selectInterestItem(selectCriteria);
 
+    }
+
+    @Transactional
+    public void InsertCartList(List<String> itemNoList) throws InterestException {
+
+        int result = orderMapper.insertCartList(itemNoList);
+
+        if(!(result > 0)) {
+            throw new InterestException("장바구니 담기에 실패하셨습니다.");
+        }
+
+    }
+
+    @Transactional
+    public void insertItemIntoCart(int itemNo, int cartAmount, String storeName) {
+
+        orderMapper.insertItemIntoCart(itemNo, cartAmount, storeName);
+    }
+
+    public void insertOrderItems(int itemNo, int cartAmount, int categoryNo, String storeName) {
+
+        orderMapper.insertOrderItems(itemNo, cartAmount, categoryNo, storeName);
     }
 }

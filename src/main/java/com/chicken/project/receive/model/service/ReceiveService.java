@@ -93,13 +93,13 @@ public class ReceiveService {
         return receiveMapper.selectMaxCode();
     }
 
-//    @Transactional
-//    public void updateItem(HashMap<String, Object> registHashMap) throws ReceiveUpdateException {
-//
-//        int result = receiveMapper.updateItem(registHashMap);
-//
-//        if(!(result > 0)) {
-//            throw new ReceiveUpdateException("재고 수정에 실패하셨습니다.");
-//        }
-//    }
+    @Transactional
+    public void updateItem(HashMap<String, Object> registHashMap) throws ReceiveUpdateException {
+
+        int result = receiveMapper.updateItem(registHashMap);
+
+        if(!(result > 0)) {
+            throw new ReceiveUpdateException("재고 수정에 실패하셨습니다.");
+        }
+    }
 }

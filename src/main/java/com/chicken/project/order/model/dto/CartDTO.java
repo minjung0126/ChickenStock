@@ -14,13 +14,14 @@ public class CartDTO {
     private String cartYn;
     private String storeName;
     private int cartNo;
-    private String relYn;
     private int storeAmount;
+    private int balance;
+    private OrderItemFileDTO itemFile;
 
     public CartDTO() {
     }
 
-    public CartDTO(int itemNo, String itemName, String categoryName, int categoryNo, String itemStandard, String itemMake, int itemSales, int cartAmount, String itemSoldoutYn, String cartYn, String storeName, int cartNo, String relYn, int storeAmount) {
+    public CartDTO(int itemNo, String itemName, String categoryName, int categoryNo, String itemStandard, String itemMake, int itemSales, int cartAmount, String itemSoldoutYn, String cartYn, String storeName, int cartNo, int storeAmount, int balance, OrderItemFileDTO itemFile) {
         this.itemNo = itemNo;
         this.itemName = itemName;
         this.categoryName = categoryName;
@@ -33,8 +34,9 @@ public class CartDTO {
         this.cartYn = cartYn;
         this.storeName = storeName;
         this.cartNo = cartNo;
-        this.relYn = relYn;
         this.storeAmount = storeAmount;
+        this.balance = balance;
+        this.itemFile = itemFile;
     }
 
     public int getItemNo() {
@@ -133,20 +135,28 @@ public class CartDTO {
         this.cartNo = cartNo;
     }
 
-    public String getRelYn() {
-        return relYn;
-    }
-
-    public void setRelYn(String relYn) {
-        this.relYn = relYn;
-    }
-
     public int getStoreAmount() {
         return storeAmount;
     }
 
     public void setStoreAmount(int storeAmount) {
         this.storeAmount = storeAmount;
+    }
+
+    public int getBalance() {
+        return balance;
+    }
+
+    public void setBalance(int balance) {
+        this.balance = balance;
+    }
+
+    public OrderItemFileDTO getItemFile() {
+        return itemFile;
+    }
+
+    public void setItemFile(OrderItemFileDTO itemFile) {
+        this.itemFile = itemFile;
     }
 
     @Override
@@ -164,8 +174,9 @@ public class CartDTO {
                 ", cartYn='" + cartYn + '\'' +
                 ", storeName='" + storeName + '\'' +
                 ", cartNo=" + cartNo +
-                ", relYn='" + relYn + '\'' +
                 ", storeAmount=" + storeAmount +
+                ", balance=" + balance +
+                ", itemFile=" + itemFile +
                 '}';
     }
 }
