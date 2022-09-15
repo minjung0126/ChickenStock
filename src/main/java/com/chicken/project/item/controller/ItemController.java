@@ -106,19 +106,23 @@ public class ItemController {
     }
 
     /* 상품 상세 조회 */
-    @GetMapping("itemDetail")
-    public ModelAndView getItemOne(ModelAndView mv, HttpServletResponse response, HttpServletRequest request) throws JsonProcessingException {
+    @GetMapping(value = "itemDetail", produces = "application/json; charset = UTF-8")
+    @ResponseBody
+    public String getItemOne() {
 
-        response.setContentType("application/json; charset=UTF-8");
+        Gson gson = = new GsonBuilder().setDateFormat("yyyy-MM-dd hh:mm:ss:SSS")
+                .setPrettyPrinting() 								// json 문자열 이쁘게 출력
+                .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)  // 기본값
+                .serializeNulls()									// 필드값이 null이어도 직렬화한다.
+                .disableHtmlEscaping()								// 직렬화 시 escape 시퀀스 처리하지 않는다.
+                .create();
 
         String itemNoInput = request.getParameter("itemNoInput");
 
         ItemInfoDTO item = itemService.selectOneItem(itemNoInput);
 
-        mv.addObject(item);
-        mv.setViewName("itemDetail");
 
-        return mv;
+        return "";
 
     }
 
