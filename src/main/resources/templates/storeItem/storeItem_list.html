@@ -24,13 +24,13 @@
 <div class="wrap">
 
     <!-- S: header -->
-    <div th:include="common/adminHeader.html"></div>
+    <div th:include="common/userHeader.html"></div>
     <!-- E: header -->
 
     <!-- S: container -->
     <div class="container px-0">
         <!-- S: aside -->
-        <div th:include="common/adminSidebar.html"></div>
+        <div th:include="common/userSidebar.html"></div>
         <!-- E: aside -->
 
         <!-- S: main layout -->
@@ -42,22 +42,20 @@
                 <div class="container-fluid" style="margin-top:30px">
                     <h3>품목 관리</h3>
                     <br>
-                    <div class="col-6">
-                        <form>
-                            <div class="input-group mb-3">
-                                <select class="form-select" id="searchCondition" name="searchCondition" style="max-width: max-content;">
-                                    <option value="itemName">상품명</option>
-                                    <option value="category">카테고리</option>
-                                    <option value="make">제조사</option>
-                                </select>
-                                <input class="form-control col-3" type="text" id="searchValue" name="searchValue" placeholder="검색어를 입력해주세요." style="max-width: 400px;">
-                                <button class="btn btn-warning me-3" type="submit" style="color:#fff; border-radius: 0 5px 5px 0; z-index: auto;">검색</button>
-                            </div>
-                        </form>
-                    </div>
-
-                    <div th:include="item/admin/admin_item_new.html"></div>
-
+                    <form th:action="@{ /storeItem/itemListSelect }">
+                        <div class="input-group mb-3 col-3 float-right" style="min-width: max-content">
+                            <select type="" class="form-control" id="searchCondition" th:name="searchCondition"
+                                    style="height: 40px; min-width: max-content">
+                                <option value="category">카테고리</option>
+                                <option value="searchItemName">상품명</option>
+                            </select>
+                            <button class="btn btn-light px-1" type="button" disabled></button>
+                            <input class="form-control me-2" type="text" id="storeName" th:name="searchValue"
+                                   style="min-width: max-content">
+                            <button class="btn btn-warning" onclick="find();" type="submit" style="color:#fff">검색
+                            </button>
+                        </div>
+                    </form>
                     <table class="table">
                         <thead>
                         <tr>
@@ -84,7 +82,7 @@
                             <td>
                                 <div class="form-check">
                                     <input type="checkbox" class="form-check-input" name="chk1" th:value="${ item.itemNo }"/>
-                                    <label class="form-check-label" for="check"></label>
+                                    <label class="form-check-label"></label>
                                 </div>
                             </td>
                             <td th:text="${ item.rNum }">1</td>
@@ -115,49 +113,46 @@
                 </div>
                 <!-- E: table -->
                 <!-- S: paging -->
-<!--                <div class="pagingArea" align="center">-->
-<!--                    &lt;!&ndash; 맨 앞으로 이동 버튼 &ndash;&gt;-->
-<!--                    <button class="btn btn-light mx-1" style="cursor:pointer; background: #ccc; color: #fff;"-->
-<!--                            th:onclick="'location.href=\'/item/admin/list?currentPage='+ @{${selectCriteria.startPage}} + '\''"-->
-<!--                            th:disabled="${selectCriteria.pageNo == 1}"-->
-<!--                    >-->
-<!--                        <<-->
-<!--                    </button>-->
-<!--                    &lt;!&ndash; 이전 페이지 버튼 &ndash;&gt;-->
-<!--                    <button class="btn btn-light" style="cursor:pointer; background: #ccc; color: #fff;"-->
-<!--                            th:onclick="'location.href=\'/item/admin/list?currentPage='+ @{${selectCriteria.pageNo - 1}} + '\''"-->
-<!--                            th:disabled="${selectCriteria.pageNo == 1}"-->
-<!--                    >-->
-<!--                        <-->
-<!--                    </button>-->
-<!--                    &lt;!&ndash; 숫자 버튼 &ndash;&gt;-->
-<!--                    <th:block th:each="page : ${#numbers.sequence(selectCriteria.startPage, selectCriteria.endPage)}">-->
-<!--                        <button class="btn btn-warning mx-1" style="cursor:pointer; color: #fff;"-->
-<!--                                th:text="${ page }"-->
-<!--                                th:onclick="'location.href=\'/item/admin/list?currentPage='+ @{${page}} + '\''"-->
-<!--                                th:disabled="${ selectCriteria.pageNo eq page }">-->
-<!--                        </button>-->
-<!--                    </th:block>-->
+                <div class="pagingArea" align="center">
+                    <!-- 맨 앞으로 이동 버튼 -->
+                    <button class="btn btn-light mx-1" style="cursor:pointer; background: #ccc; color: #fff;"
+                            th:onclick="'location.href=\'/storeItem/itemListSelect?currentPage='+ @{${selectCriteria.startPage}} + '\''"
+                            th:disabled="${selectCriteria.pageNo == 1}"
+                    >
+                        <<
+                    </button>
+                    <!-- 이전 페이지 버튼 -->
+                    <button class="btn btn-light" style="cursor:pointer; background: #ccc; color: #fff;"
+                            th:onclick="'location.href=\'/storeItem/itemListSelect?currentPage='+ @{${selectCriteria.pageNo - 1}} + '\''"
+                            th:disabled="${selectCriteria.pageNo == 1}"
+                    >
+                        <
+                    </button>
+                    <!-- 숫자 버튼 -->
+                    <th:block th:each="page : ${#numbers.sequence(selectCriteria.startPage, selectCriteria.endPage)}">
+                        <button class="btn btn-warning mx-1" style="cursor:pointer; color: #fff;"
+                                th:text="${ page }"
+                                th:onclick="'location.href=\'/storeItem/itemListSelect?currentPage='+ @{${page}} + '\''"
+                                th:disabled="${ selectCriteria.pageNo eq page }">
+                        </button>
+                    </th:block>
 
-<!--                    &lt;!&ndash; 다음 페이지 버튼 &ndash;&gt;-->
-<!--                    <button class="btn btn-light mx-1" style="cursor:pointer; background: #ccc; color: #fff;"-->
-<!--                            th:onclick="'location.href=\'/item/admin/list?currentPage='+ @{${selectCriteria.pageNo + 1}} + '\''"-->
-<!--                            th:disabled="${selectCriteria.pageNo == selectCriteria.maxPage}"-->
-<!--                    >-->
-<!--                        >-->
-<!--                    </button>-->
-<!--                    &lt;!&ndash; 마지막 페이지로 이동 버튼 &ndash;&gt;-->
-<!--                    <button class="btn btn-light mx-1" style="cursor:pointer; background: #ccc; color: #fff;"-->
-<!--                            th:onclick="'location.href=\'/item/admin/list?currentPage='+ @{${selectCriteria.maxPage}} + '\''"-->
-<!--                            th:disabled="${selectCriteria.pageNo == selectCriteria.maxPage}"-->
-<!--                    >-->
-<!--                        >>-->
-<!--                    </button>-->
-<!--                </div>-->
-<!--                &lt;!&ndash; E: paging &ndash;&gt;-->
-
-                <div th:include="item/admin/admin_item_detail.html"></div>
-
+                    <!-- 다음 페이지 버튼 -->
+                    <button class="btn btn-light mx-1" style="cursor:pointer; background: #ccc; color: #fff;"
+                            th:onclick="'location.href=\'/storeItem/itemListSelect?currentPage='+ @{${selectCriteria.pageNo + 1}} + '\''"
+                            th:disabled="${selectCriteria.pageNo == selectCriteria.maxPage}"
+                    >
+                        >
+                    </button>
+                    <!-- 마지막 페이지로 이동 버튼 -->
+                    <button class="btn btn-light mx-1" style="cursor:pointer; background: #ccc; color: #fff;"
+                            th:onclick="'location.href=\'/storeItem/itemListSelect?currentPage='+ @{${selectCriteria.maxPage}} + '\''"
+                            th:disabled="${selectCriteria.pageNo == selectCriteria.maxPage}"
+                    >
+                        >>
+                    </button>
+                </div>
+                <!-- E: paging -->
             </div>
         </div>
         <!-- E: main layout -->

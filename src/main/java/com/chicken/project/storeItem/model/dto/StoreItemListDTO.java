@@ -17,8 +17,11 @@ public class StoreItemListDTO {
     private String categoryName;
     private int rNum;
     private String itemDeleteYn;
+
     private ItemFileDTO itemFile;
 
+    public StoreItemListDTO() {
+    }
     public StoreItemListDTO(int itemNo, String itemName, String itemStandard, int itemPurchase, int itemSales, String itemSoldoutYn, String itemMake, int categoryNo, int itemAmount, String soldout, String categoryName, int rNum, String itemDeleteYn, ItemFileDTO itemFile) {
         this.itemNo = itemNo;
         this.itemName = itemName;
@@ -150,7 +153,7 @@ public class StoreItemListDTO {
 
     @Override
     public String toString() {
-        return "StoreItemListDTO{" +
+        return "ItemInfoDTO{" +
                 "itemNo=" + itemNo +
                 ", itemName='" + itemName + '\'' +
                 ", itemStandard='" + itemStandard + '\'' +

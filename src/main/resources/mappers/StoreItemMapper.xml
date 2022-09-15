@@ -35,20 +35,62 @@
 
     <select id="itemListSelect" resultMap="storeItemListResultMap">
         SELECT
-               A.ITEM_NO
-             , A.ITEM_NAME
-             , A.ITEM_STANDARD
-             , A.ITEM_PURCHASE
-             , A.ITEM_SALES
-             , A.ITEM_SOLDOUT_YN
-             , A.ITEM_MAKE
-             , A.CATEGORY_NO
-             , A.ITEM_AMOUNT
-             , C.CATEGORY_NAME
-             , B.FILE_NAME
-             , CASE WHEN A.ITEM_AMOUNT = 0 THEN '품절' ELSE '보유' END soldout
-          FROM ITEM_INFO A
-          JOIN ITEM_FILE B ON (A.ITEM_NO = B.ITEM_NO)
-          JOIN ITEM_CATEGORY C ON(A.CATEGORY_NO = C.CATEGORY_NO)
+              C.RNUM
+            , C.ITEM_NO
+            , C.ITEM_NAME
+            , C.ITEM_STANDARD
+            , C.ITEM_PURCHASE
+            , C.ITEM_SALES
+            , C.ITEM_SOLDOUT_YN
+            , C.ITEM_MAKE
+            , C.ITEM_AMOUNT
+            , C.CATEGORY_NAME
+            , C.FILE_NAME
+            , C.soldout
+       FROM (SELECT
+                   ROWNUM RNUM
+                 , B.ITEM_NO
+                 , B.ITEM_NAME
+                 , B.ITEM_STANDARD
+                 , B.ITEM_PURCHASE
+                 , B.ITEM_SALES
+                 , B.ITEM_SOLDOUT_YN
+                 , B.ITEM_MAKE
+                 , B.ITEM_AMOUNT
+                 , B.CATEGORY_NAME
+                 , B.FILE_NAME
+                 , B.soldout
+            FROM (SELECT
+                         A.ITEM_NO
+                       , A.ITEM_NAME
+                       , A.ITEM_STANDARD
+                       , A.ITEM_PURCHASE
+                       , A.ITEM_SALES
+                       , A.ITEM_SOLDOUT_YN
+                       , A.ITEM_MAKE
+                       , A.ITEM_AMOUNT
+                       , C.CATEGORY_NAME
+                       , B.FILE_NAME
+                       , CASE WHEN A.ITEM_AMOUNT = 0 THEN '품절' ELSE '보유' END soldout
+                  FROM ITEM_INFO A
+                  JOIN ITEM_FILE B ON (A.ITEM_NO = B.ITEM_NO)
+                  JOIN ITEM_CATEGORY C ON(A.CATEGORY_NO = C.CATEGORY_NO)
+                <if test="searchCondition != null &amp;&amp; searchValue != null">
+                    WHERE A.ITEM_NAME = '%' || #{ serachValue } || '%'
+                </if>
+                ORDER BY A.ITEM_NO DESC ) B
+         <![CDATA[ WHERE ROWNUM <= #{ endRow } ]]>) C
+        WHERE C.RNUM >= #{ startRow }
+        ORDER BY 1 ASC
+    </select>
+
+    <select id="selectTotalCount" resultType="_int">
+        SELECT
+             COUNT (*)
+        FROM ITEM_INFO A
+        <if test="searchCondition != null &amp;&amp; searchValue != null">
+            WHERE A.ITEM_NAME = '%' || #{ serachValue } || '%'
+        </if>
+        ORDER BY A.ITEM_NO DESC
     </select>
 </mapper>
