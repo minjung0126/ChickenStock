@@ -235,7 +235,6 @@
         )
     </insert>
 
-
     <insert id="insertRItem" parameterType="ReItemDTO">
         <selectKey keyProperty="rNo" order="BEFORE" resultType="_int">
             SELECT SEQ_R_NO.CURRVAL FROM DUAL

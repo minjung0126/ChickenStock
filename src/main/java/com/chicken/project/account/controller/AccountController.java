@@ -2,6 +2,8 @@ package com.chicken.project.account.controller;
 
 import com.chicken.project.account.model.dto.AccountApplyDTO;
 import com.chicken.project.account.model.dto.AccountDTO;
+import com.chicken.project.account.model.dto.StoreBreakdownDTO;
+import com.chicken.project.account.model.dto.StoreDepositDTO;
 import com.chicken.project.account.model.service.AccountService;
 import com.chicken.project.member.model.dto.StoreImpl;
 import com.chicken.project.store.model.dto.BalanceDTO;
@@ -123,6 +125,26 @@ public class AccountController {
 
         mv.addObject("balanceSelect", balanceSelect);
         mv.setViewName("/account/admin/adminBalanceSelect");
+
+        return mv;
+    }
+
+    @GetMapping("/user/bank")
+    public ModelAndView userBankPage(ModelAndView mv, @AuthenticationPrincipal User user){
+
+        String storeName = ((StoreImpl) user).getStoreName();
+
+        BalanceDTO balance = accountService.selectBalance(storeName);
+        List<StoreDepositDTO> storeDeposit = accountService.selectStoreDeposit(storeName);
+        List<StoreBreakdownDTO> storeBreakdown = accountService.selectStoreBreakdown(storeName);
+
+        log.info("[AccountController] balance : " + balance);
+
+        mv.addObject("balance", balance);
+        mv.addObject("storeDeposit", storeDeposit);
+        mv.addObject("storeBreakdown", storeBreakdown);
+
+        mv.setViewName("/account/user/userBank");
 
         return mv;
     }

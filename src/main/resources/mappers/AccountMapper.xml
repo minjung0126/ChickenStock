@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.chicken.project.account.model.dao.AccountMapper">
     <resultMap id="accountApplyResultMap" type="AccountApplyDTO">
-        <id property="storeName" column="STORE_NAME"/>
+        <result property="storeName" column="STORE_NAME"/>
         <result property="depositNum" column="DEPOSIT_NUM"/>
         <result property="depositRegistDate" column="DEPOSIT_REGIST_DATE"/>
         <result property="depositYn" column="DEPOSIT_YN"/>
@@ -19,7 +19,7 @@
     </resultMap>
 
     <resultMap id="accountResultMap" type="AccountDTO">
-        <id property="storeName" column="STORE_NAME"/>
+        <result property="storeName" column="STORE_NAME"/>
         <result property="depositNum" column="DEPOSIT_NUM"/>
         <result property="accountDate" column="ACCOUNT_DATE"/>
         <result property="accountDeposit" column="ACCOUNT_DEPOSIT"/>
@@ -37,6 +37,18 @@
             <result property="accountDeposit" column="ACCOUNT_DEPOSIT"/>
             <result property="accountYn" column="ACCOUNT_YN"/>
         </collection>
+    </resultMap>
+    
+    <resultMap id="storeBreakdownResultMap" type="StoreBreakdownDTO">
+        <result property="storeName" column="STORE_NAME"/>
+        <result property="breakdownDate" column="BREAKDOWN_DATE"/>
+        <result property="withdrawal" column="WITHDRAWAL"/>
+    </resultMap>
+
+    <resultMap id="storeDepositResultMap" type="StoreDepositDTO">
+        <result property="storeName" column="STORE_NAME"/>
+        <result property="depositMoney" column="DEPOSIT_MONEY"/>
+        <result property="depositDate" column="DEPOSIT_DATE"/>
     </resultMap>
 
     <select id="selectAccountApplyList" resultMap="accountApplyResultMap">
@@ -115,9 +127,12 @@
 
     <update id="balanceUpdate">
         UPDATE
-               BALANCE
-           SET BALANCE = #{ accountDeposit }
-         WHERE STORE_NAME = #{ storeName }
+               BALANCE A
+           SET A.BALANCE = (SELECT B.BALANCE
+                              FROM BALANCE B
+                             WHERE B.STORE_NAME = #{ storeName }
+                             ) + #{ accountDeposit }
+         WHERE A.STORE_NAME = #{ storeName }
     </update>
 
     <update id="accountApplyUpdate2">
@@ -139,4 +154,34 @@
                *
           FROM BALANCE
     </select>
+
+    <select id="selectStoreDeposit" resultMap="storeDepositResultMap">
+        SELECT
+               *
+          FROM STORE_DEPOSIT
+         WHERE STORE_NAME = #{ storeName }
+    </select>
+
+    <select id="selectStoreBreakdown" resultMap="storeBreakdownResultMap">
+        SELECT
+               *
+          FROM STORE_BREAKDOWN
+         WHERE STORE_NAME = #{ storeName }
+    </select>
+
+    <insert id="depositInsert">
+        INSERT
+          INTO STORE_DEPOSIT
+        (
+          STORE_NAME
+        , DEPOSIT_MONEY
+        , DEPOSIT_DATE
+        )
+        VALUES
+        (
+          #{ storeName }
+        , #{ accountDeposit }
+        , SYSDATE
+        )
+    </insert>
 </mapper>

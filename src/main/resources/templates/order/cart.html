@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
@@ -58,30 +60,33 @@
               <div class="balanceBox" style="font-weight: bold;">
                 <div id="balance">가용 금액 : <p class="money">1,000,000원</p></div>
                 <div id="devide">|</div>
-                <div id="cartAmount">장바구니 : <p class="money">180,000 원</p></div>
+                <div id="cartPrice">장바구니 : <p class="money">180,000 원</p></div>
               </div>
 
-          <div class="search-area">
-              <input type="hidden" name="currentPage" value="1"/>
-              <select id="searchCondition" name="searchCondition" style="text-align: center;">
-                <option>== 선택 ==</option>
-                <option value="itemName">상품명</option>
-                <option value="category">카테고리</option>
-              </select>
-              <input class="form-control" type="search" id="searchValue" name="searchValue" placeholder="검색 내용을 입력해주세요.">
-              <button class="btn btn-warning" type="submit" style="color:#fff" id="searchBtn">검색</button>
-          </div>
+              <div class="search-area" align="center">
+                <form id="searchForm" th:action="@{/order/cart/list}" method="get" style="display: inline-block">
+                  <input type="hidden" name="currentPage" value="1">
+                  <select id="searchCondition" name="searchCondition" style="text-align: center;">
+                    <option>== 선택 ==</option>
+                    <option name="itemName" value="itemName">상품명</option>
+                    <option name="category" value="category">카테고리</option>
+                  </select>
+                  <input class="form-control" type="search" id="searchValue" name="searchValue" placeholder="검색 내용을 입력해주세요.">
+                  <button class="btn btn-warning" type="submit" style="color:#fff">검색</button>
+                </form>
+              </div>
 
             <div id="itemCondition">
-              <p>품절 상품 제외</p>
+              <p th:onclick="'location.href=\'/order/list/available\''">품절 상품 제외</p>
             </div>
 
               <div id="addProduct">
-                <button class="btn btn-warning" style="color:#fff" onclick="linkToOrder()"><i class="fa-solid fa-magnifying-glass"></i> 제품 추가</button>
+                <button class="btn btn-warning" style="color:#fff" th:onclick="'location.href=\'/order/list\''"><i class="fa-solid fa-magnifying-glass"></i> 제품 추가</button>
               </div>
 
               <div id="order">
-                <button class="btn btn-warning" type="submit" style="color:#fff" onclick="orderConfirm()">주문하기</button>
+                <input type="hidden" name="cartNoList" id="result">
+                <button class="btn btn-warning" type="submit" style="color:#fff" th:onclick="getBoxValue()">주문하기</button>
               </div>
             </div>
 
@@ -89,38 +94,69 @@
               <thead>
                 <tr>
                   <th style="width: 90px;">상품코드</th>
-                  <th style="width: 110px;">썸네일</th>
+                  <th style="width: 110px;">상품사진</th>
                   <th style="width: 150px;">상품명</th>
                   <th style="width: 150px;">카테고리</th>
                   <th style="width: 60px;">규격</th>
                   <th style="width: 100px;">제조사</th>
                   <th style="width: 100px;">판매가격</th>
-                  <th style="width: 100px;">재고량</th>
                   <th style="width: 100px;">수량</th>
                   <th style="width: 90px;">품절여부</th>
+                  <th>합계</th>
                   <th>수정</th>
                 </tr>
               </thead>
               <tbody>
+              <form action="insetItemIntoCartForm" method="post" id="cartForm">
               <tr th:each="cart : ${ cartList }">
-                <td th:text="${ cart.itemNo }">상품코드</td>
+                <td th:text="${ cart.itemNo }" name="insertItem">상품코드</td>
                 <td>
                   <div class="img-info">
                     <div class="img-info__img">
-                      <img src="../assets/images/chicken.jpg" alt="">
+                      <img th:src="'/images/' + ${ cart.itemFile.fileName }" alt="">
                     </div>
                   </div>
                 </td>
-                <input type="hidden" th:value="${ cart.categoryNo }"/>
-                <input type="hidden" th:value="${ interYn }"/>
                 <td th:text="${ cart.itemName }">상품명</td>
-                <td th:text="${ cart.categoryName }">카테고리</td>
+
+                <td th:if="${ cart.categoryNo eq 1 }">
+                  <span th:text="${ '식자재' }"/>
+                  <input type="hidden" th:value="${ cart.categoryNo }">
+                </td>
+                <td th:if="${ cart.categoryNo eq 2 }">
+                  <span th:text="${ '기타' }"/>
+                  <input type="hidden" th:value="${ cart.categoryNo }">
+                </td>
+                <td th:if="${ cart.categoryNo eq 3 }">
+                  <span th:text="${ '닭고기' }"/>
+                  <input type="hidden" th:value="${ cart.categoryNo }">
+                </td>
+                <td th:if="${ cart.categoryNo eq 4 }">
+                  <span th:text="${ '소스/파우더/식용유' }"/>
+                  <input type="hidden" th:value="${ cart.categoryNo }">
+                </td>
+                <td th:if="${ cart.categoryNo eq 5 }">
+                  <span th:text="${ '음료' }"/>
+                  <input type="hidden" th:value="${ cart.categoryNo }">
+                </td>
+                <td th:if="${ cart.categoryNo eq 6 }">
+                  <span th:text="${ '포장용품' }"/>
+                  <input type="hidden" th:value="${ cart.categoryNo }">
+                </td>
+
                 <td th:text="${ cart.itemStandard }">규격</td>
                 <td th:text="${ cart.itemMake }">제조사(원산지)</td>
                 <td th:text="${ cart.itemSales }">판매가격</td>
-                <td th:text="${ cart.storeAmount }">재고량</td>
-                <td th:text="${ cart.cartAmount }">수량</td>
-                <td th:text="${ cart.itemSoldoutYn }">품절여부</td>
+                <td align="center"><input type="number" name="insertItem" size="6" placeholder="입력" id="cartAmount" th:value="${ cart.cartAmount }"
+                                          class="cartAmount" min="1" max="1000"></td>
+                <td th:if="${ cart.itemSoldoutYn eq 'Y' }">
+                  <span class="active-circle bg-danger"></span><span th:text="${ '품절' }"></span>
+                </td>
+                <td th:if="${ cart.itemSoldoutYn eq 'N' }">
+                  <span class="active-circle bg-success"></span><span th:text="${ '판매중' }" name="available" th:value="${ cart.itemNo }"></span>
+                </td>
+
+                <td>합계</td>
                 <td>
                   <div class="dropdown open">
                     <a href="javascript:void(0);" class="px-2" id="triggerId1" data-toggle="dropdown" aria-haspopup="true"
@@ -129,12 +165,13 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="triggerId1">
                       <!-- <a class="dropdown-item" href="#"><i class="fa fa-eye mr-1"></i>View</a> -->
-                      <a class="dropdown-item" href="#" onclick="interest()"><i class="fa-solid fa-heart-circle-plus"></i> 수정하기</a>
+                      <a class="dropdown-item" href="#" th:onclick="interest()"><i class="fa-solid fa-heart-circle-plus"></i> 수정하기</a>
                       <a class="dropdown-item text-danger" href="#"><i class="fa fa-trash mr-1"></i> Delete</a>
                     </div>
                   </div>
                 </td>
               </tr>
+              </form>
               </tbody>
             </table>
           </div>
@@ -280,12 +317,49 @@
     }
   </script>
 
-  <!-- 상품 조회 페이지로 연결 -->
+  <!-- 체크박스 한 줄 가져오기 -->
   <script th:inline="javascript">
-    function linkToOrder() {
-      url.href = 'order.html'
+    function getBoxValue() {
+
+      // 선택된 목록 가져오기
+     // let query = document.getElementsByName("available");
+      let selectedEls = document.querySelectorAll("[name=available]");
+
+      // 선택된 목록에서 value 찾기
+      let cartInfo = [];
+      let obj = {};
+      selectedEls.forEach((el) => {
+
+        obj = {
+          itemNo : $(el)[0].parentElement.parentElement.children[0].innerText,
+          cartAmount : $(el)[0].parentElement.parentElement.children[7].children[0].value,
+          categoryNo : $(el)[0].parentElement.parentElement.children[3].children[1].value
+        }
+
+        cartInfo.push(obj);
+      });
+
+      console.log(cartInfo);
+
+      // 출력
+      document.getElementById('result').innerText = JSON.stringify(cartInfo);
+
+      let form = document.createElement('form');
+
+      let cartNoList = document.createElement('input');
+      cartNoList.setAttribute('type', 'hidden');
+      cartNoList.setAttribute('name', 'cartNoList');
+      cartNoList.setAttribute('value', JSON.stringify(cartInfo));
+      form.appendChild(cartNoList);
+      form.setAttribute('method', 'post');
+      form.setAttribute('action', '/order/insert/items/do');
+      document.body.appendChild(form);
+      form.submit();
+
+      console.log(cartNoList);
     }
   </script>
+
 
 
 </body>
