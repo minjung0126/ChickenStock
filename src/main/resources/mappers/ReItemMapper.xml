@@ -242,6 +242,14 @@
         )
     </insert>
 
+    <update id="updateAcount" parameterType="ReItemDTO">
+        UPDATE
+            STO_ITEM_INFO
+        SET STORE_AMOUNT = STORE_AMOUNT  - (SELECT #{ returnCount } FROM RETURN_ITEM_INFO WHERE REF_R_NO = #{ rNo } AND ITEM_NO= #{ itemNo })
+        WHERE ITEM_NO = (SELECT #{ itemNo } FROM RETURN_ITEM_INFO WHERE REF_R_NO = #{ rNo } AND ITEM_NO = #{ itemNo })
+        AND STORE_NAME = #{ storeName }
+    </update>
+
     <insert id="insertProgress" parameterType="ReItemDTO">
         <selectKey keyProperty="rNo" order="BEFORE" resultType="_int">
             SELECT SEQ_R_NO.CURRVAL FROM DUAL
@@ -302,7 +310,7 @@
     <update id="upDateItem" parameterType="ReItemDTO">
         UPDATE
             ITEM_INFO
-        SET ITEM_AMOUNT = (SELECT #{ returnCount } FROM RETURN_ITEM_INFO WHERE REF_R_NO = #{ rNo } AND RETURN_COUNT = #{ returnCount } AND ITEM_NO= #{ itemNo })	+ ITEM_AMOUNT
+        SET ITEM_AMOUNT = (SELECT #{ returnCount } FROM RETURN_ITEM_INFO WHERE REF_R_NO = #{ rNo } AND RETURN_COUNT = #{ returnCount } AND ITEM_NO= #{ itemNo }) + ITEM_AMOUNT
         WHERE ITEM_NO = (SELECT #{ itemNo } FROM RETURN_ITEM_INFO WHERE REF_R_NO = #{ rNo } AND ITEM_NO = #{ itemNo })
     </update>
 

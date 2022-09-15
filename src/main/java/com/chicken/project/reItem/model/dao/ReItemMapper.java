@@ -54,4 +54,6 @@ public interface ReItemMapper {
     int deleteRItem(String rNo);
 
     int deleteReturnItems(String rNo);
+
+    int updateAcount(Map<String, Object> maps);
 }

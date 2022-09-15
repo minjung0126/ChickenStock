@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -83,21 +84,35 @@ public class ReItemService {
             log.info("result 확인 : " + result);
             result = 0; //초기화
 
-            Map<String, Object> maps = new HashMap<>();
 
+            List<Map<String, Object>> reList = new ArrayList<>();
             for(int i =0; i < insertItem.size(); i++){
-
+                Map<String, Object> maps = new HashMap<>();
                 maps.put("returnCount", insertItem.get(i).getReturnCount());
                 maps.put("itemNo", insertItem.get(i).getItemNo());
                 maps.put("storeName", storeName);
+                reList.add(maps);
                 result = reItemMapper.insertRItem(maps);
             }
 
-            if(result > 0){
+            if(result > 0) {
 
                 result = 0;
 
-                result = reItemMapper.insertProgress(insertItem.get(0));
+                Map<String, Object> map = null;
+
+                for(int i =0; i < reList.size(); i++) {
+
+                    map = reList.get(i);
+
+                    result = reItemMapper.updateAcount(map);
+                }
+                if (result > 0) {
+
+                    result = 0;
+
+                    result = reItemMapper.insertProgress(insertItem.get(0));
+                }
             }
         }
 
