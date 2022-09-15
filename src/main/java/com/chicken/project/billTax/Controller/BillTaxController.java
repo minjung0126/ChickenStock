@@ -139,7 +139,7 @@ public class BillTaxController {
             selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount);
         }
 
-        List<BillTaxDTO> billTaxList = billTaxService.selectTaxBillList(selectCriteria);
+        List<BillTaxDTO> billTaxList = billTaxService.selectBillList(selectCriteria);
 
         Map<String, List<BillTaxDTO>> map = new HashMap<>();
 
@@ -249,7 +249,7 @@ public class BillTaxController {
             selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount);
         }
 
-        List<tsBillTaxDTO> tsTaxBillList = billTaxService.selectTsBillTaxList(selectCriteria);
+        List<tsBillTaxDTO> tsTaxBillList = billTaxService.selectTsList(selectCriteria);
 
         Map<String, List<tsBillTaxDTO>> map = new HashMap<>();
 
