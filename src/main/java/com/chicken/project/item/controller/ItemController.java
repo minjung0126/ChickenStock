@@ -6,10 +6,12 @@ import com.chicken.project.item.model.dto.ItemCategoryDTO;
 import com.chicken.project.item.model.dto.ItemFileDTO;
 import com.chicken.project.item.model.dto.ItemInfoDTO;
 import com.chicken.project.item.model.service.ItemService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
@@ -102,6 +105,17 @@ public class ItemController {
         return mv;
     }
 
+    /* 상품 상세 조회 */
+    @GetMapping("itemDetail")
+    public ModelAndView getItemOne(ModelAndView mv, HttpServletResponse response) throws JsonProcessingException {
+
+        response.setContentType("application/json; charset=UTF-8");
+
+        itemService.selectOneItem();
+
+    }
+
+
     @PostMapping("/admin/regist")
     public String itemRegist(@ModelAttribute ItemInfoDTO item, @RequestParam(value="file", required = false) MultipartFile file, RedirectAttributes rttr) throws Exception{
 
@@ -138,9 +152,10 @@ public class ItemController {
             // 품목 등록
             int result = itemService.insertItem(item);
 
+
             // 품목 파일 등록
             if(result > 0) {
-
+                itemService.insertItemHistory();
                 itemService.insertFileRegist(itemFile);
             }
 
@@ -177,5 +192,8 @@ public class ItemController {
 
         return "redirect:/item/admin/list";
     }
+
+
+
 
 }

@@ -15,6 +15,7 @@
         <result property="itemAmount" column="ITEM_AMOUNT"/>
         <result property="soldout" column="soldout"/>
         <result property="rNum" column="RNUM"/>
+        <result property="itemDeleteYn" column="ITEM_DELETE_YN"/>
         <result property="categoryName" column="CATEGORY_NAME"/>
         <association property="itemFile" resultMap="itemFileResultMap"/>
     </resultMap>
@@ -38,6 +39,7 @@
                COUNT(*)
           FROM ITEM_INFO I
           JOIN ITEM_CATEGORY IC ON (I.CATEGORY_NO = IC.CATEGORY_NO)
+          JOIN ITEM_FILE IF ON (I.ITEM_NO = IF.ITEM_NO)
         <where>
             <if test="searchCondition == 'itemName'">
                 I.ITEM_NAME LIKE '%' || #{ searchValue } || '%'
@@ -48,6 +50,7 @@
             <if test="searchCondition == 'make'">
                 I.ITEM_MAKE LIKE '%' || #{ searchValue } || '%'
             </if>
+            AND I.ITEM_DELETE_YN = 'N'
         </where>
     </select>
 
@@ -105,6 +108,7 @@
                             <if test="searchCondition == 'make'">
                                 I.ITEM_MAKE LIKE '%' || #{ searchValue } || '%'
                             </if>
+                            AND I.ITEM_DELETE_YN = 'N'
                         </where>
                        ORDER BY 1) B
             <![CDATA[
@@ -182,9 +186,21 @@
         )
     </insert>
 
+    <insert id="insertItemHistory">
+        INSERT
+          INTO ITEM_HISTORY
+        (
+          ITEM_NO
+        )
+        VALUES
+        (
+          SEQ_ITEM_NO.CURRVAL
+        )
+    </insert>
+
     <delete id="deleteItem">
-        DELETE
-          FROM ITEM_INFO
+        UPDATE ITEM_INFO
+           SET ITEM_DELETE_YN = 'Y'
          WHERE ITEM_NO = #{ itemNo }
     </delete>
 
@@ -193,4 +209,8 @@
           FROM ITEM_FILE
          WHERE ITEM_NO = #{ itemNo }
     </delete>
+
+    <select id="selectOneItem" resultMap="itemInfoResultMap">
+
+    </select>
 </mapper>
