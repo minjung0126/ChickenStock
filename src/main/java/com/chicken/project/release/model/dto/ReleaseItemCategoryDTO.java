@@ -1,14 +1,14 @@
 package com.chicken.project.release.model.dto;
 
-public class ItemCategoryDTO {
+public class ReleaseItemCategoryDTO {
 
     private int categoryNo;
     private String categoryName;
     private int preCategory;
 
-    public ItemCategoryDTO(){}
+    public ReleaseItemCategoryDTO(){}
 
-    public ItemCategoryDTO(int categoryNo, String categoryName, int preCategory) {
+    public ReleaseItemCategoryDTO(int categoryNo, String categoryName, int preCategory) {
         this.categoryNo = categoryNo;
         this.categoryName = categoryName;
         this.preCategory = preCategory;

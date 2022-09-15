@@ -42,7 +42,7 @@
                     <br>
                     <div class="input-group mb-3 col-12">
                         <div class="dateList1"> 반품 신청일 :
-                            <span id="dueDate">2022-08-20</span>
+                            <span id="dueDate" th:text="${ updateItem.rDate }"></span>
                         </div>
                         <div class="dateList2" style="font-weight: bold;">
                             <select id="searchCondition" name="searchCondition" class="form-control col-4" style="max-width: max-content; margin-right: 10px; display: inline-block; border: none;">
@@ -55,14 +55,13 @@
                         </div>
                         <div class="dateList3" style="font-weight: bold;">
                             총 반품액 :
-                            <input type="text" class="release-input" th:name="totalMoney" th:value="${ totalMoney }" style="width: 150px; background-color: #f5f5f9; border: none;" readonly>
+                            <input type="text" class="release-input" th:name="totalMoney" th:value="${ updateItem.returnTotalMoney }" style="width: 150px; background-color: #f5f5f9; border: none;" readonly>
                         </div>
                     </div>
 
                     <table class="table">
                         <thead>
                         <tr>
-                            <th>번호</th>
                             <th>상품코드</th>
                             <th>썸네일</th>
                             <th>상품명</th>
@@ -74,21 +73,20 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>100000</td>
+                        <tr th:each=" reUp : ${ updateItems }">
+                            <td th:text="${ reUp.itemNo }"></td>
                             <td>
                                 <div class="img-info">
                                     <div class="img-info__img">
-                                        <img src="images/chicken.jpg" alt="">
+                                        <img th:src="'/images/' + ${ reUp.originName }" alt="">
                                     </div>
                                 </div>
                             </td>
-                            <td>닭다리</td>
-                            <td>식재료</td>
-                            <td>1kg</td>
-                            <td>하림(국내산)</td>
-                            <td>6,000</td>
+                            <td th:text="${ reUp.itemName }"></td>
+                            <td th:text="${ reUp.categoryName }"></td>
+                            <td th:text="${ reUp.itemStandard }"></td>
+                            <td th:text="${ reUp.itemMake }"></td>
+                            <td th:text="${ reUp.itemSales }"></td>
                             <td >
                                 <input type="number" style="width:60px; text-align: center; border: 1px solid rgb(255, 255, 255); border-bottom: 1px solid;" >
                                 <button type="submit" style="border : none; background-color: #fff;"></button>

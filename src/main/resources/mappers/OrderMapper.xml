@@ -50,7 +50,9 @@
         <result property="storeAmount" column="STORE_AMOUNT"/>
         <result property="storeName" column="STORE_NAME"/>
         <result property="itemNo" column="ITEM_NO"/>
-        <result property="relYn" column="REL_YN"/>
+        <result property="balance" column="BALANCE"/>
+
+        <association property="itemFile" resultMap="itemFileResultMap"/>
     </resultMap>
 
     <select id="selectTotalCount" resultType="_int" parameterType="hashmap">
@@ -131,7 +133,7 @@
             COUNT(*)
          FROM INTEREST A
         WHERE A.ITEM_NO = ${ itemNo }
-          AND A.STORE_NAME = '종각점'
+          AND A.STORE_NAME = #{ storeName }
     </select>
 
     <insert id="insertInterest" parameterType="InterestDTO">
@@ -142,43 +144,20 @@
             , CATEGORY_NO
             , ITEM_NO
         )
-        VALUES
-        (
-              934
-            , '종각점'
-            , ${ categoryNo }
-            , ${ itemNo }
-        )
+        SELECT
+              SEQ_INTEREST_NO.NEXTVAL
+            , #{ storeName }
+            , A.CATEGORY_NO
+            , #{ itemNo }
+         FROM ITEM_INFO A
+        WHERE ITEM_NO = ${ itemNo }
     </insert>
 
     <delete id="deleteInterest" parameterType="InterestDTO">
         DELETE FROM INTEREST
-         WHERE STORE_NAME = '종각점'
+         WHERE STORE_NAME = #{ storeName }
            AND ITEM_NO = ${ itemNo }
     </delete>
-
-    <insert id="insertItemIntoCart" parameterType="CartDTO">
-        INSERT INTO CART
-        (
-              CART_AMOUNT
-            , CATEGORY_NO
-            , ITEM_NO
-            , CART_NO
-            , STORE_NAME
-            , REL_YN
-            , CART_YN
-        )
-        VALUES
-        (
-              ${ cartAmount }
-            , ${ categoryNo }
-            , ${ itemNo }
-            , 1
-            , '종각점'
-            , 'N'
-            , 'Y'
-        )
-    </insert>
 
     <select id="selectCartTotalCount" resultType="_int" parameterType="hashmap">
         SELECT
@@ -188,7 +167,7 @@
             JOIN ITEM_CATEGORY B ON(A.CATEGORY_NO = B.CATEGORY_NO)
         </if>
         <if test="searchCondition == 'itemName'">
-            JOIN ITEM_INFO C (A.ITEM_NO = C.ITEM_NO)
+            JOIN ITEM_INFO C ON (A.ITEM_NO = C.ITEM_NO)
         </if>
         <where>
             <if test="searchCondition == 'category'">
@@ -197,60 +176,79 @@
             <if test="searchCondition == 'itemName'">
                 C.ITEM_NAME LIKE '%' || #{ searchValue } || '%'
             </if>
+        WHERE A.STORE_NAME = #{ storeName }
         </where>
     </select>
 
-    <select id="selectCartItem" resultMap="cartResultMap">
+<select id="selectCartItem" resultMap="cartResultMap">
         SELECT
               A.RNUM
-            , A.ITEM_NO
-            , F.ITEM_NAME
-            , D.CATEGORY_NAME
+            , A.CART_AMOUNT
             , A.CATEGORY_NO
-            , F.ITEM_STANDARD
-            , F.ITEM_MAKE
-            , F.ITEM_SALES
-            , E.STORE_AMOUNT
-            , F.ITEM_SOLDOUT_YN
-        FROM (SELECT ROWNUM RNUM
-            , B.CART_AMOUNT
-            , B.CATEGORY_NO
-            , B.ITEM_NO
-            , B.CART_NO
-            , B.CART_YN
+            , A.ITEM_NO
+            , A.CART_NO
+            , A.ITEM_NAME
+            , A.ITEM_STANDARD
+            , A.ITEM_SALES
+            , A.ITEM_SOLDOUT_YN
+            , A.ITEM_MAKE
+            , A.FILE_NO
+            , A.ORIGIN_NAME
+            , A.FILE_NAME
+            , A.BALANCE
         FROM (SELECT
-              C.CART_AMOUNT
-            , C.CATEGORY_NO
-            , C.ITEM_NO
-            , C.CART_NO
-            , C.CART_YN
+             ROWNUM RNUM
+           , B.CART_AMOUNT
+           , B.CATEGORY_NO
+           , B.ITEM_NO
+           , B.CART_NO
+           , B.ITEM_NAME
+           , B.ITEM_STANDARD
+           , B.ITEM_SALES
+           , B.ITEM_SOLDOUT_YN
+           , B.ITEM_MAKE
+           , B.FILE_NO
+           , B.ORIGIN_NAME
+           , B.FILE_NAME
+           , B.BALANCE
+        FROM (SELECT
+             C.CART_AMOUNT
+           , C.CATEGORY_NO
+           , C.ITEM_NO
+           , C.CART_NO
+           , E.ITEM_NAME
+           , E.ITEM_STANDARD
+           , E.ITEM_SALES
+           , E.ITEM_SOLDOUT_YN
+           , E.ITEM_MAKE
+           , F.FILE_NO
+           , F.ORIGIN_NAME
+           , F.FILE_NAME
+           , G.BALANCE
         FROM CART C
-        <if test="searchCondition == 'category'">
-            JOIN ITEM_CATEGORY D ON(C.CATEGORY_NO = D.CATEGORY_NO)
-        </if>
-        <if test="searchCondition == 'itemName'">
-            JOIN ITEM_INFO F (C.ITEM_NO = F.ITEM_NO)
-        </if>
+        LEFT JOIN ITEM_INFO E ON (C.ITEM_NO = E.ITEM_NO)
+        LEFT JOIN ITEM_FILE F ON (C.ITEM_NO = F.ITEM_NO)
+        LEFT JOIN BALANCE G ON (C.STORE_NAME = G.STORE_NAME)
+            <if test="searchCondition == 'category'">
+                LEFT JOIN ITEM_CATEGORY D ON (C.CATEGORY_NO = D.CATEGORY_NO)
+            </if>
         <where>
             <if test="searchCondition == 'category'">
                 D.CATEGORY_NAME LIKE '%' || #{ searchValue } || '%'
             </if>
             <if test="searchCondition == 'itemName'">
-                F.ITEM_NAME LIKE '%' || #{ searchValue } || '%'
+                E.ITEM_NAME LIKE '%' || #{ searchValue } || '%'
             </if>
+            AND C.STORE_NAME = #{ storeName }
+            AND C.CART_YN = 'Y'
         </where>
         ORDER BY C.ITEM_NO ASC
         ) B
         <![CDATA[
-                  WHERE ROWNUM <= #{ endRow }
-                  ]]>
+              WHERE ROWNUM <= #{ endRow }
+        ]]>
         ) A
-        JOIN ITEM_CATEGORY D ON (A.CATEGORY_NO = D.CATEGORY_NO)
-        LEFT JOIN STO_ITEM_INFO E ON (A.ITEM_NO = E.ITEM_NO)
-        LEFT JOIN ITEM_INFO F ON (F.ITEM_NO = A.ITEM_NO)
         WHERE A.RNUM >= #{ startRow }
-          AND E.STORE_NAME = '종각점'
-        ORDER BY A.ITEM_NO ASC
     </select>
 
     <select id="selectAvailableItemCount" resultType="_int" parameterType="hashmap">
@@ -295,7 +293,7 @@
         , B.ITEM_SALES
         , B.ITEM_SOLDOUT_YN
         FROM (SELECT
-        C.ITEM_NO
+          C.ITEM_NO
         , C.ITEM_NAME
         , C.CATEGORY_NO
         , C.ITEM_STANDARD
@@ -345,7 +343,7 @@
             <if test="searchCondition == 'itemName'">
                 C.ITEM_NAME LIKE '%' || #{ searchValue } || '%'
             </if>
-            AND A.STORE_NAME = '종각점'
+            AND A.STORE_NAME = #{ storeName }
         </where>
     </select>
 
@@ -403,8 +401,43 @@
         LEFT JOIN ITEM_FILE F ON (A.ITEM_NO = F.ITEM_NO)
         LEFT JOIN INTEREST G ON (A.ITEM_NO = G.ITEM_NO)
         WHERE A.RNUM >= #{ startRow }
-        AND G.STORE_NAME = '종각점'
+        AND G.STORE_NAME = #{ storeName }
         ORDER BY A.ITEM_NO ASC
     </select>
+
+    <insert id="insertItemIntoCart" parameterType="cartDTO">
+        INSERT INTO CART
+        (
+              CART_AMOUNT
+            , CATEGORY_NO
+            , ITEM_NO
+            , CART_NO
+            , STORE_NAME
+            , CART_YN
+        )
+        SELECT
+              ${ cartAmount }
+            , A.CATEGORY_NO
+            , ${ itemNo }
+            , SEQ_CART_NO_TEST.NEXTVAL
+            , #{ storeName }
+            , 'Y'
+         FROM ITEM_INFO A
+        WHERE A.ITEM_NO = ${ itemNo }
+    </insert>
+
+    <insert id="insertOrderItems" parameterType="cartDTO">
+        MERGE INTO CART A
+        USING DUAL
+        ON (A.CART_YN = 'Y')
+        WHEN MATCHED THEN
+        UPDATE SET A.STORE_NAME = #{ storeName }
+        DELETE WHERE A.STORE_NAME = #{ storeName }
+        WHEN NOT MATCHED THEN
+        INSERT (CART_AMOUNT, CATEGORY_NO, ITEM_NO, CART_NO, STORE_NAME, CART_YN)
+        VALUES (#{ cartAmount }, #{ categoryNo }, #{ itemNo }, SEQ_CART_NO_TEST.NEXTVAL, #{ storeName }, 'N')
+    </insert>
+
+
 
 </mapper>

@@ -3,10 +3,11 @@ package com.chicken.project.receive.model.service;
 import com.chicken.project.common.paging.SelectCriteria;
 import com.chicken.project.exception.receive.ReceiveInsertException;
 import com.chicken.project.exception.receive.ReceiveUpdateException;
+import com.chicken.project.item.model.dto.ItemInfoDTO;
 import com.chicken.project.receive.model.dao.ReceiveMapper;
 import com.chicken.project.receive.model.dto.ReceiveOfficeDTO;
 import com.chicken.project.receive.model.dto.ReceiveOfficeItemDTO;
-import com.chicken.project.release.model.dto.ItemInfoDTO;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
