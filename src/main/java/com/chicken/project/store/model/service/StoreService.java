@@ -46,6 +46,7 @@ public class StoreService {
         int result = storeMapper.insertStore(store);
 
         if(!(result > 0)){
+
             throw new StoreInsertException("가맹점 등록 실패!");
         } else {
 
@@ -53,7 +54,7 @@ public class StoreService {
 
             if(result2 > 0){
 
-                storeMapper.insertStoreRole(store);
+                int result3 = storeMapper.insertStoreRole(store.getStoreName(), store.getStoreId());
             }
         }
     }

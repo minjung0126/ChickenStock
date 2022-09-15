@@ -1,5 +1,6 @@
 package com.chicken.project.empList.model.service;
 
+import com.chicken.project.common.paging.SelectCriteria;
 import com.chicken.project.member.model.dao.EmployeeMapper;
 import com.chicken.project.member.model.dto.EmployeeDTO;
 import org.slf4j.Logger;
@@ -33,14 +34,50 @@ public class EmpListServiceImpl implements EmpListService {
     /* 직원 정보 등록 */
     @Override
     @Transactional
-    public int registEmp(EmployeeDTO emp){
-        
+    public int registEmp(EmployeeDTO emp)  {
+
         log.info("[EmpListService] Insert Employee : " + emp);
-        
-        int result = employeeMapper.insertEmployee(emp);
+
+        /* 직원 정보 추가 */
+        int result1 = employeeMapper.insertEmployee(emp);
+
+        /* 직원 권한 추가 */
+        int result2 = employeeMapper.insertEmpRole(emp);
+
+        int result = 0;
+
+        if(result1 > 0 && result2 > 0){
+
+            result = 1;
+        }
 
         log.info("[EmpListService] Insert result : " + ((result > 0)? "직원 정보 추가 성공" : "직원 정보 추가 실패"));
 
         return result;
     }
+
+    /* 관리자 권한 추가 */
+    @Override
+    public int selectCkAdminAuth(String empId) {
+
+        int ckAdmin = employeeMapper.selectCkAdminAuth(empId);
+
+        log.info("[EmpListService] ckAdmin : " + ckAdmin);
+
+        return ckAdmin;
+    }
+
+    @Override
+    @Transactional
+    public int insertAuth(String empId) {
+
+        log.info("[EmpListService] insertAuth : " + empId);
+
+        int result = employeeMapper.insertAuth(empId);
+
+        log.info("[EmpListService] insertAuth : " + result);
+
+        return result;
+    }
+
 }

@@ -25,6 +25,8 @@ public class StoreMemberDTO{
     private String storeId;
     private String storePwd;
     private String storeNo;
+    private String storeYn;
+
 
     private List<StoreRoleDTO> storeRoleList;
 
