@@ -140,8 +140,6 @@ public class ReItemController {
         String rNo = request.getParameter("rNo");
         mv.addObject("rNo", rNo);
 
-        log.info("확인해주십쇼 : " + rNo);
-
         int result = reItemService.deleteList(rNo);
 
         if (result > 0){
