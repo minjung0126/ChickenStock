@@ -37,6 +37,7 @@ public class OrderController {
         this.orderService = orderService;
     }
 
+    //상품 목록 전체 조회
     @GetMapping(value = "/list")
     public ModelAndView inquire(ModelAndView mv,
                                 HttpServletRequest request,
@@ -83,6 +84,7 @@ public class OrderController {
 
     }
 
+    //관심 설정 저장
     @ResponseBody
     @PostMapping ("/list/interest/insert")
     public String interestControl(HttpServletRequest request,
@@ -118,6 +120,7 @@ public class OrderController {
         return "redirect:/order/list";
     }
 
+    // 관심 설정 상품만 조회
     @GetMapping("/list/interest/select")
     public ModelAndView interestList(ModelAndView mv,
                                      HttpServletRequest request,
@@ -162,7 +165,7 @@ public class OrderController {
 
     }
 
-
+    //품절 상품 제외하고 보기
     @GetMapping("/list/available")
     public ModelAndView availableList(ModelAndView mv,
                                       HttpServletRequest request,
@@ -207,6 +210,7 @@ public class OrderController {
 
     }
 
+    //카트에 넣기 (GET)
     @GetMapping(value = "/list/insert")
     public ModelAndView insertCart (HttpServletRequest request,
                                     ModelAndView mv,
@@ -229,7 +233,8 @@ public class OrderController {
         searchMap.put("searchValue", searchValue);
         searchMap.put("storeName", storeName);
 
-        int totalCount = orderService.selectCartTotalCount(searchMap);
+        //int totalCount = orderService.selectCartTotalCount(searchMap);
+        int totalCount = orderService.selectTotalCount(searchMap);
 
         int limit = 10;
         int buttonAmount = 5;
@@ -251,6 +256,7 @@ public class OrderController {
         return mv;
     }
 
+    //카트에 넣기 (POST)
     @PostMapping(value="/list/insert")
     public ModelAndView insertCartList(HttpServletRequest request,
                                        ModelAndView mv,
@@ -274,8 +280,8 @@ public class OrderController {
         searchMap.put("searchValue", searchValue);
         searchMap.put("storeName", storeName);
 
-
-        int totalCount = orderService.selectCartTotalCount(searchMap);
+        //int totalCount = orderService.selectCartTotalCount(searchMap);
+        int totalCount = orderService.selectTotalCount(searchMap);
 
         int limit = 10;
         int buttonAmount = 5;
@@ -323,6 +329,7 @@ public class OrderController {
         return mv;
     }
 
+    //장바구니 목록 조회
     @GetMapping(value = "/cart/list")
     public ModelAndView cartList(ModelAndView mv,
                                  HttpServletRequest request,

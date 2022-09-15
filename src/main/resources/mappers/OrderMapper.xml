@@ -166,7 +166,7 @@
             JOIN ITEM_CATEGORY B ON(A.CATEGORY_NO = B.CATEGORY_NO)
         </if>
         <if test="searchCondition == 'itemName'">
-            JOIN ITEM_INFO C (A.ITEM_NO = C.ITEM_NO)
+            JOIN ITEM_INFO C ON (A.ITEM_NO = C.ITEM_NO)
         </if>
         <where>
             <if test="searchCondition == 'category'">
@@ -175,51 +175,58 @@
             <if test="searchCondition == 'itemName'">
                 C.ITEM_NAME LIKE '%' || #{ searchValue } || '%'
             </if>
-            AND A.STORE_NAME = #{ storeName }
+        WHERE A.STORE_NAME = #{ storeName }
         </where>
     </select>
 
-    <select id="selectCartItem" resultMap="cartResultMap">
+<select id="selectCartItem" resultMap="cartResultMap">
         SELECT
-          A.RNUM
-        , A.CART_NO
-        , A.CART_AMOUNT
-        , A.ITEM_NO
-        , A.CATEGORY_NO
-        , A.STORE_NAME
-        , A.CART_YN
-        , D.CATEGORY_NAME
-        , E.ITEM_NAME
-        , E.ITEM_STANDARD
-        , E.ITEM_SALES
-        , E.ITEM_SOLDOUT_YN
-        , E.ITEM_MAKE
-        , F.STORE_AMOUNT
-        , G.FILE_NO
-        , G.ORIGIN_NAME
-        , G.FILE_NAME
+              A.RNUM
+            , A.CART_AMOUNT
+            , A.CATEGORY_NO
+            , A.ITEM_NO
+            , A.CART_NO
+            , A.ITEM_NAME
+            , A.ITEM_STANDARD
+            , A.ITEM_SALES
+            , A.ITEM_SOLDOUT_YN
+            , A.ITEM_MAKE
+            , A.FILE_NO
+            , A.ORIGIN_NAME
+            , A.FILE_NAME
         FROM (SELECT
-          ROWNUM RNUM
-        , B.CART_NO
-        , B.CART_AMOUNT
-        , B.ITEM_NO
-        , B.CATEGORY_NO
-        , B.STORE_NAME
-        , B.CART_YN
+             ROWNUM RNUM
+           , B.CART_AMOUNT
+           , B.CATEGORY_NO
+           , B.ITEM_NO
+           , B.CART_NO
+           , B.ITEM_NAME
+           , B.ITEM_STANDARD
+           , B.ITEM_SALES
+           , B.ITEM_SOLDOUT_YN
+           , B.ITEM_MAKE
+           , B.FILE_NO
+           , B.ORIGIN_NAME
+           , B.FILE_NAME
         FROM (SELECT
-          C.CART_NO
-        , C.CART_AMOUNT
-        , C.ITEM_NO
-        , C.CATEGORY_NO
-        , C.STORE_NAME
-        , C.CART_YN
+             C.CART_AMOUNT
+           , C.CATEGORY_NO
+           , C.ITEM_NO
+           , C.CART_NO
+           , E.ITEM_NAME
+           , E.ITEM_STANDARD
+           , E.ITEM_SALES
+           , E.ITEM_SOLDOUT_YN
+           , E.ITEM_MAKE
+           , F.FILE_NO
+           , F.ORIGIN_NAME
+           , F.FILE_NAME
         FROM CART C
-        <if test="searchCondition == 'category'">
-            JOIN ITEM_CATEGORY D ON(C.CATEGORY_NO = D.CATEGORY_NO)
-        </if>
-        <if test="searchCondition == 'itemName'">
-            JOIN ITEM_INFO E ON(C.ITEM_NO = E.ITEM_NO)
-        </if>
+        LEFT JOIN ITEM_INFO E ON (C.ITEM_NO = E.ITEM_NO)
+        LEFT JOIN ITEM_FILE F ON (C.ITEM_NO = F.ITEM_NO)
+            <if test="searchCondition == 'category'">
+                LEFT JOIN ITEM_CATEGORY D ON (C.CATEGORY_NO = D.CATEGORY_NO)
+            </if>
         <where>
             <if test="searchCondition == 'category'">
                 D.CATEGORY_NAME LIKE '%' || #{ searchValue } || '%'
@@ -227,21 +234,15 @@
             <if test="searchCondition == 'itemName'">
                 E.ITEM_NAME LIKE '%' || #{ searchValue } || '%'
             </if>
+            AND C.STORE_NAME = #{ storeName }
         </where>
         ORDER BY C.ITEM_NO ASC
         ) B
         <![CDATA[
-                  WHERE ROWNUM <= #{ endRow }
-                  ]]>
+              WHERE ROWNUM <= #{ endRow }
+        ]]>
         ) A
-        JOIN ITEM_INFO E ON (A.ITEM_NO = E.ITEM_NO)
-        LEFT JOIN ITEM_CATEGORY D ON (A.CATEGORY_NO = D.CATEGORY_NO)
-        LEFT JOIN STO_ITEM_INFO F ON (A.ITEM_NO = F.ITEM_NO)
-        LEFT JOIN ITEM_FILE G ON (A.ITEM_NO = G.ITEM_NO)
-        LEFT JOIN CART C ON (A.ITEM_NO = C.ITEM_NO)
         WHERE A.RNUM >= #{ startRow }
-          AND C.STORE_NAME = #{ storeName }
-        ORDER BY A.ITEM_NO ASC
     </select>
 
     <select id="selectAvailableItemCount" resultType="_int" parameterType="hashmap">
@@ -286,7 +287,7 @@
         , B.ITEM_SALES
         , B.ITEM_SOLDOUT_YN
         FROM (SELECT
-        C.ITEM_NO
+          C.ITEM_NO
         , C.ITEM_NAME
         , C.CATEGORY_NO
         , C.ITEM_STANDARD

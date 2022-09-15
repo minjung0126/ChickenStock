@@ -100,7 +100,7 @@
  }
  
  :-moz-placeholder { /* Firefox 18- */
-    text-align: center;  
+    text-align: center;
  }
  
  ::-moz-placeholder {  /* Firefox 19+ */
@@ -117,30 +117,34 @@
  }
 
 /* 검색 */
-.search-area {
-    width: 500px;
+.search-area > #searchForm > #searchValue {
+    width: 270px;
     position: absolute;
-    top: 130px;
-    float: left;
+    top: -5px;
+    left: 115px;
 }
 
-#searchValue {
-    width: 250px;
+.search-area {
+    width: 400px;
     position: absolute;
-    left: 120px;
-    display: inline-block;
+    top: 135px;
 }
 
 #searchCondition {
     height: 37px;
     position: absolute;
+    top: -5px;
     left: 15px;
 }
 
-#searchBtn {
+
+.search-area > #searchForm > .btn {
     position: absolute;
-    left: 365px;
+    left: 380px;
+    top: -5px;
 }
+
+
 
 /* 페이징 */
 #pageBox {
