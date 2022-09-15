@@ -127,8 +127,14 @@ public class OrderService {
 
     }
 
+    @Transactional
     public void insertItemIntoCart(int itemNo, int cartAmount, String storeName) {
 
         orderMapper.insertItemIntoCart(itemNo, cartAmount, storeName);
+    }
+
+    public void insertOrderItems(int itemNo, int cartAmount, int categoryNo, String storeName) {
+
+        orderMapper.insertOrderItems(itemNo, cartAmount, categoryNo, storeName);
     }
 }
