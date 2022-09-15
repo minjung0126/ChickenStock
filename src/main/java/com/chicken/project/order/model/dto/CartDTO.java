@@ -14,14 +14,13 @@ public class CartDTO {
     private String cartYn;
     private String storeName;
     private int cartNo;
-    private String relYn;
     private int storeAmount;
     private OrderItemFileDTO itemFile;
 
     public CartDTO() {
     }
 
-    public CartDTO(int itemNo, String itemName, String categoryName, int categoryNo, String itemStandard, String itemMake, int itemSales, int cartAmount, String itemSoldoutYn, String cartYn, String storeName, int cartNo, String relYn, int storeAmount, OrderItemFileDTO itemFile) {
+    public CartDTO(int itemNo, String itemName, String categoryName, int categoryNo, String itemStandard, String itemMake, int itemSales, int cartAmount, String itemSoldoutYn, String cartYn, String storeName, int cartNo, int storeAmount, OrderItemFileDTO itemFile) {
         this.itemNo = itemNo;
         this.itemName = itemName;
         this.categoryName = categoryName;
@@ -34,7 +33,6 @@ public class CartDTO {
         this.cartYn = cartYn;
         this.storeName = storeName;
         this.cartNo = cartNo;
-        this.relYn = relYn;
         this.storeAmount = storeAmount;
         this.itemFile = itemFile;
     }
@@ -135,14 +133,6 @@ public class CartDTO {
         this.cartNo = cartNo;
     }
 
-    public String getRelYn() {
-        return relYn;
-    }
-
-    public void setRelYn(String relYn) {
-        this.relYn = relYn;
-    }
-
     public int getStoreAmount() {
         return storeAmount;
     }
@@ -174,7 +164,6 @@ public class CartDTO {
                 ", cartYn='" + cartYn + '\'' +
                 ", storeName='" + storeName + '\'' +
                 ", cartNo=" + cartNo +
-                ", relYn='" + relYn + '\'' +
                 ", storeAmount=" + storeAmount +
                 ", itemFile=" + itemFile +
                 '}';
