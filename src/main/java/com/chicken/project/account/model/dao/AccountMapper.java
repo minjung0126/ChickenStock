@@ -2,6 +2,8 @@ package com.chicken.project.account.model.dao;
 
 import com.chicken.project.account.model.dto.AccountApplyDTO;
 import com.chicken.project.account.model.dto.AccountDTO;
+import com.chicken.project.account.model.dto.StoreBreakdownDTO;
+import com.chicken.project.account.model.dto.StoreDepositDTO;
 import com.chicken.project.store.model.dto.BalanceDTO;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -31,4 +33,10 @@ public interface AccountMapper {
     int accountUpdate(AccountApplyDTO accountApply);
 
     List<BalanceDTO> balanceSelect();
+
+    List<StoreDepositDTO> selectStoreDeposit(String storeName);
+
+    List<StoreBreakdownDTO> selectStoreBreakdown(String storeName);
+
+    int depositInsert(int accountDeposit, String storeName);
 }
