@@ -19,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -162,27 +163,53 @@ public class ReItemController {
         return mv;
 
     }
+    // 본사 제품 재등록
+    @PostMapping("/admin/adminReList")
+    public ModelAndView ReListUpdate(ModelAndView mv, HttpServletRequest request){
+
+        String rNo = request.getParameter("rNo");
+        mv.addObject("rNo",rNo);
+        log.info("값님 들어오나여 : " + rNo);
+
+        List<ReItemDTO> check = reItemService.selectList(rNo);
+
+        Map<String, Object> maps = new HashMap<>();
+        maps.put("rNo", rNo);
+        maps.put("check", check);
+
+        int result = reItemService.updateItem(maps);
+
+        log.info("화기기기기기기기 ㄴ : " + result);
+        mv.setViewName("redirect:/reItem/admin/adminReList");
+
+        return mv;
+    }
+
     // 본사 반품 상세보기
     @GetMapping("/admin/adminReItem")
-    public ModelAndView ReAcceptance(ModelAndView mv, HttpServletRequest request){
+    public ModelAndView ReAcceptance(ModelAndView mv, HttpServletRequest request, RedirectAttributes rttr){
 
         String rNo = request.getParameter("rNo");
         String storeName = request.getParameter("storeName");
+        String returnProgress = request.getParameter("returnProgress");
         mv.addObject("rNo", rNo);
         mv.addObject("storeName",storeName);
+        mv.addObject("returnProgress", returnProgress);
+
 
         ReItemDTO reItem = reItemService.selectReturnItem(rNo);
         List<ReItemDTO> reItems = reItemService.selectReturnItems(rNo);
 
         mv.addObject("reItem",reItem);
         mv.addObject("reItems", reItems);
+
+        rttr.addFlashAttribute("returnProgress", returnProgress);
         mv.setViewName("/reItem/admin/adminReItem");
 
         return mv;
     }
     @PostMapping("/admin/adminReItem")
     public ModelAndView ReturnComplete(ModelAndView mv
-                                        , HttpServletRequest request
                                         , @AuthenticationPrincipal AdminImpl adminImpl
                                         , @ModelAttribute ReItemDTO returnItems
                                         , @RequestParam String rNo

@@ -40,4 +40,12 @@ public interface ReItemMapper {
     int updateMoney(Map<String, Object> maps);
 
     int updateProgress(int parseInt);
+
+    List<ReItemDTO> selectRItem(String rNo);
+
+    int upDateItem(ReItemDTO reItem);
+
+    int insertHistory(ReItemDTO reItem);
+
+    int updateRProgress(ReItemDTO reItem);
 }

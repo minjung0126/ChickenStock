@@ -9,9 +9,7 @@ public class ReListDTO {
     private String storeName;           // 가맹점 이름
     private String storeRep;            // 가맹점주 이름
     private String rProgress;           // 반품진행상태
-
     private String empId;               // 본사직원 아이디
-
 
     public ReListDTO() {
     }

@@ -102,7 +102,7 @@ public class ReItemService {
 
         return result;
     }
-
+    @Transactional
     public int updateComplete(ReItemDTO returnItems, String adminId, String rNo, String storeName) {
 
         Map<String, Object> map = new HashMap<>();
@@ -132,6 +132,45 @@ public class ReItemService {
             }
 
         }
+
+        return result;
+    }
+    @Transactional
+    public List<ReItemDTO> selectList(String rNo) {
+
+        List<ReItemDTO> re = reItemMapper.selectRItem(rNo);
+
+        return re;
+
+    }
+
+    public int updateItem(Map<String, Object> maps) {
+
+        int result = 0;
+
+        for (int i = 0; i < ((List<ReItemDTO>) maps.get("check")).size(); i++) {
+
+            ReItemDTO reItem = ((List<ReItemDTO>) maps.get("check")).get(i);
+            reItem.setrNo(Integer.parseInt((String) maps.get("rNo")));
+            result = reItemMapper.upDateItem(reItem);
+
+
+            if(result > 0){
+
+                result = 0;
+
+                result = reItemMapper.insertHistory(reItem);
+
+                if(result > 0){
+
+                    result = 0;
+
+                    result = reItemMapper.updateRProgress(reItem);
+                }
+            }
+            log.info("확인중입니다요"+reItem);
+        }
+
 
         return result;
     }

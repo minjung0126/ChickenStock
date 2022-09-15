@@ -284,11 +284,47 @@
            SET RETURN_PROGRESS = '반품완료'
          WHERE R_NO = #{ rNo }
     </update>
+
     <update id="updateMoney" parameterType="BalanceDTO">
         UPDATE BALANCE
         SET BALANCE = (SELECT RETURN_ACCOUNT FROM RETURN_ITEM WHERE R_NO = #{ rNo } AND  RETURN_PROGRESS = '반품완료') + BALANCE
         WHERE STORE_NAME = #{ storeName }
     </update>
 
+    <select id="selectRItem" resultMap="reItemResultMap">
+        SELECT
+               ITEM_NO
+             , RETURN_COUNT
+          FROM RETURN_ITEM_INFO
+         WHERE REF_R_NO = #{ rNo }
+    </select>
 
+    <update id="upDateItem" parameterType="ReItemDTO">
+        UPDATE
+            ITEM_INFO
+        SET ITEM_AMOUNT = (SELECT #{ returnCount } FROM RETURN_ITEM_INFO WHERE REF_R_NO = #{ rNo } AND RETURN_COUNT = #{ returnCount } AND ITEM_NO= #{ itemNo })	+ ITEM_AMOUNT
+        WHERE ITEM_NO = (SELECT #{ itemNo } FROM RETURN_ITEM_INFO WHERE REF_R_NO = #{ rNo } AND ITEM_NO = #{ itemNo })
+    </update>
+
+    <insert id="insertHistory">
+        INSERT
+        INTO ITEM_HISTORY
+        (
+          R_NO
+        , ITEM_NO
+        )
+        VALUES
+        (
+          #{ rNo }
+        , #{ itemNo }
+        )
+    </insert>
+
+    <update id="updateRProgress" parameterType="ReListDTO">
+        UPDATE
+            RETURN_PROGRESS
+        SET
+            R_PROGRESS = '재등록 완료'
+        WHERE R_NO = #{ rNo }
+    </update>
 </mapper>

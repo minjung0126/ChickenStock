@@ -62,19 +62,30 @@
                         </tr>
                         </thead>
                         <tbody>
+
                         <tr th:each=" re : ${ returnList }">
                             <td th:text="${ re.rNo }"></td>
+
                             <td th:text="${ re.storeName }"></td>
                             <td th:text="${ re.storeRep }"></td>
                             <td th:text="${ re.rDate }"></td>
                             <td th:text="${ re.returnProgress }"></td>
                             <td th:if="${ re.rProgress eq NULL }" th:text="${ re.rProgress }"></td>
                             <td th:if="${ re.rProgress eq '폐기' }" th:text="${ re.rProgress }"></td>
-                            <td th:if="${ re.rProgress eq '재등록' }" ><button class="btn btn-warning me-1" type="button">재등록</button></td>
+                            <td th:if="${ re.rProgress eq '재등록 완료' }" th:text="${ re.rProgress }">
+                                <button class="btn btn-light me-1" style="background: #ccc;"  disabled>재등록 완료</button>
+                            </td>
+                            <td th:if="${ re.rProgress eq '재등록' }" >
+                                <form id="insertReItemForm" th:action="@{/reItem/admin/adminReList}" method="post">
+                                    <button class="btn btn-warning me-1" onclick="insertReItem()">재등록</button>
+                                    <input type="hidden" name="rNo" th:value="${ re.rNo }">
+                                </form>
+                            </td>
                             <td>
-                                <button class="btn btn-warning me-1" th:onclick="|location.href='@{/reItem/admin/adminReItem(rNo=${ re.rNo }, storeName=${ re.storeName })}'|">상세보기</button>
+                                <button class="btn btn-warning me-1" th:onclick="|location.href='@{/reItem/admin/adminReItem(rNo=${ re.rNo }, storeName=${ re.storeName }, returnProgress=${ re.returnProgress })}'|">상세보기</button>
                             </td>
                         </tr>
+
                         </tbody>
                     </table>
                 </div>
@@ -128,6 +139,25 @@
     </div>
     <!-- E: container -->
 </div>
+<script>
+
+    function insertReItem() {
+
+        var result = confirm("제품을 재등록 하시겠습니까?");
+
+        if (result) {
+
+            $('#searchForm').submit();
+            alert('제품 재등록이 완료되었습니다.');
+
+            return false;
+        }
+    }
+
+
+
+
+</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 </body>
