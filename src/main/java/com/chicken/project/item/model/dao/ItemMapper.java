@@ -22,4 +22,5 @@ public interface ItemMapper {
     int deleteItemFile(String itemNo);
     int insertFileRegist(ItemFileDTO itemFile);
     int insertItemHistory();
+    ItemInfoDTO selectOneItem(String itemNoInput);
 }

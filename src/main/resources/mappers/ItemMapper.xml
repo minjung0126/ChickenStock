@@ -211,6 +211,9 @@
     </delete>
 
     <select id="selectOneItem" resultMap="itemInfoResultMap">
+        SELECT
 
+          FROM ITEM_INFO I
+          JOIN ITEM_HISTORY IH ON (I.ITEM_NO = IH.ITEM_NO)
     </select>
 </mapper>

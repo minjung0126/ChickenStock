@@ -107,11 +107,18 @@ public class ItemController {
 
     /* 상품 상세 조회 */
     @GetMapping("itemDetail")
-    public ModelAndView getItemOne(ModelAndView mv, HttpServletResponse response) throws JsonProcessingException {
+    public ModelAndView getItemOne(ModelAndView mv, HttpServletResponse response, HttpServletRequest request) throws JsonProcessingException {
 
         response.setContentType("application/json; charset=UTF-8");
 
-        itemService.selectOneItem();
+        String itemNoInput = request.getParameter("itemNoInput");
+
+        ItemInfoDTO item = itemService.selectOneItem(itemNoInput);
+
+        mv.addObject(item);
+        mv.setViewName("itemDetail");
+
+        return mv;
 
     }
 

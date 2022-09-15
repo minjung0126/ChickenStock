@@ -108,4 +108,10 @@ public class ItemService {
 
         return result;
     }
+
+    public ItemInfoDTO selectOneItem(String itemNoInput) {
+
+        ItemInfoDTO oneItem = itemMapper.selectOneItem(itemNoInput);
+        return oneItem;
+    }
 }
