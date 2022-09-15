@@ -75,22 +75,27 @@
                   FROM ITEM_INFO A
                   JOIN ITEM_FILE B ON (A.ITEM_NO = B.ITEM_NO)
                   JOIN ITEM_CATEGORY C ON(A.CATEGORY_NO = C.CATEGORY_NO)
-                <if test="searchCondition != null &amp;&amp; searchValue != null">
-                    WHERE A.ITEM_NAME = '%' || #{ serachValue } || '%'
+                <if test="searchCondition == 'searchItemName'">
+                    WHERE A.ITEM_NAME LIKE '%' || #{ searchValue } || '%'
                 </if>
-                ORDER BY A.ITEM_NO DESC ) B
+                ORDER BY A.ITEM_NO ASC ) B
          <![CDATA[ WHERE ROWNUM <= #{ endRow } ]]>) C
         WHERE C.RNUM >= #{ startRow }
         ORDER BY 1 ASC
     </select>
 
-    <select id="selectTotalCount" resultType="_int">
+    <select id="selectTotalCount" resultType="_int" parameterType="hashmap">
         SELECT
-             COUNT (*)
+             COUNT(*)
         FROM ITEM_INFO A
-        <if test="searchCondition != null &amp;&amp; searchValue != null">
-            WHERE A.ITEM_NAME = '%' || #{ serachValue } || '%'
-        </if>
-        ORDER BY A.ITEM_NO DESC
+        JOIN ITEM_FILE B ON (A.ITEM_NO = B.ITEM_NO)
+        JOIN ITEM_CATEGORY C ON(A.CATEGORY_NO = C.CATEGORY_NO)
+        <where>
+            <if test="searchCondition == 'searchItemName'">
+                A.ITEM_NAME LIKE '%' || #{ searchValue } || '%'
+            </if>
+            <if test="searchValue == null">
+            </if>
+        </where>
     </select>
 </mapper>

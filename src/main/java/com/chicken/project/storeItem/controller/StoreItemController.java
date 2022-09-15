@@ -47,12 +47,12 @@ public class StoreItemController {
 
         int totalCount = storeItemService.selectTotalCount(searchMap);
 
-        int limit;
-        if(searchCondition != null && !"".equals(searchCondition)) {
-            limit = totalCount;
-        } else{
-            limit = 10;
-        }
+        int limit = 8;
+//        if(searchCondition != null && !"".equals(searchCondition)) {
+//            limit = totalCount;
+//        } else{
+//            limit = 8;
+//        }
 
         int buttonAmount = 5;
 
@@ -67,7 +67,8 @@ public class StoreItemController {
 
         List<StoreItemListDTO> itemList = storeItemService.itemListSelect(selectCriteria);
 
-        System.out.println(itemList);
+        System.out.println("itemList: " + itemList);
+        System.out.println("selectCriteria : " + selectCriteria);
 
         mv.addObject("selectCriteria", selectCriteria);
         mv.addObject("itemList", itemList);
