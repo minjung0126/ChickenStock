@@ -15,8 +15,8 @@ public class CalendarDTO {
 
     private int calNo;
     private String calName;
-    private java.util.Date startDay;
-    private java.util.Date endDay;
+    private java.sql.Date startDay;
+    private java.sql.Date endDay;
     private String content;
     private String empId;
     private String groupNO;

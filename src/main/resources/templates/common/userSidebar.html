@@ -27,13 +27,13 @@
                  <a href="/account/user/list" title="">예치금 관리</a>
               </li>
               <li>                
-                 <a href="#" title="">비밀번호 재설정</a>
+                 <a th:href="@{/mypage/store_mypage}" title="">비밀번호 재설정</a>
               </li>
             </ul>
           </div>
 
           <div class="accordion_dep type1 ">
-            <a href="#" title=""><img src="/images/items.png" width="18px" height="18px"> 품목관리</a>
+            <a href="/storeItem/itemListSelect" title=""><img src="/images/items.png" width="18px" height="18px"> 품목관리</a>
           </div>
 
           <div class="accordion_dep type1 ">
@@ -48,20 +48,20 @@
             <a href="#" title=""><img src="/images/re.png" width="18px" height="18px"> 반품관리</a>
             <ul>
               <li>
-                <a href="../reItem/returnReItemList.html" title="">반품요청</a>
+                <a href="/reItem/user/insertReItem" title="">반품신청</a>
               </li>
               <li>
-                <a href="../reItem/storeReList.html" title="">반품요청목록조회</a>
+                <a href="/reItem/user/storeReList" title="">반품요청목록조회</a>
               </li>
             </ul>
           </div>
 
           <div class="accordion_dep type1 ">
-            <a href="../billTax/billList.html" title=""><img src="/images/tax.png" width="18px" height="18px"> 세금계산서</a>
+            <a href="/billTax/billList" title=""><img src="/images/tax.png" width="18px" height="18px"> 세금계산서</a>
           </div>
 
           <div class="accordion_dep type1 ">
-            <a href="../billTax/tsbillList.html" title=""><img src="/images/bill.png" width="18px" height="18px"> 거래명세서</a>
+            <a href="/billTax/tsbillList" title=""><img src="/images/bill.png" width="18px" height="18px"> 거래명세서</a>
           </div>
 
           <div class="accordion_dep type1 ">

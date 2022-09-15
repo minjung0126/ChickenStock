@@ -30,14 +30,13 @@ public class StoreService {
     @Transactional
     public void deleteStore(String storeName) throws StoreDeleteException {
 
-        int result = storeMapper.deleteBalanceStore(storeName);
+        int result = storeMapper.deleteStore(storeName);
 
         if(!(result > 0)){
-            throw new StoreDeleteException("가맹점 정보 삭제에 실패하셨습니다.");
-        } else {
 
-            storeMapper.deleteStore(storeName);
+            throw new StoreDeleteException("가맹점 정보 삭제에 실패하셨습니다.");
         }
+
     }
 
     /* 가맹점 등록 */
@@ -47,10 +46,16 @@ public class StoreService {
         int result = storeMapper.insertStore(store);
 
         if(!(result > 0)){
+
             throw new StoreInsertException("가맹점 등록 실패!");
         } else {
 
-            storeMapper.insertBalance(store.getStoreName());
+            int result2 = storeMapper.insertBalance(store.getStoreName(), store.getStoreId());
+
+            if(result2 > 0){
+
+                int result3 = storeMapper.insertStoreRole(store.getStoreName(), store.getStoreId());
+            }
         }
     }
 
@@ -66,7 +71,7 @@ public class StoreService {
 
         int result = storeMapper.updateStore(store);
 
-        if(!(result > 0)){
+        if(!(result > 0)) {
 
             throw new StoreUpdateException("가맹점 정보 수정 실패!");
         }

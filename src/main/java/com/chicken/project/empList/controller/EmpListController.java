@@ -6,10 +6,7 @@ import com.chicken.project.member.model.dto.EmployeeDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -81,5 +78,37 @@ public class EmpListController {
 
         return "redirect:/";
     }
+
+    @PostMapping("/auth")
+    @ResponseBody
+    public String insertAuth(@RequestParam String empId){
+
+        log.info("[EmpListController] insertAuth ========================================");
+
+        log.info("[EmpListController] empId : " + empId);
+
+        int ckAdmin = empListService.selectCkAdminAuth(empId);
+
+        log.info("[EmpListController] ckAdmin : " + ckAdmin);
+
+        String data = "";
+
+        if (ckAdmin == 2){
+
+            data = "admin";
+        }
+        if(ckAdmin == 1){
+
+            int result = empListService.insertAuth(empId);
+
+            if(result > 0){
+
+                data = "emp";
+            }
+        }
+
+        return data;
+    }
+
 
 }

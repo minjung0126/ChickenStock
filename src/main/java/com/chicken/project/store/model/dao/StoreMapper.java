@@ -21,7 +21,8 @@ public interface StoreMapper {
 
     String selectStoreId(UserDetails member);
 
-    void insertBalance(String storeName);
+    int insertBalance(String storeName, String storeId);
 
-    int deleteBalanceStore(String storeName);
+    int insertStoreRole(String storeName, String storeId);
+
 }

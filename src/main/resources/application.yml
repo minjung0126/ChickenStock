@@ -38,7 +38,9 @@ mybatis:
                         com.chicken.project.member.model.dto,
                         com.chicken.project.account.model.dto,
                         com.chicken.project.counsel.model.dto,
-                        com.chicken.project.billTax.model.dto
+                        com.chicken.project.billTax.model.dto,
+                        com.chicken.project.reItem.model.dto
+                        com.chicken.project.storeItem.model.dto
 
 logging:
   level:

@@ -45,4 +45,6 @@ public interface ReleaseService {
     ReleaseOrderDTO relItemDetailSelect(int relCodeDetail);
 
     int itemHistoryInsert(int relCode, int itemNo);
+
+    int totalCount(ReleaseSelectCriteria selectCriteria);
 }

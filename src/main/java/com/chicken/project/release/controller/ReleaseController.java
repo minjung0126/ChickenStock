@@ -1,6 +1,6 @@
 package com.chicken.project.release.controller;
 
-import com.chicken.project.release.model.dto.ReleaseSelectCriteria;
+
 import com.chicken.project.release.model.dto.*;
 import com.chicken.project.release.model.service.ReleaseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
@@ -124,11 +125,38 @@ public class ReleaseController {
     }
 
     @GetMapping("/releaseSelect")
-    public ModelAndView releaseSelect(ModelAndView mv, @ModelAttribute ReleaseSelectCriteria selectCriteria){
+    public ModelAndView releaseSelect(ModelAndView mv, @ModelAttribute ReleaseSelectCriteria releaseSelectCriteria, HttpServletRequest request){
 
-        List<ReleaseDTO> releaseSelect = releaseService.releaseSelect(selectCriteria);
+        String currentPage = request.getParameter("currentPage");
 
-        System.out.println("selectCriteria : " + selectCriteria);
+        int pageNo = 1;
+        if(currentPage != null && !"".equals(currentPage)){
+
+            pageNo = Integer.parseInt(currentPage);
+        }
+
+        int totalCount = releaseService.totalCount(releaseSelectCriteria);
+
+        int limit;
+        if(releaseSelectCriteria.getSearchCategory() != null && !"".equals(releaseSelectCriteria.getSearchCategory())){
+            limit = totalCount;
+        } else {
+            limit = 10;
+        }
+
+        int buttonAmount = 5;
+
+        if(releaseSelectCriteria.getSearchCategory() != null && !"".equals(releaseSelectCriteria.getSearchCategory())){
+
+            releaseSelectCriteria = ReleasePagenation.getReleaseSelectCriteria(pageNo, totalCount, limit, buttonAmount, releaseSelectCriteria.getSearchCategory(), releaseSelectCriteria.getSearchValue(), releaseSelectCriteria.getSearchDate(), releaseSelectCriteria.getSearchDate2());
+        } else {
+
+            releaseSelectCriteria = ReleasePagenation.getReleaseSelectCriteria(pageNo, totalCount, limit, buttonAmount);
+        }
+
+        List<ReleaseDTO> releaseSelect = releaseService.releaseSelect(releaseSelectCriteria);
+
+        System.out.println("selectCriteria : " + releaseSelectCriteria);
 
         List<List<ReleaseOrderDTO>> releaseSelectItem = new ArrayList<>();
 
@@ -140,7 +168,7 @@ public class ReleaseController {
             System.out.println("releaseSelect2 = " + releaseSelect2);
             releaseSelectItem.add(releaseSelect2);
         }
-
+        mv.addObject("releaseSelectCriteria", releaseSelectCriteria);
         mv.addObject("releaseSelect", releaseSelect);
         mv.addObject("releaseSelectItem", releaseSelectItem);
         mv.setViewName("release/release_list");

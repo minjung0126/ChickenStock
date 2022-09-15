@@ -10,9 +10,11 @@
         <result property="empPhone" column="EMP_PHONE"/>
         <result property="empEmail" column="EMP_EMAIL"/>
         <result property="birth" column="EMP_BIRTH"/>
+        <result property="empRole" column="EMP_ROLE"/>
+        <result property="rnum" column="RNUM"/>
 
-        <collection property="empRoleList" resultMap="empRoleResultMap"/>
-        <collection property="calendar" resultMap="calendarResultMap"/>
+        <association property="empRoleList" resultMap="empRoleResultMap"/>
+        <association property="calendar" resultMap="calendarResultMap"/>
     </resultMap>
 
     <resultMap id="calendarResultMap" type="CalendarDTO">
@@ -33,22 +35,28 @@
         <result property="authCode" column="AUTH_CODE"/>
         <result property="empId" column="EMP_ID"/>
 
-        <collection property="authority" resultMap="authResultMap"/>
+        <association property="authority" resultMap="authResultMap"/>
     </resultMap>
 
     <select id="selectAllEmployee" resultMap="employeeResultMap">
         SELECT
-               A.EMP_ID
-             , A.EMP_NAME
-             , A.EMP_PHONE
-             , A.EMP_EMAIL
-             , A.EMP_BIRTH
-          FROM EMPLOYEE A
+            DISTINCT
+                     A.EMP_ID
+                   , A.EMP_NAME
+                   , A.EMP_PHONE
+                   , A.EMP_EMAIL
+                   , A.EMP_BIRTH
+                   , DECODE((SELECT COUNT(A1.EMP_ID)
+                               FROM EMPLOYEE A1
+                               JOIN EMP_ROLE B1 ON(A1.EMP_ID = B1.EMP_ID)
+                              WHERE A1.EMP_ID = A.EMP_ID), 1, 'N', 2,'Y') AS EMP_ROLE
+            FROM EMPLOYEE A
+            JOIN EMP_ROLE B ON(A.EMP_ID = B.EMP_ID)
     </select>
 
     <insert id="insertEmployee" parameterType="EmployeeDTO">
         INSERT
-          INTO EMPLOYEE A
+          INTO EMPLOYEE
         (
           EMP_ID
         , EMP_NAME
@@ -65,6 +73,19 @@
         , #{ empEmail }
         , #{ empPwd }
         , #{ birth }
+        )
+    </insert>
+    <insert id="insertEmpRole" parameterType="EmpRoleDTO">
+        INSERT
+          INTO EMP_ROLE
+        (
+          AUTH_CODE
+        , EMP_ID
+        )
+        VALUES
+        (
+          '2'
+        , #{ empId }
         )
     </insert>
 
@@ -84,12 +105,83 @@
          WHERE A.EMP_ID = #{ empId }
     </select>
 
-
     <select id="selectEmpId" resultMap="employeeResultMap">
         SELECT
               EMP_ID
          FROM EMPLOYEE
         WHERE EMP_ID = #{ empId }
     </select>
+
+    <insert id="insertAuth" parameterType="EmpRoleDTO">
+        INSERT
+        INTO EMP_ROLE A
+        (
+          A.AUTH_CODE
+        , A.EMP_ID
+        )
+        VALUES
+        (
+         '1'
+        , #{ empId }
+        )
+    </insert>
+
+    <select id="selectCkAdminAuth" resultType="_int">
+        SELECT
+            COUNT(*)
+        FROM EMP_ROLE A
+        WHERE A.EMP_ID = #{ empId }
+    </select>
+
+    <select id="selectCalendar" resultMap="calendarResultMap">
+        SELECT
+               CAL_NAME
+             , CAL_START
+             , CAL_END
+          FROM CALENDAR
+    </select>
+
+<!--    <select id="selectTotalEmpList" resultType="_int">-->
+<!--        SELECT-->
+<!--              A.RNUM-->
+<!--            , A.EMP_ID-->
+<!--            , A.EMP_NAME-->
+<!--            , A.EMP_PHONE-->
+<!--            , A.EMP_EMAIL-->
+<!--            , A.EMP_BIRTH-->
+<!--            , DECODE((SELECT COUNT(A1.EMP_ID)-->
+<!--                     FROM EMPLOYEE A1-->
+<!--                              JOIN EMP_ROLE B1 ON(A1.EMP_ID = B1.EMP_ID)-->
+<!--                     WHERE A1.EMP_ID = A.EMP_ID), 1, 'N', 2,'Y') AS EMP_ROLE-->
+<!--          FROM ( SELECT ROWNUM RNUM-->
+<!--              C.EMP_ID-->
+<!--            , C.EMP_NAME-->
+<!--            , C.EMP_PHONE-->
+<!--            , C.EMP_EMAIL-->
+<!--            , C.EMP_BIRTH-->
+<!--            , DECODE((SELECT COUNT(C1.EMP_ID)-->
+<!--                     FROM EMPLOYEE C1-->
+<!--                              JOIN EMP_ROLE D1 ON(C1.EMP_ID = D1.EMP_ID)-->
+<!--                     WHERE C1.EMP_ID = C.EMP_ID), 1, 'N', 2,'Y') AS EMP_ROLE-->
+<!--            FROM ( SELECT DISTINCT-->
+<!--                  E.EMP_ID-->
+<!--                , E.EMP_NAME-->
+<!--                , E.EMP_PHONE-->
+<!--                , E.EMP_EMAIL-->
+<!--                , E.EMP_BIRTH-->
+<!--                , DECODE((SELECT COUNT(E1.EMP_ID)-->
+<!--                         FROM EMPLOYEE E1-->
+<!--                                  JOIN EMP_ROLE F1 ON(E1.EMP_ID = F1.EMP_ID)-->
+<!--                         WHERE E1.EMP_ID = E.EMP_ID), 1, 'N', 2,'Y') AS EMP_ROLE-->
+<!--                FROM EMPLOYEE E-->
+<!--            ) C-->
+<!--            <![CDATA[-->
+<!--                    WHERE ROWNUM <= #{ endRow }-->
+<!--                ]]>-->
+<!--          ) A-->
+<!--            JOIN EMP_ROLE B ON(A.EMP_ID = B.EMP_ID)-->
+<!--           WHERE A.RNUM >= #{ startRow }-->
+<!--           ORDER BY 1 ASC-->
+<!--    </select>-->
 
 </mapper>

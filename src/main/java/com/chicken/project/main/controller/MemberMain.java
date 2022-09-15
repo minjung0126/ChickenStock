@@ -10,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -52,14 +50,14 @@ public class MemberMain {
 
         if(user instanceof StoreImpl){
 
-           if(((StoreImpl)user).getStoreRoleList().get(0).getAuthCode().equals("3")){
+            if(((StoreImpl)user).getStoreRoleList().get(0).getAuthCode().equals("3")){
 
-               System.out.println("확인용 = " + url);
+                System.out.println("확인용 = " + url);
 
-               List<NoticeDTO> noticeList = noticeService.selectMainNotice();
+                List<NoticeDTO> noticeList = noticeService.selectMainNotice();
 
-               mv.addObject("noticeList", noticeList);
-               mv.setViewName("/main/user_main");
+                mv.addObject("noticeList", noticeList);
+                mv.setViewName("/main/user_main");
             }
         }
 //        System.out.println("((MemberImpl)user = " + ((MemberImpl)user).getEmpRoleList().get(0).getAuthCode());
@@ -67,3 +65,4 @@ public class MemberMain {
         return mv;
     }
 }
+

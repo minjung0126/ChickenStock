@@ -53,6 +53,7 @@ public class ReleaseServiceImpl implements ReleaseService{
     }
 
     @Override
+    @Transactional
     public int cartYnUpdateR(ReleaseCartDTO releaseCartDTO) {
 
         int result = releaseMapper.cartYnUpdateR(releaseCartDTO);
@@ -186,6 +187,14 @@ public class ReleaseServiceImpl implements ReleaseService{
     public int itemHistoryInsert(int relCode, int itemNo) {
 
         int result = releaseMapper.itemHistoryInsert(relCode, itemNo);
+
+        return result;
+    }
+
+    @Override
+    public int totalCount(ReleaseSelectCriteria selectCriteria) {
+
+        int result = releaseMapper.totalCount(selectCriteria);
 
         return result;
     }
