@@ -80,6 +80,7 @@
          JOIN STORE_ORDER SO ON (RS.ORDER_NO = SO.ORDER_NO)
          JOIN STORE S ON(S.STORE_NAME = RS.STORE_NAME)
         WHERE A.RNUM >= #{ startRow }
+          AND RS.STORE_NAME = #{ storeName }
         ORDER BY A.TAX_NO ASC
     </select>
 
@@ -154,6 +155,7 @@
         JOIN STORE_ORDER SO ON (RS.ORDER_NO = SO.ORDER_NO)
         JOIN STORE S ON(S.STORE_NAME = RS.STORE_NAME)
         WHERE A.RNUM >= #{ startRow }
+          AND RS.STORE_NAME = #{ storeName }
         ORDER BY A.TS_NO ASC
     </select>
 

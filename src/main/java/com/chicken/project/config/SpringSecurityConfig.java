@@ -51,6 +51,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/notice/user/**").hasRole("STORE")
                 .antMatchers("/store/admin/**").hasRole("ADMIN")
                 .antMatchers("/store/user/**").hasRole("STORE")
+                .antMatchers("/account/admin/**").hasRole("ADMIN")
+                .antMatchers("/account/user/**").hasRole("STORE")
                 .anyRequest().permitAll()
         // 로그인 로그아웃 설정
           .and()

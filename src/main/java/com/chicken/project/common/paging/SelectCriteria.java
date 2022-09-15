@@ -15,26 +15,12 @@ public class SelectCriteria {
     private String startDate;
     private String endDate;
 
+    private String storeName;     //가맹점 로그인 세션
+
+
     public SelectCriteria() {}
 
-    public SelectCriteria(int pageNo, int totalCount, int limit, int buttonAmount, int maxPage, int startPage,
-                          int endPage, int startRow, int endRow, String searchCondition, String searchValue) {
-        super();
-        this.pageNo = pageNo;
-        this.totalCount = totalCount;
-        this.limit = limit;
-        this.buttonAmount = buttonAmount;
-        this.maxPage = maxPage;
-        this.startPage = startPage;
-        this.endPage = endPage;
-        this.startRow = startRow;
-        this.endRow = endRow;
-        this.searchCondition = searchCondition;
-        this.searchValue = searchValue;
-    }
-
-    public SelectCriteria(int pageNo, int totalCount, int limit, int buttonAmount, int maxPage, int startPage, int endPage, int startRow, int endRow, String searchCondition, String searchValue, String startDate, String endDate) {
-        super();
+    public SelectCriteria(int pageNo, int totalCount, int limit, int buttonAmount, int maxPage, int startPage, int endPage, int startRow, int endRow, String searchCondition, String searchValue, String startDate, String endDate, String storeName) {
         this.pageNo = pageNo;
         this.totalCount = totalCount;
         this.limit = limit;
@@ -48,6 +34,67 @@ public class SelectCriteria {
         this.searchValue = searchValue;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.storeName = storeName;
+    }
+
+    public SelectCriteria(int pageNo, int totalCount, int limit, int buttonAmount, int maxPage, int startPage, int endPage, int startRow, int endRow, String searchCondition, String searchValue, String storeName) {
+        this.pageNo = pageNo;
+        this.totalCount = totalCount;
+        this.limit = limit;
+        this.buttonAmount = buttonAmount;
+        this.maxPage = maxPage;
+        this.startPage = startPage;
+        this.endPage = endPage;
+        this.startRow = startRow;
+        this.endRow = endRow;
+        this.searchCondition = searchCondition;
+        this.searchValue = searchValue;
+        this.storeName = storeName;
+    }
+
+    public SelectCriteria(int pageNo, int totalCount, int limit, int buttonAmount, int maxPage, int startPage, int endPage, int startRow, int endRow, String searchCondition, String searchValue, String startDate, String endDate) {
+
+        this.pageNo = pageNo;
+        this.totalCount = totalCount;
+        this.limit = limit;
+        this.buttonAmount = buttonAmount;
+        this.maxPage = maxPage;
+        this.startPage = startPage;
+        this.endPage = endPage;
+        this.startRow = startRow;
+        this.endRow = endRow;
+        this.searchCondition = searchCondition;
+        this.searchValue = searchValue;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
+    public SelectCriteria(int pageNo, int totalCount, int limit, int buttonAmount, int maxPage, int startPage, int endPage, int startRow, int endRow, String searchCondition, String searchValue) {
+        this.pageNo = pageNo;
+        this.totalCount = totalCount;
+        this.limit = limit;
+        this.buttonAmount = buttonAmount;
+        this.maxPage = maxPage;
+        this.startPage = startPage;
+        this.endPage = endPage;
+        this.startRow = startRow;
+        this.endRow = endRow;
+        this.searchCondition = searchCondition;
+        this.searchValue = searchValue;
+    }
+
+    public SelectCriteria(int pageNo, int totalCount, int limit, int buttonAmount, int maxPage, int startPage, int endPage, int startRow, int endRow, String storeName) {
+        this.pageNo = pageNo;
+        this.totalCount = totalCount;
+        this.limit = limit;
+        this.buttonAmount = buttonAmount;
+        this.maxPage = maxPage;
+        this.startPage = startPage;
+        this.endPage = endPage;
+        this.startRow = startRow;
+        this.endRow = endRow;
+        this.storeName = storeName;
+
     }
 
     public int getPageNo() {
@@ -154,12 +201,31 @@ public class SelectCriteria {
         this.endDate = endDate;
     }
 
-    @Override
-    public String toString() {
-        return "SelectCriteria [pageNo=" + pageNo + ", totalCount=" + totalCount + ", limit=" + limit
-                + ", buttonAmount=" + buttonAmount + ", maxPage=" + maxPage + ", startPage=" + startPage + ", endPage="
-                + endPage + ", startRow=" + startRow + ", endRow=" + endRow + ", searchCondition=" + searchCondition
-                + ", searchValue=" + searchValue + "]";
+    public String getStoreName() {
+        return storeName;
     }
 
+    public void setStoreName(String storeName) {
+        this.storeName = storeName;
+    }
+
+    @Override
+    public String toString() {
+        return "SelectCriteria{" +
+                "pageNo=" + pageNo +
+                ", totalCount=" + totalCount +
+                ", limit=" + limit +
+                ", buttonAmount=" + buttonAmount +
+                ", maxPage=" + maxPage +
+                ", startPage=" + startPage +
+                ", endPage=" + endPage +
+                ", startRow=" + startRow +
+                ", endRow=" + endRow +
+                ", searchCondition='" + searchCondition + '\'' +
+                ", searchValue='" + searchValue + '\'' +
+                ", startDate='" + startDate + '\'' +
+                ", endDate='" + endDate + '\'' +
+                ", storeName='" + storeName + '\'' +
+                '}';
+    }
 }
