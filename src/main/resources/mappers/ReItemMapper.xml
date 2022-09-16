@@ -58,7 +58,7 @@
             </if>
             <if test="searchCondition == 'returnProgress'">
                 R.RETURN_PROGRESS LIKE '%' || #{ searchValue } || '%'
-            </if>
+            </if>''
             <if test="searchCondition == 'rProgress'">
                 RP.R_PROGRESS LIKE '%' || #{ searchValue } || '%'
             </if>
