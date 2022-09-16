@@ -25,7 +25,7 @@
         <result property="itemStandard" column="ITEM_STANDARD"/>
         <result property="itemMake" column="ITEM_MAKE"/>
         <result property="itemSales" column="ITEM_SALES"/>
-        <result property="originName" column="ORIGIN_NAME"/>
+        <result property="fileName" column="FILE_NAME"/>
         <result property="storeAmount" column="STORE_AMOUNT"/>
     </resultMap>
     <resultMap id="storeItemResultMap" type="StoreItemDTO">
@@ -35,14 +35,16 @@
         <result property="itemStandard" column="ITEM_STANDARD"/>
         <result property="itemMake" column="ITEM_MAKE"/>
         <result property="itemSales" column="ITEM_SALES"/>
-        <result property="originName" column="ORIGIN_NAME"/>
+        <result property="fileName" column="FILE_NAME"/>
         <result property="storeAmount" column="STORE_AMOUNT"/>
         <result property="returnAccount" column="RETURN_ACCOUNT"/>
     </resultMap>
 
     <select id="selectTotalCount" resultType="_int" parameterType="hashmap">
         SELECT
-               COUNT(*)
+                COUNT(*)
+        FROM ( SELECT
+                 DISTINCT R.R_NO
           FROM RETURN_ITEM R
         <if test="searchCondition == 'storeName'">
             JOIN RETURN_PROGRESS RP ON (R.R_NO = RP.R_NO)
@@ -58,11 +60,11 @@
             </if>
             <if test="searchCondition == 'returnProgress'">
                 R.RETURN_PROGRESS LIKE '%' || #{ searchValue } || '%'
-            </if>''
+            </if>
             <if test="searchCondition == 'rProgress'">
                 RP.R_PROGRESS LIKE '%' || #{ searchValue } || '%'
             </if>
-        </where>
+        </where>)
     </select>
     
     <select id="selectReList" resultMap="reListResultMap">
@@ -161,7 +163,7 @@
              ,	II.ITEM_STANDARD
              ,	II.ITEM_MAKE
              ,	II.ITEM_SALES
-             ,	IFF.ORIGIN_NAME
+             ,	IFF.FILE_NAME
              ,  IC.CATEGORY_NAME
           FROM RETURN_ITEM RI
           JOIN RETURN_ITEM_INFO RII ON(RII.REF_R_NO = RI.R_NO)
@@ -180,7 +182,7 @@
              , II.ITEM_STANDARD
              , II.ITEM_MAKE
              , II.ITEM_SALES
-             , IFF.ORIGIN_NAME
+             , IFF.FILE_NAME
              , SII.STORE_AMOUNT
           FROM STO_ITEM_INFO SII
           JOIN ITEM_FILE IFF ON (IFF.ITEM_NO = SII.ITEM_NO)
@@ -390,7 +392,7 @@
              ,	II.ITEM_STANDARD
              ,	II.ITEM_MAKE
              ,	II.ITEM_SALES
-             ,	IFF.ORIGIN_NAME
+             ,	IFF.FILE_NAME
              ,  IC.CATEGORY_NAME
              ,  SII.STORE_AMOUNT
         FROM RETURN_ITEM RI
@@ -412,7 +414,7 @@
              , II.ITEM_STANDARD
              , II.ITEM_MAKE
              , II.ITEM_SALES
-             , IFF.ORIGIN_NAME
+             , IFF.FILE_NAME
              , SII.STORE_AMOUNT
         FROM STO_ITEM_INFO SII
         JOIN ITEM_FILE IFF ON (IFF.ITEM_NO = SII.ITEM_NO)

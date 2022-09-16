@@ -13,7 +13,7 @@ public class ReItemDTO {
     private String itemStandard; // 품목규격
     private String itemMake; // 제조사
     private String itemSales; // 매출단가
-    private String originName; //원본파일명
+    private String fileName; //원본파일명
     private int rNo;   // 반품번호
 
     private int storeAmount; // 가맹점 픔목수량
@@ -21,7 +21,7 @@ public class ReItemDTO {
     public ReItemDTO() {
     }
 
-    public ReItemDTO(String rDate, String rReason, int returnTotalMoney, int returnCount, int itemNo, String itemName, String categoryName, String itemStandard, String itemMake, String itemSales, String originName, int rNo, int storeAmount) {
+    public ReItemDTO(String rDate, String rReason, int returnTotalMoney, int returnCount, int itemNo, String itemName, String categoryName, String itemStandard, String itemMake, String itemSales, String fileName, int rNo, int storeAmount) {
         this.rDate = rDate;
         this.rReason = rReason;
         this.returnTotalMoney = returnTotalMoney;
@@ -32,7 +32,7 @@ public class ReItemDTO {
         this.itemStandard = itemStandard;
         this.itemMake = itemMake;
         this.itemSales = itemSales;
-        this.originName = originName;
+        this.fileName = fileName;
         this.rNo = rNo;
         this.storeAmount = storeAmount;
     }
@@ -117,12 +117,12 @@ public class ReItemDTO {
         this.itemSales = itemSales;
     }
 
-    public String getOriginName() {
-        return originName;
+    public String getFileName() {
+        return fileName;
     }
 
-    public void setOriginName(String originName) {
-        this.originName = originName;
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
     public int getrNo() {
@@ -154,7 +154,7 @@ public class ReItemDTO {
                 ", itemStandard='" + itemStandard + '\'' +
                 ", itemMake='" + itemMake + '\'' +
                 ", itemSales='" + itemSales + '\'' +
-                ", originName='" + originName + '\'' +
+                ", fileName='" + fileName + '\'' +
                 ", rNo=" + rNo +
                 ", storeAmount=" + storeAmount +
                 '}';
