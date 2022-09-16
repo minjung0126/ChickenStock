@@ -282,6 +282,8 @@ public class NoticeController {
         String changeName = "";
         String savedPath = "";
 
+        int result = noticeService.updateNotice(notice);
+
         if(file.getSize() > 0) {
             originFileName = file.getOriginalFilename();
             ext = originFileName.substring(originFileName.lastIndexOf("."));
@@ -290,21 +292,32 @@ public class NoticeController {
 
             NoticeFileDTO noticeFile = new NoticeFileDTO();
 
-            int result = noticeService.updateNotice(notice);
-
             if(result > 0) {
 
-                int result2 = noticeService.deleteNoticeFile(noticeNo);
+                if(notice.getNoticeFile() != null){
 
-                if(result2 > 0){
+                    int result2 = noticeService.deleteNoticeFile(noticeNo);
 
-                    noticeFile.setNoticeNo(noticeNo);
-                    noticeFile.setOriginName(originFileName);
-                    noticeFile.setFileName(changeName);
-                    noticeFile.setSavedPath(savedPath);
+                    if(result2 > 0) {
 
-                    noticeService.updateNoticeFile(noticeFile);
-                }
+                        noticeFile.setNoticeNo(noticeNo);
+                        noticeFile.setOriginName(originFileName);
+                        noticeFile.setFileName(changeName);
+                        noticeFile.setSavedPath(savedPath);
+
+                        noticeService.updateNoticeFile(noticeFile);
+                    }
+
+                } else {
+
+                        noticeFile.setNoticeNo(noticeNo);
+                        noticeFile.setOriginName(originFileName);
+                        noticeFile.setFileName(changeName);
+                        noticeFile.setSavedPath(savedPath);
+
+                        noticeService.updateNoticeFile(noticeFile);
+                    }
+
             }
 
             try {
@@ -315,8 +328,10 @@ public class NoticeController {
                 new File(filePath + "\\" + changeName + ext).delete();
             }
         }
+
         rttr.addFlashAttribute("message", "공지사항 수정 성공!");
 
         return "redirect:/notice/admin/list";
-    }
+
+        }
 }

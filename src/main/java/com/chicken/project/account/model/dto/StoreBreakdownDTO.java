@@ -7,13 +7,15 @@ public class StoreBreakdownDTO {
     private String storeName;
     private Date breakdownDate;
     private int withdrawal;
+    private String content;
 
     public StoreBreakdownDTO() {}
 
-    public StoreBreakdownDTO(String storeName, Date breakdownDate, int withdrawal) {
+    public StoreBreakdownDTO(String storeName, Date breakdownDate, int withdrawal, String content) {
         this.storeName = storeName;
         this.breakdownDate = breakdownDate;
         this.withdrawal = withdrawal;
+        this.content = content;
     }
 
     public String getStoreName() {
@@ -40,12 +42,21 @@ public class StoreBreakdownDTO {
         this.withdrawal = withdrawal;
     }
 
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
     @Override
     public String toString() {
         return "StoreBreakdownDTO{" +
                 "storeName='" + storeName + '\'' +
                 ", breakdownDate=" + breakdownDate +
                 ", withdrawal=" + withdrawal +
+                ", content='" + content + '\'' +
                 '}';
     }
 }

@@ -8,12 +8,15 @@ public class StoreDepositDTO {
     private int depositMoney;
     private Date depositDate;
 
+    private String content;
+
     public StoreDepositDTO() {}
 
-    public StoreDepositDTO(String storeName, int depositMoney, Date depositDate) {
+    public StoreDepositDTO(String storeName, int depositMoney, Date depositDate, String content) {
         this.storeName = storeName;
         this.depositMoney = depositMoney;
         this.depositDate = depositDate;
+        this.content = content;
     }
 
     public String getStoreName() {
@@ -40,12 +43,21 @@ public class StoreDepositDTO {
         this.depositDate = depositDate;
     }
 
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
     @Override
     public String toString() {
         return "StoreDepositDTO{" +
                 "storeName='" + storeName + '\'' +
                 ", depositMoney=" + depositMoney +
                 ", depositDate=" + depositDate +
+                ", content='" + content + '\'' +
                 '}';
     }
 }

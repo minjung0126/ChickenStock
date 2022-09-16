@@ -91,9 +91,16 @@ public class NoticeServiceImpl implements NoticeService{
 
         int result = noticeMapper.updateNotice(notice);
 
-        if(!(result > 0)){
+        if(notice.getNoticeFile() != null){
 
-            throw new NoticeUpdateException("공지사항 수정 실패!");
+            int deleteFileResult = noticeMapper.deleteNoticeFile(notice.getNoticeFile().getNoticeNo());
+
+            if(deleteFileResult > 0){
+                NoticeFileDTO noticeFile = notice.getNoticeFile();
+                noticeFile.setNoticeNo(notice.getNoticeFile().getNoticeNo());
+
+                int insertFileResult = noticeMapper.noticeFileInsert(noticeFile);
+            }
         }
 
         return result;

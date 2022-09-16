@@ -36,7 +36,7 @@
         <!-- 작업 영역 -->
         <!-- S: table -->
         <div class="container-fluid" style="margin-top:30px">
-          <h3>예치금 관리</h3>
+          <h3>입출금 내역</h3>
           <br>
 
           <!-- S: text area -->
@@ -48,9 +48,9 @@
           <div class="row">
             <table class="table col-6">
               <colgroup>
-                <col style="width: 10%;">
                 <col style="width: 20%;">
-                <col style="width: 10%;">
+                <col style="width: 25%;">
+                <col style="width: 20%;">
               </colgroup>
               <thead>
               <tr>
@@ -63,16 +63,16 @@
               <tr th:each="deposit : ${ storeDeposit }">
                 <td th:text="${ deposit.getDepositDate() }"></td>
                 <td th:text="${ #numbers.formatInteger(deposit.getDepositMoney(), 0, 'COMMA') }"></td>
-                <td></td>
+                <td th:text="${ deposit.getContent() }"></td>
               </tr>
               </tbody>
             </table>
 
             <table class="table col-6">
               <colgroup>
-                <col style="width: 10%;">
                 <col style="width: 20%;">
-                <col style="width: 10%;">
+                <col style="width: 25%;">
+                <col style="width: 15%;">
               </colgroup>
               <thead>
               <tr>
@@ -85,7 +85,7 @@
               <tr th:each="breakdown : ${ storeBreakdown }">
                 <td th:text="${ breakdown.getBreakdownDate() }"></td>
                 <td th:text="${ #numbers.formatInteger( breakdown.getWithdrawal(), 0, 'COMMA') }"></td>
-                <td></td>
+                <td th:text="${ breakdown.getContent() }"></td>
               </tr>
               </tbody>
             </table>
