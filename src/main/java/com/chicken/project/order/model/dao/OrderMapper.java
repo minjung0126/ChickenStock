@@ -4,6 +4,7 @@ import com.chicken.project.common.paging.SelectCriteria;
 import com.chicken.project.order.model.dto.CartDTO;
 import com.chicken.project.order.model.dto.InterestDTO;
 import com.chicken.project.order.model.dto.OrderDTO;
+import com.chicken.project.order.model.dto.OrderHistoryDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -38,5 +39,13 @@ public interface OrderMapper {
 
     int insertItemIntoCart(int itemNo, int cartAmount, String storeName);
 
-    void insertOrderItems(int itemNo, int cartAmount, int categoryNo, String storeName);
+    String deleteCartItem(int cartNo);
+
+    void insertStoreOrderNo(OrderHistoryDTO orderHistory);
+
+    void insertOrderItems(CartDTO cart);
+
+    void insertOrderHandler(OrderHistoryDTO orderHistory);
+
+    void resetCartItems(CartDTO cart);
 }

@@ -55,6 +55,24 @@
         <association property="itemFile" resultMap="itemFileResultMap"/>
     </resultMap>
 
+    <resultMap id="orderHistoryResultMap" type="OrderHistoryDTO">
+        <id property="orderNo" column="ORDER_NO"/>
+        <result property="itemNo" column="ITEM_NO"/>
+        <result property="categoryNo" column="CATEGORY_NO"/>
+        <result property="categoryName" column="CATEGORY_NAME"/>
+        <result property="itemStandard" column="ITEM_STANDARD"/>
+        <result property="itemMake" column="ITEM_MAKE"/>
+        <result property="itemSales" column="ITEM_SALES"/>
+        <result property="cartAmount" column="CART_AMOUNT"/>
+        <result property="itemSoldoutYn" column="ITEM_SOLDOUT_YN"/>
+        <result property="cartYn" column="CART_YN"/>
+        <result property="storeName" column="STORE_NAME"/>
+        <result property="cartNo" column="CART_NO"/>
+        <result property="orderDate" column="ORDER_DATE"/>
+
+        <association property="itemFile" resultMap="itemFileResultMap"/>
+    </resultMap>
+
     <select id="selectTotalCount" resultType="_int" parameterType="hashmap">
         SELECT
         COUNT(*)
@@ -426,18 +444,64 @@
         WHERE A.ITEM_NO = ${ itemNo }
     </insert>
 
+    <delete id="resetCartItems" parameterType="CartDTO">
+        DELETE FROM CART
+        WHERE STORE_NAME = #{ storeName }
+          AND CART_YN = 'Y'
+    </delete>
+
     <insert id="insertOrderItems" parameterType="cartDTO">
-        MERGE INTO CART A
-        USING DUAL
-        ON (A.CART_YN = 'Y')
-        WHEN MATCHED THEN
-        UPDATE SET A.STORE_NAME = #{ storeName }
-        DELETE WHERE A.STORE_NAME = #{ storeName }
-        WHEN NOT MATCHED THEN
-        INSERT (CART_AMOUNT, CATEGORY_NO, ITEM_NO, CART_NO, STORE_NAME, CART_YN)
-        VALUES (#{ cartAmount }, #{ categoryNo }, #{ itemNo }, SEQ_CART_NO_TEST.NEXTVAL, #{ storeName }, 'N')
+        INSERT INTO CART
+        (
+              CART_AMOUNT
+            , CATEGORY_NO
+            , ITEM_NO
+            , CART_NO
+            , STORE_NAME
+            , CART_YN
+        )
+        VALUES
+        (
+              #{ cartAmount }
+            , #{ categoryNo }
+            , #{ itemNo }
+            , SEQ_CART_NO_TEST.NEXTVAL
+            , #{ storeName }
+            , 'N'
+        )
+        <selectKey resultType="_int" keyProperty="lastCartNo" order="AFTER">
+            SELECT SEQ_CART_NO_TEST.CURRVAL FROM dual
+        </selectKey>
     </insert>
 
 
+    <insert id="insertStoreOrderNo" parameterType="OrderHistoryDTO">
+        INSERT INTO STORE_ORDER
+        (
+            ORDER_NO
+          , ORDER_DATE
+        )
+        VALUES
+        (
+            SEQ_STORE_ORDER_NO_TEST.NEXTVAL
+          , to_date(sysdate, 'YYYY-MM-DD HH24:mi:SS')
+        )
+        <selectKey resultType="_int" keyProperty="lastCartNo" order="AFTER">
+            SELECT SEQ_STORE_ORDER_NO_TEST.CURRVAL FROM dual
+        </selectKey>
+    </insert>
+
+    <insert id="insertOrderHandler" parameterType="OrderHistoryDTO">
+        INSERT INTO ORDER_HANDLER
+        (
+            ORDER_NO
+          , CART_NO
+        )
+        VALUES
+        (
+            #{ lastCartNo }
+          , #{ lastOrderNo }
+        )
+    </insert>
 
 </mapper>
