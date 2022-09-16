@@ -1,14 +1,13 @@
 package com.chicken.project.store.controller;
 
-import com.chicken.project.exception.store.StoreDeleteException;
 import com.chicken.project.exception.store.StoreInsertException;
 import com.chicken.project.exception.store.StoreUpdateException;
 import com.chicken.project.store.model.dto.StoreDTO;
 import com.chicken.project.store.model.service.StoreService;
+import com.chicken.project.store.model.service.StoreServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +29,7 @@ public class StoreController {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
+
     public StoreController(StoreService storeService, PasswordEncoder passwordEncoder) {
 
         this.storeService = storeService;
@@ -85,7 +85,7 @@ public class StoreController {
     public String insertStore(@ModelAttribute StoreDTO store, RedirectAttributes rttr, ModelAndView mv) throws StoreInsertException {
 
         store.setStorePhone(store.getStorePhone().replace("-", ""));
-        store.setStorePwd(passwordEncoder.encode(store.getStorePwd()));
+        //store.setStorePwd(passwordEncoder.encode(store.getStorePwd()));
 
         log.info("[StoreController] store : " + store);
 

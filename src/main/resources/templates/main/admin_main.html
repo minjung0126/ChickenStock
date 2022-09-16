@@ -137,36 +137,19 @@
                     </tr>
                   </thead>
                   <tbody style="cursor:pointer">
-                    <tr>
-                      <td th:text="${ noticeList[0].noticeNo }"></td>
-                      <td th:text="${ noticeList[0].noticeName }"></td>
-                      <td th:text="${ noticeList[0].empName }"></td>
-                      <td th:text="${ noticeList[0].noticeRegistDate }"></td>
+                   <th:block th:if="${ noticeList.size() > 0 }">
+                    <tr th:each="noticeList : ${ noticeList }">
+                      <td th:text="${ noticeList.noticeNo }"></td>
+                      <td th:text="${ noticeList.noticeName }"></td>
+                      <td th:text="${ noticeList.empName }"></td>
+                      <td th:text="${ noticeList.noticeRegistDate }"></td>
                     </tr>
+                   </th:block>
+                  <th:block th:if="${ noticeList.size() == 0 }">
                     <tr>
-                      <td th:text="${ noticeList[1].noticeNo }"></td>
-                      <td th:text="${ noticeList[1].noticeName }"></td>
-                      <td th:text="${ noticeList[1].empName }"></td>
-                      <td th:text="${ noticeList[1].noticeRegistDate }"></td>
+                      <td colspan="4">조회된 결과가 없습니다.</td>
                     </tr>
-                    <tr>
-                      <td th:text="${ noticeList[2].noticeNo }"></td>
-                      <td th:text="${ noticeList[2].noticeName }"></td>
-                      <td th:text="${ noticeList[2].empName }"></td>
-                      <td th:text="${ noticeList[2].noticeRegistDate }"></td>
-                    </tr>
-                    <tr>
-                      <td th:text="${ noticeList[3].noticeNo }"></td>
-                      <td th:text="${ noticeList[3].noticeName }"></td>
-                      <td th:text="${ noticeList[3].empName }"></td>
-                      <td th:text="${ noticeList[3].noticeRegistDate }"></td>
-                    </tr>
-                    <tr>
-                      <td th:text="${ noticeList[4].noticeNo }"></td>
-                      <td th:text="${ noticeList[4].noticeName }"></td>
-                      <td th:text="${ noticeList[4].empName }"></td>
-                      <td th:text="${ noticeList[4].noticeRegistDate }"></td>
-                    </tr>
+                  </th:block>
                   </tbody>
                 </table>
               </div>

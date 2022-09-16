@@ -3,7 +3,6 @@ package com.chicken.project.notice.controller;
 import com.chicken.project.common.paging.Pagenation;
 import com.chicken.project.common.paging.SelectCriteria;
 import com.chicken.project.exception.notice.NoticeDeleteException;
-import com.chicken.project.exception.notice.NoticeUpdateException;
 import com.chicken.project.notice.model.dto.NoticeDTO;
 import com.chicken.project.notice.model.dto.NoticeFileDTO;
 import com.chicken.project.notice.model.service.NoticeService;
@@ -11,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +32,6 @@ public class NoticeController {
     public NoticeController(NoticeService noticeService){
 
         this.noticeService = noticeService;
-
     }
 
     /* 관리자 공지사항 조회 */
@@ -149,6 +146,8 @@ public class NoticeController {
 
         NoticeFileDTO noticeFile = new NoticeFileDTO();
 
+        int result = noticeService.noticeInsert(notice);
+
         log.info("[NoticeController]" + notice);
         log.info("[NoticeController]" + file);
 
@@ -178,12 +177,7 @@ public class NoticeController {
             noticeFile.setFileName(changeName + ext);
             noticeFile.setSavedPath(savedPath);
 
-            int result = noticeService.noticeInsert(notice);
-
-            if(result > 0) {
-
-                noticeService.noticeFileInsert(noticeFile);
-            }
+            noticeService.noticeFileInsert(noticeFile);
 
             try {
                 file.transferTo(new File(filePath + "\\" + changeName + ext));
@@ -201,7 +195,11 @@ public class NoticeController {
 
     /* 관리자 공지사항 상세페이지 */
     @GetMapping("/admin/detail")
-    public ModelAndView adminNoticeDetail(ModelAndView mv, @RequestParam int noticeNo){
+    public ModelAndView adminNoticeDetail(ModelAndView mv, HttpServletRequest request){
+
+        int noticeNo = Integer.parseInt(request.getParameter("noticeNo"));
+
+        System.out.println("noticeNo = " + noticeNo);
 
         NoticeDTO noticeDetail = noticeService.noticeDetailByNo(noticeNo);
 
@@ -215,7 +213,11 @@ public class NoticeController {
 
     /* 유저 공지사항 상세페이지 */
     @GetMapping("/user/detail")
-    public ModelAndView userNoticeDetail(ModelAndView mv, @RequestParam int noticeNo){
+    public ModelAndView userNoticeDetail(ModelAndView mv, HttpServletRequest request){
+
+        int noticeNo = Integer.parseInt(request.getParameter("noticeNo"));
+
+        System.out.println("noticeNo = " + noticeNo);
 
         NoticeDTO noticeDetail = noticeService.noticeDetailByNo(noticeNo);
 

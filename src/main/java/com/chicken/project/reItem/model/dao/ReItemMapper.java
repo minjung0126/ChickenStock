@@ -33,4 +33,35 @@ public interface ReItemMapper {
 
 
     int insertProgress(ReItemDTO reItemDTO);
+
+    int updateComplete(Map<String, Object> map);
+
+
+    int updateMoney(Map<String, Object> maps);
+
+    int updateProgress(int parseInt);
+
+    List<ReItemDTO> selectRItem(String rNo);
+
+    int upDateItem(ReItemDTO reItem);
+
+    int insertHistory(ReItemDTO reItem);
+
+    int updateRProgress(ReItemDTO reItem);
+
+    int deleteProgress(String rNo);
+
+    int deleteRItem(String rNo);
+
+    int deleteReturnItems(String rNo);
+
+    int updateAcount(Map<String, Object> maps);
+
+    int insertDeposit(Map<String, Object> maps);
+
+    ReItemDTO selectUpReItem(String rNo);
+
+    List<ReItemDTO> selectUpReItems(Map<String, String> item);
+
+    List<StoreItemDTO> selectItems(Map<String, String> item);
 }
