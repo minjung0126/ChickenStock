@@ -115,7 +115,7 @@
           SEQ_NOTICE_NO.NEXTVAL
         , #{ noticeName }
         , #{ noticeContent }
-        , SYSDATE
+        , TO_CHAR(SYSDATE,'yyyy-MM-dd HH24:MI:SS')
         , NULL
         , #{ empName }
         )
@@ -146,12 +146,12 @@
         )
     </insert>
 
-    <select id="noticeDetailByNo" resultMap="noticeResultMap">
+    <select id="noticeDetailByNo" resultMap="noticeResultMap" parameterType="_int">
         SELECT
                A.*
              , B.*
           FROM NOTICE A
-          JOIN NOTICE_FILE B ON (A.NOTICE_NO = B.NOTICE_NO)
+          LEFT JOIN NOTICE_FILE B ON (A.NOTICE_NO = B.NOTICE_NO)
          WHERE A.NOTICE_NO = #{ noticeNo }
     </select>
 
@@ -184,7 +184,7 @@
             <if test="noticeContent != null and noticeContent !=''">
                 , NOTICE_CONTENT = #{ noticeContent }
             </if>
-                , NOTICE_MODIFY_DATE = SYSDATE
+                , NOTICE_MODIFY_DATE = TO_CHAR(SYSDATE,'yyyy-MM-dd HH24:MI:SS')
         </trim>
          WHERE NOTICE_NO = #{ noticeNo }
     </update>
@@ -221,8 +221,15 @@
 
     <select id="selectMainNotice" resultMap="noticeResultMap">
         SELECT
-               *
+               NOTICE_NO
+             , NOTICE_NAME
+             , EMP_NAME
+             , NOTICE_COUNT
+             , NOTICE_REGIST_DATE
           FROM NOTICE
+         <![CDATA[
+         WHERE ROWNUM <= 5
+                  ]]>
          ORDER BY NOTICE_NO DESC
     </select>
 </mapper>
