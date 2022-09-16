@@ -72,8 +72,8 @@
                             <th>규격</th>
                             <th>제조사</th>
                             <th>매입단가</th>
-                            <th>매출단가</th>
                             <th>재고량</th>
+                            <th>재고입력</th>
                             <th>품절여부</th>
                         </tr>
                         </thead>
@@ -81,30 +81,57 @@
                         <tr th:each="item, stat : ${ itemList }">
                             <td>
                                 <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" name="chk1" th:value="${ item.itemNo }"/>
+                                    <input type="checkbox" class="form-check-input" name="chk1" th:value="${ item.itemInfoDTO.itemName }"/>
                                     <label class="form-check-label"></label>
                                 </div>
                             </td>
-                            <td th:text="${ item.rNum }">1</td>
-                            <td th:text="${ item.itemNo }">100000</td>
+                            <td th:text="${ item.itemInfoDTO.rNum }">1</td>
+                            <td th:text="${ item.itemInfoDTO.itemNo }">100000</td>
                             <td>
                                 <div class="img-info">
                                     <div class="img-info__img">
-                                        <img th:src="'/images/' + ${ item.itemFile.fileName }" alt="">
+                                        <img th:src="'/images/' + ${ item.itemFileDTO.fileName }" alt="">
                                     </div>
                                 </div>
                             </td>
-                            <td th:text="${ item.itemName }">닭다리</td>
-                            <td th:text="${ item.categoryName }">식재료</td>
-                            <td th:text="${ item.itemStandard }">1kg</td>
-                            <td th:text="${ item.itemMake }">하림(국내산)</td>
-                            <td th:text="${ item.itemPurchase }">5,500</td>
-                            <td th:text="${ item.itemSales }">6,000</td>
-                            <td th:text="${ item.itemAmount }">100</td>
-                            <td th:if="${ item.itemSoldoutYn eq 'Y' }" >
+                            <td th:text="${ item.itemInfoDTO.itemName }">닭다리</td>
+                            <td th:text="${ item.itemCategoryDTO.categoryName }">식재료</td>
+                            <td th:text="${ item.itemInfoDTO.itemStandard }">1kg</td>
+                            <td th:text="${ item.itemInfoDTO.itemMake }"></td>
+                            <td th:text="${ item.itemInfoDTO.itemSales }"></td>
+                            <td th:text="${ item.storeAmount }"></td>
+                            <form name="storeForm">
+                            <td>
+                                <input class="relAmount-input" type="number" min="0" name="relAmount" style="width:60px; text-align: center; border: 1px solid rgb(255, 255, 255); border-bottom: 1px solid black">
+                                <button type="button" class="rel-btn" style="border : none; background-color: #fff;">
+                                    <img src="/images/stock.png" alt="출고" width="35px" height="35px">
+                                </button>
+                                <input type="hidden" name="itemNo" th:value="${ item.itemInfoDTO.itemNo }">
+                                <input type="hidden" name="storeName" th:value="${ selectCriteria.storeName }">
+                                <script>
+
+                                    $(".rel-btn").on('click', function(){
+
+                                        let tr = $(this).parents('tr');
+                                        let td = tr.children();
+                                        let itemNo = td.eq(10)[3].value;
+                                        let storeName = td.eq(10)[4].value;
+
+                                        $.ajax({
+
+                                            url:'/storeItem/storeItemUpdate',
+                                            type:'POST',
+                                            data: { itemNo : itemNo }
+
+                                        })
+                                    });
+                                </script>
+                            </td>
+                            </form>
+                            <td th:if="${ item.itemInfoDTO.itemSoldoutYn eq 'Y' }" >
                                 <span class="active-circle bg-danger"></span><span th:text="${ '품절' }"></span>
                             </td>
-                            <td th:if="${ item.itemSoldoutYn eq 'N' }" >
+                            <td th:if="${ item.itemInfoDTO.itemSoldoutYn eq 'N' }" >
                                 <span class="active-circle bg-success"></span><span th:text="${ '보유' }"></span>
                             </td>
                         </tr>
@@ -170,7 +197,6 @@
 
 <!-- 팝업으로 이동 -->
 <script>
-
     var form = document.getElementsByClassName('form-check');
 
     $(document).ready(function(){
@@ -188,33 +214,6 @@
     });
 </script>
 
-<!-- 체크 박스 전체 선택 -->
-<script type="text/javascript">
-    function selectAll(selectAll)  {
-        const checkboxes = document.getElementsByName('option');
-
-        checkboxes.forEach((checkbox) => {
-            checkbox.checked = selectAll.checked;
-        })
-    }
-</script>
-
-<!-- 선택 삭제 버튼 메시지 띄우기 -->
-<script>
-    function deleteItem(){
-        var answer = confirm('선택한 항목을 삭제하시겠습니까?');
-
-
-        if(answer){
-            var answer2 = confirm('선택한 항목을 삭제합니다.');
-            if(answer2){
-                alert('선택한 항목이 삭제되었습니다.'); // 나중에 삭제된 후 alert되도록 수정하기
-            }
-        }
-
-    }
-</script>
-
 <!-- 레이어 팝업 -->
 <script>
     function openLayer(IdName, tpos, lpos){
@@ -229,44 +228,15 @@
     }
 </script>
 
-<!-- 파일 이미지 -->
-<script>
-    $(function() {
-        $("#input-file-regist").on('change', function(){
-            readURL(this);
+<!-- 체크 박스 전체 선택 -->
+<script type="text/javascript">
+    function selectAll(selectAll)  {
+        const checkboxes = document.getElementsByName('option');
 
-            function readURL(input) {
-                if (input.files && input.files[0]) {
-                    var reader = new FileReader();
-                    reader.onload = function (e) {
-                        $('.input-file-button-regist #View').attr('src', e.target.result);
-                        $('.input-file-button-regist #View').removeClass('d-none');
-                        $('.input-file-button-regist .fa').remove();
-                    }
-                    reader.readAsDataURL(input.files[0]);
-                }
-            }
-        });
-    });
-</script>
-<script>
-    $(function() {
-        $("#input-file-detail").on('change', function(){
-            readURL(this);
-
-            function readURL(input) {
-                if (input.files && input.files[0]) {
-                    var reader = new FileReader();
-                    reader.onload = function (e) {
-                        $('.input-file-button-detail #View2').attr('src', e.target.result);
-                        $('.input-file-button-detail #View2').removeClass('d-none');
-                        $('.input-file-button-detail .fa').remove();
-                    }
-                    reader.readAsDataURL(input.files[0]);
-                }
-            }
-        });
-    });
+        checkboxes.forEach((checkbox) => {
+            checkbox.checked = selectAll.checked;
+        })
+    }
 </script>
 
 <!-- 선택된 체크박스 값 가져오기 (삭제) -->
@@ -309,29 +279,6 @@
                 }
             }
         }
-
-
-
-
-        // $.ajax({
-        //             url: "receive/admin/list/new",
-        //             // dataType: "json",
-        //             // contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-        //             type: "post",
-        //             data: {
-        //                 itemNo: itemNoVal
-        //             },
-        //             success: function (data) {
-        //                 console.log("success", data);
-        //             },
-        //             error: function () {
-        //                 alert("error");
-        //             }
-        //         });
-
-        // location.href = "/receive/admin/list/new?itemNo=" + arr;
-
-
     }
 </script>
 

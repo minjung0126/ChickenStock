@@ -94,7 +94,7 @@
         <result property="relCodeDetail" column="REL_CODE_DETAIL"/>
         <result property="relSumAmount" column="REL_SUM_AMOUNT"/>
     </resultMap>
-
+<!--/* 발주서에 등록된 발주품목 조회 */-->
     <select id="releaseOrderSelect" resultMap="releaseOrderResultMap">
         SELECT
                *
@@ -124,6 +124,7 @@
       ORDER BY A.CART_NO
     </select>
 
+<!--/* 임시출고서에 등록된 출고품목 조회 */-->
     <select id="releaseOrderSelectN" resultMap="releaseOrderResultMap">
         SELECT
                *
@@ -136,12 +137,20 @@
          WHERE A.REL_LIST_YN = 'N'
     </select>
 
-
+<!--/* 출고서 목록 조회 */-->
     <select id="releaseDtoOrderSelect" resultMap="releaseResultMap">
         SELECT
               *
           FROM RELEASE
     </select>
+
+<!--/* 출고서 작성시 물품 총 금액 조회 */-->
+    <select id="totalMoneySelect" resultType="Integer">
+        SELECT SUM(TOTAL_MONEY)
+        FROM RELEASE_ITEM
+        WHERE REL_CODE = #{ intRelCode }
+    </select>
+
 
     <update id="cartYnUpdateR">
         UPDATE CART
@@ -183,6 +192,20 @@
         )
     </insert>
 
+    <insert id="releaseInsertHandler">
+        INSERT INTO REL_ORD_HANDLER
+        (
+          CART_NO
+        , REL_CODE_DETAIL
+        )
+        VALUES
+        (
+          #{ cartNo }
+        , #{ relCodeDetail }
+        )
+
+    </insert>
+
     <update id="releaseItemUpdateN">
         UPDATE RELEASE_ITEM
            SET REL_LIST_YN = 'N'
@@ -206,11 +229,6 @@
            AND STORE_NAME = #{ releaseCartDTO.storeName }
     </delete>
 
-    <select id="totalMoneySelect" resultType="Integer">
-        SELECT SUM(TOTAL_MONEY)
-        FROM RELEASE_ITEM
-        WHERE REL_CODE = #{ intRelCode }
-    </select>
 
     <insert id="releaseInsert">
         INSERT INTO RELEASE

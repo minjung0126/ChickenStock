@@ -46,11 +46,11 @@
             <form>
               <div class="input-group mb-3">
                 <select class="form-select" id="searchCondition" name="searchCondition" style="max-width: max-content;">
-                  <option value="itemName">상품명</option>
-                  <option value="category">카테고리</option>
-                  <option value="make">제조사</option>
+                  <option value="itemName" th:selected="${ selectCriteria.getSearchCondition() == 'itemName' }">상품명</option>
+                  <option value="category" th:selected="${ selectCriteria.getSearchCondition() == 'category' }">카테고리</option>
+                  <option value="make" th:selected="${ selectCriteria.getSearchCondition() == 'make' }">제조사</option>
                 </select>
-                <input class="form-control col-3" type="text" id="searchValue" name="searchValue" placeholder="검색어를 입력해주세요." style="max-width: 400px;">
+                <input class="form-control col-3" type="text" id="searchValue" name="searchValue" th:value="${selectCriteria.getSearchValue()}" placeholder="검색어를 입력해주세요." style="max-width: 400px;">
                 <button class="btn btn-warning me-3" type="submit" style="color:#fff; border-radius: 0 5px 5px 0; z-index: auto;">검색</button>
               </div>
             </form>

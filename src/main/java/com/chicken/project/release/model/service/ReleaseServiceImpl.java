@@ -198,4 +198,12 @@ public class ReleaseServiceImpl implements ReleaseService{
 
         return result;
     }
+
+    @Override
+    public int releaseInsertHandler(int cartNo, int relCodeDetail) {
+
+        int result = releaseMapper.releaseInsertHandler(cartNo, relCodeDetail);
+
+        return result;
+    }
 }

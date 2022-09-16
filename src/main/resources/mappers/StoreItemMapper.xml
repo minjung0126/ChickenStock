@@ -4,6 +4,17 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.chicken.project.storeItem.model.dao.StoreItemMapper">
     <resultMap id="storeItemListResultMap" type="StoreItemListDTO">
+        <result property="storeName" column="STORE_NAME"/>
+        <result property="storeAmount" column="STORE_AMOUNT"/>
+        <result property="storeAccount" column="STORE_ACCOUNT"/>
+        <result property="itemNo" column="ITEM_NO"/>
+        <result property="categoryNo" column="CATEGORY_NO"/>
+        <association property="itemInfoDTO" resultMap="itemInfoResultMap"/>
+        <association property="itemCategoryDTO" resultMap="itemCategoryResultMap"/>
+        <association property="itemFileDTO" resultMap="itemFileResultMap"/>
+    </resultMap>
+
+    <resultMap id="itemInfoResultMap" type="com.chicken.project.item.model.dto.ItemInfoDTO">
         <id property="itemNo" column="ITEM_NO"/>
         <result property="itemName" column="ITEM_NAME"/>
         <result property="itemStandard" column="ITEM_STANDARD"/>
@@ -33,10 +44,13 @@
         <result property="preCategory" column="PRE_CATEGORY"/>
     </resultMap>
 
+
+
     <select id="itemListSelect" resultMap="storeItemListResultMap">
         SELECT
               C.RNUM
             , C.ITEM_NO
+            , C.STORE_AMOUNT
             , C.ITEM_NAME
             , C.ITEM_STANDARD
             , C.ITEM_PURCHASE
@@ -50,6 +64,7 @@
        FROM (SELECT
                    ROWNUM RNUM
                  , B.ITEM_NO
+                 , B.STORE_AMOUNT
                  , B.ITEM_NAME
                  , B.ITEM_STANDARD
                  , B.ITEM_PURCHASE
@@ -62,21 +77,24 @@
                  , B.soldout
             FROM (SELECT
                          A.ITEM_NO
-                       , A.ITEM_NAME
-                       , A.ITEM_STANDARD
-                       , A.ITEM_PURCHASE
-                       , A.ITEM_SALES
-                       , A.ITEM_SOLDOUT_YN
-                       , A.ITEM_MAKE
-                       , A.ITEM_AMOUNT
+                       , A.STORE_AMOUNT
+                       , B.ITEM_NAME
+                       , B.ITEM_STANDARD
+                       , B.ITEM_PURCHASE
+                       , B.ITEM_SALES
+                       , B.ITEM_SOLDOUT_YN
+                       , B.ITEM_MAKE
+                       , B.ITEM_AMOUNT
                        , C.CATEGORY_NAME
-                       , B.FILE_NAME
-                       , CASE WHEN A.ITEM_AMOUNT = 0 THEN '품절' ELSE '보유' END soldout
-                  FROM ITEM_INFO A
-                  JOIN ITEM_FILE B ON (A.ITEM_NO = B.ITEM_NO)
-                  JOIN ITEM_CATEGORY C ON(A.CATEGORY_NO = C.CATEGORY_NO)
+                       , D.FILE_NAME
+                       , CASE WHEN B.ITEM_AMOUNT = 0 THEN '품절' ELSE '보유' END soldout
+                    FROM STO_ITEM_INFO A
+                    JOIN ITEM_INFO B ON (A.ITEM_NO = B.ITEM_NO)
+                    JOIN ITEM_CATEGORY C ON(B.CATEGORY_NO = C.CATEGORY_NO)
+                    JOIN ITEM_FILE D ON(A.ITEM_NO = D.ITEM_NO)
+                    WHERE A.STORE_NAME = #{ storeName }
                 <if test="searchCondition == 'searchItemName'">
-                    WHERE A.ITEM_NAME LIKE '%' || #{ searchValue } || '%'
+                    AND B.ITEM_NAME LIKE '%' || #{ searchValue } || '%'
                 </if>
                 ORDER BY A.ITEM_NO ASC ) B
          <![CDATA[ WHERE ROWNUM <= #{ endRow } ]]>) C
@@ -87,12 +105,14 @@
     <select id="selectTotalCount" resultType="_int" parameterType="hashmap">
         SELECT
              COUNT(*)
-        FROM ITEM_INFO A
-        JOIN ITEM_FILE B ON (A.ITEM_NO = B.ITEM_NO)
-        JOIN ITEM_CATEGORY C ON(A.CATEGORY_NO = C.CATEGORY_NO)
+        FROM STO_ITEM_INFO A
+        JOIN ITEM_INFO B ON (A.ITEM_NO = B.ITEM_NO)
+        JOIN ITEM_CATEGORY C ON(B.CATEGORY_NO = C.CATEGORY_NO)
+        JOIN ITEM_FILE D ON(A.ITEM_NO = D.ITEM_NO)
+        WHERE A.STORE_NAME = #{ storeName }
         <where>
             <if test="searchCondition == 'searchItemName'">
-                A.ITEM_NAME LIKE '%' || #{ searchValue } || '%'
+                B.ITEM_NAME LIKE '%' || #{ searchValue } || '%'
             </if>
             <if test="searchValue == null">
             </if>

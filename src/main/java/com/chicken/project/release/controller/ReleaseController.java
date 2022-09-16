@@ -30,11 +30,14 @@ public class ReleaseController {
     public ModelAndView releaseOrderSelect(ModelAndView mv, Model model, @ModelAttribute ReleaseSelectCriteria releaseSelectCriteria){
 
         System.out.println(releaseSelectCriteria);
-
+        /* 발주서에 등록된 발주품목 조회 */
         List<ReleaseOrderDTO> orderList = releaseService.releaseOrderSelect(releaseSelectCriteria);
+        /* 임시출고서에 등록된 출고품목 조회 */
         List<ReleaseOrderDTO> orderListN = releaseService.releaseOrderSelectN();
+        /* 출고서 목록 조회 */
         List<ReleaseDTO> releaseDTO = releaseService.releaseDtoOrderSelect();
 
+        /* 출고번호 생성 코드 */
         String relCode = null;
         if(!releaseDTO.isEmpty()){
             relCode = String.valueOf(releaseDTO.size()+1);
@@ -47,6 +50,7 @@ public class ReleaseController {
         }
 
         int intRelCode = Integer.parseInt(relCode);
+        /* 출고서 작성시 물품 총 금액 조회 */
         Integer totalMoney = releaseService.totalMoneySelect(intRelCode);
 
         mv.addObject("orderList", orderList);
@@ -78,13 +82,20 @@ public class ReleaseController {
         int itemSales = Integer.parseInt(releaseItemInfoDTO.getItemSales());
         int orderAmount = releaseCartDTO.getCartAmount();
         int totalItemMoney = itemSales * orderAmount;
+        int cartNo = releaseCartDTO.getCartNo();
+        int relCodeDetail = releaseItemDTO.getRelCodeDetail();
 
         System.out.println("itemSales = " + itemSales);
         System.out.println("orderAmount = " + orderAmount);
         System.out.println("totalItemMoney = " + totalItemMoney);
+        System.out.println("cartNo = " + cartNo);
+        System.out.println("relCodeDetail = " + relCodeDetail);
 
+
+        /* 임시출고서에 가맹점 발주 물품 등록 */
         int resultUpdate = releaseService.cartYnUpdateR(releaseCartDTO);
         int resultInsert = releaseService.releaseItemInsert(releaseItemInfoDTO, releaseItemDTO, storeOrderDTO, releaseCartDTO, relCode, totalItemMoney);
+        int resultInsert2 = releaseService.releaseInsertHandler(cartNo, relCodeDetail);
 
         mv.setViewName("redirect:/release/orderSelect");
 

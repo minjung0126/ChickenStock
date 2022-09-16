@@ -1,42 +1,55 @@
 package com.chicken.project.storeItem.model.dto;
 
+import com.chicken.project.item.model.dto.ItemCategoryDTO;
 import com.chicken.project.item.model.dto.ItemFileDTO;
+import com.chicken.project.item.model.dto.ItemInfoDTO;
 
 public class StoreItemListDTO {
 
+    private int storeName;
+    private int storeAmount;
+    private String storeAccount;
     private int itemNo;
-    private String itemName;
-    private String itemStandard;
-    private int itemPurchase;
-    private int itemSales;
-    private String itemSoldoutYn;
-    private String itemMake;
     private int categoryNo;
-    private int itemAmount;
-    private String soldout;
-    private String categoryName;
-    private int rNum;
-    private String itemDeleteYn;
+    private ItemInfoDTO itemInfoDTO;
+    private ItemCategoryDTO itemCategoryDTO;
+    private ItemFileDTO itemFileDTO;
 
-    private ItemFileDTO itemFile;
+    public StoreItemListDTO(){}
 
-    public StoreItemListDTO() {
-    }
-    public StoreItemListDTO(int itemNo, String itemName, String itemStandard, int itemPurchase, int itemSales, String itemSoldoutYn, String itemMake, int categoryNo, int itemAmount, String soldout, String categoryName, int rNum, String itemDeleteYn, ItemFileDTO itemFile) {
+    public StoreItemListDTO(int storeName, int storeAmount, String storeAccount, int itemNo, int categoryNo, ItemInfoDTO itemInfoDTO, ItemCategoryDTO itemCategoryDTO, ItemFileDTO itemFileDTO) {
+        this.storeName = storeName;
+        this.storeAmount = storeAmount;
+        this.storeAccount = storeAccount;
         this.itemNo = itemNo;
-        this.itemName = itemName;
-        this.itemStandard = itemStandard;
-        this.itemPurchase = itemPurchase;
-        this.itemSales = itemSales;
-        this.itemSoldoutYn = itemSoldoutYn;
-        this.itemMake = itemMake;
         this.categoryNo = categoryNo;
-        this.itemAmount = itemAmount;
-        this.soldout = soldout;
-        this.categoryName = categoryName;
-        this.rNum = rNum;
-        this.itemDeleteYn = itemDeleteYn;
-        this.itemFile = itemFile;
+        this.itemInfoDTO = itemInfoDTO;
+        this.itemCategoryDTO = itemCategoryDTO;
+        this.itemFileDTO = itemFileDTO;
+    }
+
+    public int getStoreName() {
+        return storeName;
+    }
+
+    public void setStoreName(int storeName) {
+        this.storeName = storeName;
+    }
+
+    public int getStoreAmount() {
+        return storeAmount;
+    }
+
+    public void setStoreAmount(int storeAmount) {
+        this.storeAmount = storeAmount;
+    }
+
+    public String getStoreAccount() {
+        return storeAccount;
+    }
+
+    public void setStoreAccount(String storeAccount) {
+        this.storeAccount = storeAccount;
     }
 
     public int getItemNo() {
@@ -47,54 +60,6 @@ public class StoreItemListDTO {
         this.itemNo = itemNo;
     }
 
-    public String getItemName() {
-        return itemName;
-    }
-
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
-    }
-
-    public String getItemStandard() {
-        return itemStandard;
-    }
-
-    public void setItemStandard(String itemStandard) {
-        this.itemStandard = itemStandard;
-    }
-
-    public int getItemPurchase() {
-        return itemPurchase;
-    }
-
-    public void setItemPurchase(int itemPurchase) {
-        this.itemPurchase = itemPurchase;
-    }
-
-    public int getItemSales() {
-        return itemSales;
-    }
-
-    public void setItemSales(int itemSales) {
-        this.itemSales = itemSales;
-    }
-
-    public String getItemSoldoutYn() {
-        return itemSoldoutYn;
-    }
-
-    public void setItemSoldoutYn(String itemSoldoutYn) {
-        this.itemSoldoutYn = itemSoldoutYn;
-    }
-
-    public String getItemMake() {
-        return itemMake;
-    }
-
-    public void setItemMake(String itemMake) {
-        this.itemMake = itemMake;
-    }
-
     public int getCategoryNo() {
         return categoryNo;
     }
@@ -103,71 +68,41 @@ public class StoreItemListDTO {
         this.categoryNo = categoryNo;
     }
 
-    public int getItemAmount() {
-        return itemAmount;
+    public ItemInfoDTO getItemInfoDTO() {
+        return itemInfoDTO;
     }
 
-    public void setItemAmount(int itemAmount) {
-        this.itemAmount = itemAmount;
+    public void setItemInfoDTO(ItemInfoDTO itemInfoDTO) {
+        this.itemInfoDTO = itemInfoDTO;
     }
 
-    public String getSoldout() {
-        return soldout;
+    public ItemCategoryDTO getItemCategoryDTO() {
+        return itemCategoryDTO;
     }
 
-    public void setSoldout(String soldout) {
-        this.soldout = soldout;
+    public void setItemCategoryDTO(ItemCategoryDTO itemCategoryDTO) {
+        this.itemCategoryDTO = itemCategoryDTO;
     }
 
-    public String getCategoryName() {
-        return categoryName;
+    public ItemFileDTO getItemFileDTO() {
+        return itemFileDTO;
     }
 
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
-    }
-
-    public int getrNum() {
-        return rNum;
-    }
-
-    public void setrNum(int rNum) {
-        this.rNum = rNum;
-    }
-
-    public String getItemDeleteYn() {
-        return itemDeleteYn;
-    }
-
-    public void setItemDeleteYn(String itemDeleteYn) {
-        this.itemDeleteYn = itemDeleteYn;
-    }
-
-    public ItemFileDTO getItemFile() {
-        return itemFile;
-    }
-
-    public void setItemFile(ItemFileDTO itemFile) {
-        this.itemFile = itemFile;
+    public void setItemFileDTO(ItemFileDTO itemFileDTO) {
+        this.itemFileDTO = itemFileDTO;
     }
 
     @Override
     public String toString() {
-        return "ItemInfoDTO{" +
-                "itemNo=" + itemNo +
-                ", itemName='" + itemName + '\'' +
-                ", itemStandard='" + itemStandard + '\'' +
-                ", itemPurchase=" + itemPurchase +
-                ", itemSales=" + itemSales +
-                ", itemSoldoutYn='" + itemSoldoutYn + '\'' +
-                ", itemMake='" + itemMake + '\'' +
+        return "StoreItemListDTO{" +
+                "storeName=" + storeName +
+                ", storeAmount=" + storeAmount +
+                ", storeAccount='" + storeAccount + '\'' +
+                ", itemNo=" + itemNo +
                 ", categoryNo=" + categoryNo +
-                ", itemAmount=" + itemAmount +
-                ", soldout='" + soldout + '\'' +
-                ", categoryName='" + categoryName + '\'' +
-                ", rNum=" + rNum +
-                ", itemDeleteYn='" + itemDeleteYn + '\'' +
-                ", itemFile=" + itemFile +
+                ", itemInfoDTO=" + itemInfoDTO +
+                ", itemCategoryDTO=" + itemCategoryDTO +
+                ", itemFileDTO=" + itemFileDTO +
                 '}';
     }
 }

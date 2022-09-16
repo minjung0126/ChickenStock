@@ -112,11 +112,10 @@ SELECT
                      , TO_CHAR(COUNT(RO.REC_CODE)-1) countRecCode
                      , CONCAT(TO_CHAR(SUM(RI.REC_AMOUNT * I.ITEM_PURCHASE), '999,999,999,999,999'), '원') sumRecTotalMoney
                      , TO_CHAR(RO.REC_DATE, 'YYYY-MM-DD') StringRecDate
-                     , E.EMP_NAME
+                     , RO.EMP_NAME
                   FROM RECEIVE_OFFICE RO
                   JOIN RECEIVE_OFFICE_ITEM RI ON(RO.REC_CODE = RI.REC_CODE)
                   JOIN ITEM_INFO I ON (RI.ITEM_NO = I.ITEM_NO)
-                  JOIN EMPLOYEE E ON (E.EMP_NAME = RO.EMP_NAME)
                   <where>
                       <if test="searchCondition == 'itemName'">
                           RO.REC_CODE IN (SELECT DISTINCT(RI.REC_CODE) FROM RECEIVE_OFFICE_ITEM RI JOIN ITEM_INFO I ON(I.ITEM_NO = RI.ITEM_NO) WHERE I.ITEM_NAME LIKE '%' || #{ searchValue } || '%')
@@ -127,7 +126,7 @@ SELECT
                   </where>
                  GROUP BY RO.REC_CODE
                         , RO.REC_DATE
-                        , E.EMP_NAME
+                        , RO.EMP_NAME
                  ORDER BY 1) B
         <![CDATA[
                 WHERE ROWNUM <= #{ endRow }
