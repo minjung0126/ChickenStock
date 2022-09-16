@@ -2,6 +2,8 @@ package com.chicken.project.calendar.controller;
 
 import com.chicken.project.calendar.model.dto.CalendarDTO;
 import com.chicken.project.calendar.model.service.CalendarService;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,27 +26,38 @@ public class CalendarController {
 
     /* 일정 조회 */
     @GetMapping("/calendar")
+    public String CalMain(){
+
+        return "/calendar/calendar";
+    }
+
+    @GetMapping(value = {"calList"})
     @ResponseBody
     public List<Map<String, Object>> selectCal(@RequestParam Map<String, Object> cal){
 
-        log.info("[CalendarService] selectCalendar ========================================");
+        log.info("[CalendarController] selectCalendar ========================================");
 
         List<CalendarDTO> calList = calendarService.selectCalendar();
 
-        log.info("[CalendarService] calList : " + calList);
+        log.info("[CalendarController] calList : " + calList);
 
         HashMap<String, Object> hash = new HashMap<>();
-        ArrayList data = new ArrayList<>();
+        List<Map<String, Object>> list = new ArrayList<>();
 
         for(int i = 0; i < calList.size(); i++){
             hash.put("calName", calList.get(i).getCalName());
             hash.put("startDay", calList.get(i).getStartDay());
             hash.put("endDay", calList.get(i).getEndDay());
-        }
-        data.add(hash);
 
-        return data;
+            list.add(hash);
+        }
+
+        log.info("[CalendarController] list : " + list);
+
+        return list;
     }
+
+
 
 //    @PostMapping("/calendar")
 //    public String calendar(){
