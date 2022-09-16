@@ -17,6 +17,7 @@ public interface EmpListService {
 
     int selectCkAdminAuth(String empId);
 
+    @Transactional
     int insertAuth(String empId);
 
 }

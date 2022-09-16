@@ -51,9 +51,9 @@
                   <th>내용</th>
                   <td class="align-left" th:text="${ noticeDetail.noticeContent }"></td>
                 </tr>
-                <tr>
+                <tr th:if="${ noticeDetail.noticeFile.originName != null }">
                   <th>첨부파일</th>
-                  <td class="align-left" ><a th:href="|/uploadFiles/${ noticeDetail.noticeFile.getFileName() }|" th:text="${ noticeDetail.noticeFile.getOriginName() }" download></a></td>
+                  <td class="align-left"><a th:href="|/uploadFiles/${ noticeDetail.noticeFile.getFileName() }|" th:text="${ noticeDetail.noticeFile.getOriginName() }" download></a></td>
                 </tr>
               </tbody>
             </table>

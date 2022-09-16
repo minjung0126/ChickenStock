@@ -146,12 +146,12 @@
         )
     </insert>
 
-    <select id="noticeDetailByNo" resultMap="noticeResultMap">
+    <select id="noticeDetailByNo" resultMap="noticeResultMap" parameterType="_int">
         SELECT
                A.*
              , B.*
           FROM NOTICE A
-          JOIN NOTICE_FILE B ON (A.NOTICE_NO = B.NOTICE_NO)
+          LEFT JOIN NOTICE_FILE B ON (A.NOTICE_NO = B.NOTICE_NO)
          WHERE A.NOTICE_NO = #{ noticeNo }
     </select>
 
