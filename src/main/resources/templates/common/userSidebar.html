@@ -23,21 +23,41 @@
           <div class="accordion_dep type2">
             <a href="#" title=""><img src="/images/mypage.png" width="18px" height="18px"> 마이페이지</a>
             <ul>
-              <li>                
-                 <a href="/account/user/list" title="">예치금 관리</a>
-              </li>
-              <li>                
+              <li>
                  <a th:href="@{/mypage/store_mypage}" title="">비밀번호 재설정</a>
               </li>
             </ul>
           </div>
 
-          <div class="accordion_dep type1 ">
-            <a href="#" title=""><img src="/images/items.png" width="18px" height="18px"> 품목관리</a>
+          <div class="accordion_dep type2">
+            <a href="#" title=""><img src="/images/money.png" width="18px" height="18px"> 예치금관리</a>
+            <ul>
+              <li>
+                <a href="/account/user/list" title="">입금신청</a>
+              </li>
+              <li>
+                <a href="/account/user/bank" title="">입출금 내역</a>
+              </li>
+            </ul>
           </div>
 
           <div class="accordion_dep type1 ">
-            <a href="#" title=""><img src="/images/order.png" width="18px" height="18px"> 발주</a>
+            <a href="/storeItem/itemListSelect" title=""><img src="/images/items.png" width="18px" height="18px"> 품목관리</a>
+          </div>
+
+          <div class="accordion_dep type2 ">
+            <a href="/order/list" title=""><img src="/images/order.png" width="18px" height="18px"> 발주관리</a>
+            <ul>
+              <li>
+                <a href="/order/list" title="">상품 조회</a>
+              </li>
+              <li>
+                <a href="/order/cart/list" title="">장바구니</a>
+              </li>
+              <li>
+                <a href="" title="">발주 내역</a>
+              </li>
+            </ul>
           </div>
 
           <div class="accordion_dep type1 ">

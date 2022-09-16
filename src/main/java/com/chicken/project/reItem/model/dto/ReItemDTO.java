@@ -4,11 +4,11 @@ public class ReItemDTO {
 
     private String rDate;  // 반품신청일
     private String rReason; // 반품사유
-    private int returnAccount; // 반품금액
+    private int returnTotalMoney; // 반품금액
     private int returnCount; // 반품수량
     private int itemNo; // 품목번호
     private String itemName; // 품목이름
-    private int categoryName;  // 카테고리이름
+    private String categoryName;  // 카테고리이름
     private String itemStandard; // 품목규격
     private String itemMake; // 제조사
     private String itemSales; // 매출단가
@@ -18,10 +18,10 @@ public class ReItemDTO {
     public ReItemDTO() {
     }
 
-    public ReItemDTO(String rDate, String rReason, int returnAccount, int returnCount, int itemNo, String itemName, int categoryName, String itemStandard, String itemMake, String itemSales, String originName, int rNo) {
+    public ReItemDTO(String rDate, String rReason, int returnTotalMoney, int returnCount, int itemNo, String itemName, String categoryName, String itemStandard, String itemMake, String itemSales, String originName, int rNo) {
         this.rDate = rDate;
         this.rReason = rReason;
-        this.returnAccount = returnAccount;
+        this.returnTotalMoney = returnTotalMoney;
         this.returnCount = returnCount;
         this.itemNo = itemNo;
         this.itemName = itemName;
@@ -49,12 +49,12 @@ public class ReItemDTO {
         this.rReason = rReason;
     }
 
-    public int getReturnAccount() {
-        return returnAccount;
+    public int getReturnTotalMoney() {
+        return returnTotalMoney;
     }
 
-    public void setReturnAccount(int returnAccount) {
-        this.returnAccount = returnAccount;
+    public void setReturnTotalMoney(int returnTotalMoney) {
+        this.returnTotalMoney = returnTotalMoney;
     }
 
     public int getReturnCount() {
@@ -81,11 +81,11 @@ public class ReItemDTO {
         this.itemName = itemName;
     }
 
-    public int getCategoryName() {
+    public String getCategoryName() {
         return categoryName;
     }
 
-    public void setCategoryName(int categoryName) {
+    public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
     }
 
@@ -134,11 +134,11 @@ public class ReItemDTO {
         return "ReItemDTO{" +
                 "rDate='" + rDate + '\'' +
                 ", rReason='" + rReason + '\'' +
-                ", returnAccount=" + returnAccount +
+                ", returnTotalMoney=" + returnTotalMoney +
                 ", returnCount=" + returnCount +
                 ", itemNo=" + itemNo +
                 ", itemName='" + itemName + '\'' +
-                ", categoryName=" + categoryName +
+                ", categoryName='" + categoryName + '\'' +
                 ", itemStandard='" + itemStandard + '\'' +
                 ", itemMake='" + itemMake + '\'' +
                 ", itemSales='" + itemSales + '\'' +

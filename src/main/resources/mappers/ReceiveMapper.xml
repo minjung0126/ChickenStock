@@ -49,6 +49,7 @@
         <result property="itemAmount" column="ITEM_AMOUNT"/>
         <result property="soldout" column="soldout"/>
         <result property="categoryName" column="CATEGORY_NAME"/>
+        <result property="itemDeleteYn" column="ITEM_DELETE_YN"/>
         <association property="itemFile" resultMap="itemFileResultMap"/>
     </resultMap>
 

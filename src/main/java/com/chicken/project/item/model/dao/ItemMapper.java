@@ -2,6 +2,7 @@ package com.chicken.project.item.model.dao;
 
 import com.chicken.project.common.paging.SelectCriteria;
 import com.chicken.project.item.model.dto.ItemCategoryDTO;
+import com.chicken.project.item.model.dto.ItemFileDTO;
 import com.chicken.project.item.model.dto.ItemInfoDTO;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -19,4 +20,7 @@ public interface ItemMapper {
     int insertItem(ItemInfoDTO item);
     int deleteItem(String itemNo);
     int deleteItemFile(String itemNo);
+    int insertFileRegist(ItemFileDTO itemFile);
+    int insertItemHistory();
+    ItemInfoDTO selectOneItem(String itemNoInput);
 }

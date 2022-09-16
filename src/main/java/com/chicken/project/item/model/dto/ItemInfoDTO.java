@@ -1,7 +1,5 @@
 package com.chicken.project.item.model.dto;
 
-import com.chicken.project.release.model.dto.ItemCategoryDTO;
-
 public class ItemInfoDTO {
 
     private int itemNo;
@@ -15,15 +13,15 @@ public class ItemInfoDTO {
     private int itemAmount;
     private String soldout;
     private String categoryName;
-
     private int rNum;
+    private String itemDeleteYn;
 
     private ItemFileDTO itemFile;
 
     public ItemInfoDTO() {
     }
 
-    public ItemInfoDTO(int itemNo, String itemName, String itemStandard, int itemPurchase, int itemSales, String itemSoldoutYn, String itemMake, int categoryNo, int itemAmount, String soldout, String categoryName, int rNum, ItemFileDTO itemFile) {
+    public ItemInfoDTO(int itemNo, String itemName, String itemStandard, int itemPurchase, int itemSales, String itemSoldoutYn, String itemMake, int categoryNo, int itemAmount, String soldout, String categoryName, int rNum, String itemDeleteYn, ItemFileDTO itemFile) {
         this.itemNo = itemNo;
         this.itemName = itemName;
         this.itemStandard = itemStandard;
@@ -36,6 +34,7 @@ public class ItemInfoDTO {
         this.soldout = soldout;
         this.categoryName = categoryName;
         this.rNum = rNum;
+        this.itemDeleteYn = itemDeleteYn;
         this.itemFile = itemFile;
     }
 
@@ -135,6 +134,14 @@ public class ItemInfoDTO {
         this.rNum = rNum;
     }
 
+    public String getItemDeleteYn() {
+        return itemDeleteYn;
+    }
+
+    public void setItemDeleteYn(String itemDeleteYn) {
+        this.itemDeleteYn = itemDeleteYn;
+    }
+
     public ItemFileDTO getItemFile() {
         return itemFile;
     }
@@ -158,6 +165,7 @@ public class ItemInfoDTO {
                 ", soldout='" + soldout + '\'' +
                 ", categoryName='" + categoryName + '\'' +
                 ", rNum=" + rNum +
+                ", itemDeleteYn='" + itemDeleteYn + '\'' +
                 ", itemFile=" + itemFile +
                 '}';
     }

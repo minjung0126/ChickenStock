@@ -4,10 +4,11 @@ import com.chicken.project.common.paging.Pagenation;
 import com.chicken.project.common.paging.SelectCriteria;
 import com.chicken.project.exception.receive.ReceiveInsertException;
 import com.chicken.project.exception.receive.ReceiveUpdateException;
+import com.chicken.project.item.model.dto.ItemInfoDTO;
 import com.chicken.project.receive.model.dto.ReceiveOfficeDTO;
 import com.chicken.project.receive.model.dto.ReceiveOfficeItemDTO;
 import com.chicken.project.receive.model.service.ReceiveService;
-import com.chicken.project.release.model.dto.ItemInfoDTO;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -284,7 +285,8 @@ public class ReceiveController {
             List<ReceiveOfficeDTO> recCode = receiveService.selectMaxCode();
             System.out.println(recCode);
             registHashMap.put("recCode", recCode.get(0).getMaxRecCode());
-//            receiveService.updateItem(registHashMap);
+
+            receiveService.updateItem(registHashMap);
             System.out.println(registHashMap.get("recCode"));
         }
 

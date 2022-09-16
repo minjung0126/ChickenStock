@@ -19,6 +19,14 @@ public class BillTaxService {
     }
 
     // 세금계산서 페이징+리스트
+    public List<BillTaxDTO> selectBillList(SelectCriteria selectCriteria) {
+
+        List<BillTaxDTO> billTaxList = billTaxMapper.selectBillList(selectCriteria);
+
+        return billTaxList;
+    }
+
+    // 세금계산서 가맹점 페이징+리스트
     public List<BillTaxDTO> selectTaxBillList(SelectCriteria selectCriteria) {
 
         List<BillTaxDTO> billTaxList = billTaxMapper.selectBillTaxList(selectCriteria);
@@ -41,6 +49,13 @@ public class BillTaxService {
     }
 
     // 거래명세서 페이징+리스트
+    public List<tsBillTaxDTO> selectTsList(SelectCriteria selectCriteria) {
+
+        List<tsBillTaxDTO> tsBillTaxList = billTaxMapper.selectTsList(selectCriteria);
+
+        return tsBillTaxList;
+    }
+    // 거래명세서 가맹점 페이징+리스트
     public List<tsBillTaxDTO> selectTsBillTaxList(SelectCriteria selectCriteria) {
 
         List<tsBillTaxDTO> tsBillTaxList = billTaxMapper.selectTsBillTaxList(selectCriteria);
@@ -53,4 +68,5 @@ public class BillTaxService {
 
         return billTaxMapper.selectTsMenuList(recCode);
     }
+
 }

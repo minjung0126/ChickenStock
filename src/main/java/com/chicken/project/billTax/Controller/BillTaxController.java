@@ -5,18 +5,17 @@ import com.chicken.project.billTax.model.dto.tsBillTaxDTO;
 import com.chicken.project.billTax.model.service.BillTaxService;
 import com.chicken.project.common.paging.Pagenation;
 import com.chicken.project.common.paging.SelectCriteria;
+import com.chicken.project.member.model.dto.StoreImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,8 +34,9 @@ public class BillTaxController {
         this.billTaxService = billTaxService;
     }
 
+    // 가맹점 세금계산서
     @GetMapping("/billList")
-    public ModelAndView billList(ModelAndView mv, HttpServletRequest request) {
+    public ModelAndView billList(ModelAndView mv, HttpServletRequest request,@AuthenticationPrincipal StoreImpl storeImpl) {
 
         String currentPage = request.getParameter("currentPage");
 
@@ -51,10 +51,12 @@ public class BillTaxController {
         }
         String searchCondition = request.getParameter("searchCondition");
         String searchValue = request.getParameter("searchValue");
+        String storeName = storeImpl.getStoreName();
 
         Map<String, String> searchMap = new HashMap<>();
         searchMap.put("searchCondition", searchCondition);
         searchMap.put("searchValue", searchValue);
+        searchMap.put("storeName", storeName);
 
         log.info("[BillTaxController] searchMap = " + searchMap);
 
@@ -67,9 +69,9 @@ public class BillTaxController {
         SelectCriteria selectCriteria = null;
 
         if(searchCondition != null && !"".equals(searchCondition)) {
-            selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount, searchCondition, searchValue);
+            selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount, searchCondition, searchValue, storeName);
         } else {
-            selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount);
+            selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount, storeName);
         }
 
         log.info("[taxBillController] selectCriteria = " + selectCriteria);
@@ -87,8 +89,6 @@ public class BillTaxController {
             map.put(recCode, taxListMenu);
         }
 
-        // List<BillTaxDTO> taxListMenu = billTaxService.selectTaxMenuList(recCode);
-
         log.info("[taxBillController] taxBillList = " + taxBillList);
         log.info("[taxBillController] map = " + map);
         //log.info("[taxBillController] recCode = " + recCode);
@@ -101,6 +101,7 @@ public class BillTaxController {
         return mv;
     }
 
+    // 본사 세금계산서
     @GetMapping("/billtaxList")
     public ModelAndView billTaxList(ModelAndView mv, HttpServletRequest request) {
 
@@ -135,7 +136,7 @@ public class BillTaxController {
             selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount);
         }
 
-        List<BillTaxDTO> billTaxList = billTaxService.selectTaxBillList(selectCriteria);
+        List<BillTaxDTO> billTaxList = billTaxService.selectBillList(selectCriteria);
 
         Map<String, List<BillTaxDTO>> map = new HashMap<>();
 
@@ -153,8 +154,10 @@ public class BillTaxController {
 
         return mv;
     }
+
+    // 가맹점 거래명세서
     @GetMapping("/tsbillList")
-    public ModelAndView tsBillList(ModelAndView mv, HttpServletRequest request){
+    public ModelAndView tsBillList(ModelAndView mv, HttpServletRequest request, @AuthenticationPrincipal StoreImpl storeImpl){
 
         String currentPage = request.getParameter("currentPage");
 
@@ -169,10 +172,12 @@ public class BillTaxController {
         }
         String searchCondition = request.getParameter("searchCondition");
         String searchValue = request.getParameter("searchValue");
+        String storeName = storeImpl.getStoreName();
 
         Map<String, String> searchMap = new HashMap<>();
         searchMap.put("searchCondition", searchCondition);
         searchMap.put("searchValue", searchValue);
+        searchMap.put("storeName", storeName);
 
         int totalCount = billTaxService.selectTotalCount(searchMap);
 
@@ -182,9 +187,9 @@ public class BillTaxController {
         SelectCriteria selectCriteria = null;
 
         if(searchCondition != null && !"".equals(searchCondition)) {
-            selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount, searchCondition, searchValue);
+            selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount, searchCondition, searchValue, storeName);
         } else {
-            selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount);
+            selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount, storeName);
         }
 
         List<tsBillTaxDTO> tsBillTaxList = billTaxService.selectTsBillTaxList(selectCriteria);
@@ -206,6 +211,7 @@ public class BillTaxController {
         return mv;
     }
 
+    // 본사 거래명세서
     @GetMapping("/tsbilltaxList")
     public ModelAndView tsBillTaxList(ModelAndView mv, HttpServletRequest request){
 
@@ -240,7 +246,7 @@ public class BillTaxController {
             selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount);
         }
 
-        List<tsBillTaxDTO> tsTaxBillList = billTaxService.selectTsBillTaxList(selectCriteria);
+        List<tsBillTaxDTO> tsTaxBillList = billTaxService.selectTsList(selectCriteria);
 
         Map<String, List<tsBillTaxDTO>> map = new HashMap<>();
 

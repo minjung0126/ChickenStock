@@ -1,9 +1,9 @@
 package com.chicken.project.receive.model.dao;
 
 import com.chicken.project.common.paging.SelectCriteria;
+import com.chicken.project.item.model.dto.ItemInfoDTO;
 import com.chicken.project.receive.model.dto.ReceiveOfficeDTO;
 import com.chicken.project.receive.model.dto.ReceiveOfficeItemDTO;
-import com.chicken.project.release.model.dto.ItemInfoDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.HashMap;
@@ -37,5 +37,5 @@ public interface ReceiveMapper {
 
     List<ReceiveOfficeDTO> selectMaxCode();
 
-//    int updateItem(HashMap<String, Object> registHashMap);
+    int updateItem(HashMap<String, Object> registHashMap);
 }
