@@ -114,14 +114,10 @@
 
                                         let tr = $(this).parents('tr');
                                         let td = tr.children();
-                                        let itemNo = td.eq(10)[3].value;
-                                        let storeName = td.eq(10)[4].value;
-
                                         $.ajax({
 
                                             url:'/storeItem/storeItemUpdate',
                                             type:'POST',
-                                            data: { itemNo : itemNo }
 
                                         })
                                     });
