@@ -3,7 +3,7 @@ package com.chicken.project.main.controller;
 import com.chicken.project.member.model.dto.AdminImpl;
 import com.chicken.project.member.model.dto.StoreImpl;
 import com.chicken.project.notice.model.dto.NoticeDTO;
-import com.chicken.project.notice.model.service.NoticeService;
+import com.chicken.project.notice.model.service.NoticeServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +21,10 @@ import java.util.List;
 public class MemberMain {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
-    private final NoticeService noticeService;
+    private final NoticeServiceImpl noticeService;
 
     @Autowired
-    public MemberMain(NoticeService noticeService){
+    public MemberMain(NoticeServiceImpl noticeService){
 
         this.noticeService = noticeService;
     }
@@ -60,7 +60,6 @@ public class MemberMain {
                 mv.setViewName("/main/user_main");
             }
         }
-//        System.out.println("((MemberImpl)user = " + ((MemberImpl)user).getEmpRoleList().get(0).getAuthCode());
 
         return mv;
     }

@@ -36,7 +36,7 @@
             <h3>공지사항 작성</h3>
 			      <br>
 
-            <form th:action="@{/notice/admin/noticeInsert}" method="post" enctype="multipart/form-data">
+            <form th:action="@{/notice/admin/insert}" method="post" enctype="multipart/form-data">
               <table class="table">
                 <colgroup>
                   <col style="width:170px">
@@ -46,7 +46,8 @@
                   <tr>
                     <th>제목</th>
                     <td>
-                      <input type="text" name="noticeName"placeholder="제목을 입력하세요"/>
+                      <input type="text" name="noticeName" placeholder="제목을 입력하세요"/>
+                      <input type="hidden" name="empName" th:value="${ #authentication.getPrincipal().getEmpName() }"
                     </td>
                   </tr>
                   <tr>

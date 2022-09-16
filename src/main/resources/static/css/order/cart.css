@@ -151,3 +151,10 @@
     margin-top: 30px;
     margin-bottom: 100px;
 }
+
+/* 삭제 버튼 */
+#delete > .deleteBtn {
+
+    height: 35px;
+    font-size: 15px;
+}
