@@ -28,10 +28,12 @@ public class CalendarController {
     @GetMapping("/calendar")
     public String CalMain(){
 
+        log.info("[CalendarController]  ========================================");
+
         return "/calendar/calendar";
     }
 
-    @GetMapping(value = {"calList"})
+    @GetMapping(value = {"calList"}, produces = {"application/json;"})
     @ResponseBody
     public List<Map<String, Object>> selectCal(@RequestParam Map<String, Object> cal){
 
@@ -41,20 +43,20 @@ public class CalendarController {
 
         log.info("[CalendarController] calList : " + calList);
 
-        HashMap<String, Object> hash = new HashMap<>();
-        List<Map<String, Object>> list = new ArrayList<>();
+        JSONArray jsonArray = new JSONArray();
 
+        Map<String, Object> calMap = new HashMap<>();
         for(int i = 0; i < calList.size(); i++){
-            hash.put("calName", calList.get(i).getCalName());
-            hash.put("startDay", calList.get(i).getStartDay());
-            hash.put("endDay", calList.get(i).getEndDay());
+            calMap.put("calName", calList.get(i).getCalName());
+            calMap.put("startDay", calList.get(i).getStartDay());
+            calMap.put("endDay", calList.get(i).getEndDay());
 
-            list.add(hash);
+            JSONObject jsonObject = new JSONObject(calMap);
+            jsonArray.add(jsonObject);
         }
+        log.info("[CalendarController] list : " + jsonArray);
 
-        log.info("[CalendarController] list : " + list);
-
-        return list;
+        return jsonArray;
     }
 
 

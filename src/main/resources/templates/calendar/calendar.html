@@ -11,7 +11,6 @@
 
     <!-- table css -->
 
-    <link rel="stylesheet" type="text/css" th:href="@{/css/common/style.css}"/>
     <link rel="stylesheet" th:href="@{https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css}">
 
     <!-- <script src="../lib/gcal.js"></script> -->
@@ -25,26 +24,20 @@
 
     <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css' rel='stylesheet' />
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js'></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/common/style.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/common/common.css}"/>
     <script>
 
-        const cal = {"calName" : calName, "startDay" : startDay, "endDay" : endDay}
         $.ajax({
             url:"/calendar/calList",
             type: "GET",
-            data: {
-                cal : cal
+            success: function (data){
+
+                console.log(data);
+                let ALlEvent = [];
+                let event = {};
             },
-            success: function (list){
-                console.log(list);
-                events.push({
-                    title : list.calName,
-                    start : list.startDay,
-                    end : list.endDay,
-                    color : 'green'
-                });
-            },
-            error: function (list){
+            error: function (jsonArray){
                 alert("일정 조회에 실패하셨습니다.")
             }
         });
@@ -56,6 +49,29 @@
             var calendar = new FullCalendar.Calendar(calendarEl, {
 
                 events : events,
+
+                // events : function(){
+                //     const cal = {"calName" : calName, "startDay" : startDay, "endDay" : endDay}
+                //     $.ajax({
+                //         url:"/calendar/calList",
+                //         type: "GET",
+                //         data: {
+                //             cal : cal
+                //         },
+                //         success: function (list){
+                //             console.log(list);
+                //             events.push({
+                //                 title : list.calName,
+                //                 start : list.startDay,
+                //                 end : list.endDay,
+                //                 color : 'green'
+                //             });
+                //         },
+                //         error: function (list){
+                //             alert("일정 조회에 실패하셨습니다.")
+                //         }
+                //     });
+                // },
 
                 googleCalendarApiKey: 'AIzaSyCDi0sVIXFLB5pKLfgmEgPvvieZ3a375dQ',
                 eventSources: [
