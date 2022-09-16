@@ -126,18 +126,25 @@ public class ReItemController {
     public ModelAndView RreItem(@ModelAttribute ReItemDTO returnItems
                                 , ModelAndView mv
                                 , HttpServletRequest request
+                                , @AuthenticationPrincipal StoreImpl storeImpl
                                 ){
         String rNo = request.getParameter("rNo");
         mv.addObject("rNo", rNo);
 
         log.info("혹시나 혹시나 혹시 나나나" + rNo);
+        Map<String, String> item = new HashMap<>();
+        item.put("storeName",storeImpl.getStoreName());
+        item.put("rNo",rNo);
 
         ReItemDTO updateItem = reItemService.selectUpReItem(rNo);
-        List<ReItemDTO> updateItems = reItemService.selectReItems(rNo);
+        List<ReItemDTO> updateItems = reItemService.selectReItems(item);
+        List<StoreItemDTO> storeItems = reItemService.selectItems(item);
+
 
 
         mv.addObject("updateItem", updateItem);
         mv.addObject("updateItems",updateItems);
+        mv.addObject("storeItems", storeItems);
 
 
 

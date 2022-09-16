@@ -45,5 +45,7 @@ public interface ReItemService {
     @Transactional
     ReItemDTO selectUpReItem(String rNo);
 
-    List<ReItemDTO> selectReItems(String rNo);
+    List<ReItemDTO> selectReItems(Map<String, String> item);
+
+    List<StoreItemDTO> selectItems(Map<String, String> item);
 }

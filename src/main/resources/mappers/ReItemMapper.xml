@@ -26,6 +26,7 @@
         <result property="itemMake" column="ITEM_MAKE"/>
         <result property="itemSales" column="ITEM_SALES"/>
         <result property="originName" column="ORIGIN_NAME"/>
+        <result property="storeAmount" column="STORE_AMOUNT"/>
     </resultMap>
     <resultMap id="storeItemResultMap" type="StoreItemDTO">
         <id property="itemNo" column="ITEM_NO"/>
@@ -391,12 +392,42 @@
              ,	II.ITEM_SALES
              ,	IFF.ORIGIN_NAME
              ,  IC.CATEGORY_NAME
+             ,  SII.STORE_AMOUNT
         FROM RETURN_ITEM RI
-                 JOIN RETURN_ITEM_INFO RII ON(RII.REF_R_NO = RI.R_NO)
-                 LEFT JOIN ITEM_FILE IFF ON (IFF.ITEM_NO = RII.ITEM_NO)
-                 JOIN STORE S ON(S.STORE_NAME = RII.STORE_NAME)
-                 JOIN ITEM_INFO II ON(II.ITEM_NO = RII.ITEM_NO)
-                 LEFT JOIN ITEM_CATEGORY IC ON(IC.CATEGORY_NO = II.CATEGORY_NO)
+        JOIN RETURN_ITEM_INFO RII ON(RII.REF_R_NO = RI.R_NO)
+        LEFT JOIN ITEM_FILE IFF ON (IFF.ITEM_NO = RII.ITEM_NO)
+        JOIN STORE S ON(S.STORE_NAME = RII.STORE_NAME)
+        JOIN ITEM_INFO II ON(II.ITEM_NO = RII.ITEM_NO)
+        LEFT JOIN ITEM_CATEGORY IC ON(IC.CATEGORY_NO = II.CATEGORY_NO)
+        JOIN STO_ITEM_INFO SII ON (IFF.ITEM_NO = SII.ITEM_NO)
         WHERE RI.R_NO = #{ rNo }
+          AND SII.STORE_NAME = #{ storeName }
     </select>
+
+    <select id="selectItems" resultMap="storeItemResultMap">
+        SELECT
+               SII.ITEM_NO
+             , II.ITEM_NAME
+             , IC.CATEGORY_NAME
+             , II.ITEM_STANDARD
+             , II.ITEM_MAKE
+             , II.ITEM_SALES
+             , IFF.ORIGIN_NAME
+             , SII.STORE_AMOUNT
+        FROM STO_ITEM_INFO SII
+        JOIN ITEM_FILE IFF ON (IFF.ITEM_NO = SII.ITEM_NO)
+        JOIN ITEM_INFO II ON(II.ITEM_NO = SII.ITEM_NO)
+        JOIN ITEM_CATEGORY IC ON(IC.CATEGORY_NO = II.CATEGORY_NO)
+       WHERE SII.STORE_NAME = #{ storeName }
+         AND SII.ITEM_NO NOT IN ( SELECT
+                                II.ITEM_NO
+                       FROM RETURN_ITEM RI
+                                JOIN RETURN_ITEM_INFO RII ON(RII.REF_R_NO = RI.R_NO)
+                                LEFT JOIN ITEM_FILE IFF ON (IFF.ITEM_NO = RII.ITEM_NO)
+                                JOIN STORE S ON(S.STORE_NAME = RII.STORE_NAME)
+                                JOIN ITEM_INFO II ON(II.ITEM_NO = RII.ITEM_NO)
+                                LEFT JOIN ITEM_CATEGORY IC ON(IC.CATEGORY_NO = II.CATEGORY_NO)
+                       WHERE RI.R_NO = #{ rNo } )
+    </select>
+
 </mapper>

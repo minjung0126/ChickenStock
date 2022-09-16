@@ -61,6 +61,7 @@ public interface ReItemMapper {
 
     ReItemDTO selectUpReItem(String rNo);
 
-    List<ReItemDTO> selectUpReItems(String rNo);
+    List<ReItemDTO> selectUpReItems(Map<String, String> item);
 
+    List<StoreItemDTO> selectItems(Map<String, String> item);
 }

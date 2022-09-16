@@ -1,5 +1,6 @@
 package com.chicken.project.reItem.model.dto;
 
+
 public class ReItemDTO {
 
     private String rDate;  // 반품신청일
@@ -15,10 +16,12 @@ public class ReItemDTO {
     private String originName; //원본파일명
     private int rNo;   // 반품번호
 
+    private int storeAmount; // 가맹점 픔목수량
+
     public ReItemDTO() {
     }
 
-    public ReItemDTO(String rDate, String rReason, int returnTotalMoney, int returnCount, int itemNo, String itemName, String categoryName, String itemStandard, String itemMake, String itemSales, String originName, int rNo) {
+    public ReItemDTO(String rDate, String rReason, int returnTotalMoney, int returnCount, int itemNo, String itemName, String categoryName, String itemStandard, String itemMake, String itemSales, String originName, int rNo, int storeAmount) {
         this.rDate = rDate;
         this.rReason = rReason;
         this.returnTotalMoney = returnTotalMoney;
@@ -31,6 +34,7 @@ public class ReItemDTO {
         this.itemSales = itemSales;
         this.originName = originName;
         this.rNo = rNo;
+        this.storeAmount = storeAmount;
     }
 
     public String getrDate() {
@@ -129,6 +133,14 @@ public class ReItemDTO {
         this.rNo = rNo;
     }
 
+    public int getStoreAmount() {
+        return storeAmount;
+    }
+
+    public void setStoreAmount(int storeAmount) {
+        this.storeAmount = storeAmount;
+    }
+
     @Override
     public String toString() {
         return "ReItemDTO{" +
@@ -144,6 +156,7 @@ public class ReItemDTO {
                 ", itemSales='" + itemSales + '\'' +
                 ", originName='" + originName + '\'' +
                 ", rNo=" + rNo +
+                ", storeAmount=" + storeAmount +
                 '}';
     }
 }
