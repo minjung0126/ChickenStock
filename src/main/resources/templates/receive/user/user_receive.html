@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
+
+    <title>chicken stock</title>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/css/common/common.css}"/>
+    <!-- table css -->
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/item/item_receive.css}"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- datepicker js & css -->
+    <script type="text/javascript" th:src="@{http://code.jquery.com/jquery-3.6.0.min.js}"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"/>
+
+</head>
+<body>
+<div class="wrap">
+
+    <!-- S: header -->
+    <div th:include="common/adminHeader.html"></div>
+    <!-- S: header -->
+
+    <!-- S: container -->
+    <div class="container px-0">
+
+        <!-- S: aside -->
+        <div th:include="common/adminSidebar.html"></div>
+        <!-- E: aside -->
+
+        <!-- S: main layout -->
+        <div class="main_layout">
+            <div class="main_layout_inner">
+
+                <!-- 작업 영역 -->
+                <!-- S: table -->
+                <div class="container-fluid" style="margin-top:30px">
+                    <h3>입고 관리</h3>
+                    <br>
+
+                    <div class="input-group mb-3 col-12 float-start">
+                        <select id="searchCondition" class="form-control col-2" style="max-width: max-content;">
+                            <option value="itemname">상품명</option>
+                            <option value="date">입고일</option>
+                        </select>
+                        <div id="reportrange" class="form-control" style="cursor: pointer; max-width: max-content;">
+                            <i class="fa fa-calendar"></i>
+                            <span class="date"><!-- 날짜 입력한 값 들어감 --></span>
+                        </div>
+
+                        <!-- <button class="btn btn-light px-3" type="button" disabled></button> -->
+                        <!-- <select id="searchCondition" class="form-control col-1" style="max-width: max-content;">
+                          <option value="date">상품명</option>
+                        </select> -->
+                        <input class="form-control me-2 col-3" type="text" placeholder="검색어를 입력해주세요.">
+                        <button class="btn btn-warning" type="submit" style="color:#fff">검색</button>
+
+                        <div class="form-check mx-4 d-flex flex-wrap align-content-center">
+                            <input type="checkbox" class="form-check-input" id="check" name="soldout" value="something" style="margin-top: 14px">
+                            <label class="form-check-label" for="check">품절상품 제외</label>
+                        </div>
+                    </div>
+
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>번호</th>
+                            <th>발주 번호</th>
+                            <th>입고 번호</th>
+                            <th>상품명</th>
+                            <th>입고 수량</th>
+                            <th>입고 금액</th>
+                            <th>입고일</th>
+                            <th>입고 상태</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>190201</td>
+                            <td></td>
+                            <td>닭다리 외 2개 품목</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><button type="button" class="btn btn-warning btn-sm" onclick="insertReceive()" style="color: #fff;">입고 등록</button></td>
+                        </tr>
+                        <tr class="detail-sub-tr">
+                            <td class="detail-sub-td" colspan="9">
+                                <div class="detail-sub">
+                                    <table width="100%">
+                                        <thead>
+                                        <tr>
+                                            <th>
+                                                <div class="form-check pb-3">
+                                                    <input type="checkbox" class="form-check-input" name="option" value='selectall' onclick='selectAll(this)' required/>
+                                                </div>
+                                            </th>
+                                            <th>번호</th>
+                                            <th>발주 번호</th>
+                                            <th>입고 번호</th>
+                                            <th>상품코드</th>
+                                            <th>썸네일</th>
+                                            <th>상품명</th>
+                                            <th>카테고리</th>
+                                            <th>규격</th>
+                                            <th>제조사</th>
+                                            <th>발주 수량</th>
+                                            <th class="col-1">입고 수량</th>
+                                            <th>입고 단가</th>
+                                            <th>입고 금액</th>
+                                            <th>입고일</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td>
+                                                <div class="form-check">
+                                                    <input type="checkbox" class="form-check-input" id="check" name="option" value="something">
+                                                    <label class="form-check-label" for="check"></label>
+                                                </div>
+                                            </td>
+                                            <td>1</td>
+                                            <td>190201</td>
+                                            <td></td>
+                                            <td>100001</td>
+                                            <td>
+                                                <div class="img-info">
+                                                    <div class="img-info__img">
+                                                        <img src="../assets/images/chicken.jpg" alt="">
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>닭다리</td>
+                                            <td>식재료</td>
+                                            <td>1kg</td>
+                                            <td>하림</td>
+                                            <td>30</td>
+                                            <td align="center"><input type="number" class="form-control" min="1" max="1000"></td>
+                                            <td>4,500</td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="form-check">
+                                                    <input type="checkbox" class="form-check-input" id="check" name="option" value="something">
+                                                    <label class="form-check-label" for="check"></label>
+                                                </div>
+                                            </td>
+                                            <td>1</td>
+                                            <td>190201</td>
+                                            <td></td>
+                                            <td>100001</td>
+                                            <td>
+                                                <div class="img-info">
+                                                    <div class="img-info__img">
+                                                        <img src="../assets/images/chicken.jpg" alt="">
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>닭다리</td>
+                                            <td>식재료</td>
+                                            <td>1kg</td>
+                                            <td>하림</td>
+                                            <td>30</td>
+                                            <td align="center"><input type="number" class="form-control" min="1" max="1000"></td>
+                                            <td>4,500</td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="form-check">
+                                                    <input type="checkbox" class="form-check-input" id="check" name="option" value="something">
+                                                    <label class="form-check-label" for="check"></label>
+                                                </div>
+                                            </td>
+                                            <td>1</td>
+                                            <td>190201</td>
+                                            <td></td>
+                                            <td>100001</td>
+                                            <td>
+                                                <div class="img-info">
+                                                    <div class="img-info__img">
+                                                        <img src="../assets/images/chicken.jpg" alt="">
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>닭다리</td>
+                                            <td>식재료</td>
+                                            <td>1kg</td>
+                                            <td>하림</td>
+                                            <td>30</td>
+                                            <td align="center"><input type="number" class="form-control" min="1" max="1000"></td>
+                                            <td>4,500</td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        </tbody>
+                                        <tfoot>
+                                        <tr>
+                                            <th colspan="11"></th>
+                                            <th>총 입고 수량</th>
+                                            <th>100</th>
+                                            <th>총 입고 금액</th>
+                                            <th>1,000,000</th>
+                                        </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>190201</td>
+                            <td>PS1902</td>
+                            <td>닭다리 외 2개 품목</td>
+                            <td>90</td>
+                            <td>405,000</td>
+                            <td>2022-08-07</td>
+                            <td><button class="btn btn-light btn-sm" type="submit" style="color:#fff; background-color: #ccc;" disabled>입고 완료</button></td>
+                        </tr>
+                        <tr class="detail-sub-tr">
+                            <td class="detail-sub-td" colspan="9">
+                                <div class="detail-sub">
+                                    <table width="100%">
+                                        <thead>
+                                        <tr>
+                                            <th>번호</th>
+                                            <th>발주 번호</th>
+                                            <th>입고 번호</th>
+                                            <th>상품코드</th>
+                                            <th>썸네일</th>
+                                            <th>상품명</th>
+                                            <th>카테고리</th>
+                                            <th>규격</th>
+                                            <th>제조사</th>
+                                            <th>발주 수량</th>
+                                            <th>입고 수량</th>
+                                            <th>입고 단가</th>
+                                            <th>입고 금액</th>
+                                            <th>입고일</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>190201</td>
+                                            <td>PS1902</td>
+                                            <td>100001</td>
+                                            <td>
+                                                <div class="img-info">
+                                                    <div class="img-info__img">
+                                                        <img src="../assets/images/chicken.jpg" alt="">
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>닭다리</td>
+                                            <td>식재료</td>
+                                            <td>1kg</td>
+                                            <td>하림</td>
+                                            <td>30</td>
+                                            <td align="center">30</td>
+                                            <td>4,500</td>
+                                            <td>135,000</td>
+                                            <td>2022-08-07</td>
+                                        </tr>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>190201</td>
+                                            <td>PS1902</td>
+                                            <td>100001</td>
+                                            <td>
+                                                <div class="img-info">
+                                                    <div class="img-info__img">
+                                                        <img src="../assets/images/chicken.jpg" alt="">
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>닭다리</td>
+                                            <td>식재료</td>
+                                            <td>1kg</td>
+                                            <td>하림</td>
+                                            <td>30</td>
+                                            <td align="center">30</td>
+                                            <td>4,500</td>
+                                            <td>135,000</td>
+                                            <td>2022-08-07</td>
+                                        </tr>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>190201</td>
+                                            <td>PS1902</td>
+                                            <td>100001</td>
+                                            <td>
+                                                <div class="img-info">
+                                                    <div class="img-info__img">
+                                                        <img src="../assets/images/chicken.jpg" alt="">
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>닭다리</td>
+                                            <td>식재료</td>
+                                            <td>1kg</td>
+                                            <td>하림</td>
+                                            <td>30</td>
+                                            <td align="center">30</td>
+                                            <td>4,500</td>
+                                            <td>135,000</td>
+                                            <td>2022-08-07</td>
+                                        </tr>
+                                        </tbody>
+                                        <tfoot>
+                                        <tr>
+                                            <th colspan="10"></th>
+                                            <th>총 입고 수량</th>
+                                            <th>100</th>
+                                            <th>총 입고 금액</th>
+                                            <th>1,000,000</th>
+                                        </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>190201</td>
+                            <td>PS1902</td>
+                            <td>닭다리 외 2개 품목</td>
+                            <td>90</td>
+                            <td>405,000</td>
+                            <td>2022-08-07</td>
+                            <td><button class="btn btn-light btn-sm" type="submit" style="color:#fff; background-color: #ccc;" disabled>입고 완료</button></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- E: table -->
+                <!-- S: paging -->
+                <div class="d-flex justify-content-center mb-4">
+                    <button type="button" class="btn btn-light disabled" id="startPage"><<</button>
+                    <button type="button" class="btn btn-light mx-1 disabled"><</button>
+                    <button type="button" class="btn btn-warning mx-1" disabled style="color:white">1</button>
+                    <button type="button" class="btn btn-light mx-1">2</button>
+                    <button type="button" class="btn btn-light mx-1">></button>
+                    <button type="button" class="btn btn-light mx-1" id="maxPage">>></button>
+                </div>
+                <!-- E: paging -->
+
+            </div>
+        </div>
+        <!-- E: main layout -->
+    </div>
+    <!-- E: container -->
+</div>
+
+<!-- 체크 박스 전체 선택 -->
+<script type="text/javascript">
+    function selectAll(selectAll)  {
+        const checkboxes = document.getElementsByName('option');
+
+        checkboxes.forEach((checkbox) => {
+            checkbox.checked = selectAll.checked;
+        })
+    }
+</script>
+
+<!-- 입고 등록 메시지 띄우기 -->
+<script>
+    function insertReceive(){
+        var answer = confirm('입고를 진행하시겠습니까?');
+        if(answer){
+            location.href='user_receive.html';
+        }
+        if(answer){
+            var answer2 = alert('입고가 완료되었습니다.'); // 선택 항목만 입고되도록, 입고등록 완료시 alert 띄우고 조회화면으로 이동
+        }
+
+    }
+</script>
+
+<!-- table js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+<!-- datepicker js -->
+<script src="../assets/js/daterange.js"></script>
+</body>
+</html>
