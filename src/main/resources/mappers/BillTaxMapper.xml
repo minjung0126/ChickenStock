@@ -84,6 +84,46 @@
         ORDER BY A.TAX_NO ASC
     </select>
 
+    <select id="selectBillList" resultMap="billTaxResultMap">
+        SELECT
+        A.RNUM
+        , A.TAX_NO
+        , A.TAX_DATE
+        , S.STORE_NO
+        , S.STORE_NAME
+        , S.STORE_ADDRESS
+        , S.STORE_REP
+        , RS.REC_TOTALMONEY
+        , A.REC_CODE
+        FROM (SELECT ROWNUM RNUM
+        , B.TAX_NO
+        , B.TAX_DATE
+        , B.REC_CODE
+        FROM (SELECT
+        C.TAX_NO
+        , TO_CHAR(C.TAX_DATE,'yyyy-MM-dd') AS TAX_DATE
+        , C.REC_CODE
+        FROM TAXBILL C
+        <if test="searchCondition == 'storeName'">
+            JOIN RECEIVE_STORE RS ON(RS.REC_CODE = C.REC_CODE)
+        </if>
+        <where>
+            <if test="searchCondition == 'storeName'">
+                RS.STORE_NAME LIKE '%' || #{ searchValue } || '%'
+            </if>
+        </where>
+        ORDER BY C.TAX_NO ASC ) B
+        <![CDATA[
+                WHERE ROWNUM <= #{ endRow }
+                  ]]>
+        ) A
+        JOIN RECEIVE_STORE RS ON (RS.REC_CODE = A.REC_CODE)
+        JOIN STORE_ORDER SO ON (RS.ORDER_NO = SO.ORDER_NO)
+        JOIN STORE S ON(S.STORE_NAME = RS.STORE_NAME)
+        WHERE A.RNUM >= #{ startRow }
+        ORDER BY A.TAX_NO ASC
+    </select>
+
     <select id="selectTotalCount" resultType="_int" parameterType="hashmap">
         SELECT
         COUNT(*)
@@ -156,6 +196,49 @@
         JOIN STORE S ON(S.STORE_NAME = RS.STORE_NAME)
         WHERE A.RNUM >= #{ startRow }
           AND RS.STORE_NAME = #{ storeName }
+        ORDER BY A.TS_NO ASC
+    </select>
+
+    <select id="selectTsList" resultMap="tsBillTaxResultMap">
+        SELECT
+        A.RNUM
+        , A.TS_NO
+        , A.TS_TAX_DATE
+        , S.STORE_NO
+        , S.STORE_NAME
+        , S.STORE_ADDRESS
+        , S.STORE_REP
+        , RS.REC_TOTALMONEY
+        , TRUNC(RS.REC_TOTALMONEY / 1.1) AS TS_REC_SUPPLY
+        , TRUNC(RS.REC_TOTALMONEY / 11) AS TS_REC_TAX
+        , A.REC_CODE
+        FROM (SELECT ROWNUM RNUM
+        , B.TS_NO
+        , B.TS_TAX_DATE
+        , B.REC_CODE
+        FROM (SELECT
+        C.TS_NO
+        , TO_CHAR(C.TS_TAX_DATE,'yyyy-MM-dd') AS TS_TAX_DATE
+        , C.REC_CODE
+        FROM TSBILL C
+        <if test="searchCondition == 'storeName'">
+            JOIN RECEIVE_STORE RS ON(RS.REC_CODE = C.REC_CODE)
+        </if>
+        <where>
+            <if test="searchCondition == 'storeName'">
+                RS.STORE_NAME LIKE '%' || #{ searchValue } || '%'
+            </if>
+        </where>
+        ORDER BY C.TS_NO ASC
+        ) B
+        <![CDATA[
+                        WHERE ROWNUM <= #{ endRow }
+                    ]]>
+        ) A
+        JOIN RECEIVE_STORE RS ON (RS.REC_CODE = A.REC_CODE)
+        JOIN STORE_ORDER SO ON (RS.ORDER_NO = SO.ORDER_NO)
+        JOIN STORE S ON(S.STORE_NAME = RS.STORE_NAME)
+        WHERE A.RNUM >= #{ startRow }
         ORDER BY A.TS_NO ASC
     </select>
 

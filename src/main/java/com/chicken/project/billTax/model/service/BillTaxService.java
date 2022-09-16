@@ -1,56 +1,31 @@
 package com.chicken.project.billTax.model.service;
 
-import com.chicken.project.billTax.model.dao.BillTaxMapper;
 import com.chicken.project.billTax.model.dto.BillTaxDTO;
 import com.chicken.project.billTax.model.dto.tsBillTaxDTO;
 import com.chicken.project.common.paging.SelectCriteria;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
 
-@Service("billTaxService")
-public class BillTaxService {
-
-    public BillTaxMapper billTaxMapper;
-
-    public BillTaxService(BillTaxMapper billTaxMapper) {
-        this.billTaxMapper = billTaxMapper;
-    }
-
+public interface BillTaxService {
     // 세금계산서 페이징+리스트
-    public List<BillTaxDTO> selectTaxBillList(SelectCriteria selectCriteria) {
+    List<BillTaxDTO> selectBillList(SelectCriteria selectCriteria);
 
-        List<BillTaxDTO> billTaxList = billTaxMapper.selectBillTaxList(selectCriteria);
-
-        return billTaxList;
-    }
+    // 세금계산서 가맹점 페이징+리스트
+    List<BillTaxDTO> selectTaxBillList(SelectCriteria selectCriteria);
 
     // 페이징을 위한 전체 게시글 카운트
-    public int selectTotalCount(Map<String, String> searchMap) {
-
-        int result =billTaxMapper.selectTotalCount(searchMap);
-
-        return result;
-    }
+    int selectTotalCount(Map<String, String> searchMap);
 
     // 세금계산서별 물품리스트
-    public List<BillTaxDTO> selectTaxMenuList(String recCode) {
-
-        return billTaxMapper.selectTaxMenuList(recCode);
-    }
+    List<BillTaxDTO> selectTaxMenuList(String recCode);
 
     // 거래명세서 페이징+리스트
-    public List<tsBillTaxDTO> selectTsBillTaxList(SelectCriteria selectCriteria) {
+    List<tsBillTaxDTO> selectTsList(SelectCriteria selectCriteria);
 
-        List<tsBillTaxDTO> tsBillTaxList = billTaxMapper.selectTsBillTaxList(selectCriteria);
-
-        return tsBillTaxList;
-    }
+    // 거래명세서 가맹점 페이징+리스트
+    List<tsBillTaxDTO> selectTsBillTaxList(SelectCriteria selectCriteria);
 
     // 거래명세서별 물품리스트
-    public List<tsBillTaxDTO> selectTsMenuList(String recCode) {
-
-        return billTaxMapper.selectTsMenuList(recCode);
-    }
+    List<tsBillTaxDTO> selectTsMenuList(String recCode);
 }

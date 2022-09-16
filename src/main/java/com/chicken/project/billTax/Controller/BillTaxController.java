@@ -2,7 +2,7 @@ package com.chicken.project.billTax.Controller;
 
 import com.chicken.project.billTax.model.dto.BillTaxDTO;
 import com.chicken.project.billTax.model.dto.tsBillTaxDTO;
-import com.chicken.project.billTax.model.service.BillTaxService;
+import com.chicken.project.billTax.model.service.BillTaxServiceImpl;
 import com.chicken.project.common.paging.Pagenation;
 import com.chicken.project.common.paging.SelectCriteria;
 import com.chicken.project.member.model.dto.StoreImpl;
@@ -24,12 +24,12 @@ import java.util.Map;
 @RequestMapping("/billTax/*")
 public class BillTaxController {
 
-    private final BillTaxService billTaxService;
+    private final BillTaxServiceImpl billTaxService;
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    public BillTaxController(BillTaxService billTaxService){
+    public BillTaxController(BillTaxServiceImpl billTaxService){
 
         this.billTaxService = billTaxService;
     }
@@ -136,7 +136,7 @@ public class BillTaxController {
             selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount);
         }
 
-        List<BillTaxDTO> billTaxList = billTaxService.selectTaxBillList(selectCriteria);
+        List<BillTaxDTO> billTaxList = billTaxService.selectBillList(selectCriteria);
 
         Map<String, List<BillTaxDTO>> map = new HashMap<>();
 
@@ -246,7 +246,7 @@ public class BillTaxController {
             selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount);
         }
 
-        List<tsBillTaxDTO> tsTaxBillList = billTaxService.selectTsBillTaxList(selectCriteria);
+        List<tsBillTaxDTO> tsTaxBillList = billTaxService.selectTsList(selectCriteria);
 
         Map<String, List<tsBillTaxDTO>> map = new HashMap<>();
 
