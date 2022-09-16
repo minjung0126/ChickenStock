@@ -6,10 +6,15 @@ import com.chicken.project.item.model.dto.ItemCategoryDTO;
 import com.chicken.project.item.model.dto.ItemFileDTO;
 import com.chicken.project.item.model.dto.ItemInfoDTO;
 import com.chicken.project.item.model.service.ItemService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.google.gson.FieldNamingPolicy;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
@@ -102,58 +108,81 @@ public class ItemController {
         return mv;
     }
 
+    /* 상품 상세 조회 */
+    @GetMapping(value = "itemDetail", produces = "application/json; charset = UTF-8")
+    @ResponseBody
+    public String getItemOne(HttpServletRequest request) {
+
+        Gson gson  = new GsonBuilder().setDateFormat("yyyy-MM-dd hh:mm:ss:SSS")
+                .setPrettyPrinting() 								// json 문자열 이쁘게 출력
+                .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)  // 기본값
+                .serializeNulls()									// 필드값이 null이어도 직렬화한다.
+                .disableHtmlEscaping()								// 직렬화 시 escape 시퀀스 처리하지 않는다.
+                .create();
+
+        String itemNoInput = request.getParameter("itemNoInput");
+
+        ItemInfoDTO item = itemService.selectOneItem(itemNoInput);
+
+
+        return "";
+
+    }
+
+
     @PostMapping("/admin/regist")
     public String itemRegist(@ModelAttribute ItemInfoDTO item, @RequestParam(value="file", required = false) MultipartFile file, RedirectAttributes rttr) throws Exception{
 
         System.out.println("테스트용 : " + item);
-//        ItemFileDTO itemFile = new ItemFileDTO();
-//
-//        log.info("[itemController] ItemInfoDTO : " + item);
-//        log.info("[itemController] file : " + file);
-//
-//        String root = ResourceUtils.getURL("src/main/resources").getPath();
-//
-//        String filePath = root + "static/uploadFiles";
-//
-//        log.info("루트ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ" + filePath);
-//
-//        File mkdir = new File(filePath);
-//        if(!mkdir.exists()) {
-//            mkdir.mkdirs();
-//        }
-//
-//        String originFileName = "";
-//        String ext = "";
-//        String changeName = "";
-//        String savedPath = "";
-//
-//        if(file.getSize() > 0) {
-//            originFileName = file.getOriginalFilename();
-//            ext = originFileName.substring(originFileName.lastIndexOf("."));
-//            changeName = UUID.randomUUID().toString().replace("-",  "");
-//            savedPath = filePath + "/" + changeName + ext;
-//
-//            itemFile.setOriginName(originFileName);
-//            itemFile.setFileName(changeName + ext);
-//            itemFile.setSavedPath(savedPath);
-//
-//            int result = itemService.itemRegist(item);
-//
-//            if(result > 0) {
-//
-//                itemService.itemFileRegist(itemFile);
-//            }
-//
-//            try {
-//                file.transferTo(new File(filePath + "\\" + changeName + ext));
-//            } catch (IOException e) {
-//
-//                e.printStackTrace();
-//                new File(filePath + "\\" + changeName + ext).delete();
-//            }
-//        }
+        ItemFileDTO itemFile = new ItemFileDTO();
 
-        itemService.insertItem(item);
+        log.info("[itemController] ItemInfoDTO : " + item);
+        log.info("[itemController] file : " + file);
+
+        String root = ResourceUtils.getURL("src/main/resources").getPath();
+
+        String filePath = root + "static/itemImage";
+
+        log.info("루트ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ" + filePath);
+
+        File mkdir = new File(filePath);
+        if(!mkdir.exists()) {
+            mkdir.mkdirs();
+        }
+
+        String originFileName = "";
+        String ext = "";
+        String changeName = "";
+
+        if(file.getSize() > 0) {
+            originFileName = file.getOriginalFilename();
+            ext = originFileName.substring(originFileName.lastIndexOf("."));
+            changeName = UUID.randomUUID().toString().replace("-",  "");
+
+
+            itemFile.setOriginName(originFileName);
+            itemFile.setFileName(changeName + ext);
+
+            // 품목 등록
+            int result = itemService.insertItem(item);
+
+
+            // 품목 파일 등록
+            if(result > 0) {
+                itemService.insertItemHistory();
+                itemService.insertFileRegist(itemFile);
+            }
+
+            try {
+                file.transferTo(new File(filePath + "\\" + changeName + ext));
+            } catch (IOException e) {
+
+                e.printStackTrace();
+                new File(filePath + "\\" + changeName + ext).delete();
+            }
+        }
+
+
 
         rttr.addFlashAttribute("message", "상품 등록 성공");
 
@@ -177,5 +206,8 @@ public class ItemController {
 
         return "redirect:/item/admin/list";
     }
+
+
+
 
 }

@@ -13,10 +13,12 @@ public class ReleaseItemDTO {
     private java.sql.Date relItemRequestDate;
     private String storeName;
     private int totalItemMoney;
-
+    private int orderNo;
+    private int relCodeDetail;
+    private String relListYn;
     public ReleaseItemDTO() {}
 
-    public ReleaseItemDTO(String relYn, int relAmount, int relCode, int itemNo, int orderAmount, Date relDate, Date relItemRequestDate, String storeName, int totalItemMoney) {
+    public ReleaseItemDTO(String relYn, int relAmount, int relCode, int itemNo, int orderAmount, Date relDate, Date relItemRequestDate, String storeName, int totalItemMoney, int orderNo, int relCodeDetail, String relListYn) {
         this.relYn = relYn;
         this.relAmount = relAmount;
         this.relCode = relCode;
@@ -26,6 +28,9 @@ public class ReleaseItemDTO {
         this.relItemRequestDate = relItemRequestDate;
         this.storeName = storeName;
         this.totalItemMoney = totalItemMoney;
+        this.orderNo = orderNo;
+        this.relCodeDetail = relCodeDetail;
+        this.relListYn = relListYn;
     }
 
     public String getRelYn() {
@@ -100,6 +105,30 @@ public class ReleaseItemDTO {
         this.totalItemMoney = totalItemMoney;
     }
 
+    public int getOrderNo() {
+        return orderNo;
+    }
+
+    public void setOrderNo(int orderNo) {
+        this.orderNo = orderNo;
+    }
+
+    public int getRelCodeDetail() {
+        return relCodeDetail;
+    }
+
+    public void setRelCodeDetail(int relCodeDetail) {
+        this.relCodeDetail = relCodeDetail;
+    }
+
+    public String getRelListYn() {
+        return relListYn;
+    }
+
+    public void setRelListYn(String relListYn) {
+        this.relListYn = relListYn;
+    }
+
     @Override
     public String toString() {
         return "ReleaseItemDTO{" +
@@ -112,6 +141,9 @@ public class ReleaseItemDTO {
                 ", relItemRequestDate=" + relItemRequestDate +
                 ", storeName='" + storeName + '\'' +
                 ", totalItemMoney=" + totalItemMoney +
+                ", orderNo=" + orderNo +
+                ", relCodeDetail=" + relCodeDetail +
+                ", relListYn='" + relListYn + '\'' +
                 '}';
     }
 }

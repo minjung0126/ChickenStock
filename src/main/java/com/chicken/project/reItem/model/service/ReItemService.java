@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,7 +56,6 @@ public class ReItemService {
         return reItem;
     }
 
-
     public List<ReItemDTO> selectReturnItems(String rNo) {
 
         List<ReItemDTO> reItems = reItemMapper.selectReItems(rNo);
@@ -70,6 +70,7 @@ public class ReItemService {
         return storeItems;
     }
 
+    // 가맹점 반품신청
     @Transactional
     public int insertReItem(List<ReItemDTO> insertItem, String storeName) {
 
@@ -77,30 +78,160 @@ public class ReItemService {
 
         result = reItemMapper.insertReturnItems(insertItem.get(0));
 
-        if(result > 0){ //insertReItem1 성공 시 insertReItem2 실행
+        if(result > 0){
 
             log.info("result 확인 : " + result);
             result = 0; //초기화
 
-            Map<String, Object> maps = new HashMap<>();
 
+            List<Map<String, Object>> reList = new ArrayList<>();
             for(int i =0; i < insertItem.size(); i++){
-
+                Map<String, Object> maps = new HashMap<>();
                 maps.put("returnCount", insertItem.get(i).getReturnCount());
                 maps.put("itemNo", insertItem.get(i).getItemNo());
                 maps.put("storeName", storeName);
+                reList.add(maps);
                 result = reItemMapper.insertRItem(maps);
             }
+
+            if(result > 0) {
+
+                result = 0;
+
+                Map<String, Object> map = null;
+
+                for(int i =0; i < reList.size(); i++) {
+
+                    map = reList.get(i);
+
+                    result = reItemMapper.updateAcount(map);
+                }
+                if (result > 0) {
+
+                    result = 0;
+
+                    result = reItemMapper.insertProgress(insertItem.get(0));
+                }
+            }
+        }
+
+        return result;
+    }
+    // 본사 반품승인
+    @Transactional
+    public int updateComplete(ReItemDTO returnItems, String adminId, String rNo, String storeName) {
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("adminId", adminId);
+        map.put("rNo", Integer.parseInt(rNo));
+
+        int result = 0;
+
+        result = reItemMapper.updateComplete(map);  //본사 progress update
+
+        if(result > 0){
+
+            result = 0;
+
+            result = reItemMapper.updateProgress(Integer.parseInt(rNo));  // 대기 -> 반품완료
 
             if(result > 0){
 
                 result = 0;
 
-                result = reItemMapper.insertProgress(insertItem.get(0));
+                Map<String, Object> maps = new HashMap<>();
+                maps.put("rNo", Integer.parseInt(rNo));
+                maps.put("storeName", storeName);
+                maps.put("returnTotalMoney", returnItems.getReturnTotalMoney());
+
+                result = reItemMapper.updateMoney(maps);    // 예치금 올려주기
+
+                if(result > 0){
+
+                    result = 0;
+                    result = reItemMapper.insertDeposit(maps);
+                }
+            }
+
+        }
+
+        return result;
+    }
+    @Transactional
+    public List<ReItemDTO> selectList(String rNo) {
+
+        List<ReItemDTO> re = reItemMapper.selectRItem(rNo);
+
+        return re;
+
+    }
+
+    public int updateItem(Map<String, Object> maps) {
+
+        int result = 0;
+
+        for (int i = 0; i < ((List<ReItemDTO>) maps.get("check")).size(); i++) {
+
+            ReItemDTO reItem = ((List<ReItemDTO>) maps.get("check")).get(i);
+            reItem.setrNo(Integer.parseInt((String) maps.get("rNo")));
+            result = reItemMapper.upDateItem(reItem);
+
+
+            if(result > 0){
+
+                result = 0;
+
+                result = reItemMapper.insertHistory(reItem);
+
+                if(result > 0){
+
+                    result = 0;
+
+                    result = reItemMapper.updateRProgress(reItem);
+                }
+            }
+
+        }
+
+
+        return result;
+    }
+
+    public int deleteList(String rNo) {
+
+        int result = 0;
+
+        result = reItemMapper.deleteProgress(rNo);
+
+        if(result > 0 ){
+
+            result = 0;
+
+            result = reItemMapper.deleteRItem(rNo);
+
+            if(result > 0 ){
+
+                result = 0;
+
+                result = reItemMapper.deleteReturnItems(rNo);
             }
         }
 
         return result;
     }
 
+    // 가맹점 반품서 수정
+    public ReItemDTO selectUpReItem(String rNo) {
+
+        ReItemDTO upReItem = reItemMapper.selectUpReItem(rNo);
+
+        return upReItem;
+    }
+
+    public List<ReItemDTO> selectReItems(String rNo) {
+
+        List<ReItemDTO> reUpItems = reItemMapper.selectUpReItems(rNo);
+
+        return reUpItems;
+    }
 }

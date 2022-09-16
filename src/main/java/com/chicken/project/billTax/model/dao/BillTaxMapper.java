@@ -19,4 +19,8 @@ public interface BillTaxMapper {
     List<tsBillTaxDTO> selectTsBillTaxList(SelectCriteria selectCriteria);
 
     List<tsBillTaxDTO> selectTsMenuList(String recCode);
+
+    List<BillTaxDTO> selectBillList(SelectCriteria selectCriteria);
+
+    List<tsBillTaxDTO> selectTsList(SelectCriteria selectCriteria);
 }
