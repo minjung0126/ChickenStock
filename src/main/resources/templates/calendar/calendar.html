@@ -24,13 +24,13 @@
         import events from "./jszip";
 
         document.addEventListener('DOMContentLoaded', function() {
-            var calendarEl = document.getElementById('calendar');
+            const calendarEl = document.getElementById('calendar');
 
-            var calendar = new FullCalendar.Calendar(calendarEl, {
+            const calendar = new FullCalendar.Calendar(calendarEl, {
 
                 events:function (){
 
-                    var cal = {"calName" : calName, "startDay" : startDay, "endDay" : endDay}
+                    const cal = {"calName" : calName, "startDay" : startDay, "endDay" : endDay}
                     $.ajax({
                         url:"/calendar/calendar",
                         type: "GET",

@@ -25,7 +25,7 @@ public class CalendarController {
     /* 일정 조회 */
     @GetMapping("/calendar")
     @ResponseBody
-    public List<Map<String, Object>> selectCal(){
+    public List<Map<String, Object>> selectCal(@RequestParam Map<String, Object> cal){
 
         log.info("[CalendarService] selectCalendar ========================================");
 

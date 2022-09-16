@@ -162,7 +162,11 @@
   <!-- E: container -->
 </div>
 <script>
-  // $('#authBtn').click(function(e){
+
+  function regist(){
+    $("#registModal").modal("show");
+  };
+
   function test(e) {
 
     if (confirm("관리자 권한을 부여하시겠습니까?")) {
@@ -174,7 +178,6 @@
         url: "/empList/auth",
         type: "POST",
         data: {
-          // empId : $('.empId').innerText
           empId : empId
         },
         success:function (data){
@@ -197,10 +200,6 @@
     } else {
       alert("취소");
     }
-  };
-
-  function regist(){
-    $("#registModal").modal("show");
   };
 
   const result = "${msg}"
