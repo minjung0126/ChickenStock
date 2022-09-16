@@ -137,7 +137,7 @@
         SELECT
                CAL_NAME
              , CAL_START
-             , CAL_END
+             , (CAL_END+1) CAL_END
           FROM CALENDAR
     </select>
 

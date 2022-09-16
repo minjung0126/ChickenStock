@@ -7,6 +7,7 @@ import com.chicken.project.member.model.dto.EmployeeDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface EmployeeMapper {
@@ -16,5 +17,5 @@ public interface EmployeeMapper {
     EmployeeDTO selectEmpInfo(String empId);
     int selectCkAdminAuth(String empId);
     int insertAuth(String empId);
-    List<CalendarDTO> selectCalendar();
+    List<CalendarDTO>  selectCalendar();
 }
