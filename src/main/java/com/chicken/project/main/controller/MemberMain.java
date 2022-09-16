@@ -60,7 +60,6 @@ public class MemberMain {
                 mv.setViewName("/main/user_main");
             }
         }
-//        System.out.println("((MemberImpl)user = " + ((MemberImpl)user).getEmpRoleList().get(0).getAuthCode());
 
         return mv;
     }
