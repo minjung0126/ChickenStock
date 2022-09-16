@@ -110,8 +110,9 @@
                                 <td id="itemPurchase" class="itemPurchase" th:text="|${ #numbers.formatInteger(sItem.itemSales, 0, 'COMMA') }원|"></td>
                                 <td th:text="${ sItem.storeAmount }"></td>
                                 <td>
-                                    <input type="number" min="0" th:max="${ sItem.storeAmount }" style="width:60px; text-align: center; border: 1px solid rgb(255, 255, 255); border-bottom: 1px solid;" class="returnAmount" id="returnCount" onchange="inputValueChange(this);">
+                                    <input type="number" name="returnAmount" min="0" th:max="${ sItem.storeAmount }" style="width:60px; text-align: center; border: 1px solid rgb(255, 255, 255); border-bottom: 1px solid;" class="returnAmount" id="returnCount" onchange="inputValueChange(this);">
                                     <input type="hidden" name="returnCount2">
+                                    <input type="hidden" id="returnItemMoney" class="returnItemMoney">
                                     <button type="submit" style="border : none; background-color: #fff;"></button>
                                 </td>
                             </tr>
@@ -130,8 +131,6 @@
 <!-- 반품신청 -->
 <script type="text/javascript">
 
-    let returnTotalMoney = 0;
-
     function inputValueChange(check){
 
         // 반품수량
@@ -141,10 +140,22 @@
         // 입고금액
         let itemPurchase = parseInt(check.parentElement.parentElement.children[7].innerText.replace(/[^0-9]/gi, ''));
         let returnItemMoney = inputValue * itemPurchase;
-        console.log(itemPurchase);
-        console.log(returnItemMoney);
 
-        returnTotalMoney += returnItemMoney;
+        $(check.parentElement.children[2]).val(returnItemMoney);
+
+        // 총 입고수량 & 총 입고금액
+        let inputValueTot = document.getElementsByClassName('returnAmount');
+        let itemMoneyTot = document.getElementsByClassName('returnItemMoney');
+
+        let returnTotalMoney = 0;
+        for(let i = 0; i < inputValueTot.length; i++){
+
+            if(itemMoneyTot[i].value != ''){
+                returnTotalMoney += parseInt(itemMoneyTot[i].value);
+            }
+
+        }
+
         console.log(returnTotalMoney);
         document.getElementById('returnTotalMoney').value = returnTotalMoney.toLocaleString('ko-KR') + "원";
         document.getElementById('reTotal').value = returnTotalMoney;

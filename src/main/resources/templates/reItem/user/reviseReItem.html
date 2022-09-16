@@ -207,7 +207,6 @@
     $(select).prop("selected", true);
 
     let returnTotalMoney = [[${ updateItem.returnTotalMoney }]];
-    let before = [[${ updateItems.returnCount }]];
 
     function inputValueChange(check){
 
@@ -218,6 +217,7 @@
         // 입고금액
         let itemPurchase = parseInt(check.parentElement.parentElement.children[8].innerText.replace(/[^0-9]/gi, ''));
         let returnItemMoney = inputValue * itemPurchase;
+
         console.log(itemPurchase);
         console.log(returnItemMoney);
 
