@@ -22,15 +22,16 @@ public class CalendarController {
         this.calendarService = calendarService;
     }
 
-//    @ResponseBody
+    /* 일정 조회 */
     @GetMapping("/calendar")
+    @ResponseBody
     public List<Map<String, Object>> selectCal(){
 
         log.info("[CalendarService] selectCalendar ========================================");
 
         List<CalendarDTO> calList = calendarService.selectCalendar();
 
-        log.info("[CalendarService] calDTO ========================================");
+        log.info("[CalendarService] calList : " + calList);
 
         HashMap<String, Object> hash = new HashMap<>();
         ArrayList data = new ArrayList<>();
