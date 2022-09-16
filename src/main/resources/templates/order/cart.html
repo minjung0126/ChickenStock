@@ -103,7 +103,7 @@
                   <th style="width: 100px;">수량</th>
                   <th style="width: 90px;">품절여부</th>
                   <th>합계</th>
-                  <th>수정</th>
+                  <th>삭제</th>
                 </tr>
               </thead>
               <tbody>
@@ -158,22 +158,20 @@
 
                 <td>합계</td>
                 <td>
-                  <div class="dropdown open">
-                    <a href="javascript:void(0);" class="px-2" id="triggerId1" data-toggle="dropdown" aria-haspopup="true"
-                       aria-expanded="false">
-                      <i class="fa fa-ellipsis-v"></i>
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="triggerId1">
-                      <!-- <a class="dropdown-item" href="#"><i class="fa fa-eye mr-1"></i>View</a> -->
-                      <a class="dropdown-item" href="#" th:onclick="interest()"><i class="fa-solid fa-heart-circle-plus"></i> 수정하기</a>
-                      <a class="dropdown-item text-danger" href="#"><i class="fa fa-trash mr-1"></i> Delete</a>
-                    </div>
+                  <div id="delete">
+                    <button type="button" class="btn btn-secondary deleteBtn" th:dataCartNo="${ cart.cartNo }" th:onclick="orderConfirm()">삭제</button>
                   </div>
                 </td>
               </tr>
               </form>
               </tbody>
             </table>
+
+            <!-- 삭제 버튼 form -->
+            <form th:action="@{/order/cart/delete}" method="post" class="quantity_delete_form">
+              <input type="hidden" name="cartNo" class="deleteCartNo">
+            </form>
+
           </div>
           <!-- E: table -->
           <!-- S: paging -->
@@ -358,6 +356,15 @@
 
       console.log(cartNoList);
     }
+  </script>
+
+  <script th:inline="javascript">
+    $(".deleteBtn").on("click", function (e) {
+          e.preventDefault();
+          const cartNo = $(this).date("cartNo");
+          $(".deleteCartNo").val(cartNo);
+          $(".quantity_delete_form").submit();
+    });
   </script>
 
 
