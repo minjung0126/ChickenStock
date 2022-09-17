@@ -42,4 +42,12 @@ public class CalendarServiceImpl implements CalendarService {
 
         return result;
     }
+
+    @Override
+    public int deleteCal(CalendarDTO cal) {
+
+        int result = employeeMapper.deleteCal(cal);
+
+        return result;
+    }
 }

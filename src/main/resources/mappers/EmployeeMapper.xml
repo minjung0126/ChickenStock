@@ -138,6 +138,7 @@
                CAL_NAME
              , CAL_START
              , (CAL_END+1) CAL_END
+             , CAL_CONTENT
           FROM CALENDAR
     </select>
 
@@ -162,6 +163,14 @@
         , #{ empId }
         )
     </insert>
+
+    <delete id="deleteCal" parameterType="CalendarDTO">
+        DELETE
+          FROM CALENDAR
+         WHERE CAL_NAME = #{ calName }
+           AND CAL_CONTENT = #{ content }
+
+    </delete>
 
 <!--    <select id="selectTotalEmpList" resultType="_int">-->
 <!--        SELECT-->

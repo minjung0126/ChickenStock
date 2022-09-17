@@ -47,7 +47,8 @@
                         title : data[index].calName,
                         start : data[index].startDay,
                         end : data[index].endDay,
-                        className : 'company'
+                        con : data[index].content,
+                        className : data[index].calNo
                     };
 
                     allEvent.push(even);
@@ -64,7 +65,6 @@
                             googleCalendarId: 'ko.south_korea#holiday@group.v.calendar.google.com',
                             color: '#EB503B',
                             textColor: 'white',
-                            className: 'holiday'
                         }
                     ],
 
@@ -118,7 +118,7 @@
                                         success:function (result){
                                             console.log(result);
                                             if(result > 0){
-                                                alert("일정 추가에 성공하셨습니다.")
+                                                alert("일정 추가되었습니다.")
                                             } else{
                                                 alert("일정 추가에 실패하셨습니다.")
                                             }
@@ -135,12 +135,22 @@
                     /* 일정 수정 삭제 모달 */
                     eventClick: function(info){
                         info.jsEvent.preventDefault();
+
+                        console.log(info.event)
+                        let calName = info.event._def.title;
+                        let content = info.event.extendedProps.con;
+                        console.log(calName);
+                        console.log(content);
+
                         $("#confrimModal").modal("show");
                         $(".close").on("click", function(){
                             $("#confrimModal").modal("hide");
                         });
 
                         $("#updateBtn").on("click", function () {
+
+
+
                             $("#updateCal").modal("show");
 
                             $(".close").on("click", function(){
@@ -151,7 +161,31 @@
 
                         $("#deleteBtn").on("click", function () {
                             if(confirm("일정을 삭제하시겠습니까?")){
-                                alert("일정 삭제");
+
+                                $.ajax({
+                                    url: "/calendar/calDelete",
+                                    type: "POST",
+                                    data: {
+                                        calName : calName,
+                                        content : content
+                                    },
+
+                                    success:function (result){
+                                        if(result > 0) {
+
+                                            alert('일정이 삭제되었습니다.');
+                                            info.events.remove();
+                                        } else {
+                                            alert('일정 삭제에 실패하였습니다.')
+                                        }
+
+                                    },
+                                    error:function (){
+                                        alert('error : 일정 삭제 실패');
+                                    }
+                                })
+
+
                                 $("#confrimModal").modal("hide");
                             } else {
                                 alert("삭제 취소");
@@ -257,7 +291,8 @@
                 </div>
                 <form action="" method="post">
                     <div class="modal-body">
-                        <div class="form-group">
+                        <div class="form-group"><label class="col-form-label">일정명</label>
+                            <input type="text" class="form-control" id="updateName" name="calendar_title">
                             <label class="col-form-label">일정 내용</label>
                             <input type="text" class="form-control" id="updateCon" name="calendar_content">
                             <label class="col-form-label">시작 날짜</label>

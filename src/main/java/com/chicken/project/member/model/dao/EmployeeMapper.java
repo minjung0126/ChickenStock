@@ -19,4 +19,6 @@ public interface EmployeeMapper {
     int insertAuth(String empId);
     List<CalendarDTO> selectCalendar();
     int insertCalendar(CalendarDTO cal);
+
+    int deleteCal(CalendarDTO cal);
 }

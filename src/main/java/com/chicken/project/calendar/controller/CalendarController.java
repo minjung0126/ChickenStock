@@ -58,4 +58,21 @@ public class CalendarController {
 
         return result;
     }
+
+    @ResponseBody
+    @PostMapping("/calDelete")
+    public int calDelete(@ModelAttribute CalendarDTO cal,@RequestParam String calName, @RequestParam String content){
+
+
+        cal.setCalName(calName);
+        cal.setContent(content);
+
+        log.info("[CalendarController] calNo : " + cal);
+
+        int result = calendarService.deleteCal(cal);
+
+        log.info("[CalendarController] result : " + result);
+
+        return result;
+    }
 }

@@ -10,4 +10,6 @@ public interface CalendarService {
     List<CalendarDTO> selectCalendar();
 
     int insertCal(CalendarDTO cal);
+
+    int deleteCal(CalendarDTO cal);
 }
