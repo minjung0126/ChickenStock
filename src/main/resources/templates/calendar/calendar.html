@@ -67,15 +67,7 @@
                                     className: 'holiday'
                                 }
                             ],
-                            /* 일정 삭제 여부 */
-                            eventClick: function(info){
-                                info.jsEvent.preventDefault();
-                                if (confirm('일정을 수정 또는 삭제하시겠습니까?')) {
-                                    info.event.remove();
-                                } else {
-                                    alert('취소');
-                                }
-                            },
+
 
                             locale: "ko",
                             headerToolbar: {
@@ -108,21 +100,15 @@
                                 }
                                 calendar.unselect()
                             },
-                            eventAdd: function (obj) { // 이벤트가 추가되면 발생하는 이벤트
-                                console.log(obj);
-                            },
-                            eventChange: function (obj) { // 이벤트가 수정되면 발생하는 이벤트
-                                console.log(obj);
-                            },
-                            eventRemove: function (obj) { // 이벤트가 삭제되면 발생하는 이벤트
-                                console.log(obj);
-                            },
                             /* 일정 추가 모달 */
                             customButtons: {
                                 addEventButton: {
                                     text: '일정 추가',
                                     click: function () {
                                         $("#calendarModal").modal("show");
+                                        $(".close").on("click", function(){
+                                            $("#calendarModal").modal("hide");
+                                        });
 
                                         $("#addCalendar").on("click", function () {
                                             var content = $("#calendar_content").val();
@@ -147,18 +133,35 @@
                                     }
                                 }
                             },
+                            /* 일정 수정 삭제 모달 */
+                            eventClick: function(info){
+                                info.jsEvent.preventDefault();
+                                $("#confrimModal").modal("show");
+                                $(".close").on("click", function(){
+                                    $("#confrimModal").modal("hide");
+                                });
+
+                                $("#updateBtn").on("click", function () {
+                                    $("#updateCal").modal("show");
+
+                                    $(".close").on("click", function(){
+                                        $("#updateCal").modal("hide");
+                                    });
+                                });
+
+
+                                $("#deleteBtn").on("click", function () {
+                                    if(confirm("일정을 삭제하시겠습니까?")){
+                                        alert("일정 삭제");
+                                        $("#confrimModal").modal("hide");
+                                    } else {
+                                        alert("삭제 취소");
+                                        $("#confrimModal").modal("hide");
+                                    }
+                                });
+                            },
 
                             events: eventList
-
-                            // events: [
-                            //     {
-                            //         groupId: 999,
-                            //         title: 'Conference',
-                            //         start: '2022-09-15',
-                            //         end: '2022-09-17',
-                            //     }
-                            // ]
-
                         });
 
                         calendar.render();
@@ -199,16 +202,13 @@
 <body>
 <div class="wrap">
 
-    <!-- modal 추가 -->
+    <!-- 일정 추가 -->
     <div class="modal fade" id="calendarModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
          aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">일정을 입력하세요.</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
                 </div>
                 <form action="" method="post">
                     <div class="modal-body">
@@ -223,14 +223,61 @@
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-warning" id="addCalendar">추가</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal"
-                                id="sprintSettingModalClose">취소</button>
+                        <button type="button" class="btn btn-secondary close">취소</button>
                     </div>
                 </form>
 
             </div>
         </div>
     </div>
+
+    <!-- 수정 삭제 여부 묻기 -->
+    <div class="modal fade" id="confrimModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h1 class="modal-title">일정을 수정 또는 삭제하시겠습니까?</h1>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning" id="updateBtn">수정</button>
+                    <button type="button" class="btn btn-warning" id="deleteBtn">삭제</button>
+                    <button type="button" class="btn btn-secondary close" data-dismiss="modal">취소</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 일정 수정 -->
+    <div class="modal fade" id="updateCal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">일정을 입력하세요.</h5>
+                </div>
+                <form action="" method="post">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label class="col-form-label">일정 내용</label>
+                            <input type="text" class="form-control" id="updateCon" name="calendar_content">
+                            <label class="col-form-label">시작 날짜</label>
+                            <input type="date" class="form-control" id="updateStart" name="calendar_start_date">
+                            <label class="col-form-label">종료 날짜</label>
+                            <input type="date" class="form-control" id="updateEnd" name="calendar_end_date">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-warning" id="">수정</button>
+                        <button type="button" class="btn btn-secondary close">취소</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+
 
 
     <!-- S: header -->
