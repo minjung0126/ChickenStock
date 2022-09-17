@@ -23,7 +23,7 @@ public class EmpListController {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
     private final EmpListServiceImpl empListService;
 
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
 
     @Autowired
@@ -53,7 +53,7 @@ public class EmpListController {
     }
 
     @PostMapping("/empList")
-    public String registEmp(@ModelAttribute EmployeeDTO emp, HttpServletRequest request, RedirectAttributes rttr){
+    public String registEmp(@ModelAttribute EmployeeDTO emp, RedirectAttributes rttr){
 
         log.info("");
         log.info("");
@@ -76,10 +76,10 @@ public class EmpListController {
 
         log.info("[EmpListController] ========================================");
 
-        return "redirect:/";
+        return "redirect:/empList/empList";
     }
 
-    @PostMapping("/auth")
+    @PostMapping(value = {"/auth"})
     @ResponseBody
     public String insertAuth(@RequestParam String empId){
 

@@ -32,6 +32,7 @@
 
                 let list;
 
+                /* 일정 조회 */
                 $.ajax({
                     url:"/calendar/calList",
                     type: "GET",
@@ -45,7 +46,8 @@
                             even = {
                                 title : data[index].calName,
                                 start : data[index].startDay,
-                                end : data[index].endDay
+                                end : data[index].endDay,
+                                className : 'company'
                             };
 
                             allEvent.push(even);
@@ -55,31 +57,7 @@
                         let calendarEl = $('#calendar')[0];
                         let calendar = new FullCalendar.Calendar(calendarEl, {
 
-                            // events : allEvent,
-
-                            // events : function(){
-                            //     const cal = {"calName" : calName, "startDay" : startDay, "endDay" : endDay}
-                            //     $.ajax({
-                            //         url:"/calendar/calList",
-                            //         type: "GET",
-                            //         data: {
-                            //             cal : cal
-                            //         },
-                            //         success: function (list){
-                            //             console.log(list);
-                            //             events.push({
-                            //                 title : list.calName,
-                            //                 start : list.startDay,
-                            //                 end : list.endDay,
-                            //                 color : 'green'
-                            //             });
-                            //         },
-                            //         error: function (list){
-                            //             alert("일정 조회에 실패하셨습니다.")
-                            //         }
-                            //     });
-                            // },
-
+                            /* 공휴일 */
                             googleCalendarApiKey: 'AIzaSyCDi0sVIXFLB5pKLfgmEgPvvieZ3a375dQ',
                             eventSources: [
                                 {
@@ -89,15 +67,13 @@
                                     className: 'holiday'
                                 }
                             ],
-                            eventClick: function(arg){
-                                if(arg.event.className = 'holiday'){
-                                    arg.jsEvent.stopPropagation();
-                                    arg.jsEvent.preventDefault();
-                                }
-                                if(arg.event.className != 'holiday'){
-                                    if(confirm('일정을 삭제하시겠습니까?')){
-                                        arg.event.remove();
-                                    }
+                            /* 일정 삭제 여부 */
+                            eventClick: function(info){
+                                info.jsEvent.preventDefault();
+                                if (confirm('일정을 수정 또는 삭제하시겠습니까?')) {
+                                    info.event.remove();
+                                } else {
+                                    alert('취소');
                                 }
                             },
 
@@ -108,17 +84,18 @@
                                 right: 'addEventButton'
 
                             },
-                            droppable : false,
-                            editable: true, // 수정 가능?
-                            selectable: true, // 달력 일자 드래그 설정가능
-                            nowIndicator: true, // 현재 시간 마크
-                            dayMaxEvents: 3, // 이벤트가 오버되면 높이 제한 (+ 몇 개식으로 표현)
+                            expandRows: false,
+                            editable: true,
+                            selectable: true,
+                            businessHours: true,
+                            dayMaxEvents: 3, // allow "more" link when too many events
                             dayMaxEventRows: true,
                             views:{
                                 timeGrid: {
                                     dayMaxEventRows : 3
                                 }
                             },
+                            /* 일정 드래그로 일정 추가*/
                             select: function(arg){
                                 var title = prompt('일정 이름 : ');
                                 if(title){
@@ -140,11 +117,7 @@
                             eventRemove: function (obj) { // 이벤트가 삭제되면 발생하는 이벤트
                                 console.log(obj);
                             },
-                            select: function () { // 캘린더에서 드래그로 이벤트를 생성할 수 있다.
-                                $(document).ready(function () {
-                                    $("#modalPop").modal('show');
-                                });
-                            },
+                            /* 일정 추가 모달 */
                             customButtons: {
                                 addEventButton: {
                                     text: '일정 추가',
