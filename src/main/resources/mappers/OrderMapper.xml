@@ -51,6 +51,7 @@
         <result property="storeName" column="STORE_NAME"/>
         <result property="itemNo" column="ITEM_NO"/>
         <result property="balance" column="BALANCE"/>
+        <result property="orderNo" column="ORDER_NO"/>
 
         <association property="itemFile" resultMap="itemFileResultMap"/>
     </resultMap>
@@ -448,6 +449,7 @@
         DELETE FROM CART
         WHERE STORE_NAME = #{ storeName }
           AND CART_YN = 'Y'
+          AND ITEM_NO = #{ itemNo }
     </delete>
 
     <insert id="insertOrderItems" parameterType="cartDTO">
@@ -469,13 +471,13 @@
             , #{ storeName }
             , 'N'
         )
-        <selectKey resultType="_int" keyProperty="lastCartNo" order="AFTER">
+        <selectKey resultType="_int" keyProperty="cartNo" order="AFTER">
             SELECT SEQ_CART_NO_TEST.CURRVAL FROM dual
         </selectKey>
     </insert>
 
 
-    <insert id="insertStoreOrderNo" parameterType="OrderHistoryDTO">
+    <insert id="insertStoreOrderNo" parameterType="cartDTO">
         INSERT INTO STORE_ORDER
         (
             ORDER_NO
@@ -484,14 +486,15 @@
         VALUES
         (
             SEQ_STORE_ORDER_NO_TEST.NEXTVAL
-          , to_date(sysdate, 'YYYY-MM-DD HH24:mi:SS')
+          , to_date(sysdate, 'YYYY-MM-DD')
         )
-        <selectKey resultType="_int" keyProperty="lastCartNo" order="AFTER">
+        <selectKey resultType="_int" keyProperty="orderNo" order="AFTER">
             SELECT SEQ_STORE_ORDER_NO_TEST.CURRVAL FROM dual
         </selectKey>
+
     </insert>
 
-    <insert id="insertOrderHandler" parameterType="OrderHistoryDTO">
+    <insert id="insertOrderHandler" parameterType="cartDTO">
         INSERT INTO ORDER_HANDLER
         (
             ORDER_NO
@@ -499,8 +502,8 @@
         )
         VALUES
         (
-            #{ lastCartNo }
-          , #{ lastOrderNo }
+            #{orderNo}
+          , #{cartNo}
         )
     </insert>
 

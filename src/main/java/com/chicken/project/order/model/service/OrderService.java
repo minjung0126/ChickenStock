@@ -120,7 +120,7 @@ public class OrderService {
     @Transactional
     public void InsertCartList(List<String> itemNoList) {
 
-        int result = orderMapper.insertCartList(itemNoList);
+        orderMapper.insertCartList(itemNoList);
 
     }
 
@@ -133,7 +133,6 @@ public class OrderService {
     }
 
 
-
     @Transactional
     public String deleteCartItem(int cartNo) {
 
@@ -142,31 +141,28 @@ public class OrderService {
     }
 
     @Transactional
-    public int insertStoreOrderNo(OrderHistoryDTO orderHistory) {
+    public int insertStoreOrderNo(CartDTO cart) {
 
-        orderMapper.insertStoreOrderNo(orderHistory);
-        int orderResult = orderHistory.getLastOrderNo();
+        orderMapper.insertStoreOrderNo(cart);
+        int orderNoResult = cart.getOrderNo();
 
-        System.out.println("orderResult 테테중 = " + orderResult);
-
-        return orderResult;
+        System.out.println("orderNoResult 서비스 제발 = " + orderNoResult);
+        return orderNoResult;
     }
 
     @Transactional
     public int insertOrderItems(CartDTO cart) {
 
         orderMapper.insertOrderItems(cart);
-        int cartResult = cart.getLastCartNo();
+        int cartNoResult = cart.getCartNo();
 
-        System.out.println("cartResult 테테중 = " + cartResult);
-
-        return cartResult;
+        return cartNoResult;
     }
 
     @Transactional
-    public void insertOrderHandler(OrderHistoryDTO orderHistory) {
-
-        orderMapper.insertOrderHandler(orderHistory);
+    public void insertOrderHandler(CartDTO cart) {
+        System.out.println("cart 번호 확인123 = " + cart);
+        orderMapper.insertOrderHandler(cart);
 
     }
 

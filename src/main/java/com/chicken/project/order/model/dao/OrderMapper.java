@@ -41,11 +41,11 @@ public interface OrderMapper {
 
     String deleteCartItem(int cartNo);
 
-    void insertStoreOrderNo(OrderHistoryDTO orderHistory);
+    int insertStoreOrderNo(CartDTO cart);
 
-    void insertOrderItems(CartDTO cart);
+    int insertOrderItems(CartDTO cart);
 
-    void insertOrderHandler(OrderHistoryDTO orderHistory);
+    void insertOrderHandler(CartDTO cart);
 
     void resetCartItems(CartDTO cart);
 }

@@ -447,6 +447,7 @@ public class OrderController {
 
 
     /* 발주하기--POST (INSERT) */
+    /* 민수님 여기예요 */
     @PostMapping(value="/insert/items/do")
     public ModelAndView insertItemsDo(HttpServletRequest request,
                                        ModelAndView mv,
@@ -455,17 +456,11 @@ public class OrderController {
 
         String storeName = ((StoreImpl) user).getStoreName();
 
-        OrderHistoryDTO orderHistory = new OrderHistoryDTO();
         CartDTO cart = new CartDTO();
 
         cart.setStoreName(storeName);
 
-        int orderResult = orderService.insertStoreOrderNo(orderHistory);
-        orderHistory.setLastOrderNo(orderResult);
-        int lastOrderNo = orderHistory.getLastOrderNo();
-        orderHistory.setLastOrderNo(lastOrderNo);
-
-        orderService.resetCartItems(cart);
+        int orderNoResult = orderService.insertStoreOrderNo(cart);
 
         JSONParser jsonParse = new JSONParser();
         JSONArray jsonObj = (JSONArray) jsonParse.parse(cartNoList);
@@ -480,17 +475,13 @@ public class OrderController {
             cart.setCartAmount(cartAmount);
             cart.setCategoryNo(categoryNo);
 
-            int cartResult = orderService.insertOrderItems(cart);
-            cart.setLastCartNo(cartResult);
-            int lastCartNo = cart.getLastCartNo();
+            orderService.resetCartItems(cart);
 
-            orderService.insertOrderHandler(orderHistory);
+            int cartNoResult = orderService.insertOrderItems(cart);
 
-            System.out.println("테스트 테스트 : " + lastCartNo);
-            System.out.println("테스트 테스트 : " + lastOrderNo);
-
-            orderHistory.setCartNo(lastCartNo);
-
+            cart.setOrderNo(orderNoResult);
+            cart.setCartNo(cartNoResult);
+            orderService.insertOrderHandler(cart);
 
         }
 

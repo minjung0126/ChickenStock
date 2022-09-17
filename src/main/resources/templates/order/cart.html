@@ -58,9 +58,7 @@
               </div>
 
               <div class="balanceBox" style="font-weight: bold;">
-                <div id="balance">가용 금액 : <p class="money">1,000,000원</p></div>
-                <div id="devide">|</div>
-                <div id="cartPrice">장바구니 : <p class="money">180,000 원</p></div>
+                <div id="balance" th:text="${'예치금 잔액 : 500,000원'}"></p></div>
               </div>
 
               <div class="search-area" align="center">
@@ -90,7 +88,7 @@
               </div>
             </div>
 
-            <table class="table">
+            <table class="table" id="cartTable">
               <thead>
                 <tr>
                   <th style="width: 90px;">상품코드</th>
@@ -109,7 +107,7 @@
               <tbody>
               <form action="insetItemIntoCartForm" method="post" id="cartForm">
               <tr th:each="cart : ${ cartList }">
-                <td th:text="${ cart.itemNo }" name="insertItem">상품코드</td>
+                <td th:text="${ cart.itemNo }">상품코드</td>
                 <td>
                   <div class="img-info">
                     <div class="img-info__img">
@@ -146,17 +144,16 @@
 
                 <td th:text="${ cart.itemStandard }">규격</td>
                 <td th:text="${ cart.itemMake }">제조사(원산지)</td>
-                <td th:text="${ cart.itemSales }">판매가격</td>
+                <td th:text="${ cart.itemSales }" id="eachPrice">판매가격</td>
                 <td align="center"><input type="number" name="insertItem" size="6" placeholder="입력" id="cartAmount" th:value="${ cart.cartAmount }"
-                                          class="cartAmount" min="1" max="1000"></td>
+                                          class="cartAmount" min="1" max="1000" onchange="inputValueChange(this);"></td>
                 <td th:if="${ cart.itemSoldoutYn eq 'Y' }">
                   <span class="active-circle bg-danger"></span><span th:text="${ '품절' }"></span>
                 </td>
                 <td th:if="${ cart.itemSoldoutYn eq 'N' }">
                   <span class="active-circle bg-success"></span><span th:text="${ '판매중' }" name="available" th:value="${ cart.itemNo }"></span>
                 </td>
-
-                <td>합계</td>
+                <td class="cartItemPrice" th:text="${ cart.itemSales }">합계</td>
                 <td>
                   <div id="delete">
                     <button type="button" class="btn btn-secondary deleteBtn" th:dataCartNo="${ cart.cartNo }" th:onclick="orderConfirm()">삭제</button>
@@ -165,6 +162,16 @@
               </tr>
               </form>
               </tbody>
+              <tfoot>
+              <tr>
+                <th colspan="7"></th>
+                <th>전체 수량</th>
+                <th id="cartTotalAmount" class="cartTotalAmount"></th>
+                <th>장바구니 총액</th>
+                <th id="cartTotalMoney" class="cartTotalMoney"></th>
+              </tr>
+              </tfoot>
+
             </table>
 
             <!-- 삭제 버튼 form -->
@@ -222,7 +229,7 @@
       var day = date.getDay();
       var week = ['일', '월', '화', '수', '목', '금', '토'];
 
-      dueDateTest.innerText = `${year}년 ${month+1}월 ${clockDate+1}일 ${week[day+1]}요일`;
+      dueDateTest.innerText = `${year}년 ${month+1}월 ${clockDate+1}일 ${week[day]+1}요일`;
     }
 
     dueDate();
@@ -365,6 +372,64 @@
           $(".deleteCartNo").val(cartNo);
           $(".quantity_delete_form").submit();
     });
+  </script>
+
+  <!-- 전체 수량 + 총액 계산 -->
+  <script>
+    function inputValueChange(check){
+
+        console.log(check);
+
+        // 발주 수량
+        let inputValue = $(check.parentElement)[0].children[0].value;
+        console.log(inputValue);
+
+        // 발주 금액
+        let itemPurchase = parseInt($(check.parentElement).siblings()[6].innerText.replace(/[^0-9]/gi, ''));
+        let cartItemMoney = inputValue * itemPurchase;
+        $(check.parentElement).siblings()[8].innerText = cartItemMoney.toLocaleString('ko-KR') + "원";
+
+        // 총 발주 수량 & 총 발주 금액
+        let inputValueTot = document.getElementsByClassName('cartAmount');
+        let itemMoneyTot = document.getElementsByClassName('cartItemPrice');
+        let cartTotalAmount = 0;
+        let cartTotalMoney = 0;
+        for(let i = 0; i < inputValueTot.length; i++){
+          cartTotalAmount += Number(inputValueTot[i].value);
+          cartTotalMoney += parseInt(itemMoneyTot[i].innerText.replace(/[^0-9]/gi, ''));
+        }
+        console.log(cartTotalAmount);
+        console.log(cartTotalMoney);
+        document.getElementById('cartTotalAmount').innerText = cartTotalAmount.toLocaleString('ko-KR');
+        document.getElementById('cartTotalMoney').innerText = cartTotalMoney.toLocaleString('ko-KR') + "원";
+      }
+  </script>
+
+  <!-- 총 입고수량 & 총 입고금액 초기값 -->
+  <script>
+    // let price = document.getElementById('eachPrice').value;
+    // let amount = document.getElementById('cartAmount').value;
+    //
+    // let inputValueTot = document.getElementsByClassName('cartAmount');
+    // let itemMoneyTot = document.getElementsByClassName('cartItemPrice');
+    //
+    //
+    // let cartTotalAmount = 0;
+    // let cartTotalMoney = 0;
+    //
+    // let itemPrice = price * amount;
+
+
+    let cartTotalAmount = document.getElementById('cartTable').tBodies[0].rows.length;
+    document.getElementById('cartTotalAmount').innerText = cartTotalAmount.toLocaleString("ko-KR");
+
+    let cartItemPrice = document.getElementsByClassName('cartItemPrice');
+    let cartTotalMoney = 0;
+    for(let i = 0; i < cartTotalAmount; i++){
+      cartTotalMoney += parseInt(cartItemPrice[i].innerHTML.replace(/[^0-9]/gi, ''));
+    }
+    document.getElementById('cartTotalMoney').innerText = cartTotalMoney.toLocaleString("ko-KR") + "원";
+
   </script>
 
 
