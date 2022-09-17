@@ -8,4 +8,6 @@ import java.util.Map;
 public interface CalendarService {
 
     List<CalendarDTO> selectCalendar();
+
+    int insertCal(CalendarDTO cal);
 }

@@ -17,5 +17,6 @@ public interface EmployeeMapper {
     EmployeeDTO selectEmpInfo(String empId);
     int selectCkAdminAuth(String empId);
     int insertAuth(String empId);
-    List<CalendarDTO>  selectCalendar();
+    List<CalendarDTO> selectCalendar();
+    int insertCalendar(CalendarDTO cal);
 }

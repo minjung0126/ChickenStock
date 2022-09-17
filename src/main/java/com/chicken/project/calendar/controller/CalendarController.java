@@ -5,6 +5,8 @@ import com.chicken.project.calendar.model.service.CalendarServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,7 +29,7 @@ public class CalendarController {
     @GetMapping("/calendar")
     public String CalMain(){
 
-        log.info("[CalendarController]  ========================================");
+        log.info("[CalendarController] 조회 확인 ========================================");
 
         return "/calendar/calendar";
     }
@@ -39,11 +41,21 @@ public class CalendarController {
         return calendarService.selectCalendar();
     }
 
+    @PostMapping("/calInsert")
+    @ResponseBody
+    public int calInsert(@ModelAttribute CalendarDTO cal,@RequestParam String calName, @RequestParam String calCon, @RequestParam java.sql.Date calStart, @RequestParam java.sql.Date calEnd, @AuthenticationPrincipal User user){
 
 
-    @PostMapping("/calendar")
-    public String calendar(){
+        cal.setCalName(calName);
+        cal.setContent(calCon);
+        cal.setStartDay(calStart);
+        cal.setEndDay(calEnd);
+        cal.setEmpId(user.getUsername());
 
-        return null;
+        log.info("[CalendarController] cal : " + cal);
+
+        int result = calendarService.insertCal(cal);
+
+        return result;
     }
 }

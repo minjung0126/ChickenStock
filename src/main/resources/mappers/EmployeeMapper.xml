@@ -141,6 +141,28 @@
           FROM CALENDAR
     </select>
 
+    <insert id="insertCalendar" parameterType="CalendarDTO">
+        INSERT
+        INTO CALENDAR
+        (
+          CAL_NO
+        , CAL_NAME
+        , CAL_START
+        , CAL_END
+        , CAL_CONTENT
+        , EMP_ID
+        )
+        VALUES
+        (
+          SEQ_CALNO.NEXTVAL
+        , #{ calName }
+        , #{ startDay }
+        , #{ endDay }
+        , #{ content }
+        , #{ empId }
+        )
+    </insert>
+
 <!--    <select id="selectTotalEmpList" resultType="_int">-->
 <!--        SELECT-->
 <!--              A.RNUM-->

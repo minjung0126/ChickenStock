@@ -28,172 +28,169 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/common/common.css}"/>
     <script>
 
-            $(function(){
+    $(function(){
 
-                let list;
+        let list;
 
-                /* 일정 조회 */
-                $.ajax({
-                    url:"/calendar/calList",
-                    type: "GET",
-                    success: function (data){
+        /* 일정 조회 */
+        $.ajax({
+            url:"/calendar/calList",
+            type: "GET",
+            success: function (data){
 
-                        console.log(data);
-                        let even = {};
-                        let allEvent = [];
-                        for(let index in data){
+                console.log(data);
+                let even = {};
+                let allEvent = [];
+                for(let index in data){
 
-                            even = {
-                                title : data[index].calName,
-                                start : data[index].startDay,
-                                end : data[index].endDay,
-                                className : 'company'
-                            };
+                    even = {
+                        title : data[index].calName,
+                        start : data[index].startDay,
+                        end : data[index].endDay,
+                        className : 'company'
+                    };
 
-                            allEvent.push(even);
+                    allEvent.push(even);
+                }
+                let eventList = allEvent;
+
+                let calendarEl = $('#calendar')[0];
+                let calendar = new FullCalendar.Calendar(calendarEl, {
+
+                    /* 공휴일 */
+                    googleCalendarApiKey: 'AIzaSyCDi0sVIXFLB5pKLfgmEgPvvieZ3a375dQ',
+                    eventSources: [
+                        {
+                            googleCalendarId: 'ko.south_korea#holiday@group.v.calendar.google.com',
+                            color: '#EB503B',
+                            textColor: 'white',
+                            className: 'holiday'
                         }
-                        let eventList = allEvent;
-
-                        let calendarEl = $('#calendar')[0];
-                        let calendar = new FullCalendar.Calendar(calendarEl, {
-
-                            /* 공휴일 */
-                            googleCalendarApiKey: 'AIzaSyCDi0sVIXFLB5pKLfgmEgPvvieZ3a375dQ',
-                            eventSources: [
-                                {
-                                    googleCalendarId: 'ko.south_korea#holiday@group.v.calendar.google.com',
-                                    color: '#EB503B',
-                                    textColor: 'white',
-                                    className: 'holiday'
-                                }
-                            ],
+                    ],
 
 
-                            locale: "ko",
-                            headerToolbar: {
-                                left: 'prev,next,today',
-                                center: 'title',
-                                right: 'addEventButton'
+                    locale: "ko",
+                    headerToolbar: {
+                        left: 'prev,next,today',
+                        center: 'title',
+                        right: 'addEventButton'
 
-                            },
-                            expandRows: false,
-                            editable: true,
-                            selectable: true,
-                            businessHours: true,
-                            dayMaxEvents: 3, // allow "more" link when too many events
-                            dayMaxEventRows: true,
-                            views:{
-                                timeGrid: {
-                                    dayMaxEventRows : 3
-                                }
-                            },
-                            /* 일정 드래그로 일정 추가*/
-                            select: function(arg){
-                                var title = prompt('일정 이름 : ');
-                                if(title){
-                                    calendar.addEvent({
-                                        title: title,
-                                        start: arg.start,
-                                        end: arg.end,
-                                        allDay: arg.allDay
-                                    })
-                                }
-                                calendar.unselect()
-                            },
-                            /* 일정 추가 모달 */
-                            customButtons: {
-                                addEventButton: {
-                                    text: '일정 추가',
-                                    click: function () {
-                                        $("#calendarModal").modal("show");
-                                        $(".close").on("click", function(){
-                                            $("#calendarModal").modal("hide");
-                                        });
-
-                                        $("#addCalendar").on("click", function () {
-                                            var content = $("#calendar_content").val();
-                                            var start_date = $("#calendar_start_date").val();
-                                            var end_date = $("#calendar_end_date").val();
-
-                                            if (content == null || content == "") {
-                                                alert("내용을 입력하세요.");
-                                            } else if (start_date == "" || end_date == "") {
-                                                alert("날짜를 입력하세요.");
-                                            } else if (new Date(end_date) - new Date(start_date) < 0) {
-                                                alert("종료일이 시작일보다 먼저입니다.");
-                                            } else {
-                                                var obj = {
-                                                    "title": content,
-                                                    "start": start_date,
-                                                    "end": end_date
-                                                }
-                                                // console.log(obj);
-                                            }
-                                        });
-                                    }
-                                }
-                            },
-                            /* 일정 수정 삭제 모달 */
-                            eventClick: function(info){
-                                info.jsEvent.preventDefault();
-                                $("#confrimModal").modal("show");
+                    },
+                    expandRows: false,
+                    editable: true,
+                    selectable: true,
+                    businessHours: true,
+                    dayMaxEvents: 3, // allow "more" link when too many events
+                    dayMaxEventRows: true,
+                    views:{
+                        timeGrid: {
+                            dayMaxEventRows : 3
+                        }
+                    },
+                    /* 일정 추가 모달 */
+                    customButtons: {
+                        addEventButton: {
+                            text: '일정 추가',
+                            click: function () {
+                                $("#calendarModal").modal("show");
                                 $(".close").on("click", function(){
-                                    $("#confrimModal").modal("hide");
+                                    $("#calendarModal").modal("hide");
                                 });
 
-                                $("#updateBtn").on("click", function () {
-                                    $("#updateCal").modal("show");
+                                $("#addCalendar").on("click", function () {
+                                    var calName = $("#calendar_title").val();
+                                    var content = $("#calendar_content").val();
+                                    var start_date = $("#calendar_start_date").val();
+                                    var end_date = $("#calendar_end_date").val();
 
-                                    $(".close").on("click", function(){
-                                        $("#updateCal").modal("hide");
-                                    });
-                                });
-
-
-                                $("#deleteBtn").on("click", function () {
-                                    if(confirm("일정을 삭제하시겠습니까?")){
-                                        alert("일정 삭제");
-                                        $("#confrimModal").modal("hide");
-                                    } else {
-                                        alert("삭제 취소");
-                                        $("#confrimModal").modal("hide");
+                                    if (new Date(end_date) - new Date(start_date) < 0) {
+                                        alert("종료일이 시작일보다 먼저입니다.");
                                     }
+                                    $.ajax({
+                                        url: "/calendar/calInsert",
+                                        type: "POST",
+                                        data: {
+                                            calName: calName,
+                                            calCon: content,
+                                            calStart: start_date,
+                                            calEnd: end_date,
+                                        },
+                                        success:function (result){
+                                            console.log(result);
+                                            if(result > 0){
+                                                alert("일정 추가에 성공하셨습니다.")
+                                            } else{
+                                                alert("일정 추가에 실패하셨습니다.")
+                                            }
+                                        },
+                                        error:function (){
+                                            alert('error : 일정 추가 실패')
+                                        }
+                                    })
+                                    $("#calendarModal").modal("hide");
                                 });
-                            },
-
-                            events: eventList
+                            }
+                        }
+                    },
+                    /* 일정 수정 삭제 모달 */
+                    eventClick: function(info){
+                        info.jsEvent.preventDefault();
+                        $("#confrimModal").modal("show");
+                        $(".close").on("click", function(){
+                            $("#confrimModal").modal("hide");
                         });
 
-                        calendar.render();
-                    }
+                        $("#updateBtn").on("click", function () {
+                            $("#updateCal").modal("show");
+
+                            $(".close").on("click", function(){
+                                $("#updateCal").modal("hide");
+                            });
+                        });
+
+
+                        $("#deleteBtn").on("click", function () {
+                            if(confirm("일정을 삭제하시겠습니까?")){
+                                alert("일정 삭제");
+                                $("#confrimModal").modal("hide");
+                            } else {
+                                alert("삭제 취소");
+                                $("#confrimModal").modal("hide");
+                            }
+                        });
+                    },
+
+                    events: eventList
                 });
 
+                calendar.render();
+            }
+        });
 
-            });
+    });
 
+    FullCalendar.globalLocales.push(function () {
+        'use strict';
 
+        var ko = {
+            code: 'ko',
+            buttonText: {
+                today: '오늘',
+                month: '월',
+                week: '주',
+                day: '일',
+                list: '일정목록',
+            },
+            weekText: '주',
+            allDayText: '종일',
+            moreLinkText: '개',
+            noEventsText: '일정이 없습니다',
+        };
 
-            FullCalendar.globalLocales.push(function () {
-                'use strict';
+        return ko;
 
-                var ko = {
-                    code: 'ko',
-                    buttonText: {
-                        today: '오늘',
-                        month: '월',
-                        week: '주',
-                        day: '일',
-                        list: '일정목록',
-                    },
-                    weekText: '주',
-                    allDayText: '종일',
-                    moreLinkText: '개',
-                    noEventsText: '일정이 없습니다',
-                };
+    }());
 
-                return ko;
-
-            }());
 
 
 
@@ -210,19 +207,21 @@
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">일정을 입력하세요.</h5>
                 </div>
-                <form action="" method="post">
+                <form action="/calendar/insertCal" method="post">
                     <div class="modal-body">
                         <div class="form-group">
+                            <label class="col-form-label">일정명</label>
+                            <input type="text" class="form-control" id="calendar_title" name="calendar_title" required>
                             <label class="col-form-label">일정 내용</label>
-                            <input type="text" class="form-control" id="calendar_content" name="calendar_content">
+                            <input type="text" class="form-control" id="calendar_content" name="calendar_content" required>
                             <label class="col-form-label">시작 날짜</label>
-                            <input type="date" class="form-control" id="calendar_start_date" name="calendar_start_date">
+                            <input type="date" class="form-control" id="calendar_start_date" name="calendar_start_date" required>
                             <label class="col-form-label">종료 날짜</label>
-                            <input type="date" class="form-control" id="calendar_end_date" name="calendar_end_date">
+                            <input type="date" class="form-control" id="calendar_end_date" name="calendar_end_date" required>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-warning" id="addCalendar">추가</button>
+                        <button type="button" class="btn btn-warning" id="addCalendar" >추가</button>
                         <button type="button" class="btn btn-secondary close">취소</button>
                     </div>
                 </form>
