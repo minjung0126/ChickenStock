@@ -48,7 +48,7 @@
                         start : data[index].startDay,
                         end : data[index].endDay,
                         con : data[index].content,
-                        className : data[index].calNo
+                        groupId : data[index].calNo
                     };
 
                     allEvent.push(even);
@@ -139,19 +139,81 @@
                         console.log(info.event)
                         let calName = info.event._def.title;
                         let content = info.event.extendedProps.con;
+                        let start = info.event._instance.range.start;
+                        let end = info.event._instance.range.end;
+
+                        let calStart = start.getFullYear() + '-' + (start.getMonth()+1) + '-' + start.getDate();
+                        let calEnd = end.getFullYear() + '-' + (end.getMonth()+1) + '-' + end.getDate();
+
                         console.log(calName);
                         console.log(content);
+                        console.log(calStart);
+                        console.log(calEnd);
 
                         $("#confrimModal").modal("show");
                         $(".close").on("click", function(){
                             $("#confrimModal").modal("hide");
+
                         });
 
                         $("#updateBtn").on("click", function () {
 
-
+                            $('#updateName').attr('value', calName);
+                            $('#updateCon').attr('value', content);
+                            $('#updateStart').attr('value', calStart);
+                            $('#updateEnd').attr('value', calEnd)
 
                             $("#updateCal").modal("show");
+
+                            $('#upBtn').on('click', function(){
+
+                                // let updateName = $("#updateName").val();
+                                // let updateCon = $("#updateCon").val();
+                                // let updateStart = $("#updateStart").val();
+                                // let updateEnd = $("#updateEnd").val();
+                                //
+                                // if(updateName == null){
+                                //     updateName.attr('value', calName)
+                                // }
+                                // if(updateCon == null){
+                                //     updateCon.attr('value', content)
+                                //
+                                // }
+                                // if(updateStart == null){
+                                //     updateStart.attr('value', calStart)
+                                //
+                                // }
+                                // if(updateEnd == null){
+                                //     updateEnd.attr('value', calEnd)
+                                // }
+
+                                // console.log(updateName);
+                                // console.log(updateCon);
+                                // console.log(updateStart);
+                                // console.log(updateEnd);
+
+                                $.ajax({
+                                    url : '/calendar/calUpdate',
+                                    type : 'POST',
+                                    data:{
+                                        name : calName,
+                                        cont : content,
+                                        calName : updateName,
+                                        calCon : updateCon,
+                                        calStart : updateStart,
+                                        calEnd : updateEnd
+                                    },
+                                    success:function(result){
+                                        if(result > 0){
+                                            alert('일정이 수정되었습니다.')
+                                        } else {
+                                            alert('일정 수정에 실패하였습니다.')
+                                        }
+                                    }
+
+                                })
+                            })
+
 
                             $(".close").on("click", function(){
                                 $("#updateCal").modal("hide");
@@ -241,7 +303,7 @@
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">일정을 입력하세요.</h5>
                 </div>
-                <form action="/calendar/insertCal" method="post">
+                <form action="/calendar/calInsert" method="post">
                     <div class="modal-body">
                         <div class="form-group">
                             <label class="col-form-label">일정명</label>
@@ -289,10 +351,10 @@
                 <div class="modal-header">
                     <h5 class="modal-title">일정을 입력하세요.</h5>
                 </div>
-                <form action="" method="post">
+                <form action="/calendar/calUpdate" method="POST">
                     <div class="modal-body">
                         <div class="form-group"><label class="col-form-label">일정명</label>
-                            <input type="text" class="form-control" id="updateName" name="calendar_title">
+                            <input type="text" class="form-control" id="updateName" name="calendar_title" placeholder="um,">
                             <label class="col-form-label">일정 내용</label>
                             <input type="text" class="form-control" id="updateCon" name="calendar_content">
                             <label class="col-form-label">시작 날짜</label>
@@ -302,7 +364,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-warning" id="">수정</button>
+                        <button type="button" class="btn btn-warning" id="upBtn">수정</button>
                         <button type="button" class="btn btn-secondary close">취소</button>
                     </div>
                 </form>

@@ -12,4 +12,10 @@ public interface CalendarService {
     int insertCal(CalendarDTO cal);
 
     int deleteCal(CalendarDTO cal);
+
+    int updateCal(CalendarDTO cal);
+
+    int insertEditor(CalendarDTO cal);
+
+    CalendarDTO selectCalNo(CalendarDTO cal);
 }

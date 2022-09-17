@@ -19,5 +19,6 @@ public class CalendarDTO {
     private java.sql.Date endDay;
     private String content;
     private String empId;
+    private String edit;
 
 }

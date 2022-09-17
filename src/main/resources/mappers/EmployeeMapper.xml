@@ -23,7 +23,7 @@
         <result property="startDay" column="CAL_START"/>
         <result property="endDay" column="CAL_END"/>
         <result property="content" column="CAL_CONTENT"/>
-        <result property="groupNo" column="CAL_GROUP_NO"/>
+        <result property="edit" column="CAL_EDIT"/>
     </resultMap>
 
     <resultMap id="authResultMap" type="AuthDTO">
@@ -169,8 +169,40 @@
           FROM CALENDAR
          WHERE CAL_NAME = #{ calName }
            AND CAL_CONTENT = #{ content }
-
     </delete>
+
+    <select id="selectCalNo" resultMap="calendarResultMap">
+        SELECT
+            CAL_NO
+        FROM CALENDAR
+        WHERE CAL_NAME = #{ calName }
+          AND CAL_CONTENT = #{ content }
+    </select>
+
+    <update id="updateCal" parameterType="CalendarDTO">
+        UPDATE
+            CALENDAR
+        SET
+            CAL_NAME = NVL(#{ calName }, CAL_NAME)
+          , CAL_CONTENT = NVL(#{ content }, CAL_CONTENT)
+          , CAL_START = NVL(#{ startDay}, CAL_START)
+          , CAL_END = NVL(#{ endDay }, CAL_END)
+        WHERE CAL_NO = #{ calNo }
+    </update>
+
+    <insert id="insertEditor" parameterType="CalendarDTO">
+        INSERT
+        INTO CALENDAR
+        (
+          CAL_EDIT
+        )
+        VALUES
+        (
+          #{ edit }
+        )
+    </insert>
+
+
 
 <!--    <select id="selectTotalEmpList" resultType="_int">-->
 <!--        SELECT-->

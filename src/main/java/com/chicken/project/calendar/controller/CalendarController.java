@@ -41,6 +41,7 @@ public class CalendarController {
         return calendarService.selectCalendar();
     }
 
+    /* 일정 추가 */
     @PostMapping("/calInsert")
     @ResponseBody
     public int calInsert(@ModelAttribute CalendarDTO cal,@RequestParam String calName, @RequestParam String calCon, @RequestParam java.sql.Date calStart, @RequestParam java.sql.Date calEnd, @AuthenticationPrincipal User user){
@@ -59,8 +60,9 @@ public class CalendarController {
         return result;
     }
 
-    @ResponseBody
+    /* 일정 삭제 */
     @PostMapping("/calDelete")
+    @ResponseBody
     public int calDelete(@ModelAttribute CalendarDTO cal,@RequestParam String calName, @RequestParam String content){
 
 
@@ -70,6 +72,40 @@ public class CalendarController {
         log.info("[CalendarController] calNo : " + cal);
 
         int result = calendarService.deleteCal(cal);
+
+        log.info("[CalendarController] result : " + result);
+
+        return result;
+    }
+
+    /* 일정 수정 */
+    @PostMapping("/calUpdate")
+    @ResponseBody
+    public int calUpdate(@ModelAttribute CalendarDTO cal,@RequestParam String name, @RequestParam String cont, @RequestParam String calName, @RequestParam String calCon, @RequestParam java.sql.Date calStart, @RequestParam java.sql.Date calEnd, @AuthenticationPrincipal User user){
+
+        cal.setCalName(name);
+        cal.setContent(cont);
+
+        CalendarDTO calendar = calendarService.selectCalNo(cal);
+
+        log.info("[CalendarController] calNo : " + calendar.getCalNo());
+
+        cal.setCalNo(calendar.getCalNo());
+        cal.setCalName(calName);
+        cal.setContent(calCon);
+        cal.setStartDay(calStart);
+        cal.setEndDay(calEnd);
+        cal.setEdit(user.getUsername());
+        log.info("[CalendarController] cal : " + cal);
+
+        int result = 0;
+
+        int result1 = calendarService.updateCal(cal);
+        int result2 = calendarService.insertEditor(cal);
+
+        if(result1 > 0 && result2 > 0){
+            result = 1;
+        }
 
         log.info("[CalendarController] result : " + result);
 
