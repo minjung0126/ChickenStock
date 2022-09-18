@@ -38,9 +38,7 @@ public interface OrderMapper {
     int insertCartList(List<String> itemNoList);
 
     int insertItemIntoCart(int itemNo, int cartAmount, String storeName);
-
-    String deleteCartItem(int cartNo);
-
+    
     int insertStoreOrderNo(CartDTO cart);
 
     int insertOrderItems(CartDTO cart);
@@ -48,4 +46,8 @@ public interface OrderMapper {
     void insertOrderHandler(CartDTO cart);
 
     void resetCartItems(CartDTO cart);
+
+    void deleteCartItem(CartDTO cart);
+
+    int selectBalance(CartDTO store);
 }

@@ -52,6 +52,7 @@
         <result property="itemNo" column="ITEM_NO"/>
         <result property="balance" column="BALANCE"/>
         <result property="orderNo" column="ORDER_NO"/>
+        <result property="totalPrice" column="TOTAL_PRICE"/>
 
         <association property="itemFile" resultMap="itemFileResultMap"/>
     </resultMap>
@@ -215,7 +216,8 @@
             , A.ORIGIN_NAME
             , A.FILE_NAME
             , A.BALANCE
-        FROM (SELECT
+            , A.TOTAL_PRICE
+    FROM (SELECT
              ROWNUM RNUM
            , B.CART_AMOUNT
            , B.CATEGORY_NO
@@ -230,6 +232,7 @@
            , B.ORIGIN_NAME
            , B.FILE_NAME
            , B.BALANCE
+           , B.TOTAL_PRICE
         FROM (SELECT
              C.CART_AMOUNT
            , C.CATEGORY_NO
@@ -244,10 +247,12 @@
            , F.ORIGIN_NAME
            , F.FILE_NAME
            , G.BALANCE
+           , H.TOTAL_PRICE
         FROM CART C
         LEFT JOIN ITEM_INFO E ON (C.ITEM_NO = E.ITEM_NO)
         LEFT JOIN ITEM_FILE F ON (C.ITEM_NO = F.ITEM_NO)
         LEFT JOIN BALANCE G ON (C.STORE_NAME = G.STORE_NAME)
+        LEFT JOIN ORDER_HANDLER H ON (C.ITEM_NO = H.TOTAL_PRICE)
             <if test="searchCondition == 'category'">
                 LEFT JOIN ITEM_CATEGORY D ON (C.CATEGORY_NO = D.CATEGORY_NO)
             </if>
@@ -499,12 +504,28 @@
         (
             ORDER_NO
           , CART_NO
+          , TOTAL_PRICE
         )
         VALUES
         (
             #{orderNo}
           , #{cartNo}
+          , #{totalPrice}
         )
     </insert>
+
+    <delete id="deleteCartItem" parameterType="CartDTO">
+        DELETE FROM CART
+        WHERE STORE_NAME = #{ storeName }
+          AND ITEM_NO = #{ itemNo }
+    </delete>
+
+<!--    <select id="selectBalance" resultType="_int" parameterType="CartDTO">-->
+<!--        SELECT-->
+<!--            BALANCE-->
+<!--        FROM BALANCE-->
+<!--        WHERE STORE_NAME = #{ storeName }-->
+<!--    </select>-->
+
 
 </mapper>

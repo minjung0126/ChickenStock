@@ -6,7 +6,6 @@ import com.chicken.project.order.model.dao.OrderMapper;
 import com.chicken.project.order.model.dto.CartDTO;
 import com.chicken.project.order.model.dto.InterestDTO;
 import com.chicken.project.order.model.dto.OrderDTO;
-import com.chicken.project.order.model.dto.OrderHistoryDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -133,12 +132,6 @@ public class OrderService {
     }
 
 
-    @Transactional
-    public String deleteCartItem(int cartNo) {
-
-        return orderMapper.deleteCartItem(cartNo);
-
-    }
 
     @Transactional
     public int insertStoreOrderNo(CartDTO cart) {
@@ -171,4 +164,16 @@ public class OrderService {
 
         orderMapper.resetCartItems(cart);
     }
+
+
+    public void deleteCartItem(CartDTO cart) {
+
+        orderMapper.deleteCartItem(cart);
+    }
+
+//    public int selectBalance(CartDTO store) {
+//
+//        int balance = orderMapper.selectBalance(store);
+//        return balance;
+//    }
 }
