@@ -25,10 +25,10 @@ spring:
     prefix: classpath:/templates/
     suffix: .html
   mail:
-    host: smtp.gmail.com
-    port: 587
-    username: ybusiness039
-    password: business12!*
+    host: smtp.naver.com
+    port: 465
+    username: ybusiness39
+    password: business12!
     properties:
       mail:
         smtp:
@@ -36,9 +36,9 @@ spring:
             enable: true
             required: true
           auth: true
-          connectiontimeout: 5000
-          timeout: 5000
-          writetimeout: 5000
+          connectiontimeout: 15000
+          timeout: 15000
+          writetimeout: 15000
 
 # mybatis config
 mybatis:

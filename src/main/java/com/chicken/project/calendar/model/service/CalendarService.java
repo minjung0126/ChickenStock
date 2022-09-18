@@ -15,7 +15,6 @@ public interface CalendarService {
 
     int updateCal(CalendarDTO cal);
 
-    int insertEditor(CalendarDTO cal);
 
     CalendarDTO selectCalNo(CalendarDTO cal);
 }

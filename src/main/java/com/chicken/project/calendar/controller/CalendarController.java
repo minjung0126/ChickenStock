@@ -100,17 +100,11 @@ public class CalendarController {
         cal.setContent(calCon);
         cal.setStartDay(calStart);
         cal.setEndDay(calEnd);
-        cal.setEdit(user.getUsername());
+        cal.setEmpId(user.getUsername());
         log.info("[CalendarController] cal : " + cal);
 
-        int result = 0;
+        int result = calendarService.updateCal(cal);
 
-        int result1 = calendarService.updateCal(cal);
-        int result2 = calendarService.insertEditor(cal);
-
-        if(result1 > 0 && result2 > 0){
-            result = 1;
-        }
 
         log.info("[CalendarController] result : " + result);
 

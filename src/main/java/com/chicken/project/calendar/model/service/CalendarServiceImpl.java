@@ -60,15 +60,6 @@ public class CalendarServiceImpl implements CalendarService {
     }
 
     @Override
-    public int insertEditor(CalendarDTO cal) {
-
-        log.info("[CalendarService] cal : " + cal);
-        int result2 = employeeMapper.insertEditor(cal);
-
-        return result2;
-    }
-
-    @Override
     public CalendarDTO selectCalNo(CalendarDTO cal) {
 
         CalendarDTO calendar = employeeMapper.selectCalNo(cal);

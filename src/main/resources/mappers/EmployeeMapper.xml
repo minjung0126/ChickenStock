@@ -188,20 +188,9 @@
           , CAL_CONTENT = NVL(#{ content }, CAL_CONTENT)
           , CAL_START = NVL(#{ startDay}, CAL_START)
           , CAL_END = NVL(#{ endDay }, CAL_END)
+          , CAL_EDIT = #{ empId }
         WHERE CAL_NO = #{ calNo }
     </update>
-
-    <insert id="insertEditor" parameterType="CalendarDTO">
-        INSERT
-        INTO CALENDAR
-        (
-          CAL_EDIT
-        )
-        VALUES
-        (
-          #{ edit }
-        )
-    </insert>
 
     <update id="updateEmpPwd" parameterType="EmployeeDTO">
         UPDATE
@@ -210,6 +199,23 @@
             EMP_PWD = #{ empPwd }
         WHERE EMP_ID = #{ empId }
     </update>
+
+    <update id="updateEmailCode" parameterType="EmployeeDTO">
+        UPDATE
+               EMPLOYEE
+           SET
+               EMAIL_CODE = #{ emailCode }
+         WHERE EMP_EMAIL = #{ empEmail }
+           AND EMP_ID = #{ empId }
+    </update>
+
+    <select id="selectEmailCode" resultType="_int">
+        SELECT
+               COUNT(EMAIL_CODE)
+          FROM EMPLOYEE
+        WHERE EMP_EMAIL = #{ empEmail }
+           AND EMP_ID = #{ empId };
+    </select>
 
 
 <!--    <select id="selectTotalEmpList" resultType="_int">-->

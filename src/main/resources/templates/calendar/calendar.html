@@ -168,16 +168,13 @@
                                 }
                                 if(updateCon == null){
                                     updateCon.attr('value', content)
-
                                 }
                                 if(updateStart == null){
                                     updateStart.attr('value', calStart)
-
                                 }
                                 if(updateEnd == null){
                                     updateEnd.attr('value', calEnd)
                                 }
-
 
                                 $.ajax({
                                     url : '/calendar/calUpdate',
@@ -197,16 +194,13 @@
                                             alert('일정 수정에 실패하였습니다.')
                                         }
                                     }
-
                                 })
 
-                            });
-
-                            $(".close").on("click", function(){
-                                $("#updateCal").modal("hide");
+                                $(".close").on("click", function(){
+                                    $("#updateCal").modal("hide");
+                                });
                             });
                         });
-
 
                         $("#deleteBtn").on("click", function () {
                             if(confirm("일정을 삭제하시겠습니까?")){
@@ -355,7 +349,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-warning" id="upBtn">수정</button>
+                        <button type="button" class="btn btn-warning" id="upBtn">수정</button>
                         <button type="button" class="btn btn-secondary close">취소</button>
                     </div>
                 </form>
