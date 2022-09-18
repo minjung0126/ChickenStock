@@ -9,7 +9,11 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Controller
@@ -79,6 +83,7 @@ public class CalendarController {
     }
 
     /* 일정 수정 */
+    /* 일정 수정 */
     @PostMapping("/calUpdate")
     @ResponseBody
     public int calUpdate(@ModelAttribute CalendarDTO cal,@RequestParam String name, @RequestParam String cont, @RequestParam String calName, @RequestParam String calCon, @RequestParam java.sql.Date calStart, @RequestParam java.sql.Date calEnd, @AuthenticationPrincipal User user){
@@ -111,4 +116,5 @@ public class CalendarController {
 
         return result;
     }
+
 }

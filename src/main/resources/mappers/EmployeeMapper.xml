@@ -24,6 +24,7 @@
         <result property="endDay" column="CAL_END"/>
         <result property="content" column="CAL_CONTENT"/>
         <result property="edit" column="CAL_EDIT"/>
+        <result property="emailCode" column="EMAIL_CODE"/>
     </resultMap>
 
     <resultMap id="authResultMap" type="AuthDTO">
@@ -202,6 +203,13 @@
         )
     </insert>
 
+    <update id="updateEmpPwd" parameterType="EmployeeDTO">
+        UPDATE
+               EMPLOYEE
+        SET
+            EMP_PWD = #{ empPwd }
+        WHERE EMP_ID = #{ empId }
+    </update>
 
 
 <!--    <select id="selectTotalEmpList" resultType="_int">-->

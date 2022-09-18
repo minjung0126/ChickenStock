@@ -22,6 +22,6 @@ public interface EmployeeMapper {
     int deleteCal(CalendarDTO cal);
     int updateCal(CalendarDTO cal);
     int insertEditor(CalendarDTO cal);
-
     CalendarDTO selectCalNo(CalendarDTO cal);
+    int updateEmpPwd(EmployeeDTO emp);
 }
