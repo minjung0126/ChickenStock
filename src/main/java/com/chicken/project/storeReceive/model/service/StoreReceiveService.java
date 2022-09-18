@@ -11,7 +11,9 @@ public interface StoreReceiveService {
 
     List<RecStoreOrderDTO> selectAllOrder();
 
-    List<ReceiveStoreDTO> selectAllReceive();
+    List<RecStoreOrderDTO> selectAllReceive();
 
     List<RecStoreOrderDTO> selectAllOrderItem(int orderNo);
+
+    List<RecStoreOrderDTO> selectAllReceiveItem(int orderNo);
 }

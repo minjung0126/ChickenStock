@@ -21,12 +21,13 @@ public class RecStoreOrderDTO {
     private RecRelOrdHandlerDTO recRelOrdHandler;
     private RecReleaseItemDTO recReleaseItem;
     private ReceiveStoreDTO receiveStore;
+    private ReceiveStoreItemDTO receiveStoreItem;
 
 
     public RecStoreOrderDTO() {
     }
 
-    public RecStoreOrderDTO(int orderNo, Date orderDate, String orderCode, String countOrderNo, int rNum, RecOrderHandlerDTO recOrderHandler, RecCartDTO recCart, ItemInfoDTO itemInfo, ItemFileDTO itemFile, ItemCategoryDTO itemCategory, RecRelOrdHandlerDTO recRelOrdHandler, RecReleaseItemDTO recReleaseItem, ReceiveStoreDTO receiveStore) {
+    public RecStoreOrderDTO(int orderNo, Date orderDate, String orderCode, String countOrderNo, int rNum, RecOrderHandlerDTO recOrderHandler, RecCartDTO recCart, ItemInfoDTO itemInfo, ItemFileDTO itemFile, ItemCategoryDTO itemCategory, RecRelOrdHandlerDTO recRelOrdHandler, RecReleaseItemDTO recReleaseItem, ReceiveStoreDTO receiveStore, ReceiveStoreItemDTO receiveStoreItem) {
         this.orderNo = orderNo;
         this.orderDate = orderDate;
         this.orderCode = orderCode;
@@ -40,6 +41,7 @@ public class RecStoreOrderDTO {
         this.recRelOrdHandler = recRelOrdHandler;
         this.recReleaseItem = recReleaseItem;
         this.receiveStore = receiveStore;
+        this.receiveStoreItem = receiveStoreItem;
     }
 
     public int getOrderNo() {
@@ -146,6 +148,14 @@ public class RecStoreOrderDTO {
         this.receiveStore = receiveStore;
     }
 
+    public ReceiveStoreItemDTO getReceiveStoreItem() {
+        return receiveStoreItem;
+    }
+
+    public void setReceiveStoreItem(ReceiveStoreItemDTO receiveStoreItem) {
+        this.receiveStoreItem = receiveStoreItem;
+    }
+
     @Override
     public String toString() {
         return "RecStoreOrderDTO{" +
@@ -162,6 +172,7 @@ public class RecStoreOrderDTO {
                 ", recRelOrdHandler=" + recRelOrdHandler +
                 ", recReleaseItem=" + recReleaseItem +
                 ", receiveStore=" + receiveStore +
+                ", receiveStoreItem=" + receiveStoreItem +
                 '}';
     }
 }

@@ -28,9 +28,9 @@ public class StoreReceiveServiceImpl implements StoreReceiveService{
     }
 
     @Override
-    public List<ReceiveStoreDTO> selectAllReceive() {
+    public List<RecStoreOrderDTO> selectAllReceive() {
 
-        List<ReceiveStoreDTO> receiveList = storeReceiveMapper.selectAllReceive();
+        List<RecStoreOrderDTO> receiveList = storeReceiveMapper.selectAllReceive();
 
         return receiveList;
     }
@@ -41,5 +41,13 @@ public class StoreReceiveServiceImpl implements StoreReceiveService{
         List<RecStoreOrderDTO> orderItemList = storeReceiveMapper.selectAllOrderItem(orderNo);
 
         return orderItemList;
+    }
+
+    @Override
+    public List<RecStoreOrderDTO> selectAllReceiveItem(int orderNo) {
+
+        List<RecStoreOrderDTO> receiveItemList = storeReceiveMapper.selectAllReceiveItem(orderNo);
+
+        return receiveItemList;
     }
 }

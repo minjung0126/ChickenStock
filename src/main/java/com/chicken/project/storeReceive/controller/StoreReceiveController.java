@@ -42,7 +42,7 @@ public class StoreReceiveController {
 
 
         List<RecStoreOrderDTO> orderList = storeReceiveService.selectAllOrder();
-        List<ReceiveStoreDTO> receiveList = storeReceiveService.selectAllReceive();
+        List<RecStoreOrderDTO> receiveList = storeReceiveService.selectAllReceive();
 
         List<List<RecStoreOrderDTO>> orderItem = new ArrayList<>();
         for(int i = 0; i < orderList.size(); i++){
@@ -52,13 +52,20 @@ public class StoreReceiveController {
                 orderItem.add(orderItemList);
             }
         }
+        System.out.println("출력" + orderItem);
 
-
+        List<List<RecStoreOrderDTO>> receiveItem = new ArrayList<>();
+        for(int i = 0; i < receiveList.size(); i++){
+            System.out.println(receiveList.get(i).getOrderNo());
+            List<RecStoreOrderDTO> receiveItemList = storeReceiveService.selectAllReceiveItem(receiveList.get(i).getOrderNo());
+            receiveItem.add(receiveItemList);
+        }
+        System.out.println(receiveItem);
 
         mv.addObject("orderList", orderList);
         mv.addObject("receiveList", receiveList);
         mv.addObject("orderItem", orderItem);
-
+        mv.addObject("receiveItem", receiveItem);
 
         mv.setViewName("receive/user/user_receive");
 

@@ -24,8 +24,6 @@
         <result property="countRecCode" column="countRecCode"/>
         <result property="sumRecAmount" column="sumRecAmount"/>
         <result property="rNum" column="RNUM"/>
-        <association property="recStoreOrder" resultMap="recStoreOrderResultMap"/>
-        <association property="receiveStoreItem" resultMap="receiveStoreItemResultMap"/>
     </resultMap>
 
     <resultMap id="receiveStoreItemResultMap" type="com.chicken.project.storeReceive.model.dto.ReceiveStoreItemDTO">
@@ -101,6 +99,7 @@
         <association property="recRelOrdHandler" resultMap="recRelOrdHandlerResultMap"/>
         <association property="recReleaseItem" resultMap="recReleaseItemResultMap"/>
         <association property="receiveStore" resultMap="receiveStoreResultMap"/>
+        <association property="receiveStoreItem" resultMap="receiveStoreItemResultMap"/>
     </resultMap>
 
     <resultMap id="recTaxBillResultMap" type="com.chicken.project.storeReceive.model.dto.RecTaxBillDTO">
@@ -160,10 +159,11 @@
                      ORDER BY 2
     </select>
 
-    <select id="selectAllReceive" resultMap="receiveStoreResultMap">
+    <select id="selectAllReceive" resultMap="recStoreOrderResultMap">
             SELECT
                                  (TO_CHAR('O' || LPAD(SO.ORDER_NO, 4, '0'))) orderCode
                                 , RS.REC_CODE
+                                , SO.ORDER_NO
                                 , COUNT(RS.REC_CODE)-1 countRecCode
                                 , SUM(RI.REC_AMOUNT) sumRecAmount
                                 , RS.REC_TOTALMONEY
@@ -205,6 +205,34 @@
               JOIN ITEM_CATEGORY IC ON (I.CATEGORY_NO = IC.CATEGORY_NO)
               LEFT JOIN REL_ORD_HANDLER ROH ON (C.CART_NO = ROH.CART_NO)
               LEFT JOIN RELEASE_ITEM RI ON (ROH.REL_CODE_DETAIL = RI.REL_CODE_DETAIL)
+             WHERE SO.ORDER_NO = #{ orderNo }
+             ORDER BY SO.ORDER_NO
+        </select>
+
+        <select id="selectAllReceiveItem" resultMap="recStoreOrderResultMap">
+            SELECT
+                   (TO_CHAR('O' || LPAD(SO.ORDER_NO, 4, '0'))) orderCode
+                 , SO.ORDER_NO
+                 , RC.REC_CODE
+                 , I.ITEM_NO
+                 , I.ITEM_NAME
+                 , IF.FILE_NAME
+                 , IC.CATEGORY_NAME
+                 , I.ITEM_STANDARD
+                 , I.ITEM_MAKE
+                 , C.CART_AMOUNT
+                 , I.ITEM_SALES
+                 , RC.REC_DATE
+                 , RCI.REC_AMOUNT
+                 , RCI.REC_MONEY
+              FROM STORE_ORDER SO
+              JOIN ORDER_HANDLER OH ON (SO.ORDER_NO = OH.ORDER_NO)
+              JOIN CART C ON (OH.CART_NO = C.CART_NO)
+              JOIN ITEM_INFO I ON (C.ITEM_NO = I.ITEM_NO)
+              JOIN ITEM_FILE IF ON (I.ITEM_NO = IF.ITEM_NO)
+              JOIN ITEM_CATEGORY IC ON (I.CATEGORY_NO = IC.CATEGORY_NO)
+              JOIN RECEIVE_STORE RC ON (RC.ORDER_NO = SO.ORDER_NO)
+         LEFT JOIN RECEIVE_STORE_ITEM RCI ON (I.ITEM_NO = RCI.ITEM_NO)
              WHERE SO.ORDER_NO = #{ orderNo }
              ORDER BY SO.ORDER_NO
         </select>

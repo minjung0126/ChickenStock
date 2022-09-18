@@ -152,18 +152,19 @@
                                     <tr class="detail-main">
                                         <td th:text="${ receive.rNum }">1</td>
                                         <td th:text="${ receive.orderCode }">190201</td>
-                                        <td th:text="${ receive.recCode }"></td>
+                                        <td th:text="${ receive.receiveStore.recCode }"></td>
                                         <td>닭다리 외 2개 품목</td>
-                                        <td th:text="${ receive.sumRecAmount }"></td>
-                                        <td th:text="${ receive.recTotalMoney }"></td>
-                                        <td th:text="${ receive.recStoreOrder.orderDate }"></td>
-                                        <td th:text="${ receive.recDate }"></td>
+                                        <td th:text="${ receive.receiveStore.sumRecAmount }"></td>
+                                        <td th:text="|${ #numbers.formatInteger(receive.receiveStore.recTotalMoney, 0, 'COMMA') }원|"></td>
+                                        <td th:text="${ receive.orderDate }"></td>
+                                        <td th:text="${ receive.receiveStore.recDate }"></td>
                                         <td><button type="button" class="btn btn-light btn-sm" onclick="insertReceive()" style="background: #ccc; color: #fff;" disabled>입고 완료</button></td>
                                     </tr>
                                     <tr class="detail-sub-tr">
                                         <td class="detail-sub-td p-0" colspan="9">
                                             <div class="detail-sub" style="display: none">
-                                                <table width="100%">
+                                                <table width="100%" th:each="receive2 : ${ receiveItem }"
+                                                       >
                                                     <thead>
                                                     <tr>
                                                         <th>번호</th>
@@ -176,33 +177,33 @@
                                                         <th>규격</th>
                                                         <th>제조사</th>
                                                         <th>발주 수량</th>
-                                                        <th>출고 수량</th>
+                                                        <th>입고 수량</th>
                                                         <th>입고 단가</th>
                                                         <th>입고 금액</th>
                                                         <th>입고일</th>
                                                     </tr>
                                                     </thead>
-                                                    <tr>
-                                                        <td>1</td>
-                                                        <td>190201</td>
-                                                        <td>11111</td>
-                                                        <td>100001</td>
+                                                    <tr th:each="receive3, stat : ${ receive2 }">
+                                                        <td th:text="${ receive3.rNum }">1</td>
+                                                        <td th:text="${ receive3.orderCode }">190201</td>
+                                                        <td th:text="${ receive3.receiveStore.recCode }">11111</td>
+                                                        <td th:text="${ receive3.itemInfo.itemNo }">100001</td>
                                                         <td>
                                                             <div class="img-info">
                                                                 <div class="img-info__img">
-                                                                    <img src="../assets/images/chicken.jpg" alt="">
+                                                                    <img th:src="'/itemImage/' + ${ receive3.itemFile.fileName }" alt="">
                                                                 </div>
                                                             </div>
                                                         </td>
-                                                        <td>닭다리</td>
-                                                        <td>식재료</td>
-                                                        <td>1kg</td>
-                                                        <td>하림</td>
-                                                        <td>30</td>
-                                                        <td>33</td>
-                                                        <td>4,500</td>
-                                                        <td></td>
-                                                        <td>2022-02-02</td>
+                                                        <td th:text="${ receive3.itemInfo.itemName }">닭다리</td>
+                                                        <td th:text="${ receive3.itemCategory.categoryName }">식재료</td>
+                                                        <td th:text="${ receive3.itemInfo.itemStandard }">1kg</td>
+                                                        <td th:text="${ receive3.itemInfo.itemMake }">하림</td>
+                                                        <td th:text="${ receive3.recCart.cartAmount }">30</td>
+                                                        <td th:text="${ receive3.receiveStoreItem.recAmount }">33</td>
+                                                        <td th:text="|${ #numbers.formatInteger(receive3.itemInfo.itemSales, 0, 'COMMA') }원|">4,500</td>
+                                                        <td th:text="|${ #numbers.formatInteger(receive3.receiveStoreItem.recMoney, 0, 'COMMA') }원|"></td>
+                                                        <td th:text="${ receive3.receiveStore.recDate }">2022-02-02</td>
                                                     </tr>
                                                 </table>
                                             </div>
