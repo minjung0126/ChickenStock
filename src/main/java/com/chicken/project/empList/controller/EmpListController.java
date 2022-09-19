@@ -50,7 +50,7 @@ public class EmpListController {
 
         int totalCount = empListService.selectTotalCount();
 
-        int limit = 6;
+        int limit = 7;
         int buttonAmount = 5;
 
         SelectCriteria selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount);

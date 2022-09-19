@@ -8,7 +8,7 @@ import java.io.UnsupportedEncodingException;
 public interface EmailService {
     int updateEmailCode(EmployeeDTO emp) throws MessagingException, UnsupportedEncodingException;
 
-    String selectEmailCode();
+    EmployeeDTO selectEmailCode(EmployeeDTO emp);
 
     int updatePwd(EmployeeDTO emp);
 }

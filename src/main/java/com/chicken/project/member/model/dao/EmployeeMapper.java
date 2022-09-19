@@ -26,7 +26,7 @@ public interface EmployeeMapper {
 
     int selectTotalCount();
 
-    String selectEmailCode();
+    EmployeeDTO selectEmailCode(EmployeeDTO emp);
 
     int updatePwd(EmployeeDTO emp);
 }

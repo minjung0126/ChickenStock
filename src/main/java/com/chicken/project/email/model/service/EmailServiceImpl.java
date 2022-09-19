@@ -55,9 +55,9 @@ public class EmailServiceImpl implements EmailService{
     }
 
     @Override
-    public String selectEmailCode() {
+    public EmployeeDTO selectEmailCode(EmployeeDTO emp) {
 
-        String emailCode = employeeMapper.selectEmailCode();
+        EmployeeDTO emailCode = employeeMapper.selectEmailCode(emp);
 
         return emailCode;
     }
