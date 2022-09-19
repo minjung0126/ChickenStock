@@ -6,4 +6,6 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface StoreMemberMapper {
     StoreMemberDTO selectStoreInfo(String username);
+
+    int updateStorePwd(StoreMemberDTO store);
 }

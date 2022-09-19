@@ -4,8 +4,9 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
+import java.sql.Date;
 
 @Getter
 @Setter
@@ -19,6 +20,6 @@ public class CalendarDTO {
     private java.sql.Date endDay;
     private String content;
     private String empId;
-    private String groupNO;
+    private String edit;
 
 }

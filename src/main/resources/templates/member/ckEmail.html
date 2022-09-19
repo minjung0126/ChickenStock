@@ -14,7 +14,8 @@
             <h3>이메일 인증</h3>
             <p>비밀번호 재설정을 위한 이메일 인증을 진행합니다. <br> 등록된 이메일을 입력해주세요.</p>
             
-            <form action="">
+            <form action="/member/ckEmail" method="post">
+                <input type="text" class="form_box" id="empId" name="empId" placeholder="아이디 입력"/>
                 <input type="email" class="form_box" id="email" name="email" placeholder="이메일 입력"/>
                 <button type="submit" id="code_btn">인증코드 발송</button> 
                 <input type="text" class="form_box" id="code" name="code" placeholder="인증코드 입력"/>
