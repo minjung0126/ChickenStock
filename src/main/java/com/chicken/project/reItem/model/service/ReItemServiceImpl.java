@@ -247,10 +247,18 @@ public class ReItemServiceImpl implements ReItemService{
     }
 
     @Override
-    public List<ReItemDTO> selectReItems(String rNo) {
+    public List<ReItemDTO> selectReItems(Map<String, String> item) {
 
-        List<ReItemDTO> reUpItems = reItemMapper.selectUpReItems(rNo);
+        List<ReItemDTO> reUpItems = reItemMapper.selectUpReItems(item);
 
         return reUpItems;
+    }
+
+    @Override
+    public List<StoreItemDTO> selectItems(Map<String, String> item) {
+
+        List<StoreItemDTO> storeItems = reItemMapper.selectItems(item);
+
+        return storeItems;
     }
 }

@@ -1,6 +1,8 @@
 package com.chicken.project.order.model.dto;
 
-public class CartDTO {
+import java.util.Date;
+
+public class OrderHistoryDTO {
 
     private int itemNo;
     private String itemName;
@@ -13,17 +15,15 @@ public class CartDTO {
     private String itemSoldoutYn;
     private String cartYn;
     private String storeName;
-    private int orderNo;
     private int cartNo;
-    private int balance;
-    private int lastOrderNo;
+    private int orderNo;
+    private Date orderDate;
     private OrderItemFileDTO itemFile;
-    private int totalPrice;
 
-    public CartDTO() {
+    public OrderHistoryDTO() {
     }
 
-    public CartDTO(int itemNo, String itemName, String categoryName, int categoryNo, String itemStandard, String itemMake, int itemSales, int cartAmount, String itemSoldoutYn, String cartYn, String storeName, int orderNo, int cartNo, int balance, int lastOrderNo, OrderItemFileDTO itemFile, int totalPrice) {
+    public OrderHistoryDTO(int itemNo, String itemName, String categoryName, int categoryNo, String itemStandard, String itemMake, int itemSales, int cartAmount, String itemSoldoutYn, String cartYn, String storeName, int cartNo, int orderNo, Date orderDate, OrderItemFileDTO itemFile) {
         this.itemNo = itemNo;
         this.itemName = itemName;
         this.categoryName = categoryName;
@@ -35,12 +35,10 @@ public class CartDTO {
         this.itemSoldoutYn = itemSoldoutYn;
         this.cartYn = cartYn;
         this.storeName = storeName;
-        this.orderNo = orderNo;
         this.cartNo = cartNo;
-        this.balance = balance;
-        this.lastOrderNo = lastOrderNo;
+        this.orderNo = orderNo;
+        this.orderDate = orderDate;
         this.itemFile = itemFile;
-        this.totalPrice = totalPrice;
     }
 
     public int getItemNo() {
@@ -131,14 +129,6 @@ public class CartDTO {
         this.storeName = storeName;
     }
 
-    public int getOrderNo() {
-        return orderNo;
-    }
-
-    public void setOrderNo(int orderNo) {
-        this.orderNo = orderNo;
-    }
-
     public int getCartNo() {
         return cartNo;
     }
@@ -147,20 +137,20 @@ public class CartDTO {
         this.cartNo = cartNo;
     }
 
-    public int getBalance() {
-        return balance;
+    public int getOrderNo() {
+        return orderNo;
     }
 
-    public void setBalance(int balance) {
-        this.balance = balance;
+    public void setOrderNo(int orderNo) {
+        this.orderNo = orderNo;
     }
 
-    public int getLastOrderNo() {
-        return lastOrderNo;
+    public Date getOrderDate() {
+        return orderDate;
     }
 
-    public void setLastOrderNo(int lastOrderNo) {
-        this.lastOrderNo = lastOrderNo;
+    public void setOrderDate(Date orderDate) {
+        this.orderDate = orderDate;
     }
 
     public OrderItemFileDTO getItemFile() {
@@ -171,17 +161,9 @@ public class CartDTO {
         this.itemFile = itemFile;
     }
 
-    public int getTotalPrice() {
-        return totalPrice;
-    }
-
-    public void setTotalPrice(int totalPrice) {
-        this.totalPrice = totalPrice;
-    }
-
     @Override
     public String toString() {
-        return "CartDTO{" +
+        return "OrderHistoryDTO{" +
                 "itemNo=" + itemNo +
                 ", itemName='" + itemName + '\'' +
                 ", categoryName='" + categoryName + '\'' +
@@ -193,12 +175,10 @@ public class CartDTO {
                 ", itemSoldoutYn='" + itemSoldoutYn + '\'' +
                 ", cartYn='" + cartYn + '\'' +
                 ", storeName='" + storeName + '\'' +
-                ", orderNo=" + orderNo +
                 ", cartNo=" + cartNo +
-                ", balance=" + balance +
-                ", lastOrderNo=" + lastOrderNo +
+                ", orderNo=" + orderNo +
+                ", orderDate=" + orderDate +
                 ", itemFile=" + itemFile +
-                ", totalPrice=" + totalPrice +
                 '}';
     }
 }

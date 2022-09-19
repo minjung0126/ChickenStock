@@ -6,6 +6,7 @@ import com.chicken.project.member.model.dto.StoreImpl;
 import com.chicken.project.order.model.dto.CartDTO;
 import com.chicken.project.order.model.dto.InterestDTO;
 import com.chicken.project.order.model.dto.OrderDTO;
+import com.chicken.project.order.model.dto.OrderHistoryDTO;
 import com.chicken.project.order.model.service.OrderService;
 import com.chicken.project.common.paging.SelectCriteria;
 
@@ -14,6 +15,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
@@ -23,6 +25,7 @@ import org.springframework.web.servlet.ModelAndViewDefiningException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -369,12 +372,36 @@ public class OrderController {
         }
 
         List<CartDTO> cartList = orderService.selectCartItem(selectCriteria);
-
+//        CartDTO store = new CartDTO();
+//        int balanceNo = orderService.selectBalance(store);
+//        store.setBalance(balanceNo);
+//        int balance = store.getBalance();
+//
+//        mv.addObject("balance", balance);
         mv.addObject("cartList", cartList);
         mv.addObject("selectCriteria", selectCriteria);
         mv.setViewName("order/cart");
         return mv;
     }
+
+    /* 장바구니 아이템 삭제 (DELETE) */
+    @PostMapping(value ="/cart/delete")
+    public String deleteCartItem(HttpServletRequest request, @AuthenticationPrincipal User user) {
+
+        String storeName = ((StoreImpl) user).getStoreName();
+
+        CartDTO cart = new CartDTO();
+        cart.setStoreName(storeName);
+
+        int itemNo = Integer.parseInt(request.getParameter("itemNo"));
+        cart.setItemNo(itemNo);
+
+        orderService.deleteCartItem(cart);
+
+        return "redirect:/order/cart/list";
+    }
+
+
 
     @GetMapping("/history")
     public ModelAndView orderHistory(ModelAndView mv, @AuthenticationPrincipal StoreImpl storeImpl) {
@@ -389,7 +416,7 @@ public class OrderController {
     }
 
 
-    //발주하기 (GET)
+    /* 발주하기--GET (INSERT) */
     @GetMapping(value = "/insert/items/page")
     public ModelAndView insertItemsPage (HttpServletRequest request,
                                     ModelAndView mv,
@@ -434,7 +461,9 @@ public class OrderController {
         return mv;
     }
 
-    //발주하기 (POST)
+
+    /* 발주하기--POST (INSERT) */
+    /* 민수님 여기예요 */
     @PostMapping(value="/insert/items/do")
     public ModelAndView insertItemsDo(HttpServletRequest request,
                                        ModelAndView mv,
@@ -442,68 +471,45 @@ public class OrderController {
                                        @AuthenticationPrincipal User user) throws InterestException, ParseException {
 
         String storeName = ((StoreImpl) user).getStoreName();
-        String currentPage = request.getParameter("currentPage");
-
-        int pageNo = 1;
-
-        if (currentPage != null && !"".equals(currentPage)) {
-            pageNo = Integer.parseInt(currentPage);
-        }
-
-        String searchCondition = request.getParameter("searchCondition");
-        String searchValue = request.getParameter("searchValue");
-
-        Map<String, String> searchMap = new HashMap<>();
-        searchMap.put("searchCondition", searchCondition);
-        searchMap.put("searchValue", searchValue);
-        searchMap.put("storeName", storeName);
-
-        int totalCount = orderService.selectCartTotalCount(searchMap);
-
-
-        int limit = 10;
-        int buttonAmount = 5;
-
-        SelectCriteria selectCriteria = null;
-
-        if (searchCondition != null && !"".equals(searchCondition)) {
-            selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount, searchCondition, searchValue, storeName);
-        } else {
-            selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount, storeName);
-        }
-
-        List<CartDTO> cartList = orderService.selectCartItem(selectCriteria);
-
-        JSONParser jsonParse = new JSONParser();
-
-        JSONArray jsonObj = (JSONArray) jsonParse.parse(cartNoList);
-
-        System.out.println("jsonObj = " + jsonObj);
 
         CartDTO cart = new CartDTO();
 
-        for(int i = 0; i < jsonObj.size(); i++){
+        cart.setStoreName(storeName);
 
-            System.out.println("jsonObj.get(i).get(\"itemNo\") = " + ((JSONObject)jsonObj.get(i)).get("itemNo"));
-            System.out.println("jsonObj.get(i).get(\"cartAmount\") = " + ((JSONObject)jsonObj.get(i)).get("cartAmount"));
-            System.out.println("jsonObj.get(i).get(\"categoryNo\") = " + ((JSONObject)jsonObj.get(i)).get("categoryNo"));
+        int orderNoResult = orderService.insertStoreOrderNo(cart);
 
-            int itemNo = Integer.parseInt(((JSONObject)jsonObj.get(i)).get("itemNo").toString());
-            int cartAmount = Integer.parseInt(((JSONObject)jsonObj.get(i)).get("cartAmount").toString());
-            int categoryNo = Integer.parseInt(((JSONObject)jsonObj.get(i)).get("categoryNo").toString());
+        JSONParser jsonParse = new JSONParser();
+        JSONArray jsonArr = (JSONArray) jsonParse.parse(cartNoList);
+
+        for(int i = 0; i < jsonArr.size(); i++) {
+
+            int itemNo = Integer.parseInt(((JSONObject) jsonArr.get(i)).get("itemNo").toString());
+            int cartAmount = Integer.parseInt(((JSONObject) jsonArr.get(i)).get("cartAmount").toString());
+            int categoryNo = Integer.parseInt(((JSONObject) jsonArr.get(i)).get("categoryNo").toString());
+            String price = ((JSONObject) jsonArr.get(i)).get("totalPrice").toString();
+            int totalPrice = Integer.parseInt(price.replace(",",""));
 
             cart.setItemNo(itemNo);
             cart.setCartAmount(cartAmount);
             cart.setCategoryNo(categoryNo);
-            cart.setStoreName(storeName);
+            cart.setTotalPrice(totalPrice);
 
-            orderService.insertOrderItems(itemNo, cartAmount, categoryNo, storeName);
+            orderService.resetCartItems(cart);
+
+            int cartNoResult = orderService.insertOrderItems(cart);
+
+            cart.setOrderNo(orderNoResult);
+            cart.setCartNo(cartNoResult);
+            orderService.insertOrderHandler(cart);
+
         }
 
-        mv.addObject("cartList", cartList);
-        mv.addObject("selectCriteria", selectCriteria);
-        mv.setViewName("redirect:/order/cart/list");
+        mv.setViewName("order/orderSuccess");
 
         return mv;
     }
+
+
+
+
 }

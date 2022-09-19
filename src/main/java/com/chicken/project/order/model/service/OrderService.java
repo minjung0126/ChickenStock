@@ -117,24 +117,63 @@ public class OrderService {
     }
 
     @Transactional
-    public void InsertCartList(List<String> itemNoList) throws InterestException {
+    public void InsertCartList(List<String> itemNoList) {
 
-        int result = orderMapper.insertCartList(itemNoList);
-
-        if(!(result > 0)) {
-            throw new InterestException("장바구니 담기에 실패하셨습니다.");
-        }
+        orderMapper.insertCartList(itemNoList);
 
     }
 
+    /* 발주 신청 완료 */
     @Transactional
     public void insertItemIntoCart(int itemNo, int cartAmount, String storeName) {
 
         orderMapper.insertItemIntoCart(itemNo, cartAmount, storeName);
+
     }
 
-    public void insertOrderItems(int itemNo, int cartAmount, int categoryNo, String storeName) {
 
-        orderMapper.insertOrderItems(itemNo, cartAmount, categoryNo, storeName);
+
+    @Transactional
+    public int insertStoreOrderNo(CartDTO cart) {
+
+        orderMapper.insertStoreOrderNo(cart);
+        int orderNoResult = cart.getOrderNo();
+
+        System.out.println("orderNoResult 서비스 제발 = " + orderNoResult);
+        return orderNoResult;
     }
+
+    @Transactional
+    public int insertOrderItems(CartDTO cart) {
+
+        orderMapper.insertOrderItems(cart);
+        int cartNoResult = cart.getCartNo();
+
+        return cartNoResult;
+    }
+
+    @Transactional
+    public void insertOrderHandler(CartDTO cart) {
+        System.out.println("cart 번호 확인123 = " + cart);
+        orderMapper.insertOrderHandler(cart);
+
+    }
+
+    @Transactional
+    public void resetCartItems(CartDTO cart) {
+
+        orderMapper.resetCartItems(cart);
+    }
+
+
+    public void deleteCartItem(CartDTO cart) {
+
+        orderMapper.deleteCartItem(cart);
+    }
+
+//    public int selectBalance(CartDTO store) {
+//
+//        int balance = orderMapper.selectBalance(store);
+//        return balance;
+//    }
 }
