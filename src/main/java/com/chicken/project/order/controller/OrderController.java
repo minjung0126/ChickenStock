@@ -1,5 +1,6 @@
 package com.chicken.project.order.controller;
 
+import com.chicken.project.account.model.service.AccountServiceImpl;
 import com.chicken.project.common.paging.Pagenation;
 import com.chicken.project.exception.order.InterestException;
 import com.chicken.project.member.model.dto.StoreImpl;
@@ -10,6 +11,7 @@ import com.chicken.project.order.model.dto.OrderHistoryDTO;
 import com.chicken.project.order.model.service.OrderServiceImpl;
 import com.chicken.project.common.paging.SelectCriteria;
 
+import com.chicken.project.store.model.dto.BalanceDTO;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -29,10 +31,12 @@ import java.util.*;
 @RequestMapping("order")
 public class OrderController {
     private final OrderServiceImpl orderService;
+    private final AccountServiceImpl accountService;
 
     @Autowired
-    public OrderController(OrderServiceImpl orderService) {
+    public OrderController(OrderServiceImpl orderService, AccountServiceImpl accountService) {
         this.orderService = orderService;
+        this.accountService = accountService;
     }
 
     //상품 목록 전체 조회
@@ -264,7 +268,6 @@ public class OrderController {
     public ModelAndView insertCartList(HttpServletRequest request,
                                        ModelAndView mv,
                                        @RequestParam("itemNoList") String itemNoList,
-                                       RedirectAttributes rttr,
                                        @AuthenticationPrincipal User user) throws InterestException, ParseException {
 
         String storeName = ((StoreImpl) user).getStoreName();
@@ -325,8 +328,6 @@ public class OrderController {
             orderService.insertItemIntoCart(itemNo, cartAmount, storeName);
         }
 
-        rttr.addFlashAttribute("message", "장바구니에 담기 성공!");
-
         mv.addObject("orderList", orderList);
         mv.addObject("selectCriteria", selectCriteria);
         mv.addObject("cart", cart);
@@ -374,6 +375,8 @@ public class OrderController {
         }
 
         List<CartDTO> cartList = orderService.selectCartItem(selectCriteria);
+        BalanceDTO balance = accountService.selectBalance(storeName);
+
 //        CartDTO store = new CartDTO();
 //        int balanceNo = orderService.selectBalance(store);
 //        store.setBalance(balanceNo);
@@ -382,6 +385,7 @@ public class OrderController {
 //        mv.addObject("balance", balance);
         mv.addObject("cartList", cartList);
         mv.addObject("selectCriteria", selectCriteria);
+        mv.addObject("balance", balance);
         mv.setViewName("order/cart");
         return mv;
     }

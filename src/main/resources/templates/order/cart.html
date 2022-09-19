@@ -58,7 +58,9 @@
               </div>
 
               <div class="balanceBox" style="font-weight: bold;">
-                <div id="balance" th:text="${'예치금 테스트중'}"></p></div>
+                <div id="balance"> 잔액 :
+                  <span th:text="${ #numbers.formatInteger(balance.getBalance(), 0, 'COMMA') }"> 원</span>
+                </div>
               </div>
 
               <div class="search-area" align="center">
