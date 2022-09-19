@@ -1,10 +1,13 @@
 package com.chicken.project.release.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.sql.Date;
 
 public class ReleaseItemHistroyDTO {
 
     private int relAmountDetail;
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")
     private java.sql.Date relDateDetail;
     private int relCodeDetail;
     private int relSumAmount;

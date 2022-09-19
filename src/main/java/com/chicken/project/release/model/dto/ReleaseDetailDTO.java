@@ -1,5 +1,7 @@
 package com.chicken.project.release.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.sql.Date;
 import java.util.List;
 
@@ -8,7 +10,9 @@ public class ReleaseDetailDTO {
     private int relAmount;
     private int itemNo;
     private int orderAmount;
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")
     private java.sql.Date relDate;
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")
     private java.sql.Date relItemRequestDate;
     private int totalMoney;
     private String itemName;
