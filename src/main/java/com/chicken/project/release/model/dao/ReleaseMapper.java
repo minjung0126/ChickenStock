@@ -45,4 +45,8 @@ public interface ReleaseMapper {
     int itemHistoryInsert(int relCode, int itemNo);
 
     int totalCount(ReleaseSelectCriteria selectCriteria);
+
+    int releaseInsertHandler(int cartNo, int relCodeDetail);
+
+    ReleaseDetailDTO selectDetail(String relCodeDetail);
 }

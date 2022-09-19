@@ -5,7 +5,7 @@ import com.chicken.project.common.paging.SelectCriteria;
 import com.chicken.project.item.model.dto.ItemCategoryDTO;
 import com.chicken.project.item.model.dto.ItemFileDTO;
 import com.chicken.project.item.model.dto.ItemInfoDTO;
-import com.chicken.project.item.model.service.ItemServiceImpl;
+import com.chicken.project.item.model.service.ItemService;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -22,17 +22,20 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/item")
 public class ItemController {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
-    private final ItemServiceImpl itemService;
+    private final ItemService itemService;
 
     @Autowired
-    public ItemController(ItemServiceImpl itemService){
+    public ItemController(ItemService itemService){
 
         this.itemService = itemService;
     }
@@ -65,12 +68,12 @@ public class ItemController {
         int totalCount = itemService.selectTotalCount(searchMap);
         log.info("[itemController] totalBoardCount : " + totalCount);
 
-        int limit = 10;
-//        if(searchCondition != null && !"".equals(searchCondition)) {
-//            limit = totalCount;
-//        } else{
-//            limit = 10;
-//        }
+        int limit;
+        if(searchCondition != null && !"".equals(searchCondition)) {
+            limit = totalCount;
+        } else{
+            limit = 10;
+        }
 
         int buttonAmount = 5;
 
@@ -94,7 +97,7 @@ public class ItemController {
         List<ItemCategoryDTO> itemCategoryList = itemService.selectCategory();
 
         mv.addObject("itemList", itemList);
-        mv.addObject("selectCriteria", selectCriteria);
+            mv.addObject("selectCriteria", selectCriteria);
         log.info("[itemController] SelectCriteria : " + selectCriteria);
 
         mv.addObject("itemPreCategoryList", itemPreCategoryList);
