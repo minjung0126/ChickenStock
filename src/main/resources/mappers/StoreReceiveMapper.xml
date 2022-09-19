@@ -181,6 +181,17 @@
           JOIN RELEASE_ITEM RI ON (RI.REL_CODE = R.REL_CODE)
           LEFT JOIN RECEIVE_STORE RS ON (RI.ORDER_NO = RS.ORDER_NO)
           JOIN STORE_ORDER SO ON (RI.ORDER_NO = SO.ORDER_NO)
+          JOIN ITEM_INFO I ON (I.ITEM_NO = RI.ITEM_NO)
+        <where>
+            R.STORE_NAME = #{ storeName }
+            <if test="searchCondition == 'itemName'">
+                AND I.ITEM_NAME LIKE '%' || #{ searchValue } || '%'
+            </if>
+            <if test="startDate != null and !startDate.equals('')">
+                AND (TO_CHAR(SO.ORDER_DATE, 'YYYY-MM-DD') BETWEEN #{ startDate } AND #{ endDate }
+                OR TO_CHAR(RS.REC_DATE, 'YYYY-MM-DD') BETWEEN #{ startDate } AND #{ endDate })
+            </if>
+        </where>
     </select>
 
     <select id="selectAllRelease" resultMap="recReleaseResultMap">
@@ -235,6 +246,16 @@ FROM (SELECT
           JOIN RELEASE_ITEM RI ON (RI.REL_CODE = R.REL_CODE)
           LEFT JOIN RECEIVE_STORE RS ON (RI.ORDER_NO = RS.ORDER_NO)
           JOIN STORE_ORDER SO ON (RI.ORDER_NO = SO.ORDER_NO)
+        <where>
+            R.STORE_NAME = #{ storeName }
+            <if test="searchCondition == 'itemName'">
+               AND R.REL_CODE IN (SELECT DISTINCT(RI.REL_CODE) FROM RELEASE_ITEM RI JOIN ITEM_INFO I ON(I.ITEM_NO = RI.ITEM_NO) WHERE I.ITEM_NAME LIKE '%' || #{ searchValue } || '%')
+            </if>
+            <if test="startDate != null and !startDate.equals('')">
+                AND (TO_CHAR(SO.ORDER_DATE, 'YYYY-MM-DD') BETWEEN #{ startDate } AND #{ endDate }
+                OR TO_CHAR(RS.REC_DATE, 'YYYY-MM-DD') BETWEEN #{ startDate } AND #{ endDate })
+            </if>
+        </where>
          ORDER BY RS.REC_CODE DESC,
                   RI.ORDER_NO) B
 <![CDATA[
