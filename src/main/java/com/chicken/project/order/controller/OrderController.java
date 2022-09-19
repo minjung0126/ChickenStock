@@ -7,7 +7,7 @@ import com.chicken.project.order.model.dto.CartDTO;
 import com.chicken.project.order.model.dto.InterestDTO;
 import com.chicken.project.order.model.dto.OrderDTO;
 import com.chicken.project.order.model.dto.OrderHistoryDTO;
-import com.chicken.project.order.model.service.OrderService;
+import com.chicken.project.order.model.service.OrderServiceImpl;
 import com.chicken.project.common.paging.SelectCriteria;
 
 import org.json.simple.JSONArray;
@@ -15,29 +15,23 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.ModelAndViewDefiningException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping("order")
 public class OrderController {
-    private final OrderService orderService;
+    private final OrderServiceImpl orderService;
 
     @Autowired
-    public OrderController(OrderService orderService) {
+    public OrderController(OrderServiceImpl orderService) {
         this.orderService = orderService;
     }
 
@@ -68,7 +62,7 @@ public class OrderController {
 
         int totalCount = orderService.selectTotalCount(searchMap);
 
-        int limit = 10;
+        int limit = 6;
         int buttonAmount = 5;
 
         SelectCriteria selectCriteria = null;
@@ -93,7 +87,8 @@ public class OrderController {
     @PostMapping ("/list/interest/insert")
     public String interestControl(HttpServletRequest request,
                                         RedirectAttributes rttr,
-                                        @AuthenticationPrincipal User user
+                                        @AuthenticationPrincipal User user,
+                                        ModelAndView mv
                                   ) throws InterestException {
 
         String storeName = ((StoreImpl) user).getStoreName();
@@ -114,12 +109,16 @@ public class OrderController {
         //관심 설정이 되어 있으면 삭제를, 되어 있지 않으면 추가를 한다.
         if (interCheck == 0) {
             orderService.insertInterest(interest);
+            interYn = "Y";
 
         } else if (interCheck == 1) {
             orderService.deleteInterest(interest);
+            interYn = "N";
         }
 
         rttr.addFlashAttribute("message", "관심 상품 등록 성공!");
+
+        mv.addObject("interYn", interYn);
 
         return "redirect:/order/list";
     }
@@ -149,7 +148,7 @@ public class OrderController {
 
         int totalCount = orderService.selectInterestItemCount(searchMap);
 
-        int limit = 10;
+        int limit = 6;
         int buttonAmount = 5;
 
         SelectCriteria selectCriteria = null;
@@ -194,7 +193,7 @@ public class OrderController {
 
         int totalCount = orderService.selectAvailableItemCount(searchMap);
 
-        int limit = 10;
+        int limit = 6;
         int buttonAmount = 5;
 
         SelectCriteria selectCriteria = null;
@@ -240,7 +239,7 @@ public class OrderController {
         //int totalCount = orderService.selectCartTotalCount(searchMap);
         int totalCount = orderService.selectTotalCount(searchMap);
 
-        int limit = 10;
+        int limit = 6;
         int buttonAmount = 5;
 
         SelectCriteria selectCriteria = null;
@@ -265,6 +264,7 @@ public class OrderController {
     public ModelAndView insertCartList(HttpServletRequest request,
                                        ModelAndView mv,
                                        @RequestParam("itemNoList") String itemNoList,
+                                       RedirectAttributes rttr,
                                        @AuthenticationPrincipal User user) throws InterestException, ParseException {
 
         String storeName = ((StoreImpl) user).getStoreName();
@@ -287,7 +287,7 @@ public class OrderController {
         //int totalCount = orderService.selectCartTotalCount(searchMap);
         int totalCount = orderService.selectTotalCount(searchMap);
 
-        int limit = 10;
+        int limit = 6;
         int buttonAmount = 5;
 
         SelectCriteria selectCriteria = null;
@@ -325,6 +325,8 @@ public class OrderController {
             orderService.insertItemIntoCart(itemNo, cartAmount, storeName);
         }
 
+        rttr.addFlashAttribute("message", "장바구니에 담기 성공!");
+
         mv.addObject("orderList", orderList);
         mv.addObject("selectCriteria", selectCriteria);
         mv.addObject("cart", cart);
@@ -360,7 +362,7 @@ public class OrderController {
 
         int totalCount = orderService.selectCartTotalCount(searchMap);
 
-        int limit = 10;
+        int limit = 6;
         int buttonAmount = 5;
 
         SelectCriteria selectCriteria = null;
@@ -402,20 +404,6 @@ public class OrderController {
     }
 
 
-
-    @GetMapping("/history")
-    public ModelAndView orderHistory(ModelAndView mv, @AuthenticationPrincipal StoreImpl storeImpl) {
-
-        String storeName = storeImpl.getStoreName();
-        List<OrderDTO> orderHistory = orderService.selectOrderHistory();
-
-        mv.addObject("orderHistory", orderHistory);
-        mv.setViewName("order/orderHistory");
-
-        return mv;
-    }
-
-
     /* 발주하기--GET (INSERT) */
     @GetMapping(value = "/insert/items/page")
     public ModelAndView insertItemsPage (HttpServletRequest request,
@@ -441,7 +429,7 @@ public class OrderController {
 
         int totalCount = orderService.selectCartTotalCount(searchMap);
 
-        int limit = 10;
+        int limit = 6;
         int buttonAmount = 5;
 
         SelectCriteria selectCriteria = null;
@@ -466,9 +454,9 @@ public class OrderController {
     /* 민수님 여기예요 */
     @PostMapping(value="/insert/items/do")
     public ModelAndView insertItemsDo(HttpServletRequest request,
-                                       ModelAndView mv,
-                                       @RequestParam("cartNoList") String cartNoList,
-                                       @AuthenticationPrincipal User user) throws InterestException, ParseException {
+                                      ModelAndView mv,
+                                      @RequestParam("cartNoList") String cartNoList,
+                                      @AuthenticationPrincipal User user) throws InterestException, ParseException {
 
         String storeName = ((StoreImpl) user).getStoreName();
 
@@ -505,9 +493,77 @@ public class OrderController {
 
         int result = orderService.insertOrderHandler(cart);
 
-        mv.setViewName("order/orderSuccess");
+        if(result > 0){
+
+            int result2 = orderService.insertStoreBreakdown(cart);
+
+            if(result2 > 0){
+
+                int result3 = orderService.updateStoreBalance(cart);
+
+                if(result3 > 0){
+
+                    mv.setViewName("order/orderSuccess");
+                } else{
+
+                    mv.setViewName("order/orderFailure");
+                }
+
+            }
+        }
 
         return mv;
+    }
+
+
+    /* 발주 내역 조회 */
+    @GetMapping(value = "/history")
+    public ModelAndView history(ModelAndView mv,
+                                HttpServletRequest request,
+                                @AuthenticationPrincipal User user,
+                                @RequestParam(value="orderDate", required = false) String orderDate) {
+
+        String storeName = ((StoreImpl) user).getStoreName();
+        String currentPage = request.getParameter("currentPage");
+
+        int pageNo = 1;
+
+        if (currentPage != null && !"".equals(currentPage)) {
+            pageNo = Integer.parseInt(currentPage);
+        }
+
+        String searchCondition = request.getParameter("searchCondition");
+        String searchValue = request.getParameter("searchValue");
+
+        Map<String, String> searchMap = new HashMap<>();
+        searchMap.put("searchCondition", searchCondition);
+        searchMap.put("searchValue", searchValue);
+        searchMap.put("storeName", storeName);
+
+        if(orderDate != null){
+            searchMap.put("orderDate", orderDate);
+        }
+
+        int totalCount = orderService.selectOrderHistoryCount(searchMap);
+
+        int limit = 6;
+        int buttonAmount = 5;
+
+        SelectCriteria selectCriteria = null;
+
+        if (searchCondition != null && !"".equals(searchCondition)) {
+            selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount, searchCondition, searchValue, storeName, orderDate);
+        } else {
+            selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount, storeName);
+        }
+
+        List<OrderHistoryDTO> historyList = orderService.selectOrderHistory(selectCriteria);
+
+        mv.addObject("historyList", historyList);
+        mv.addObject("selectCriteria", selectCriteria);
+        mv.setViewName("order/orderHistory");
+        return mv;
+
     }
 
 

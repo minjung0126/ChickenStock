@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
   <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-  <script src="/js/common.js"></script>
+  <script th:src="@{/js/common.js}"></script>
 
   <!-- font awesome -->
   <script src="https://kit.fontawesome.com/da4b1b94bb.js" crossorigin="anonymous"></script>
@@ -93,17 +93,17 @@
                       <input type="checkbox" class="form-check-input" name="option" value='selectall' onclick='selectAll(this)'/>
                     </div>
                   </th>
-                  <th style="width: 90px;">상품코드</th>
-                  <th style="width: 100px;">상품사진</th>
-                  <th style="width: 145px;">상품명</th>
-                  <th style="width: 145px;">카테고리</th>
-                  <th style="width: 60px;">규격</th>
-                  <th style="width: 100px;">제조사</th>
-                  <th style="width: 100px;">판매가격</th>
-                  <th style="width: 90px;">재고량</th>
-                  <th style="width: 100px;">수량</th>
-                  <th style="width: 100px;">품절여부</th>
-                  <th style="width: 90px;">관심등록</th>
+                  <th>상품코드</th>
+                  <th>상품사진</th>
+                  <th>상품명</th>
+                  <th>카테고리</th>
+                  <th>규격</th>
+                  <th>제조사</th>
+                  <th>판매가격</th>
+                  <th>재고량</th>
+                  <th>수량</th>
+                  <th>품절여부</th>
+                  <th>관심등록</th>
                 </tr>
               </thead>
               <form action="insetItemIntoCartForm" method="post" id="cartForm">
@@ -157,10 +157,17 @@
                           aria-expanded="false">
                             <i class="fa fa-ellipsis-v" id="dotMenu"></i>
                       </a>
-                      <div class="dropdown-menu" aria-labelledby="triggerId1">
+                      <div th:if="${interYn eq 'Y'}" class="dropdown-menu" aria-labelledby="triggerId1">
                         <a class="dropdown-item" href="javascript:void(0);" th:field="*{ order.cartAmount }"
                            th:itemNo="${ order.itemNo }" th:onclick="interest(this.getAttribute('itemNo'))">
-                          <i class="fa-solid fa-heart-circle-plus">관심설정</i>
+                          <i class="fa-solid fa-heart-circle-plus">관심 설정</i>
+                        </a>
+                      </div>
+
+                      <div th:if="${interYn eq 'N'}" class="dropdown-menu" aria-labelledby="triggerId1">
+                        <a class="dropdown-item" href="javascript:void(0);" th:field="*{ order.cartAmount }"
+                           th:itemNo="${ order.itemNo }" th:onclick="interestDelete(this.getAttribute('itemNo'))">
+                          <i class="fa-solid fa-heart-circle-plus">관심 삭제</i>
                         </a>
                       </div>
 
@@ -285,7 +292,26 @@
         ,url: "/order/list/interest/insert"
         ,data: {"itemNo":itemNo}
         ,success:function(data){
-          alert("설정이 저장되었습니다.");
+          alert("해당 상품이 관심 설정 되었습니다.");
+        }
+        ,error:function(data){
+          alert("관심 상품 저장에 실패하였습니다.");
+        }
+      });
+    }
+    /*]]>*/
+  </script>
+
+  <!-- 관심 삭제 -->
+  <script th:inline="javascript">
+    /*<![CDATA[*/
+    function interestDelete(itemNo) {
+      $.ajax({
+        type: "POST"
+        ,url: "/order/list/interest/insert"
+        ,data: {"itemNo":itemNo}
+        ,success:function(data){
+          alert("해당 상품이 관심 삭제 되었습니다.");
         }
         ,error:function(data){
           alert("관심 상품 저장에 실패하였습니다.");
@@ -359,6 +385,13 @@
       form.submit();
 
       console.log(itemNoList);
+    }
+  </script>
+  <script th:inline="javascript">
+    let message = [[${message}]];
+
+    if(message != null && message !== '') {
+      alert(message);
     }
   </script>
 

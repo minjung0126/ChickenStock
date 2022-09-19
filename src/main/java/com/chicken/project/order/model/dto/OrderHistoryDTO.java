@@ -17,13 +17,13 @@ public class OrderHistoryDTO {
     private String storeName;
     private int cartNo;
     private int orderNo;
-    private Date orderDate;
+    private String orderDate;
     private OrderItemFileDTO itemFile;
 
     public OrderHistoryDTO() {
     }
 
-    public OrderHistoryDTO(int itemNo, String itemName, String categoryName, int categoryNo, String itemStandard, String itemMake, int itemSales, int cartAmount, String itemSoldoutYn, String cartYn, String storeName, int cartNo, int orderNo, Date orderDate, OrderItemFileDTO itemFile) {
+    public OrderHistoryDTO(int itemNo, String itemName, String categoryName, int categoryNo, String itemStandard, String itemMake, int itemSales, int cartAmount, String itemSoldoutYn, String cartYn, String storeName, int cartNo, int orderNo, String orderDate, OrderItemFileDTO itemFile) {
         this.itemNo = itemNo;
         this.itemName = itemName;
         this.categoryName = categoryName;
@@ -145,11 +145,11 @@ public class OrderHistoryDTO {
         this.orderNo = orderNo;
     }
 
-    public Date getOrderDate() {
+    public String getOrderDate() {
         return orderDate;
     }
 
-    public void setOrderDate(Date orderDate) {
+    public void setOrderDate(String orderDate) {
         this.orderDate = orderDate;
     }
 
@@ -177,7 +177,7 @@ public class OrderHistoryDTO {
                 ", storeName='" + storeName + '\'' +
                 ", cartNo=" + cartNo +
                 ", orderNo=" + orderNo +
-                ", orderDate=" + orderDate +
+                ", orderDate='" + orderDate + '\'' +
                 ", itemFile=" + itemFile +
                 '}';
     }

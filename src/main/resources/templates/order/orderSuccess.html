@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
@@ -18,7 +20,7 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
   <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-  <script src="./js/common.js"></script>
+  <script th:src="@{/js/common.js}"></script>
 
   <!-- font awesome -->
   <script src="https://kit.fontawesome.com/da4b1b94bb.js" crossorigin="anonymous"></script>
@@ -28,13 +30,13 @@
   <div class="wrap">
 
     <!-- header -->
-    <div th:include="userHeader.html"></div>
+    <div th:include="common/userHeader.html"></div>
 
     <!-- S: container -->
     <div class="container px-0">
 
       <!-- S: aside -->
-      <div th:replace="userSidebar.html"></div>
+      <div th:replace="common/userSidebar.html"></div>
       <!-- E: aside -->
 
       <!-- S: main layout -->
@@ -48,12 +50,12 @@
 			      <br>
             <div class="mainBox">
                 <div class="infoBox" style="font-size: 18px;">
-                    선택하신 제품의 <b>발주가 완료</b>되었습니다.<br>
+                    <span>선택하신 제품의 발주가 완료되었습니다.</span>
                     <p id="dueDate"></p>
                 </div>
                 <div class="buttonBox">
-                    <button class="btn btn-warning" style="color:#fff; cursor: pointer;" onclick="location.href='#'">발주 내역 확인</button>
-                    <button class="btn btn-warning" style="color:#fff; cursor: pointer;" onclick="location.href='order.html'">추가 주문 하기</button>
+                    <button class="btn btn-warning" style="color:#fff; cursor: pointer;" th:onclick="'location.href=\'/order/history\''">발주 내역 확인</button>
+                    <button class="btn btn-warning" style="color:#fff; cursor: pointer;" th:onclick="'location.href=\'/order/list\''">추가 주문 하기</button>
                 </div>
             </div>
           </div>
