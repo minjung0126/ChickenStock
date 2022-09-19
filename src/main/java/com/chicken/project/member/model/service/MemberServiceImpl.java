@@ -107,7 +107,7 @@ public class MemberServiceImpl implements MemberService {
 
         int result = employeeMapper.updateEmailCode(emp);
 
-//        if(result > 0){
+        if(result > 0){
             MailHandler sendMail = new MailHandler(mailSender);
             sendMail.setSubject("[치킨스톡 인증 이메일입니다.]");
             sendMail.setText(
@@ -121,7 +121,7 @@ public class MemberServiceImpl implements MemberService {
             sendMail.setFrom("ybusiness39@naver.com","치킨스톡");
             sendMail.setTo(emp.getEmpId());
             sendMail.send();
-//        }
+        }
 
         return result;
     }

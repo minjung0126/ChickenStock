@@ -1,5 +1,7 @@
 package com.chicken.project.empList.controller;
 
+import com.chicken.project.common.paging.Pagenation;
+import com.chicken.project.common.paging.SelectCriteria;
 import com.chicken.project.empList.model.service.EmpListServiceImpl;
 import com.chicken.project.member.model.dto.EmployeeDTO;
 
@@ -34,15 +36,30 @@ public class EmpListController {
     }
 
     @GetMapping("/empList")
-    public ModelAndView empList(ModelAndView mv){
+    public ModelAndView empList(ModelAndView mv, HttpServletRequest request){
         log.info("");
         log.info("");
         log.info("[EmpListController] ========================================");
 
-        List<EmployeeDTO> empList = empListService.selectAllEmployee();
+        String currentPage = request.getParameter("currentPage");
+        int pageNo = 1;
+
+        if(currentPage != null && !"".equals(currentPage)){
+            pageNo = Integer.parseInt(currentPage);
+        }
+
+        int totalCount = empListService.selectTotalCount();
+
+        int limit = 6;
+        int buttonAmount = 5;
+
+        SelectCriteria selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount);
+
+        List<EmployeeDTO> empList = empListService.selectAllEmployee(selectCriteria);
         log.info("[EmpListController] empList : " + empList);
 
         mv.addObject("empList", empList);
+        mv.addObject("selectCriteria", selectCriteria);
 
         mv.setViewName("empList/empList");
 
