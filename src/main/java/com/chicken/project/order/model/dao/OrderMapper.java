@@ -43,11 +43,15 @@ public interface OrderMapper {
 
     int insertOrderItems(CartDTO cart);
 
-    void insertOrderHandler(CartDTO cart);
+    int insertOrderHandler(CartDTO cart);
 
     void resetCartItems(CartDTO cart);
 
     void deleteCartItem(CartDTO cart);
 
     int selectBalance(CartDTO store);
+
+    void insertStoreBreakdown(CartDTO cart);
+
+    void updateStoreBalance(CartDTO cart);
 }

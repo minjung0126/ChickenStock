@@ -5,13 +5,13 @@ import java.sql.Date;
 public class StoreBreakdownDTO {
 
     private String storeName;
-    private Date breakdownDate;
+    private String breakdownDate;
     private int withdrawal;
     private String content;
 
     public StoreBreakdownDTO() {}
 
-    public StoreBreakdownDTO(String storeName, Date breakdownDate, int withdrawal, String content) {
+    public StoreBreakdownDTO(String storeName, String breakdownDate, int withdrawal, String content) {
         this.storeName = storeName;
         this.breakdownDate = breakdownDate;
         this.withdrawal = withdrawal;
@@ -26,11 +26,11 @@ public class StoreBreakdownDTO {
         this.storeName = storeName;
     }
 
-    public Date getBreakdownDate() {
+    public String getBreakdownDate() {
         return breakdownDate;
     }
 
-    public void setBreakdownDate(Date breakdownDate) {
+    public void setBreakdownDate(String breakdownDate) {
         this.breakdownDate = breakdownDate;
     }
 
@@ -54,7 +54,7 @@ public class StoreBreakdownDTO {
     public String toString() {
         return "StoreBreakdownDTO{" +
                 "storeName='" + storeName + '\'' +
-                ", breakdownDate=" + breakdownDate +
+                ", breakdownDate='" + breakdownDate + '\'' +
                 ", withdrawal=" + withdrawal +
                 ", content='" + content + '\'' +
                 '}';

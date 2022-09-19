@@ -153,10 +153,19 @@ public class OrderService {
     }
 
     @Transactional
-    public void insertOrderHandler(CartDTO cart) {
+    public int insertOrderHandler(CartDTO cart) {
         System.out.println("cart 번호 확인123 = " + cart);
-        orderMapper.insertOrderHandler(cart);
 
+        int result = orderMapper.insertOrderHandler(cart);
+
+        orderMapper.insertStoreBreakdown(cart);
+        orderMapper.updateStoreBalance(cart);
+
+//        if(result > 0){
+//
+//        }
+
+        return result;
     }
 
     @Transactional

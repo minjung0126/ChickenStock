@@ -527,5 +527,31 @@
 <!--        WHERE STORE_NAME = #{ storeName }-->
 <!--    </select>-->
 
+    <insert id="insertStoreBreakdown">
+        INSERT
+          INTO STORE_BREAKDOWN
+        (
+          STORE_NAME
+        , BREAKDOWN_DATE
+        , WITHDRAWAL
+        , CONTENT
+        )
+        VALUES
+        (
+          #{ storeName }
+        , TO_CHAR(SYSDATE,'yyyy-MM-dd HH24:MI:SS')
+        , #{ totalPrice }
+        , '출금'
+        )
+    </insert>
+
+    <update id="updateStoreBalance">
+        UPDATE BALANCE
+        SET BALANCE = BALANCE - (SELECT B.TOTAL_PRICE FROM ORDER_HANDLER B WHERE B.CART_NO = #{ cartNo })
+        WHERE STORE_NAME = #{ storeName }
+            <![CDATA[
+          AND BALANCE >= #{ totalPrice }
+                                        ]]>
+    </update>
 
 </mapper>

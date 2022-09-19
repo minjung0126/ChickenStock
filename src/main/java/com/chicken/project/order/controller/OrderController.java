@@ -500,9 +500,10 @@ public class OrderController {
 
             cart.setOrderNo(orderNoResult);
             cart.setCartNo(cartNoResult);
-            orderService.insertOrderHandler(cart);
 
         }
+
+        int result = orderService.insertOrderHandler(cart);
 
         mv.setViewName("order/orderSuccess");
 

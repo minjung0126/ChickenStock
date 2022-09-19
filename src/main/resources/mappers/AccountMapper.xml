@@ -170,6 +170,7 @@
                *
           FROM STORE_BREAKDOWN
          WHERE STORE_NAME = #{ storeName }
+         ORDER BY BREAKDOWN_DATE
     </select>
 
     <insert id="depositInsert">
@@ -185,7 +186,7 @@
         (
           #{ storeName }
         , #{ accountDeposit }
-        , SYSDATE
+        , TO_CHAR(SYSDATE,'yyyy-MM-dd HH24:MI:SS')
         , '입금'
         )
     </insert>
