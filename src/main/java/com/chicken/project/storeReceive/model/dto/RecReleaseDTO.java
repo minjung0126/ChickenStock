@@ -1,6 +1,7 @@
 package com.chicken.project.storeReceive.model.dto;
 
 import java.sql.Date;
+import java.util.List;
 
 public class RecReleaseDTO {
 
@@ -20,15 +21,15 @@ public class RecReleaseDTO {
     private int recTotalMoney;
     private java.sql.Date orderDate;
     private java.sql.Date recDate;
-    private RecReleaseItemDTO recReleaseItem;
-    private ReceiveStoreDTO receiveStore;
+    private List<RecReleaseItemDTO> recReleaseItem;
+    private List< ReceiveStoreDTO> receiveStore;
 
-    private RecStoreOrderDTO recStoreOrder;
+    private List<RecStoreOrderDTO> recStoreOrder;
 
     public RecReleaseDTO() {
     }
 
-    public RecReleaseDTO(String relCode, String relName, Date relDate, String relYn, String storeName, String totalMoney, Date relListDate, String orderNo, String orderCode, int rNum, String recCode, int recAmount, int recTotalMoney, Date orderDate, Date recDate, RecReleaseItemDTO recReleaseItem, ReceiveStoreDTO receiveStore, RecStoreOrderDTO recStoreOrder) {
+    public RecReleaseDTO(String relCode, String relName, Date relDate, String relYn, String storeName, String totalMoney, Date relListDate, String orderNo, String orderCode, int rNum, String recCode, int recAmount, int recTotalMoney, Date orderDate, Date recDate, List<RecReleaseItemDTO> recReleaseItem, List<ReceiveStoreDTO> receiveStore, List<RecStoreOrderDTO> recStoreOrder) {
         this.relCode = relCode;
         this.relName = relName;
         this.relDate = relDate;
@@ -169,27 +170,27 @@ public class RecReleaseDTO {
         this.recDate = recDate;
     }
 
-    public RecReleaseItemDTO getRecReleaseItem() {
+    public List<RecReleaseItemDTO> getRecReleaseItem() {
         return recReleaseItem;
     }
 
-    public void setRecReleaseItem(RecReleaseItemDTO recReleaseItem) {
+    public void setRecReleaseItem(List<RecReleaseItemDTO> recReleaseItem) {
         this.recReleaseItem = recReleaseItem;
     }
 
-    public ReceiveStoreDTO getReceiveStore() {
+    public List<ReceiveStoreDTO> getReceiveStore() {
         return receiveStore;
     }
 
-    public void setReceiveStore(ReceiveStoreDTO receiveStore) {
+    public void setReceiveStore(List<ReceiveStoreDTO> receiveStore) {
         this.receiveStore = receiveStore;
     }
 
-    public RecStoreOrderDTO getRecStoreOrder() {
+    public List<RecStoreOrderDTO> getRecStoreOrder() {
         return recStoreOrder;
     }
 
-    public void setRecStoreOrder(RecStoreOrderDTO recStoreOrder) {
+    public void setRecStoreOrder(List<RecStoreOrderDTO> recStoreOrder) {
         this.recStoreOrder = recStoreOrder;
     }
 

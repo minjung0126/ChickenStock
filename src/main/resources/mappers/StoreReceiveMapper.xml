@@ -65,9 +65,9 @@
         <result property="recTotalMoney" column="REC_TOTALMONEY"/>
         <result property="orderDate" column="ORDER_DATE"/>
         <result property="recDate" column="REC_DATE"/>
-        <association property="receiveStore" resultMap="receiveStoreResultMap"/>
-        <association property="recReleaseItem" resultMap="recReleaseItemResultMap"/>
-        <association property="recStoreOrder" resultMap="recStoreOrderResultMap"/>
+        <collection property="receiveStore" resultMap="receiveStoreResultMap"/>
+        <collection property="recReleaseItem" resultMap="recReleaseItemResultMap"/>
+        <collection property="recStoreOrder" resultMap="recStoreOrderResultMap"/>
     </resultMap>
 
     <resultMap id="recReleaseItemResultMap" type="com.chicken.project.storeReceive.model.dto.RecReleaseItemDTO">
@@ -256,6 +256,7 @@ FROM (SELECT
              , SO.ORDER_DATE
              , RS.REC_DATE
              , RLI.REL_CODE
+             , IC.CATEGORY_NO
         FROM RELEASE_ITEM RLI
                  JOIN ITEM_INFO I ON (RLI.ITEM_NO = I.ITEM_NO)
                  JOIN ITEM_CATEGORY IC ON (I.CATEGORY_NO = IC.CATEGORY_NO)
@@ -280,6 +281,7 @@ FROM (SELECT
                , RSI.REC_MONEY
                , SO.ORDER_DATE
                , RS.REC_DATE
+               , IC.CATEGORY_NO
         HAVING RLI.REL_CODE = #{ relCode }
         ORDER BY I.ITEM_NO
     </select>

@@ -105,7 +105,7 @@
                                         <td class="detail-sub-td p-0" colspan="10">
                                             <div class="detail-sub" style="display: none">
                                                 <table width="100%" th:each="receive : ${ receiveItem }"
-                                                       th:if="${ release.orderCode eq receive[0].orderCode}"
+                                                       th:if="${ release.relCode eq receive[0].relCode}"
                                                 class="recTable" id="recTable">
                                                     <thead>
                                                     <tr>
@@ -128,7 +128,7 @@
                                                     </thead>
                                                     <tr th:each="receive2, stat : ${ receive }">
                                                         <td th:text="${ stat.count }">1</td>
-                                                        <td class="recOrderNo" th:value="${ receive2.orderNo }" th:text="${ receive2.orderCode }">190201</td>
+                                                        <td th:text="${ receive2.orderCode }">190201</td>
 <!--                                                        <td th:if="${ releaseList.get(stat.index).recCode eq null }"></td>-->
 <!--                                                        <td th:if="${ releaseList.get(stat.index).recCode ne null }" th:text="${ receive2.recCode }"></td>-->
                                                         <td th:text="${ receive2.recCode }"></td>
@@ -151,7 +151,8 @@
                                                         <td th:if="${ receive2.recCode ne null }" th:text="|${ #numbers.formatInteger(receive2.recMoney, 0, 'COMMA') }원|"></td>
                                                         <td th:if="${ receive2.recCode eq null }" th:text="${ receive2.orderDate }"></td>
                                                         <td th:if="${ receive2.recCode ne null }" th:text="${ receive2.recDate }"></td>
-
+                                                        <input type="hidden" id="categoryNo" class="categoryNo" th:value="${ receive2.itemCategory.categoryNo }">
+                                                        <input type="hidden" id="recOrderNo" class="recOrderNo" th:value="${ receive2.orderNo }">
                                                     </tr>
                                                 </table>
                                             </div>
@@ -346,43 +347,60 @@
 <script>
     function insertReceive(check){
 
-
         let click = $(check.parentElement.parentElement.nextElementSibling.getElementsByClassName('recTable')[0].children[1]);
         console.log(click);
-        let tr = click.children;
+        let tr = click[0].children;
 
-        let reciveList = []; // 배열
-        let recive = {};  // 객체
+        let receiveList = []; // 배열
+        let receive = {};  // 객체
         // push를 이용해서 객체배열을 만들려고함
 
-
-
+        let count = 0;
         for(let i = 0; i < tr.length; i++){
-            // let test = click.getElementsByClassName('recItemNo')[i].innerText;
-            // console.log(test);
-            let count = 0;
+
             if($(click[0].children).find(".recAmount")[i].innerText == $(click[0].children).find(".ordAmount")[i].innerText){
                 count++;
             }
-            console.log(count);
+        }
+        console.log(tr.length);
+
+        for(let i = 0; i < tr.length; i++){
 
             if(count == tr.length){
-                recive = {
+
+                receive = {
                     recItemNo : $(click[0].children).find(".recItemNo")[i].innerText,
-                    recOrderNo : $(click[0].children).find(".recOrderNo")[i].innerText,
                     recAmount : $(click[0].children).find(".recAmount")[i].innerText,
-                    sales : $(click[0].children).find(".sales")[i].innerText.replace(/[^0-9]/gi, '')
+                    sales : $(click[0].children).find(".sales")[i].innerText.replace(/[^0-9]/gi, ''),
+                    categoryNo : $(click[0].children).find(".categoryNo").val(),
+                    recOrderNo : $(click[0].children).find(".recOrderNo").val()
                 }
-            } else{
+                receiveList.push(receive);
+                } else{
                 alert('발주 수량과 출고 수량을 다시 확인해주세요.');
                 return;
             }
+        }
+        console.log(receiveList);
 
+        let answer = confirm('입고를 진행하시겠습니까?');
+        if(answer){
+            let form = document.createElement('form');
 
-            reciveList.push(recive);
+            let hidden = document.createElement('input');
+            hidden.setAttribute('type', 'hidden');
+            hidden.setAttribute('name', 'receiveList');
+            hidden.setAttribute('value', JSON.stringify(receiveList));
+
+            form.appendChild(hidden);
+            form.setAttribute('method', 'post');
+            form.setAttribute('action', '/storeReceive/user/regist');
+            document.body.appendChild(form);
+            form.submit();
         }
 
-        console.log(reciveList);
+
+
 
         // if(rowLength == 0){
         //     alert('입고할 품목을 등록해주세요.');
