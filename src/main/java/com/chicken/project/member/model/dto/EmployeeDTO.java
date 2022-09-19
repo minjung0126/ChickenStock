@@ -22,6 +22,7 @@ public class EmployeeDTO {
     private String empPwd;
     private java.sql.Date birth;
     private String empRole;
+    private String emailCode;
 
     private List<EmpRoleDTO> empRoleList;
 

@@ -1,5 +1,7 @@
 package com.chicken.project.empList.controller;
 
+import com.chicken.project.common.paging.Pagenation;
+import com.chicken.project.common.paging.SelectCriteria;
 import com.chicken.project.empList.model.service.EmpListServiceImpl;
 import com.chicken.project.member.model.dto.EmployeeDTO;
 
@@ -23,7 +25,7 @@ public class EmpListController {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
     private final EmpListServiceImpl empListService;
 
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
 
     @Autowired
@@ -34,15 +36,30 @@ public class EmpListController {
     }
 
     @GetMapping("/empList")
-    public ModelAndView empList(ModelAndView mv){
+    public ModelAndView empList(ModelAndView mv, HttpServletRequest request){
         log.info("");
         log.info("");
         log.info("[EmpListController] ========================================");
 
-        List<EmployeeDTO> empList = empListService.selectAllEmployee();
+        String currentPage = request.getParameter("currentPage");
+        int pageNo = 1;
+
+        if(currentPage != null && !"".equals(currentPage)){
+            pageNo = Integer.parseInt(currentPage);
+        }
+
+        int totalCount = empListService.selectTotalCount();
+
+        int limit = 6;
+        int buttonAmount = 5;
+
+        SelectCriteria selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount);
+
+        List<EmployeeDTO> empList = empListService.selectAllEmployee(selectCriteria);
         log.info("[EmpListController] empList : " + empList);
 
         mv.addObject("empList", empList);
+        mv.addObject("selectCriteria", selectCriteria);
 
         mv.setViewName("empList/empList");
 
@@ -53,7 +70,7 @@ public class EmpListController {
     }
 
     @PostMapping("/empList")
-    public String registEmp(@ModelAttribute EmployeeDTO emp, HttpServletRequest request, RedirectAttributes rttr){
+    public String registEmp(@ModelAttribute EmployeeDTO emp, RedirectAttributes rttr){
 
         log.info("");
         log.info("");
@@ -76,10 +93,10 @@ public class EmpListController {
 
         log.info("[EmpListController] ========================================");
 
-        return "redirect:/";
+        return "redirect:/empList/empList";
     }
 
-    @PostMapping("/auth")
+    @PostMapping(value = {"/auth"})
     @ResponseBody
     public String insertAuth(@RequestParam String empId){
 

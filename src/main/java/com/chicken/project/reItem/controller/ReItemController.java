@@ -49,12 +49,12 @@ public class ReItemController {
     // 가맹점 반품서작성
     @PostMapping("/user/insertReItem")
     public ModelAndView reItems( String[] returnCount2
-                                , String[] itemNo2
-                                , @AuthenticationPrincipal StoreImpl storeImpl
-                                , @ModelAttribute ReItemDTO returnItems
-                                , ModelAndView mv
-                                , @RequestParam String rReason
-                                , @RequestParam int returnTotalMoney){
+            , String[] itemNo2
+            , @AuthenticationPrincipal StoreImpl storeImpl
+            , @ModelAttribute ReItemDTO returnItems
+            , ModelAndView mv
+            , @RequestParam String rReason
+            , @RequestParam int returnTotalMoney){
 
         List<ReItemDTO> insertItem = new ArrayList<>();
 
@@ -84,10 +84,10 @@ public class ReItemController {
     // 가맹점 반품서 리스트 확인
     @GetMapping("/user/storeReList")
     public ModelAndView returnList(ModelAndView mv
-                                    , HttpServletRequest request
-                                    , @RequestParam(defaultValue = "1") int currentPage
-                                    , @AuthenticationPrincipal StoreImpl storeImpl
-                                  ){
+            , HttpServletRequest request
+            , @RequestParam(defaultValue = "1") int currentPage
+            , @AuthenticationPrincipal StoreImpl storeImpl
+    ){
 
         int pageNo = currentPage;
 
@@ -124,20 +124,27 @@ public class ReItemController {
     // 가맹점 반품서 수정
     @GetMapping("/user/reviseReItem")
     public ModelAndView RreItem(@ModelAttribute ReItemDTO returnItems
-                                , ModelAndView mv
-                                , HttpServletRequest request
-                                ){
+            , ModelAndView mv
+            , HttpServletRequest request
+            , @AuthenticationPrincipal StoreImpl storeImpl
+    ){
         String rNo = request.getParameter("rNo");
         mv.addObject("rNo", rNo);
 
         log.info("혹시나 혹시나 혹시 나나나" + rNo);
+        Map<String, String> item = new HashMap<>();
+        item.put("storeName",storeImpl.getStoreName());
+        item.put("rNo",rNo);
 
         ReItemDTO updateItem = reItemService.selectUpReItem(rNo);
-        List<ReItemDTO> updateItems = reItemService.selectReItems(rNo);
+        List<ReItemDTO> updateItems = reItemService.selectReItems(item);
+        List<StoreItemDTO> storeItems = reItemService.selectItems(item);
+
 
 
         mv.addObject("updateItem", updateItem);
         mv.addObject("updateItems",updateItems);
+        mv.addObject("storeItems", storeItems);
 
 
 
@@ -241,10 +248,10 @@ public class ReItemController {
     // 본사 반품 상세보기 반품등록 해주기
     @PostMapping("/admin/adminReItem")
     public ModelAndView ReturnComplete(ModelAndView mv
-                                        , @AuthenticationPrincipal AdminImpl adminImpl
-                                        , @ModelAttribute ReItemDTO returnItems
-                                        , @RequestParam String rNo
-                                        , @RequestParam String storeName){
+            , @AuthenticationPrincipal AdminImpl adminImpl
+            , @ModelAttribute ReItemDTO returnItems
+            , @RequestParam String rNo
+            , @RequestParam String storeName){
 
         String adminId = adminImpl.getEmpId();
 

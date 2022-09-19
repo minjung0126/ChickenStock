@@ -6,6 +6,7 @@ import com.chicken.project.order.model.dao.OrderMapper;
 import com.chicken.project.order.model.dto.CartDTO;
 import com.chicken.project.order.model.dto.InterestDTO;
 import com.chicken.project.order.model.dto.OrderDTO;
+import com.chicken.project.order.model.dto.OrderHistoryDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -117,24 +118,61 @@ public class OrderService {
     }
 
     @Transactional
-    public void InsertCartList(List<String> itemNoList) throws InterestException {
+    public void InsertCartList(List<String> itemNoList) {
 
         int result = orderMapper.insertCartList(itemNoList);
 
-        if(!(result > 0)) {
-            throw new InterestException("장바구니 담기에 실패하셨습니다.");
-        }
-
     }
 
+    /* 발주 신청 완료 */
     @Transactional
     public void insertItemIntoCart(int itemNo, int cartAmount, String storeName) {
 
         orderMapper.insertItemIntoCart(itemNo, cartAmount, storeName);
+
     }
 
-    public void insertOrderItems(int itemNo, int cartAmount, int categoryNo, String storeName) {
 
-        orderMapper.insertOrderItems(itemNo, cartAmount, categoryNo, storeName);
+
+    @Transactional
+    public String deleteCartItem(int cartNo) {
+
+        return orderMapper.deleteCartItem(cartNo);
+
+    }
+
+    @Transactional
+    public int insertStoreOrderNo(OrderHistoryDTO orderHistory) {
+
+        orderMapper.insertStoreOrderNo(orderHistory);
+        int orderResult = orderHistory.getLastOrderNo();
+
+        System.out.println("orderResult 테테중 = " + orderResult);
+
+        return orderResult;
+    }
+
+    @Transactional
+    public int insertOrderItems(CartDTO cart) {
+
+        orderMapper.insertOrderItems(cart);
+        int cartResult = cart.getLastCartNo();
+
+        System.out.println("cartResult 테테중 = " + cartResult);
+
+        return cartResult;
+    }
+
+    @Transactional
+    public void insertOrderHandler(OrderHistoryDTO orderHistory) {
+
+        orderMapper.insertOrderHandler(orderHistory);
+
+    }
+
+    @Transactional
+    public void resetCartItems(CartDTO cart) {
+
+        orderMapper.resetCartItems(cart);
     }
 }
