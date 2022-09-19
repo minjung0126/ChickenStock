@@ -41,4 +41,12 @@
          WHERE A.STORE_ID = #{ username }
            AND A.STORE_YN = 'Y'
     </select>
+
+    <update id="updateStorePwd" parameterType="StoreMemberDTO">
+        UPDATE
+            STORE
+        SET
+            STORE_PWD = #{ storePwd }
+        WHERE STORE_ID = #{ storeId }
+    </update>
 </mapper>

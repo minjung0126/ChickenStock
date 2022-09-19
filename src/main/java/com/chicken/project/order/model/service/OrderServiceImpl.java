@@ -163,11 +163,17 @@ public class OrderServiceImpl implements OrderService{
         return cartNoResult;
     }
 
+
     @Override
     @Transactional
-    public void insertOrderHandler(CartDTO cart) {
-        orderMapper.insertOrderHandler(cart);
+    public int insertOrderHandler(CartDTO cart) {
 
+        int result = orderMapper.insertOrderHandler(cart);
+
+        orderMapper.insertStoreBreakdown(cart);
+        orderMapper.updateStoreBalance(cart);
+
+        return result;
     }
 
     @Override

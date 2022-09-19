@@ -450,9 +450,9 @@ public class OrderController {
     /* 민수님 여기예요 */
     @PostMapping(value="/insert/items/do")
     public ModelAndView insertItemsDo(HttpServletRequest request,
-                                       ModelAndView mv,
-                                       @RequestParam("cartNoList") String cartNoList,
-                                       @AuthenticationPrincipal User user) throws InterestException, ParseException {
+                                      ModelAndView mv,
+                                      @RequestParam("cartNoList") String cartNoList,
+                                      @AuthenticationPrincipal User user) throws InterestException, ParseException {
 
         String storeName = ((StoreImpl) user).getStoreName();
 
@@ -484,14 +484,16 @@ public class OrderController {
 
             cart.setOrderNo(orderNoResult);
             cart.setCartNo(cartNoResult);
-            orderService.insertOrderHandler(cart);
 
         }
+
+        int result = orderService.insertOrderHandler(cart);
 
         mv.setViewName("redirect:/order/cart/list");
 
         return mv;
     }
+
 
     /* 발주 내역 조회 */
     @GetMapping(value = "/history")

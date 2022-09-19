@@ -47,7 +47,7 @@ public interface OrderService {
 
     int insertOrderItems(CartDTO cart);
 
-    void insertOrderHandler(CartDTO cart);
+    int insertOrderHandler(CartDTO cart);
 
     void resetCartItems(CartDTO cart);
 
