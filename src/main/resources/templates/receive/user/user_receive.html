@@ -143,7 +143,7 @@
                                                         <td th:text="${ receive2.categoryName }">식재료</td>
                                                         <td th:text="${ receive2.itemStandard }">1kg</td>
                                                         <td th:text="${ receive2.itemMake }">하림</td>
-                                                        <td th:text="${ receive2.orderAmount }">30</td>
+                                                        <td class="ordAmount" th:text="${ receive2.orderAmount }">30</td>
                                                         <td class="recAmount" th:value="${ receive2.relAmount }" th:text="${ receive2.relAmount }"></td>
                                                         <td class="sales" th:value="${ receive2.itemSales }" th:text="|${ #numbers.formatInteger(receive2.itemSales, 0, 'COMMA') }원|">4,500</td>
                                                         <td th:if="${ receive2.recCode eq null }"></td>
@@ -345,42 +345,44 @@
 <script>
     function insertReceive(check){
 
+
         let click = $(check.parentElement.parentElement.nextElementSibling.getElementsByClassName('recTable')[0].children[1]);
         console.log(click);
-        let tr = click.children.length;
-        for(let i = 0; i < tr.length; i++){
-            let test = click.getElementsByClassName('recItemNo')[i].innerText;
-            console.log(test);
-        }
-        // let rowLength = document.getElementById('recTable').tBodies[0].rows.length;
-        // // let empNameHidden = document.getElementById('empName').value;
-        // // console.log(empNameHidden);
-        // // let click = $(check.parentElement.parentElement.nextElementSibling.getElementsByClassName('recTable'));
-        // let click = $(check).closest('#recTable');
-        // let test = click.find('tbody tr #recItemNo');
-        // console.log(click);
-        // console.log(test)
+        let tr = click.children;
 
-        // for(let i = 0; i < tr; i++){
-        //     let receiveItem = [];
-        //     let receiveItemNo = '';
-        //     let receiveAmount = '';
-        //     let receiveSales = '';
-        //     let receiveOrderNo = '';
-        //     for(let i = 0; i < tr; i++){
-        //         receiveItemNo = click.getElementsByClassName('recItemNo')[i];
-        //         // receiveAmount = document.getElementsByClassName('recAmount')[i].value;
-        //         // receiveSales = document.getElementsByClassName('sales')[i].value;
-        //         // receiveOrderNo = document.getElementsByClassName('recOrderNo')[i].value;
-        //             receiveItem[i] = receiveItemNo;
-        //         // receiveItem[i] = receiveItemNo + ' ' + receiveAmount + ' ' + receiveSales + ' ' + receiveOrderNo;
-        //     }
-        //     console.log(receiveItem);
-        // }
-        // console.log(click);
-        // console.log(tr);
-        //
-        //
+        let reciveList = []; // 배열
+        let recive = {};  // 객체
+        // push를 이용해서 객체배열을 만들려고함
+
+
+
+        for(let i = 0; i < tr.length; i++){
+            // let test = click.getElementsByClassName('recItemNo')[i].innerText;
+            // console.log(test);
+            let count = 0;
+            if($(click[0].children).find(".recAmount")[i].innerText == $(click[0].children).find(".ordAmount")[i].innerText){
+                count++;
+            }
+            console.log(count);
+
+            if(count == tr.length){
+                recive = {
+                    recItemNo : $(click[0].children).find(".recItemNo")[i].innerText,
+                    recOrderNo : $(click[0].children).find(".recOrderNo")[i].innerText,
+                    recAmount : $(click[0].children).find(".recAmount")[i].innerText,
+                    sales : $(click[0].children).find(".sales")[i].innerText.replace(/[^0-9]/gi, '')
+                }
+            } else{
+                alert('발주 수량과 출고 수량을 다시 확인해주세요.');
+                return;
+            }
+
+
+            reciveList.push(recive);
+        }
+
+        console.log(reciveList);
+
         // if(rowLength == 0){
         //     alert('입고할 품목을 등록해주세요.');
         // } else{
