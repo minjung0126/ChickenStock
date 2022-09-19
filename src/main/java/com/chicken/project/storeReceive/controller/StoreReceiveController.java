@@ -3,6 +3,7 @@ package com.chicken.project.storeReceive.controller;
 import com.chicken.project.common.paging.Pagenation;
 import com.chicken.project.common.paging.SelectCriteria;
 import com.chicken.project.exception.receive.ReceiveInsertException;
+import com.chicken.project.exception.receive.ReceiveUpdateException;
 import com.chicken.project.member.model.dto.StoreImpl;
 import com.chicken.project.receive.model.dto.ReceiveOfficeDTO;
 import com.chicken.project.receive.model.dto.ReceiveOfficeItemDTO;
@@ -19,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -141,7 +143,7 @@ public class StoreReceiveController {
     }
 
     @PostMapping(value = "/user/regist")
-    public String receiveRegist(ModelAndView mv, RedirectAttributes rttr, @RequestParam("receiveList") String receiveList, @AuthenticationPrincipal StoreImpl store) throws ReceiveInsertException {
+    public String receiveRegist(ModelAndView mv, RedirectAttributes rttr, @RequestParam("receiveList") String receiveList, @AuthenticationPrincipal StoreImpl store) throws ReceiveInsertException, ReceiveUpdateException {
 
         String storeName = store.getStoreName();
         String storeAccount = store.getStoreAccount();
@@ -160,11 +162,11 @@ public class StoreReceiveController {
             System.out.println("sales = " + sales);
             System.out.println("recAmount = " + recAmount);
             Map<String, Object> map = new HashMap<>();
-            map.put("recItemNo", receiveObject.get("recItemNo"));
-            map.put("recAmount", receiveObject.get("recAmount"));
+            map.put("recItemNo", receiveObject.get("recItemNo").getAsInt());
+            map.put("recAmount", receiveObject.get("recAmount").getAsInt());
             map.put("sales", receiveObject.get("sales"));
-            map.put("categoryNo", receiveObject.get("categoryNo"));
-            map.put("recOrderNo", receiveObject.get("recOrderNo"));
+            map.put("categoryNo", receiveObject.get("categoryNo").getAsInt());
+            map.put("recOrderNo", receiveObject.get("recOrderNo").getAsInt());
             map.put("recMoney", sales * recAmount);
             map.put("recSupply", Math.round((sales * recAmount) / 1.1));
             map.put("recTax", (sales * recAmount) - Math.round((sales * recAmount) / 1.1));
@@ -173,21 +175,60 @@ public class StoreReceiveController {
             recList.add(map);
         }
 
+
+        int recTotalAmount = 0;
+        int recTotalMoney = 0;
+
+        for(int i = 0; i < recList.size(); i++){
+            int recAmount = (int) recList.get(i).get("recAmount");
+            int recMoney = (int) recList.get(i).get("recMoney");
+            recTotalAmount += recAmount;
+            recTotalMoney += recMoney;
+        }
+        System.out.println("토탈출력" + recTotalAmount + " " + recTotalMoney);
+
         System.out.println("recList 출력" + recList);
-//        storeReceiveService.insertReceiveStore();
-//        storeReceiveService.insertReceiveStoreItem();
-//        storeReceiveService.insertTaxBill();
-//        storeReceiveService.insertTsBill();
-//
+        System.out.println("orderNo출력" +recList.get(0).get("recOrderNo"));
+
+        // receiveStore
+        HashMap<String, Object> rec = new HashMap<>();
+        rec.put("orderNo", recList.get(0).get("recOrderNo"));
+        rec.put("recTotalAmount", recTotalAmount);
+        rec.put("recTotalMoney", recTotalMoney);
+        rec.put("storeName", storeName);
+        System.out.println(rec + "출력");
+
+        int result = storeReceiveService.insertReceiveStore(rec);
+        if(result > 0) {
+            storeReceiveService.insertTaxBill();
+            storeReceiveService.insertTsBill();
+            // receiveStoreItem
+            for(int i = 0; i < recList.size(); i++){
+
+                // 입고 품목에 insert
+                storeReceiveService.insertReceiveStoreItem(recList.get(i));
+
+                // 품목 등록 여부에 따라 insert, update
+                Integer result2 = storeReceiveService.selectOneItem(recList.get(i).get("recItemNo"), storeName);
+                if(result2 > 0){
+                    storeReceiveService.updateOneItem(recList.get(i));
+                } else {
+                    storeReceiveService.insertOneItem(recList.get(i));
+                }
+            }
+        }
+
+
+
 //        List<StoreItemListDTO> storeItem = storeReceiveService.selectStoreItem();
 //        List<Object> itemNoList = new ArrayList<>();
 //        for(int i = 0; i < storeItem.size(); i++){
 //            int itemNo = storeItem.get(i).getItemNo();
 //            itemNoList.add(itemNo);
 //        }
-
-        // receiveList의 갯수만큼
-  //      for()
+//
+//         receiveList의 갯수만큼
+//        for()
 //        타입 result = storeReceiveService.selectStoreItem(itemNo);
 //
 //        if(result != null){

@@ -166,6 +166,14 @@
         <result property="itemNo" column="ITEM_NO"/>
     </resultMap>
 
+    <resultMap id="recStoItemInfoResultMap" type="com.chicken.project.storeReceive.model.dto.RecStoItemInfoDTO">
+        <id property="itemNo" column="ITEM_NO"/>
+        <result property="categoryNo" column="CATEGORY_NO"/>
+        <result property="storeAmount" column="STORE_AMOUNT"/>
+        <result property="storeName" column="STORE_NAME"/>
+        <result property="storeAccount" column="STORE_ACCOUNT"/>
+    </resultMap>
+
     <select id="selectTotalCount" resultType="_int" parameterType="hashmap">
         SELECT
                COUNT(DISTINCT(R.REL_CODE))
@@ -285,4 +293,111 @@ FROM (SELECT
         HAVING RLI.REL_CODE = #{ relCode }
         ORDER BY I.ITEM_NO
     </select>
+
+    <insert id="insertReceiveStore" parameterType="hashMap">
+        INSERT
+          INTO RECEIVE_STORE
+        (
+            ORDER_NO
+          , REC_CODE
+          , REC_AMOUNT
+          , STORE_NAME
+          , REC_TOTALMONEY
+        )
+        VALUES
+        (
+           #{ orderNo }
+        , (TO_CHAR('SI' || LPAD(SEQ_STO_REC_CODE.NEXTVAL, 4, '0')))
+        , #{ recTotalAmount }
+        , #{ storeName }
+        , #{ recTotalMoney }
+        )
+    </insert>
+
+    <insert id="insertTaxBill">
+        INSERT
+          INTO TAXBILL
+        (
+            REC_CODE
+        )
+        VALUES
+        (
+            (TO_CHAR('SI' || LPAD(SEQ_STO_REC_CODE.CURRVAL, 4, '0')))
+        )
+    </insert>
+
+    <insert id="insertTsBill">
+        INSERT
+          INTO TSBILL
+        (
+            REC_CODE
+        )
+        VALUES
+        (
+            (TO_CHAR('SI' || LPAD(SEQ_STO_REC_CODE.CURRVAL, 4, '0')))
+        )
+    </insert>
+
+    <insert id="insertReceiveStoreItem" parameterType="hashMap">
+        INSERT
+          INTO RECEIVE_STORE_ITEM
+        (
+            ITEM_NO
+          , REC_CODE
+          , REC_AMOUNT
+          , REC_MONEY
+          , REC_SUPPLY
+          , REC_TAX
+        )
+        VALUES
+        (
+            #{ recItemNo }
+          , (TO_CHAR('SI' || LPAD(SEQ_STO_REC_CODE.CURRVAL, 4, '0')))
+          , #{ recAmount }
+          , #{ recMoney }
+          , #{ recSupply }
+          , #{ recTax }
+        )
+    </insert>
+
+    <select id="selectOneItem" resultMap="recStoItemInfoResultMap">
+        SELECT
+               *
+          FROM STO_ITEM_INFO
+         WHERE ITEM_NO = #{ recItemNo }
+           AND STORE_NAME = #{ storeName }
+    </select>
+
+    <update id="updateOneItem">
+        UPDATE STO_ITEM_INFO
+           SET STORE_AMOUNT = (SELECT
+                                      STORE_AMOUNT
+                                 FROM STO_ITEM_INFO
+                                WHERE ITEM_NO = #{ recItemNo }
+                                  AND STORE_NAME = #{ storeName })
+            + #{ recAmount }
+        WHERE ITEM_NO = #{ recItemNo }
+          and store_name = #{ storeName }
+    </update>
+
+    <insert id="insertOneItem" parameterType="hashMap">
+        INSERT
+          INTO STO_ITEM_INFO
+        (
+            STORE_AMOUNT
+          , CATEGORY_NO
+          , ITEM_NO
+          , STORE_NAME
+          , STORE_ACCOUNT
+        )
+        VALUES
+        (
+            #{ recAmount }
+          , #{ categoryNo }
+          , #{ recItemNo }
+          , #{ storeName }
+          , #{ storeAccount }
+        )
+    </insert>
+
 </mapper>
