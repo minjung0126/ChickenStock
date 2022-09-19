@@ -7,6 +7,7 @@ import com.chicken.project.order.model.dto.CartDTO;
 import com.chicken.project.order.model.dto.InterestDTO;
 import com.chicken.project.order.model.dto.OrderDTO;
 import com.chicken.project.order.model.dto.OrderHistoryDTO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,20 +15,23 @@ import java.util.List;
 import java.util.Map;
 
 @Service("orderService")
-public class OrderService {
+public class OrderServiceImpl implements OrderService{
     private final OrderMapper orderMapper;
 
-    public OrderService(OrderMapper orderMapper) {
+    @Autowired
+    public OrderServiceImpl(OrderMapper orderMapper) {
 
         this.orderMapper = orderMapper;
     }
 
+    @Override
     public List<OrderDTO> selectAllItem(SelectCriteria selectCriteria) {
 
         return orderMapper.selectAllItem(selectCriteria);
 
     }
 
+    @Override
     public int selectTotalCount(Map<String, String> searchMap) {
 
         int result = orderMapper.selectTotalCount(searchMap);
@@ -36,6 +40,7 @@ public class OrderService {
 
     }
 
+    @Override
     public int selectInterestCount(InterestDTO interest) {
 
         int interCheck = orderMapper.selectInterestCount(interest);
@@ -43,6 +48,7 @@ public class OrderService {
         return interCheck;
     }
 
+    @Override
     @Transactional
     public int insertInterest(InterestDTO interest) throws InterestException {
 
@@ -56,6 +62,7 @@ public class OrderService {
         return insert;
     }
 
+    @Override
     @Transactional
     public int deleteInterest(InterestDTO interest) throws InterestException {
 
@@ -70,6 +77,7 @@ public class OrderService {
 
     }
 
+    @Override
     public int selectCartTotalCount(Map<String, String> searchMap) {
 
         int result = orderMapper.selectTotalCount(searchMap);
@@ -79,11 +87,13 @@ public class OrderService {
     }
 
 
+    @Override
     public List<CartDTO> selectCartItem(SelectCriteria selectCriteria) {
 
         return orderMapper.selectCartItem(selectCriteria);
     }
 
+    @Override
     public int selectAvailableItemCount(Map<String, String> searchMap) {
 
         int result = orderMapper.selectAvailableItemCount(searchMap);
@@ -91,11 +101,13 @@ public class OrderService {
         return result;
     }
 
+    @Override
     public List<OrderDTO> selectAvailableItem(SelectCriteria selectCriteria) {
 
         return orderMapper.selectAvailableItem(selectCriteria);
     }
 
+    @Override
     public int selectInterestItemCount(Map<String, String> searchMap) {
 
         int result = orderMapper.selectInterestItemCount(searchMap);
@@ -104,19 +116,22 @@ public class OrderService {
     }
 
 
+    @Override
     public List<OrderDTO> selectInterestItem(SelectCriteria selectCriteria) {
 
         return orderMapper.selectInterestItem(selectCriteria);
 
     }
 
-    @Transactional
-    public void InsertCartList(List<String> itemNoList) {
+//    @Override
+//    @Transactional
+//    public void InsertCartList(List<String> itemNoList) {
+//
+//        orderMapper.insertCartList(itemNoList);
+//
+//    }
 
-        orderMapper.insertCartList(itemNoList);
-
-    }
-
+    @Override
     /* 발주 신청 완료 */
     @Transactional
     public void insertItemIntoCart(int itemNo, int cartAmount, String storeName) {
@@ -127,6 +142,7 @@ public class OrderService {
 
 
 
+    @Override
     @Transactional
     public int insertStoreOrderNo(CartDTO cart) {
 
@@ -137,6 +153,7 @@ public class OrderService {
         return orderNoResult;
     }
 
+    @Override
     @Transactional
     public int insertOrderItems(CartDTO cart) {
 
@@ -146,12 +163,14 @@ public class OrderService {
         return cartNoResult;
     }
 
+    @Override
     @Transactional
     public void insertOrderHandler(CartDTO cart) {
         orderMapper.insertOrderHandler(cart);
 
     }
 
+    @Override
     @Transactional
     public void resetCartItems(CartDTO cart) {
 
@@ -159,11 +178,14 @@ public class OrderService {
     }
 
 
+    @Override
+    @Transactional
     public void deleteCartItem(CartDTO cart) {
 
         orderMapper.deleteCartItem(cart);
     }
 
+    @Override
     public int selectOrderHistoryCount(Map<String, String> searchMap) {
 
         int result = orderMapper.selectOrderHistoryCount(searchMap);
@@ -173,6 +195,7 @@ public class OrderService {
 
     }
 
+    @Override
     public List<OrderHistoryDTO> selectOrderHistory(SelectCriteria selectCriteria) {
 
         return orderMapper.selectOrderHistory(selectCriteria);
