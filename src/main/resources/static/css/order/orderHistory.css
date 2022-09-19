@@ -1,10 +1,9 @@
-.input-group {
+.input-box {
     display: 100%;
     position: relative;
 }
-
 /* 입고 예정일, 발주 마감일, 현재 시각 */
-.input-group > .dateList1, .dateList2, .dateList3 {
+.input-box > .dateList1, .dateList2, .dateList3 {
     height: 40px;
     width: 500px;
     background-color: #fff;
@@ -13,6 +12,11 @@
     margin: 10px;
     border: 1px solid #aaa;
     border-radius: 15px 15px 15px 15px;
+}
+
+#orderDate {
+    margin-top: 170px;
+    margin-left: 15px;
 }
 
 /* 입고 예정일, 발주 마감일, 현재 시각 position 설정 */
@@ -33,7 +37,7 @@
 
 /* table */
 .table {
-    margin-top: 210px;
+    margin-top: 0px;
 
  }
 

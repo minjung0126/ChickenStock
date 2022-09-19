@@ -60,16 +60,15 @@
     <resultMap id="orderHistoryResultMap" type="OrderHistoryDTO">
         <id property="orderNo" column="ORDER_NO"/>
         <result property="itemNo" column="ITEM_NO"/>
+        <result property="itemName" column="ITEM_NAME"/>
         <result property="categoryNo" column="CATEGORY_NO"/>
-        <result property="categoryName" column="CATEGORY_NAME"/>
         <result property="itemStandard" column="ITEM_STANDARD"/>
         <result property="itemMake" column="ITEM_MAKE"/>
         <result property="itemSales" column="ITEM_SALES"/>
         <result property="cartAmount" column="CART_AMOUNT"/>
-        <result property="itemSoldoutYn" column="ITEM_SOLDOUT_YN"/>
-        <result property="cartYn" column="CART_YN"/>
         <result property="storeName" column="STORE_NAME"/>
         <result property="cartNo" column="CART_NO"/>
+        <result property="orderNo" column="ORDER_NO"/>
         <result property="orderDate" column="ORDER_DATE"/>
 
         <association property="itemFile" resultMap="itemFileResultMap"/>
@@ -491,7 +490,7 @@
         VALUES
         (
             SEQ_STORE_ORDER_NO_TEST.NEXTVAL
-          , to_date(sysdate, 'YYYY-MM-DD')
+          , sysdate
         )
         <selectKey resultType="_int" keyProperty="orderNo" order="AFTER">
             SELECT SEQ_STORE_ORDER_NO_TEST.CURRVAL FROM dual
@@ -527,5 +526,81 @@
 <!--        WHERE STORE_NAME = #{ storeName }-->
 <!--    </select>-->
 
+    <!-- 발주 내역 COUNT -->
+    <select id="selectOrderHistoryCount" resultType="_int" parameterType="hashmap">
+        SELECT
+        COUNT(A.CART_NO)
+        FROM ORDER_HANDLER A
+        JOIN STORE_ORDER B ON (B.ORDER_NO = A.ORDER_NO)
+        JOIN CART C ON (A.CART_NO = C.CART_NO)
+        <where>
+            <if test="orderDate != null and !startDate.equals('')">
+                TO_CHAR(B.ORDER_DATE, 'YY/MM/DD') = #{ orderDate }
+            </if>
+        AND C.STORE_NAME = #{ storeName }
+        </where>
+    </select>
+
+    <select id="selectOrderHistory" resultMap="orderHistoryResultMap">
+        SELECT
+        A.RNUM
+        , A.CART_AMOUNT
+        , A.CATEGORY_NO
+        , A.ITEM_NO
+        , A.CART_NO
+        , A.ITEM_NAME
+        , A.ITEM_STANDARD
+        , A.ITEM_SALES
+        , A.ITEM_MAKE
+        , A.FILE_NO
+        , A.ORIGIN_NAME
+        , A.FILE_NAME
+        , A.orderDate
+        FROM (SELECT
+        ROWNUM RNUM
+        , B.CART_AMOUNT
+        , B.CATEGORY_NO
+        , B.ITEM_NO
+        , B.CART_NO
+        , B.ITEM_NAME
+        , B.ITEM_STANDARD
+        , B.ITEM_SALES
+        , B.ITEM_MAKE
+        , B.FILE_NO
+        , B.ORIGIN_NAME
+        , B.FILE_NAME
+        , B.orderDate
+        FROM (SELECT
+          C.CART_AMOUNT
+        , C.CATEGORY_NO
+        , C.ITEM_NO
+        , C.CART_NO
+        , E.ITEM_NAME
+        , E.ITEM_STANDARD
+        , E.ITEM_SALES
+        , E.ITEM_MAKE
+        , G.FILE_NO
+        , G.ORIGIN_NAME
+        , G.FILE_NAME
+        , TO_CHAR(F.ORDER_DATE, 'YY/DD/MM') AS orderDate
+        FROM CART C
+        LEFT JOIN ORDER_HANDLER D ON (C.CART_NO = D.CART_NO)
+        LEFT JOIN ITEM_INFO E ON (C.ITEM_NO = E.ITEM_NO)
+        LEFT JOIN STORE_ORDER F ON (D.ORDER_NO = F.ORDER_NO)
+        LEFT JOIN ITEM_FILE G ON (C.ITEM_NO = G.ITEM_NO)
+        <where>
+            <if test="orderDate != null and !startDate.equals('')">
+                TO_CHAR(F.ORDER_DATE, 'YY/MM/DD') = #{ orderDate }
+            </if>
+            AND C.STORE_NAME = #{ storeName }
+        </where>
+        ORDER BY C.ITEM_NO ASC
+        ) B
+        <![CDATA[
+              WHERE ROWNUM <= #{ endRow }
+        ]]>
+        ) A
+        WHERE A.RNUM >= #{ startRow }
+    </select>
 
 </mapper>

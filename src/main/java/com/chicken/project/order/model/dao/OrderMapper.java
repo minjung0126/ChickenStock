@@ -16,9 +16,7 @@ public interface OrderMapper {
     List<OrderDTO> selectAllItem(SelectCriteria selectCriteria);
 
     List<CartDTO> selectCartItem(SelectCriteria selectCriteria);
-
-    List<OrderDTO> selectOrderHistory();
-
+    
     int selectTotalCount(Map<String, String> searchMap);
 
     int selectInterestCount(InterestDTO interest);
@@ -50,4 +48,8 @@ public interface OrderMapper {
     void deleteCartItem(CartDTO cart);
 
     int selectBalance(CartDTO store);
+    
+    int selectOrderHistoryCount(Map<String, String> searchMap);
+
+    List<OrderHistoryDTO> selectOrderHistory(SelectCriteria selectCriteria);
 }

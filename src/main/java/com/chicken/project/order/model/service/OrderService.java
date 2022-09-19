@@ -6,6 +6,7 @@ import com.chicken.project.order.model.dao.OrderMapper;
 import com.chicken.project.order.model.dto.CartDTO;
 import com.chicken.project.order.model.dto.InterestDTO;
 import com.chicken.project.order.model.dto.OrderDTO;
+import com.chicken.project.order.model.dto.OrderHistoryDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,13 +27,6 @@ public class OrderService {
         return orderMapper.selectAllItem(selectCriteria);
 
     }
-
-
-    public List<OrderDTO> selectOrderHistory() {
-
-        return orderMapper.selectOrderHistory();
-    }
-
 
     public int selectTotalCount(Map<String, String> searchMap) {
 
@@ -154,7 +148,6 @@ public class OrderService {
 
     @Transactional
     public void insertOrderHandler(CartDTO cart) {
-        System.out.println("cart 번호 확인123 = " + cart);
         orderMapper.insertOrderHandler(cart);
 
     }
@@ -171,9 +164,19 @@ public class OrderService {
         orderMapper.deleteCartItem(cart);
     }
 
-//    public int selectBalance(CartDTO store) {
-//
-//        int balance = orderMapper.selectBalance(store);
-//        return balance;
-//    }
+    public int selectOrderHistoryCount(Map<String, String> searchMap) {
+
+        int result = orderMapper.selectOrderHistoryCount(searchMap);
+
+        return result;
+
+
+    }
+
+    public List<OrderHistoryDTO> selectOrderHistory(SelectCriteria selectCriteria) {
+
+        return orderMapper.selectOrderHistory(selectCriteria);
+
+    }
+
 }
