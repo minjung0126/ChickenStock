@@ -33,33 +33,6 @@ public class MemberController {
     @GetMapping("/main/admin_main")
     public void empMain(){}
 
-    @GetMapping("/ckEmail")
-    public String ckEmail(){
 
-        return "/member/ckEmail";
-    };
-
-    @PostMapping("/ckEmail")
-    public String emailConfirm(EmployeeDTO emp, HttpServletRequest request) throws MessagingException, UnsupportedEncodingException {
-
-        emp.setEmpId(request.getParameter("empId"));
-        emp.setEmpEmail(request.getParameter("email"));
-
-        int empResult = memberService.updateEmailCode(emp);
-
-        String url = "";
-
-        if(empResult > 0){
-
-            url = "/member/updatePwd";
-        }
-        return url;
-    }
-
-    @GetMapping("/updatePwd")
-    public String updatePwd(){
-
-        return  "/member/updatePwd";
-    }
 
 }

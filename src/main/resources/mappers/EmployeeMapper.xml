@@ -238,9 +238,9 @@
            AND EMP_ID = #{ empId }
     </update>
 
-    <select id="selectEmailCode" resultType="_int">
+    <select id="selectEmailCode" resultMap="employeeResultMap">
         SELECT
-               COUNT(EMAIL_CODE)
+               EMAIL_CODE
           FROM EMPLOYEE
         WHERE EMP_EMAIL = #{ empEmail }
            AND EMP_ID = #{ empId };

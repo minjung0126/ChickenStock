@@ -27,18 +27,12 @@ spring:
   mail:
     host: smtp.naver.com
     port: 465
-    username: ybusiness39
-    password: business12!
     properties:
-      mail:
-        smtp:
-          starttls:
-            enable: true
-            required: true
-          auth: true
-          connectiontimeout: 15000
-          timeout: 15000
-          writetimeout: 15000
+      mail.smtp.auth: true
+      mail.smtp.ssl.enable: true
+      mail.smtp.ssl.trust: smtp.naver.com
+    username: ybusiness39
+    password: K91KVSCJ7MBC
 
 # mybatis config
 mybatis:
