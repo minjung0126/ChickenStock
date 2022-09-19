@@ -118,4 +118,40 @@
             </if>
         </where>
     </select>
+
+    <update id="storeItemUpdate">
+        UPDATE STO_ITEM_INFO
+           SET STORE_AMOUNT = #{ storeAmount }
+         WHERE ITEM_NO = #{ itemNo }
+           AND STORE_NAME = #{ storeName }
+    </update>
+
+    <select id="amountSelect" resultType="_int">
+        SELECT
+               STORE_AMOUNT
+          FROM STO_ITEM_INFO
+        WHERE ITEM_NO = #{ itemNo }
+          AND STORE_NAME = #{ storeName }
+    </select>
+
+    <select id="selectMainStoreItem" resultMap="storeItemListResultMap">
+        SELECT
+                   A.ITEM_NO
+                 , A.STORE_AMOUNT
+                 , B.ITEM_NAME
+                 , B.ITEM_STANDARD
+                 , B.ITEM_PURCHASE
+                 , B.ITEM_SALES
+                 , B.ITEM_SOLDOUT_YN
+                 , B.ITEM_MAKE
+                 , B.ITEM_AMOUNT
+                 , C.CATEGORY_NAME
+                 , D.FILE_NAME
+                 , CASE WHEN B.ITEM_AMOUNT = 0 THEN '품절' ELSE '보유' END soldout
+             FROM STO_ITEM_INFO A
+             JOIN ITEM_INFO B ON (A.ITEM_NO = B.ITEM_NO)
+             JOIN ITEM_CATEGORY C ON(B.CATEGORY_NO = C.CATEGORY_NO)
+             JOIN ITEM_FILE D ON(A.ITEM_NO = D.ITEM_NO)
+            WHERE A.STORE_NAME = #{ storeName }
+    </select>
 </mapper>

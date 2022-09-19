@@ -1,7 +1,11 @@
 #layerPop {
     width: 935px;
     height: 380px;
-    position: absolute;
+    position: fixed;
+    left: 50%;
+    margin-left: 470px;
+    top: 50%;
+    margin-top: 190px;
     display: none;
     border: 1px solid #ccc;
     padding: 10px;

@@ -206,4 +206,12 @@ public class ReleaseServiceImpl implements ReleaseService{
 
         return result;
     }
+
+    @Override
+    public ReleaseDetailDTO selectDetail(String relCodeDetail) {
+
+        ReleaseDetailDTO selectDetail = releaseMapper.selectDetail(relCodeDetail);
+        System.out.println("service.selectDetail : " + selectDetail);
+        return selectDetail;
+    }
 }

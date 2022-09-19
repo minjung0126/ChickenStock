@@ -3,6 +3,9 @@ package com.chicken.project.release.controller;
 
 import com.chicken.project.release.model.dto.*;
 import com.chicken.project.release.model.service.ReleaseService;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,7 +14,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/release")
@@ -220,6 +226,7 @@ public class ReleaseController {
         itemAmountUpdate.put("cartAmount", orderAmount);
         itemAmountUpdate.put("relAmount", relAmount);
         itemAmountUpdate.put("amountUpdate", amountUpdate);
+        itemAmountUpdate.put("relSum", relSum);
         itemAmountUpdate.put("itemNo", itemNo);
         itemAmountUpdate.put("relCode", relCode);
         itemAmountUpdate.put("relCodeDetail", relCodeDetail);
@@ -275,5 +282,23 @@ public class ReleaseController {
         ajaxMap.put("relYn", reRelYn);
 
         return ajaxMap;
+    }
+
+    @GetMapping("/releaseItemDetail")
+    @ResponseBody
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public String storitemDetail(@RequestParam("relCodeDetail") String relCodeDetail, HttpServletResponse response) throws JsonProcessingException {
+
+        response.setContentType("application/json; charset=UTF-8");
+
+        System.out.println("relCodeDetail : " + relCodeDetail);
+
+        ReleaseDetailDTO selectDetail = releaseService.selectDetail(relCodeDetail);
+
+        System.out.println(selectDetail);
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        return mapper.writeValueAsString(selectDetail);
     }
 }

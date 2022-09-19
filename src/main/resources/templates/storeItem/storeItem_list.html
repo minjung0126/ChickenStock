@@ -74,7 +74,7 @@
                             <th>매입단가</th>
                             <th>재고량</th>
                             <th>재고입력</th>
-                            <th>품절여부</th>
+                            <th>재고현황</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -99,37 +99,30 @@
                             <td th:text="${ item.itemInfoDTO.itemStandard }">1kg</td>
                             <td th:text="${ item.itemInfoDTO.itemMake }"></td>
                             <td th:text="${ item.itemInfoDTO.itemSales }"></td>
-                            <td th:text="${ item.storeAmount }"></td>
+                            <th:block  th:if="${ item.storeAmount < 10 }">
+                                <td style="color: red"><span th:text="${ item.storeAmount }"></span></td>
+                            </th:block>
+                            <th:block  th:if="${ item.storeAmount >= 10 }">
+                                <td><span th:text="${ item.storeAmount }"></span></td>
+                            </th:block>
                             <form name="storeForm">
                             <td>
-                                <input class="relAmount-input" type="number" min="0" name="relAmount" style="width:60px; text-align: center; border: 1px solid rgb(255, 255, 255); border-bottom: 1px solid black">
+                                <input class="relAmount-input" type="number" min="0" name="storeAmount" style="width:60px; text-align: center; border: 1px solid rgb(255, 255, 255); border-bottom: 1px solid black">
                                 <button type="button" class="rel-btn" style="border : none; background-color: #fff;">
                                     <img src="/images/stock.png" alt="출고" width="35px" height="35px">
                                 </button>
                                 <input type="hidden" name="itemNo" th:value="${ item.itemInfoDTO.itemNo }">
-                                <input type="hidden" name="storeName" th:value="${ selectCriteria.storeName }">
-                                <script>
 
-                                    $(".rel-btn").on('click', function(){
-
-                                        let tr = $(this).parents('tr');
-                                        let td = tr.children();
-                                        $.ajax({
-
-                                            url:'/storeItem/storeItemUpdate',
-                                            type:'POST',
-
-                                        })
-                                    });
-                                </script>
                             </td>
                             </form>
-                            <td th:if="${ item.itemInfoDTO.itemSoldoutYn eq 'Y' }" >
-                                <span class="active-circle bg-danger"></span><span th:text="${ '품절' }"></span>
-                            </td>
-                            <td th:if="${ item.itemInfoDTO.itemSoldoutYn eq 'N' }" >
-                                <span class="active-circle bg-success"></span><span th:text="${ '보유' }"></span>
-                            </td>
+                            <th:block  th:if="${ item.storeAmount < 10 }">
+                                <td style="color: red;">
+                                    <img src="/images/warning.png" alt="warning" width="30px" height="30px">
+                                </td>
+                            </th:block>
+                            <th:block  th:if="${ item.storeAmount >= 10 }">
+                                <td></td>
+                            </th:block>
                         </tr>
                         </tbody>
                     </table>
@@ -190,6 +183,54 @@
 
 <!-- datepicker js -->
 <script src="../assets/js/daterange.js"></script>
+<script>
+
+    $(".rel-btn").on('click', function(e){
+
+        let form = $(this).parents('tr').children().eq(10);
+        let storeAmount = $(this).parents('tr').children().eq(9);
+        let inputAmount = $(this).parents('tr').children().eq(11).find(".relAmount-input");
+        let tdImg = $(this).parents('tr').children().eq(12);
+        let storeForm = form.serialize();
+
+        console.log(storeForm);
+
+        $.ajax({
+
+            url:'/storeItem/storeItemUpdate',
+            type:'POST',
+            data: storeForm,
+            contentType: 'application/x-www-form-urlencoded',
+            dataType:'json',
+            success: function (result){
+
+                if(confirm("수정하시겠습니까?") == true){
+                    storeAmount.html(result);
+                    inputAmount.val("");
+                    if(storeAmount.text() < 10){
+                        storeAmount.css('color','red');
+                        if( tdImg.children() != null ){
+                            tdImg.empty();
+                        }
+                        tdImg.append('<img src=\"/images/warning.png\" alt=\"warning\" width=\"30px\" height=\"30px\">');
+                    } else {
+                        storeAmount.css('color','black');
+                        tdImg.empty();
+                    }
+                    alert("수정하였습니다.");
+                } else {
+
+                }
+            },
+            error: function (error){
+                alert("실패하였습니다.");
+            }
+        });
+        e.stopImmediatePropagation();
+    });
+
+
+</script>
 
 <!-- 팝업으로 이동 -->
 <script>

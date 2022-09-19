@@ -8,9 +8,7 @@ import com.chicken.project.storeItem.model.service.StoreItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -77,8 +75,28 @@ public class StoreItemController {
     }
 
     @PostMapping("/storeItemUpdate")
-    public ModelAndView storeItemUpdate(ModelAndView mv){
+    @ResponseBody
+    public Object storeItemUpdate(@RequestParam("itemNo") String itemNo,
+                                @RequestParam("storeAmount") String storeAmount,
+                                @AuthenticationPrincipal StoreImpl storeImple) {
 
-        return mv;
+        String storeName = storeImple.getStoreName();
+
+        System.out.println("storeName:" + storeName);
+        System.out.println("itemNo:" + itemNo);
+        System.out.println("storeAmount:" + storeAmount);
+
+        int result = storeItemService.storeItemUpdate(storeName, itemNo, storeAmount);
+
+        int amount = 0;
+        if(result>0){
+
+            amount = storeItemService.amountSelect(storeName, itemNo);
+            System.out.println("amount =" + amount);
+        }
+
+        System.out.println("result : " + result);
+
+        return amount;
     }
 }

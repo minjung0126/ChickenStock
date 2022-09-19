@@ -1,15 +1,17 @@
 package com.chicken.project.release.model.dto;
 
+import java.sql.Date;
+
 public class ReleaseItemHistroyDTO {
 
     private int relAmountDetail;
-    private int relDateDetail;
+    private java.sql.Date relDateDetail;
     private int relCodeDetail;
     private int relSumAmount;
 
     private ReleaseItemHistroyDTO(){};
 
-    public ReleaseItemHistroyDTO(int relAmountDetail, int relDateDetail, int relCodeDetail, int relSumAmount) {
+    public ReleaseItemHistroyDTO(int relAmountDetail, Date relDateDetail, int relCodeDetail, int relSumAmount) {
         this.relAmountDetail = relAmountDetail;
         this.relDateDetail = relDateDetail;
         this.relCodeDetail = relCodeDetail;
@@ -24,11 +26,11 @@ public class ReleaseItemHistroyDTO {
         this.relAmountDetail = relAmountDetail;
     }
 
-    public int getRelDateDetail() {
+    public Date getRelDateDetail() {
         return relDateDetail;
     }
 
-    public void setRelDateDetail(int relDateDetail) {
+    public void setRelDateDetail(Date relDateDetail) {
         this.relDateDetail = relDateDetail;
     }
 
