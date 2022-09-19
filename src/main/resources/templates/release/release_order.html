@@ -80,11 +80,11 @@
             <form th:action="@{ /release/orderSelect }">
             <div class="input-group mb-3 col-5 float-right" style="min-width: max-content">
               <button class="btn btn-light px-1" type="button" disabled></button>
-              <input type="date" class="form-control" id="searchDate"  th:name="searchDate" value="" style="min-width: max-content">
+              <input type="date" class="form-control" id="searchDate"  th:name="searchDate" th:value="${ releaseSelectCriteria.getSearchDate() }" style="min-width: max-content">
               <button class="btn btn-light" type="button" disabled>~</button>
-              <input type="date" class="form-control" id="searchDate2" th:name="searchDate2" value="" style="min-width: max-content">
+              <input type="date" class="form-control" id="searchDate2" th:name="searchDate2" value="" style="min-width: max-content" th:value="${ releaseSelectCriteria.getSearchDate2() }">
               <button class="btn btn-light px-1" type="button" disabled></button>
-              <input class="form-control me-2" type="text" th:name="searchValue" placeholder="지점명" style="min-width: max-content">
+              <input class="form-control me-2" type="text" th:name="searchValue" placeholder="지점명" style="min-width: max-content" th:value="${ releaseSelectCriteria.getSearchValue() }">
               <button class="btn btn-warning" onclick="find();" type="submit" style="color:#fff">검색</button>
             </div>
             </form>

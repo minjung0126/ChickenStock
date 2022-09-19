@@ -40,20 +40,20 @@
                             <select type="" class="form-control" id="searchCategory" th:name="searchCategory" value=""
                                     style="height: 40px; min-width: max-content">
                                 <option value="category">카테고리</option>
-                                <option value="searchRelDate">출고일</option>
-                                <option value="searchRelRegistDate">등록일</option>
-                                <option value="searchStoreName">지점명</option>
-                                <option value="relDateStoreName">출고일+지점명</option>
-                                <option value="registDateStoreName">등록일+지점명</option>
+                                <option value="searchRelDate" th:selected="${ releaseSelectCriteria.getSearchCategory() == 'searchRelDate'}">출고일</option>
+                                <option value="searchRelRegistDate" th:selected="${ releaseSelectCriteria.getSearchCategory() == 'searchRelRegistDate'}">등록일</option>
+                                <option value="searchStoreName" th:selected="${ releaseSelectCriteria.getSearchCategory() == 'searchStoreName'}">지점명</option>
+                                <option value="relDateStoreName" th:selected="${ releaseSelectCriteria.getSearchCategory() == 'relDateStoreName'}">출고일+지점명</option>
+                                <option value="registDateStoreName" th:selected="${ releaseSelectCriteria.getSearchCategory() == 'registDateStoreName'}">등록일+지점명</option>
                             </select>
                             <button class="btn btn-light px-1" type="button" disabled></button>
-                            <input type="date" class="form-control" id="searchDate" th:name="searchDate" value=""
+                            <input type="date" class="form-control" id="searchDate" th:name="searchDate" th:value="${ releaseSelectCriteria.getSearchDate() }"
                                    style="min-width: max-content">
                             <button class="btn btn-light" type="button" disabled>~</button>
-                            <input type="date" class="form-control" id="searchDate2" th:name="searchDate2" value=""
+                            <input type="date" class="form-control" id="searchDate2" th:name="searchDate2" th:value="${ releaseSelectCriteria.getSearchDate2() }"
                                    style="min-width: max-content">
                             <button class="btn btn-light px-1" type="button" disabled></button>
-                            <input class="form-control me-2" type="text" id="storeName" th:name="searchValue"
+                            <input class="form-control me-2" type="text" id="storeName" th:name="searchValue" th:value="${ releaseSelectCriteria.getSearchValue() }"
                                    placeholder="지점명" style="min-width: max-content">
                             <button class="btn btn-warning" onclick="find();" type="submit" style="color:#fff">검색
                             </button>
@@ -238,10 +238,10 @@
                                 </div>
                             </div>
                             <div class="detail-btn">
-                                <button class="btn btn-warning" type="submit" style="color:#fff">
+                                <button class="btn btn-warning" type="button" id="itemInfoFix-btn" style="color:#fff">
                                     수정
                                 </button>
-                                <button class="btn btn-warning" type="submit" style="color:#fff">
+                                <button class="btn btn-warning" type="button" id="itemInfo-btn" style="color:#fff">
                                     입고
                                 </button>
                             </div>
@@ -260,14 +260,14 @@
                 <div class="pagingArea" align="center">
                     <!-- 맨 앞으로 이동 버튼 -->
                     <button class="btn btn-light mx-1" style="cursor:pointer; background: #ccc; color: #fff;"
-                            th:onclick="'location.href=\'/release/releaseSelect?currentPage='+ @{${releaseSelectCriteria.startPage}} + '\''"
+                            th:onclick="'location.href=\'/release/releaseSelect?currentPage='+ @{${releaseSelectCriteria.startPage}} + '&searchCategory=' + @{${ releaseSelectCriteria.getSearchCategory() }} + '&searchValue=' + @{${ releaseSelectCriteria.getSearchValue() }} + '\''"
                             th:disabled="${releaseSelectCriteria.pageNo == 1}"
                     >
                         <<
                     </button>
                     <!-- 이전 페이지 버튼 -->
                     <button class="btn btn-light" style="cursor:pointer; background: #ccc; color: #fff;"
-                            th:onclick="'location.href=\'/release/releaseSelect?currentPage='+ @{${releaseSelectCriteria.pageNo - 1}} + '\''"
+                            th:onclick="'location.href=\'/release/releaseSelect?currentPage='+ @{${releaseSelectCriteria.pageNo - 1}} + '&searchCategory=' + @{${ releaseSelectCriteria.getSearchCategory() }} + '&searchValue=' + @{${ releaseSelectCriteria.getSearchValue() }} + '\''"
                             th:disabled="${releaseSelectCriteria.pageNo == 1}"
                     >
                         <
@@ -276,21 +276,21 @@
                     <th:block th:each="page : ${#numbers.sequence(releaseSelectCriteria.startPage, releaseSelectCriteria.endPage)}">
                         <button class="btn btn-warning mx-1" style="cursor:pointer; color: #fff;"
                                 th:text="${ page }"
-                                th:onclick="'location.href=\'/release/releaseSelect?currentPage='+ @{${page}} + '\''"
+                                th:onclick="'location.href=\'/release/releaseSelect?currentPage='+ @{${page}} + '&searchCategory=' + @{${ releaseSelectCriteria.getSearchCategory() }} + '&searchValue=' + @{${ releaseSelectCriteria.getSearchValue() }} + '\''"
                                 th:disabled="${ releaseSelectCriteria.pageNo eq page }">
                         </button>
                     </th:block>
 
                     <!-- 다음 페이지 버튼 -->
                     <button class="btn btn-light mx-1" style="cursor:pointer; background: #ccc; color: #fff;"
-                            th:onclick="'location.href=\'/release/releaseSelect?currentPage='+ @{${releaseSelectCriteria.pageNo + 1}} + '\''"
+                            th:onclick="'location.href=\'/release/releaseSelect?currentPage='+ @{${releaseSelectCriteria.pageNo + 1}} + '&searchCategory=' + @{${ releaseSelectCriteria.getSearchCategory() }} + '&searchValue=' + @{${ releaseSelectCriteria.getSearchValue() }} + '\''"
                             th:disabled="${releaseSelectCriteria.pageNo == releaseSelectCriteria.maxPage}"
                     >
                         >
                     </button>
                     <!-- 마지막 페이지로 이동 버튼 -->
                     <button class="btn btn-light mx-1" style="cursor:pointer; background: #ccc; color: #fff;"
-                            th:onclick="'location.href=\'/release/releaseSelect?currentPage='+ @{${releaseSelectCriteria.maxPage}} + '\''"
+                            th:onclick="'location.href=\'/release/releaseSelect?currentPage='+ @{${releaseSelectCriteria.maxPage}} + '&searchCategory=' + @{${ releaseSelectCriteria.getSearchCategory() }} + '&searchValue=' + @{${ releaseSelectCriteria.getSearchValue() }} + '\''"
                             th:disabled="${releaseSelectCriteria.pageNo == releaseSelectCriteria.maxPage}"
                     >
                         >>
@@ -306,6 +306,18 @@
     </div>
     <!-- E: container -->
 </div>
+<script>
+    $("#itemInfoFix-btn").on('click',function (){
+        let itemName = $(".form-control")[4].value;
+        location.href="/item/admin/list?searchCondition=itemName" + "&searchValue=" + itemName;
+    });
+
+    $("#itemInfo-btn").on('click',function (){
+        let itemName = $(".form-control")[4].value;
+        location.href="/receive/admin/list/regist?searchCondition=itemName" + "&searchValue=" + itemName;
+    });
+
+</script>
 
 <script>
     $(".open-btn").on('click', function (e){

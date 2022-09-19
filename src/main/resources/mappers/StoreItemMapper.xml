@@ -110,13 +110,9 @@
         JOIN ITEM_CATEGORY C ON(B.CATEGORY_NO = C.CATEGORY_NO)
         JOIN ITEM_FILE D ON(A.ITEM_NO = D.ITEM_NO)
         WHERE A.STORE_NAME = #{ storeName }
-        <where>
             <if test="searchCondition == 'searchItemName'">
-                B.ITEM_NAME LIKE '%' || #{ searchValue } || '%'
+              AND  B.ITEM_NAME LIKE '%' || #{ searchValue } || '%'
             </if>
-            <if test="searchValue == null">
-            </if>
-        </where>
     </select>
 
     <update id="storeItemUpdate">
