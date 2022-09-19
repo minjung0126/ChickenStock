@@ -9,4 +9,6 @@ public interface EmailService {
     int updateEmailCode(EmployeeDTO emp) throws MessagingException, UnsupportedEncodingException;
 
     String selectEmailCode();
+
+    int updatePwd(EmployeeDTO emp);
 }

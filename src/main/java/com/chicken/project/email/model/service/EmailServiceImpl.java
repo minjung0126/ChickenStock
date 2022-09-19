@@ -42,9 +42,9 @@ public class EmailServiceImpl implements EmailService{
             sendMail.setSubject("[치킨스톡 인증 이메일입니다.]");
             sendMail.setText(
                     "<h1>치킨스톡 이메일 인증</h1>" +
-                    "<br>치킨스톡 비밀번호를 재설정하기 위한 인증 이메일입니다." +
-                    "<br>아래 인증번호를 입력해주세요." +
-                    "<br>[" + emailCode + "]"
+                            "<br>치킨스톡 비밀번호를 재설정하기 위한 인증 이메일입니다." +
+                            "<br>아래 인증번호를 입력해주세요." +
+                            "<br>[" + emailCode + "]"
             );
             sendMail.setFrom("ybusiness39@naver.com","치킨스톡");
             sendMail.setTo(emp.getEmpEmail());
@@ -60,5 +60,13 @@ public class EmailServiceImpl implements EmailService{
         String emailCode = employeeMapper.selectEmailCode();
 
         return emailCode;
+    }
+
+    @Override
+    public int updatePwd(EmployeeDTO emp) {
+
+        int result = employeeMapper.updatePwd(emp);
+
+        return result;
     }
 }

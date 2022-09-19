@@ -27,4 +27,6 @@ public interface EmployeeMapper {
     int selectTotalCount();
 
     String selectEmailCode();
+
+    int updatePwd(EmployeeDTO emp);
 }
