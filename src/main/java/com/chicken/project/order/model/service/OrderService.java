@@ -17,9 +17,7 @@ public interface OrderService {
 
     int selectInterestCount(InterestDTO interest);
 
-
     int insertInterest(InterestDTO interest) throws InterestException;
-
 
     int deleteInterest(InterestDTO interest) throws InterestException;
 
@@ -56,4 +54,5 @@ public interface OrderService {
     int selectOrderHistoryCount(Map<String, String> searchMap);
 
     List<OrderHistoryDTO> selectOrderHistory(SelectCriteria selectCriteria);
+
 }

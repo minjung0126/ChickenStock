@@ -62,7 +62,7 @@ public class OrderController {
 
         int totalCount = orderService.selectTotalCount(searchMap);
 
-        int limit = 10;
+        int limit = 6;
         int buttonAmount = 5;
 
         SelectCriteria selectCriteria = null;
@@ -147,7 +147,7 @@ public class OrderController {
 
         int totalCount = orderService.selectInterestItemCount(searchMap);
 
-        int limit = 10;
+        int limit = 6;
         int buttonAmount = 5;
 
         SelectCriteria selectCriteria = null;
@@ -192,7 +192,7 @@ public class OrderController {
 
         int totalCount = orderService.selectAvailableItemCount(searchMap);
 
-        int limit = 10;
+        int limit = 6;
         int buttonAmount = 5;
 
         SelectCriteria selectCriteria = null;
@@ -238,7 +238,7 @@ public class OrderController {
         //int totalCount = orderService.selectCartTotalCount(searchMap);
         int totalCount = orderService.selectTotalCount(searchMap);
 
-        int limit = 10;
+        int limit = 6;
         int buttonAmount = 5;
 
         SelectCriteria selectCriteria = null;
@@ -285,7 +285,7 @@ public class OrderController {
         //int totalCount = orderService.selectCartTotalCount(searchMap);
         int totalCount = orderService.selectTotalCount(searchMap);
 
-        int limit = 10;
+        int limit = 6;
         int buttonAmount = 5;
 
         SelectCriteria selectCriteria = null;
@@ -358,7 +358,7 @@ public class OrderController {
 
         int totalCount = orderService.selectCartTotalCount(searchMap);
 
-        int limit = 10;
+        int limit = 6;
         int buttonAmount = 5;
 
         SelectCriteria selectCriteria = null;
@@ -425,7 +425,7 @@ public class OrderController {
 
         int totalCount = orderService.selectCartTotalCount(searchMap);
 
-        int limit = 10;
+        int limit = 6;
         int buttonAmount = 5;
 
         SelectCriteria selectCriteria = null;
@@ -489,7 +489,8 @@ public class OrderController {
 
         int result = orderService.insertOrderHandler(cart);
 
-        mv.setViewName("redirect:/order/cart/list");
+        //mv.setViewName("redirect:/order/cart/list");
+        mv.setViewName("order/orderSuccess");
 
         return mv;
     }
@@ -525,7 +526,7 @@ public class OrderController {
 
         int totalCount = orderService.selectOrderHistoryCount(searchMap);
 
-        int limit = 10;
+        int limit = 6;
         int buttonAmount = 5;
 
         SelectCriteria selectCriteria = null;
