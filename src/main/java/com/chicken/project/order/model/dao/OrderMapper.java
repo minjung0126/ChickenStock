@@ -53,8 +53,8 @@ public interface OrderMapper {
     int selectOrderHistoryCount(Map<String, String> searchMap);
 
     List<OrderHistoryDTO> selectOrderHistory(SelectCriteria selectCriteria);
-    void insertStoreBreakdown(CartDTO cart);
+    int insertStoreBreakdown(CartDTO cart);
 
-    void updateStoreBalance(CartDTO cart);
+    int updateStoreBalance(CartDTO cart);
 
 }

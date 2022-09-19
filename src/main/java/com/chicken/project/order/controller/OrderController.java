@@ -119,6 +119,7 @@ public class OrderController {
         rttr.addFlashAttribute("message", "관심 상품 등록 성공!");
 
         mv.addObject("interYn", interYn);
+
         return "redirect:/order/list";
     }
 
@@ -263,6 +264,7 @@ public class OrderController {
     public ModelAndView insertCartList(HttpServletRequest request,
                                        ModelAndView mv,
                                        @RequestParam("itemNoList") String itemNoList,
+                                       RedirectAttributes rttr,
                                        @AuthenticationPrincipal User user) throws InterestException, ParseException {
 
         String storeName = ((StoreImpl) user).getStoreName();
@@ -322,6 +324,8 @@ public class OrderController {
 
             orderService.insertItemIntoCart(itemNo, cartAmount, storeName);
         }
+
+        rttr.addFlashAttribute("message", "장바구니에 담기 성공!");
 
         mv.addObject("orderList", orderList);
         mv.addObject("selectCriteria", selectCriteria);
@@ -489,8 +493,24 @@ public class OrderController {
 
         int result = orderService.insertOrderHandler(cart);
 
-        //mv.setViewName("redirect:/order/cart/list");
-        mv.setViewName("order/orderSuccess");
+        if(result > 0){
+
+            int result2 = orderService.insertStoreBreakdown(cart);
+
+            if(result2 > 0){
+
+                int result3 = orderService.updateStoreBalance(cart);
+
+                if(result3 > 0){
+
+                    mv.setViewName("order/orderSuccess");
+                } else{
+
+                    mv.setViewName("order/orderFailure");
+                }
+
+            }
+        }
 
         return mv;
     }

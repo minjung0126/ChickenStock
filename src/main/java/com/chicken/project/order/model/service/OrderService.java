@@ -55,4 +55,8 @@ public interface OrderService {
 
     List<OrderHistoryDTO> selectOrderHistory(SelectCriteria selectCriteria);
 
+
+    int insertStoreBreakdown(CartDTO cart);
+
+    int updateStoreBalance(CartDTO cart);
 }

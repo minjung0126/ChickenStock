@@ -387,6 +387,13 @@
       console.log(itemNoList);
     }
   </script>
+  <script th:inline="javascript">
+    let message = [[${message}]];
+
+    if(message != null && message !== '') {
+      alert(message);
+    }
+  </script>
 
 </body>
 </html>

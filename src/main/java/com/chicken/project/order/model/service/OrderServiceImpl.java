@@ -170,8 +170,8 @@ public class OrderServiceImpl implements OrderService{
 
         int result = orderMapper.insertOrderHandler(cart);
 
-        orderMapper.insertStoreBreakdown(cart);
-        orderMapper.updateStoreBalance(cart);
+//        orderMapper.insertStoreBreakdown(cart);
+//        orderMapper.updateStoreBalance(cart);
 
         return result;
     }
@@ -206,6 +206,18 @@ public class OrderServiceImpl implements OrderService{
 
         return orderMapper.selectOrderHistory(selectCriteria);
 
+    }
+
+    @Override
+    public int insertStoreBreakdown(CartDTO cart) {
+
+        return orderMapper.insertStoreBreakdown(cart);
+    }
+
+    @Override
+    public int updateStoreBalance(CartDTO cart) {
+
+        return orderMapper.updateStoreBalance(cart);
     }
 
 }
