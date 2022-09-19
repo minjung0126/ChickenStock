@@ -6,7 +6,6 @@ import com.chicken.project.order.model.dao.OrderMapper;
 import com.chicken.project.order.model.dto.CartDTO;
 import com.chicken.project.order.model.dto.InterestDTO;
 import com.chicken.project.order.model.dto.OrderDTO;
-import com.chicken.project.order.model.dto.OrderHistoryDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -120,7 +119,7 @@ public class OrderService {
     @Transactional
     public void InsertCartList(List<String> itemNoList) {
 
-        int result = orderMapper.insertCartList(itemNoList);
+        orderMapper.insertCartList(itemNoList);
 
     }
 
@@ -135,39 +134,38 @@ public class OrderService {
 
 
     @Transactional
-    public String deleteCartItem(int cartNo) {
+    public int insertStoreOrderNo(CartDTO cart) {
 
-        return orderMapper.deleteCartItem(cartNo);
+        orderMapper.insertStoreOrderNo(cart);
+        int orderNoResult = cart.getOrderNo();
 
-    }
-
-    @Transactional
-    public int insertStoreOrderNo(OrderHistoryDTO orderHistory) {
-
-        orderMapper.insertStoreOrderNo(orderHistory);
-        int orderResult = orderHistory.getLastOrderNo();
-
-        System.out.println("orderResult 테테중 = " + orderResult);
-
-        return orderResult;
+        System.out.println("orderNoResult 서비스 제발 = " + orderNoResult);
+        return orderNoResult;
     }
 
     @Transactional
     public int insertOrderItems(CartDTO cart) {
 
         orderMapper.insertOrderItems(cart);
-        int cartResult = cart.getLastCartNo();
+        int cartNoResult = cart.getCartNo();
 
-        System.out.println("cartResult 테테중 = " + cartResult);
-
-        return cartResult;
+        return cartNoResult;
     }
 
     @Transactional
-    public void insertOrderHandler(OrderHistoryDTO orderHistory) {
+    public int insertOrderHandler(CartDTO cart) {
+        System.out.println("cart 번호 확인123 = " + cart);
 
-        orderMapper.insertOrderHandler(orderHistory);
+        int result = orderMapper.insertOrderHandler(cart);
 
+        orderMapper.insertStoreBreakdown(cart);
+        orderMapper.updateStoreBalance(cart);
+
+//        if(result > 0){
+//
+//        }
+
+        return result;
     }
 
     @Transactional
@@ -175,4 +173,16 @@ public class OrderService {
 
         orderMapper.resetCartItems(cart);
     }
+
+
+    public void deleteCartItem(CartDTO cart) {
+
+        orderMapper.deleteCartItem(cart);
+    }
+
+//    public int selectBalance(CartDTO store) {
+//
+//        int balance = orderMapper.selectBalance(store);
+//        return balance;
+//    }
 }

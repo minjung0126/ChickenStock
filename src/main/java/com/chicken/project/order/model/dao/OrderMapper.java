@@ -38,14 +38,20 @@ public interface OrderMapper {
     int insertCartList(List<String> itemNoList);
 
     int insertItemIntoCart(int itemNo, int cartAmount, String storeName);
+    
+    int insertStoreOrderNo(CartDTO cart);
 
-    String deleteCartItem(int cartNo);
+    int insertOrderItems(CartDTO cart);
 
-    void insertStoreOrderNo(OrderHistoryDTO orderHistory);
-
-    void insertOrderItems(CartDTO cart);
-
-    void insertOrderHandler(OrderHistoryDTO orderHistory);
+    int insertOrderHandler(CartDTO cart);
 
     void resetCartItems(CartDTO cart);
+
+    void deleteCartItem(CartDTO cart);
+
+    int selectBalance(CartDTO store);
+
+    void insertStoreBreakdown(CartDTO cart);
+
+    void updateStoreBalance(CartDTO cart);
 }

@@ -25,6 +25,7 @@ import org.springframework.web.servlet.ModelAndViewDefiningException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -371,7 +372,12 @@ public class OrderController {
         }
 
         List<CartDTO> cartList = orderService.selectCartItem(selectCriteria);
-
+//        CartDTO store = new CartDTO();
+//        int balanceNo = orderService.selectBalance(store);
+//        store.setBalance(balanceNo);
+//        int balance = store.getBalance();
+//
+//        mv.addObject("balance", balance);
         mv.addObject("cartList", cartList);
         mv.addObject("selectCriteria", selectCriteria);
         mv.setViewName("order/cart");
@@ -379,13 +385,23 @@ public class OrderController {
     }
 
     /* 장바구니 아이템 삭제 (DELETE) */
-    @PostMapping("/cart/delete")
-    public String deleteCartItem(CartDTO cart) {
+    @PostMapping(value ="/cart/delete")
+    public String deleteCartItem(HttpServletRequest request, @AuthenticationPrincipal User user) {
 
-        orderService.deleteCartItem(cart.getCartNo());
+        String storeName = ((StoreImpl) user).getStoreName();
+
+        CartDTO cart = new CartDTO();
+        cart.setStoreName(storeName);
+
+        int itemNo = Integer.parseInt(request.getParameter("itemNo"));
+        cart.setItemNo(itemNo);
+
+        orderService.deleteCartItem(cart);
 
         return "redirect:/order/cart/list";
     }
+
+
 
     @GetMapping("/history")
     public ModelAndView orderHistory(ModelAndView mv, @AuthenticationPrincipal StoreImpl storeImpl) {
@@ -447,6 +463,7 @@ public class OrderController {
 
 
     /* 발주하기--POST (INSERT) */
+    /* 민수님 여기예요 */
     @PostMapping(value="/insert/items/do")
     public ModelAndView insertItemsDo(HttpServletRequest request,
                                        ModelAndView mv,
@@ -455,46 +472,40 @@ public class OrderController {
 
         String storeName = ((StoreImpl) user).getStoreName();
 
-        OrderHistoryDTO orderHistory = new OrderHistoryDTO();
         CartDTO cart = new CartDTO();
 
         cart.setStoreName(storeName);
 
-        int orderResult = orderService.insertStoreOrderNo(orderHistory);
-        orderHistory.setLastOrderNo(orderResult);
-        int lastOrderNo = orderHistory.getLastOrderNo();
-        orderHistory.setLastOrderNo(lastOrderNo);
-
-        orderService.resetCartItems(cart);
+        int orderNoResult = orderService.insertStoreOrderNo(cart);
 
         JSONParser jsonParse = new JSONParser();
-        JSONArray jsonObj = (JSONArray) jsonParse.parse(cartNoList);
+        JSONArray jsonArr = (JSONArray) jsonParse.parse(cartNoList);
 
-        for(int i = 0; i < jsonObj.size(); i++) {
+        for(int i = 0; i < jsonArr.size(); i++) {
 
-            int itemNo = Integer.parseInt(((JSONObject) jsonObj.get(i)).get("itemNo").toString());
-            int cartAmount = Integer.parseInt(((JSONObject) jsonObj.get(i)).get("cartAmount").toString());
-            int categoryNo = Integer.parseInt(((JSONObject) jsonObj.get(i)).get("categoryNo").toString());
+            int itemNo = Integer.parseInt(((JSONObject) jsonArr.get(i)).get("itemNo").toString());
+            int cartAmount = Integer.parseInt(((JSONObject) jsonArr.get(i)).get("cartAmount").toString());
+            int categoryNo = Integer.parseInt(((JSONObject) jsonArr.get(i)).get("categoryNo").toString());
+            String price = ((JSONObject) jsonArr.get(i)).get("totalPrice").toString();
+            int totalPrice = Integer.parseInt(price.replace(",",""));
 
             cart.setItemNo(itemNo);
             cart.setCartAmount(cartAmount);
             cart.setCategoryNo(categoryNo);
+            cart.setTotalPrice(totalPrice);
 
-            int cartResult = orderService.insertOrderItems(cart);
-            cart.setLastCartNo(cartResult);
-            int lastCartNo = cart.getLastCartNo();
+            orderService.resetCartItems(cart);
 
-            orderService.insertOrderHandler(orderHistory);
+            int cartNoResult = orderService.insertOrderItems(cart);
 
-            System.out.println("테스트 테스트 : " + lastCartNo);
-            System.out.println("테스트 테스트 : " + lastOrderNo);
-
-            orderHistory.setCartNo(lastCartNo);
-
+            cart.setOrderNo(orderNoResult);
+            cart.setCartNo(cartNoResult);
 
         }
 
-        mv.setViewName("redirect:/order/cart/list");
+        int result = orderService.insertOrderHandler(cart);
+
+        mv.setViewName("order/orderSuccess");
 
         return mv;
     }

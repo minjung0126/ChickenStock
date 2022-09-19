@@ -227,13 +227,15 @@
             STORE_NAME
         , DEPOSIT_MONEY
         , DEPOSIT_DATE
+        , CONTENT
         )
         VALUES
-            (
-                #{ storeName }
-            , #{ returnTotalMoney }
-            , SYSDATE
-            )
+        (
+          #{ storeName }
+        , #{ returnTotalMoney }
+        , SYSDATE
+        , '반품금액 입금'
+        )
     </insert>
 
     <insert id="insertRItem" parameterType="ReItemDTO">
