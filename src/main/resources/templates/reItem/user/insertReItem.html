@@ -133,34 +133,22 @@
 
     function inputValueChange(check){
 
-        // 반품수량
-        let inputValue = $(check.parentElement)[0].children[0].value;
-        console.log(inputValue);
+         // 반품수량
+         let inputValue = $(check.parentElement)[0].children[0].value;
 
-        // 입고금액
-        let itemPurchase = parseInt(check.parentElement.parentElement.children[7].innerText.replace(/[^0-9]/gi, ''));
-        let returnItemMoney = inputValue * itemPurchase;
+         $(check.parentElement)[0].children[1].value = inputValue;
 
-        $(check.parentElement.children[2]).val(returnItemMoney);
+        let returnAmount = $(".returnAmount");
+        let itemPurchase = $(".itemPurchase");
 
-        // 총 입고수량 & 총 입고금액
-        let inputValueTot = document.getElementsByClassName('returnAmount');
-        let itemMoneyTot = document.getElementsByClassName('returnItemMoney');
+        let total = 0;
+        for(let i = 0; i < returnAmount.length; i++){
 
-        let returnTotalMoney = 0;
-        for(let i = 0; i < inputValueTot.length; i++){
-
-            if(itemMoneyTot[i].value != ''){
-                returnTotalMoney += parseInt(itemMoneyTot[i].value);
-            }
-
+            total += returnAmount[i].value * parseInt(itemPurchase[i].innerText.replace(',',''));
         }
-
-        console.log(returnTotalMoney);
-        document.getElementById('returnTotalMoney').value = returnTotalMoney.toLocaleString('ko-KR') + "원";
-        document.getElementById('reTotal').value = returnTotalMoney;
-
-        $(check.parentElement)[0].children[1].value = inputValue;
+        console.log(total);
+        document.getElementById('returnTotalMoney').value = total.toLocaleString('ko-KR') + "원";
+        document.getElementById('reTotal').value = total;
 
     }
 

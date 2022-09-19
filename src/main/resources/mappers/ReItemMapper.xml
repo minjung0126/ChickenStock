@@ -83,7 +83,7 @@
                          , TO_CHAR(C.R_DATE,'yyyy-MM-dd') AS R_DATE
                          , C.RETURN_PROGRESS
                     FROM RETURN_ITEM C
-                    ORDER BY C.R_NO ASC ) B
+                    ORDER BY C.R_NO DESC ) B
                 <![CDATA[
               WHERE ROWNUM <= #{ endRow }
                 ]]>
@@ -92,7 +92,7 @@
                  LEFT JOIN RETURN_ITEM_INFO RII ON (A.R_NO = RII.REF_R_NO)
         WHERE A.RNUM >= #{ startRow }
           AND RII.STORE_NAME = #{ storeName }
-        ORDER BY A.R_NO ASC
+        ORDER BY A.R_NO DESC
     </select>
 
     <select id="selectReturnList" resultMap="reListResultMap">
@@ -136,27 +136,27 @@
                 RP.R_PROGRESS LIKE '%' || #{ searchValue } || '%'
             </if>
         </where>
-        ORDER BY C.R_NO ASC ) B
+        ORDER BY C.R_NO DESC ) B
         <![CDATA[
               WHERE ROWNUM <= #{ endRow }
               ]]>
         ) A
         WHERE A.RNUM >= #{ startRow }
-        ORDER BY A.R_NO ASC
+        ORDER BY A.R_NO DESC
     </select>
 
     <select id="selectReturnItem" resultMap="reItemResultMap">
         SELECT
-            TO_CHAR(RI.R_DATE,'yyyy-MM-dd') AS R_DATE
+                TO_CHAR(RI.R_DATE,'yyyy-MM-dd') AS R_DATE
              ,	RI.R_REASON
              ,  RI.RETURN_ACCOUNT
-        FROM RETURN_ITEM RI
-        WHERE RI.R_NO = #{ rNo }
+          FROM RETURN_ITEM RI
+         WHERE RI.R_NO = #{ rNo }
     </select>
 
     <select id="selectReItems" resultMap="reItemResultMap">
         SELECT
-            RI.RETURN_ACCOUNT
+                RI.RETURN_ACCOUNT
              ,  RII.RETURN_COUNT
              ,	II.ITEM_NO
              ,	II.ITEM_NAME
@@ -166,17 +166,17 @@
              ,	IFF.FILE_NAME
              ,  IC.CATEGORY_NAME
         FROM RETURN_ITEM RI
-                 JOIN RETURN_ITEM_INFO RII ON(RII.REF_R_NO = RI.R_NO)
-                 LEFT JOIN ITEM_FILE IFF ON (IFF.ITEM_NO = RII.ITEM_NO)
-                 JOIN STORE S ON(S.STORE_NAME = RII.STORE_NAME)
-                 JOIN ITEM_INFO II ON(II.ITEM_NO = RII.ITEM_NO)
-                 LEFT JOIN ITEM_CATEGORY IC ON(IC.CATEGORY_NO = II.CATEGORY_NO)
+        JOIN RETURN_ITEM_INFO RII ON(RII.REF_R_NO = RI.R_NO)
+        LEFT JOIN ITEM_FILE IFF ON (IFF.ITEM_NO = RII.ITEM_NO)
+        JOIN STORE S ON(S.STORE_NAME = RII.STORE_NAME)
+        JOIN ITEM_INFO II ON(II.ITEM_NO = RII.ITEM_NO)
+        LEFT JOIN ITEM_CATEGORY IC ON(IC.CATEGORY_NO = II.CATEGORY_NO)
         WHERE RI.R_NO = #{ rNo }
     </select>
 
     <select id="selectItem" resultMap="storeItemResultMap">
         SELECT
-            SII.ITEM_NO
+               SII.ITEM_NO
              , II.ITEM_NAME
              , IC.CATEGORY_NAME
              , II.ITEM_STANDARD
@@ -185,9 +185,9 @@
              , IFF.FILE_NAME
              , SII.STORE_AMOUNT
         FROM STO_ITEM_INFO SII
-                 JOIN ITEM_FILE IFF ON (IFF.ITEM_NO = SII.ITEM_NO)
-                 JOIN ITEM_INFO II ON(II.ITEM_NO = SII.ITEM_NO)
-                 JOIN ITEM_CATEGORY IC ON(IC.CATEGORY_NO = II.CATEGORY_NO)
+        JOIN ITEM_FILE IFF ON (IFF.ITEM_NO = SII.ITEM_NO)
+        JOIN ITEM_INFO II ON(II.ITEM_NO = SII.ITEM_NO)
+        JOIN ITEM_CATEGORY IC ON(IC.CATEGORY_NO = II.CATEGORY_NO)
         WHERE SII.STORE_NAME = #{ storeName }
     </select>
 
@@ -195,7 +195,7 @@
         INSERT
         INTO RETURN_ITEM
         (
-        R_NO
+          R_NO
         , R_DATE
         , R_REASON
         , RETURN_PROGRESS
@@ -203,7 +203,7 @@
         )
         VALUES
         (
-        SEQ_R_NO.NEXTVAL
+          SEQ_R_NO.NEXTVAL
         , SYSDATE
         <if test='rReason == "date1"'>
             , '실수로 잘못 주문함'
@@ -226,16 +226,18 @@
         INSERT
         INTO STORE_DEPOSIT
         (
-            STORE_NAME
+          STORE_NAME
         , DEPOSIT_MONEY
         , DEPOSIT_DATE
+        , CONTENT
         )
         VALUES
-            (
-                #{ storeName }
-            , #{ returnTotalMoney }
-            , SYSDATE
-            )
+        (
+          #{ storeName }
+        , #{ returnTotalMoney }
+        , SYSDATE
+        , '반품금액 입금'
+        )
     </insert>
 
     <insert id="insertRItem" parameterType="ReItemDTO">
@@ -245,7 +247,7 @@
         INSERT
         INTO RETURN_ITEM_INFO
         (
-        RETURN_COUNT
+          RETURN_COUNT
         , STORE_NAME
         , ITEM_NO
         , RETURN_ITEM_NO
@@ -253,7 +255,7 @@
         )
         VALUES
         (
-        #{ returnCount }
+          #{ returnCount }
         , #{ storeName }
         , #{ itemNo }
         , SEQ_RETURN_ITEM_NO.NEXTVAL
@@ -263,10 +265,10 @@
 
     <update id="updateAcount" parameterType="ReItemDTO">
         UPDATE
-            STO_ITEM_INFO
-        SET STORE_AMOUNT = STORE_AMOUNT  - (SELECT #{ returnCount } FROM RETURN_ITEM_INFO WHERE REF_R_NO = #{ rNo } AND ITEM_NO= #{ itemNo })
-        WHERE ITEM_NO = (SELECT #{ itemNo } FROM RETURN_ITEM_INFO WHERE REF_R_NO = #{ rNo } AND ITEM_NO = #{ itemNo })
-          AND STORE_NAME = #{ storeName }
+               STO_ITEM_INFO
+           SET STORE_AMOUNT = STORE_AMOUNT  - (SELECT #{ returnCount } FROM RETURN_ITEM_INFO WHERE REF_R_NO = #{ rNo } AND ITEM_NO= #{ itemNo })
+         WHERE ITEM_NO = (SELECT #{ itemNo } FROM RETURN_ITEM_INFO WHERE REF_R_NO = #{ rNo } AND ITEM_NO = #{ itemNo })
+           AND STORE_NAME = #{ storeName }
     </update>
 
     <insert id="insertProgress" parameterType="ReItemDTO">
@@ -276,7 +278,7 @@
         INSERT
         INTO RETURN_PROGRESS
         (
-        R_PROGRESS
+          R_PROGRESS
         , R_DONE_DATE
         , EMP_ID
         , R_NO
@@ -284,7 +286,7 @@
         )
         VALUES
         (
-        NULL
+          NULL
         , NULL
         , NULL
         , #{ rNo }
@@ -308,22 +310,22 @@
 
     <update id="updateProgress" parameterType="ReItemDTO">
         UPDATE RETURN_ITEM
-        SET RETURN_PROGRESS = '반품완료'
-        WHERE R_NO = #{ rNo }
+           SET RETURN_PROGRESS = '반품완료'
+         WHERE R_NO = #{ rNo }
     </update>
 
     <update id="updateMoney" parameterType="BalanceDTO">
         UPDATE BALANCE
-        SET BALANCE = (SELECT RETURN_ACCOUNT FROM RETURN_ITEM WHERE R_NO = #{ rNo } AND  RETURN_PROGRESS = '반품완료') + BALANCE
-        WHERE STORE_NAME = #{ storeName }
+           SET BALANCE = (SELECT RETURN_ACCOUNT FROM RETURN_ITEM WHERE R_NO = #{ rNo } AND  RETURN_PROGRESS = '반품완료') + BALANCE
+         WHERE STORE_NAME = #{ storeName }
     </update>
 
     <select id="selectRItem" resultMap="reItemResultMap">
         SELECT
-            ITEM_NO
+               ITEM_NO
              , RETURN_COUNT
-        FROM RETURN_ITEM_INFO
-        WHERE REF_R_NO = #{ rNo }
+          FROM RETURN_ITEM_INFO
+         WHERE REF_R_NO = #{ rNo }
     </select>
 
     <update id="upDateItem" parameterType="ReItemDTO">
@@ -341,10 +343,10 @@
         , ITEM_NO
         )
         VALUES
-            (
-                #{ rNo }
-            , #{ itemNo }
-            )
+        (
+          #{ rNo }
+        , #{ itemNo }
+        )
     </insert>
 
     <update id="updateRProgress" parameterType="ReListDTO">
@@ -431,5 +433,121 @@
                                             LEFT JOIN ITEM_CATEGORY IC ON(IC.CATEGORY_NO = II.CATEGORY_NO)
                                    WHERE RI.R_NO = #{ rNo } )
     </select>
+
+    <select id="selectViewReItem" resultMap="reItemResultMap">
+        SELECT
+                TO_CHAR(RI.R_DATE,'yyyy-MM-dd') AS R_DATE
+             ,	RI.R_REASON
+             ,  RI.RETURN_ACCOUNT
+          FROM RETURN_ITEM RI
+         WHERE RI.R_NO = #{ rNo }
+    </select>
+
+    <select id="selectViewReItems" resultMap="reItemResultMap">
+        SELECT
+                RI.RETURN_ACCOUNT
+             ,  RII.RETURN_COUNT
+             ,	II.ITEM_NO
+             ,	II.ITEM_NAME
+             ,	II.ITEM_STANDARD
+             ,	II.ITEM_MAKE
+             ,	II.ITEM_SALES
+             ,	IFF.FILE_NAME
+             ,  IC.CATEGORY_NAME
+             ,  SII.STORE_AMOUNT
+        FROM RETURN_ITEM RI
+        JOIN RETURN_ITEM_INFO RII ON(RII.REF_R_NO = RI.R_NO)
+        LEFT JOIN ITEM_FILE IFF ON (IFF.ITEM_NO = RII.ITEM_NO)
+        JOIN STORE S ON(S.STORE_NAME = RII.STORE_NAME)
+        JOIN ITEM_INFO II ON(II.ITEM_NO = RII.ITEM_NO)
+        LEFT JOIN ITEM_CATEGORY IC ON(IC.CATEGORY_NO = II.CATEGORY_NO)
+        JOIN STO_ITEM_INFO SII ON (IFF.ITEM_NO = SII.ITEM_NO)
+        WHERE RI.R_NO = #{ rNo }
+          AND SII.STORE_NAME = #{ storeName }
+    </select>
+
+    <insert id="insertOneItem" parameterType="ReItemDTO">
+        INSERT
+        INTO RETURN_ITEM_INFO
+        (
+          RETURN_COUNT
+        , STORE_NAME
+        , ITEM_NO
+        , RETURN_ITEM_NO
+        , REF_R_NO
+        )
+        VALUES
+        (
+          0
+        , #{ storeName }
+        , #{ itemNo }
+        , SEQ_RETURN_ITEM_NO.NEXTVAL
+        , #{ rNo }
+        )
+    </insert>
+    <delete id="deleteOneItem">
+        DELETE
+          FROM RETURN_ITEM_INFO
+         WHERE ITEM_NO = #{ itemNo }
+           AND REF_R_NO = #{ rNo }
+           AND STORE_NAME =  #{ storeName }
+    </delete>
+
+    <update id="updateOneMoney">
+        UPDATE RETURN_ITEM
+        SET RETURN_ACCOUNT = RETURN_ACCOUNT - ((SELECT  RII.RETURN_COUNT FROM RETURN_ITEM_INFO RII JOIN ITEM_INFO II ON (RII.ITEM_NO = II.ITEM_NO) WHERE RII.REF_R_NO = #{ rNo } AND RII.ITEM_NO = #{ itemNo })
+            * (SELECT II.ITEM_SALES FROM RETURN_ITEM_INFO RII JOIN ITEM_INFO II ON (RII.ITEM_NO = II.ITEM_NO) WHERE RII.REF_R_NO =#{ rNo } AND RII.ITEM_NO = #{ itemNo }))
+    </update>
+
+    <update id="updateItemCount">
+        UPDATE
+            STO_ITEM_INFO
+        SET STORE_AMOUNT = STORE_AMOUNT  + (SELECT #{ returnCount } FROM RETURN_ITEM_INFO WHERE REF_R_NO = #{ rNo } AND ITEM_NO= #{ itemNo })
+        WHERE ITEM_NO = (SELECT #{ itemNo } FROM RETURN_ITEM_INFO WHERE REF_R_NO = #{ rNo } AND ITEM_NO = #{ itemNo })
+          AND STORE_NAME = #{ storeName }
+    </update>
+
+    <update id="updateReturnItems">
+        UPDATE RETURN_ITEM
+           SET R_REASON = <if test='rReason == "date1"'>
+                             '실수로 잘못 주문함'
+                          </if>
+                          <if test="rReason == 'date2'">
+                             '배송중 손상됨'
+                          </if>
+                          <if test="rReason == 'date3'">
+                             '더이상 필요하지 않음'
+                          </if>
+                          <if test="rReason == 'date4'">
+                             '유통기한이 지난(짧은) 상품 배송'
+                          </if>
+             , RETURN_ACCOUNT = #{ returnTotalMoney }
+         WHERE R_NO = #{ rNo }
+    </update>
+
+    <update id="updateRItem">
+        UPDATE
+            RETURN_ITEM_INFO
+        SET RETURN_COUNT = #{ returnCount }
+          , ITEM_NO = #{ itemNo }
+        WHERE STORE_NAME = #{ storeName }
+          AND REF_R_NO = #{ rNo }
+    </update>
+
+    <update id="updateReAcountP">
+        UPDATE
+            STO_ITEM_INFO
+        SET STORE_AMOUNT = STORE_AMOUNT  + #{ V }
+        WHERE ITEM_NO = (SELECT #{ itemNo } FROM RETURN_ITEM_INFO WHERE REF_R_NO = #{ rNo } AND ITEM_NO = #{ itemNo })
+          AND STORE_NAME = #{ storeName }
+    </update>
+
+    <update id="updateReAcountM">
+        UPDATE
+            STO_ITEM_INFO
+        SET STORE_AMOUNT = STORE_AMOUNT  - #{ R }
+        WHERE ITEM_NO = (SELECT ITEM_NO FROM RETURN_ITEM_INFO WHERE REF_R_NO = #{ rNo } AND ITEM_NO = #{ itemNo })
+          AND STORE_NAME = #{ storeName }
+    </update>
 
 </mapper>

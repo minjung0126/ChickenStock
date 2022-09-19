@@ -15,13 +15,13 @@ public class ReItemDTO {
     private String itemSales; // 매출단가
     private String fileName; //원본파일명
     private int rNo;   // 반품번호
-
+    private int firstCount;
     private int storeAmount; // 가맹점 픔목수량
 
     public ReItemDTO() {
     }
 
-    public ReItemDTO(String rDate, String rReason, int returnTotalMoney, int returnCount, int itemNo, String itemName, String categoryName, String itemStandard, String itemMake, String itemSales, String fileName, int rNo, int storeAmount) {
+    public ReItemDTO(String rDate, String rReason, int returnTotalMoney, int returnCount, int itemNo, String itemName, String categoryName, String itemStandard, String itemMake, String itemSales, String fileName, int rNo, int firstCount, int storeAmount) {
         this.rDate = rDate;
         this.rReason = rReason;
         this.returnTotalMoney = returnTotalMoney;
@@ -34,6 +34,7 @@ public class ReItemDTO {
         this.itemSales = itemSales;
         this.fileName = fileName;
         this.rNo = rNo;
+        this.firstCount = firstCount;
         this.storeAmount = storeAmount;
     }
 
@@ -133,6 +134,14 @@ public class ReItemDTO {
         this.rNo = rNo;
     }
 
+    public int getFirstCount() {
+        return firstCount;
+    }
+
+    public void setFirstCount(int firstCount) {
+        this.firstCount = firstCount;
+    }
+
     public int getStoreAmount() {
         return storeAmount;
     }
@@ -156,6 +165,7 @@ public class ReItemDTO {
                 ", itemSales='" + itemSales + '\'' +
                 ", fileName='" + fileName + '\'' +
                 ", rNo=" + rNo +
+                ", firstCount=" + firstCount +
                 ", storeAmount=" + storeAmount +
                 '}';
     }

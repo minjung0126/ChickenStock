@@ -7,11 +7,8 @@
     <title>chicken stock</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/common/common.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/returnItem/storeReItem.css}"/>
-    <!-- datepicker js & css -->
+
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
     <!-- table css -->
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
@@ -66,6 +63,7 @@
                         <div class="dateList1"> 반품 신청일 :
                             <span id="dueDate" th:text="${ updateItem.rDate }"></span>
                         </div>
+                        <form id="updateForm" name="updateForm" th:action="@{/reItem/user/reviseReItem}" method="post">
                         <div class="dateList2" style="font-weight: bold;">
                             <select id="rReason" name="rReason" class="form-control col-4" style="max-width: max-content; margin-right: 10px; display: inline-block; border: none;">
                                 <option value="date"> - 반품사유 - </option>
@@ -91,19 +89,29 @@
                             <table class="table"  style="margin-top: -8px;">
                                 <thead>
                                 <tr>
+                                    <th>
+                                        <div class="form-check pb-3">
+                                            <input type="checkbox" class="form-check-input" id="cbx_chkAll1" required/>
+                                        </div>
+                                    </th>
                                     <th>상품코드</th>
                                     <th>썸네일</th>
                                     <th>상품명</th>
                                     <th>카테고리</th>
                                     <th>규격</th>
                                     <th>제조사(원산지)</th>
-                                    <th>매출단가</th>
+                                    <th>가격</th>
                                     <th>재고량</th>
-                                    <th>반품수량</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr th:each=" st : ${ storeItems }">
+                                    <td>
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" name="chk1" th:value="${ st.itemNo }">
+                                            <label class="form-check-label"></label>
+                                        </div>
+                                    </td>
                                     <td th:text="${ st.itemNo }"></td>
                                     <td>
                                         <div class="img-info">
@@ -118,10 +126,6 @@
                                     <td th:text="${ st.itemMake }"></td>
                                     <td th:text="|${ #numbers.formatInteger(st.itemSales, 0, 'COMMA') }원|"></td>
                                     <td th:text="${ st.storeAmount }"></td>
-                                    <td >
-                                        <input type="number" min="0" th:max="${ st.storeAmount }" style="width:60px; text-align: center; border: 1px solid rgb(255, 255, 255); border-bottom: 1px solid;" >
-                                        <button type="submit" style="border : none; background-color: #fff;"></button>
-                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -131,8 +135,9 @@
                                 </a>
                             </div>
                         </div>
+                        <button class="btn btn-warning me-1" type="button" onclick="deleteItems()" style="color: #fff;">선택품목삭제</button>
                         <button class="btn btn-warning mx-1" onclick="correctionForm()" style="color: #fff;">수정</button>
-                        <button class="btn btn-warning mx-1" onclick="location.href='storeReList.html'" style="color: #fff;">돌아가기</button>
+                        <button class="btn btn-warning mx-1" onclick="location.href='/reItem/user/storeReList';" style="color: #fff;">돌아가기</button>
                     </div>
                     <table class="table">
                         <thead>
@@ -150,14 +155,13 @@
                             <th>제조사(원산지)</th>
                             <th>판매가격</th>
                             <th>반품수량</th>
-                            <th>삭제</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr th:each=" reUp : ${ updateItems }">
                             <td>
                                 <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" name="chk2">
+                                    <input type="checkbox" class="form-check-input" name="chk2" th:value="${ reUp.itemNo }">
                                     <label class="form-check-label"></label>
                                 </div>
                             </td>
@@ -177,16 +181,17 @@
                             <td id="itemPurchase" class="itemPurchase" th:text="|${ #numbers.formatInteger(reUp.itemSales, 0, 'COMMA') }원|"></td>
                             <td>
                                 <input type="number" min="0" th:max="${ reUp.storeAmount }" style="width:60px; text-align: center; border: 1px solid rgb(255, 255, 255); border-bottom: 1px solid;" th:value="${ reUp.returnCount }" class="returnAmount" id="returnCount" onchange="inputValueChange(this);">
-                                <input type="hidden" name="returnCount2">
+                                <input type="text"  th:value="${ reUp.returnCount }" name="firstCount">
+                                <input type="text" id="returnCount2" name="returnCount2"  th:value="${ reUp.returnCount }">
                                 <button type="submit" style="border : none; background-color: #fff;"></button>
                             </td>
-                            <td><button class="btn btn-warning me-1" type="button" style="color: #fff;">삭제</button></td>
+                            <input type="hidden" id="rNo" name="rNo" th:value="${ rNo }">
                         </tr>
                         </tbody>
                     </table>
+                    </form>
                 </div>
                 <!-- E: table -->
-
             </div>
         </div>
         <!-- E: main layout -->
@@ -198,11 +203,17 @@
 <script type="text/javascript">
     function correctionForm() {
         var result = confirm("수정완료 하시겠습니까?");
+
         if(result == true) {
+
+            $('#updateForm').submit();
             alert("신청서 수정이 완료되었습니다.");
+        }else {
+            return false;
         }
     }
 
+    <!-- 반품금액 계산 -->
     let select = $("#rReason option");
     $(select).prop("selected", true);
 
@@ -210,27 +221,26 @@
 
     function inputValueChange(check){
 
-        // 반품수량
-        let inputValue = $(check.parentElement)[0].children[0].value;
-        console.log(inputValue);
+        // // 반품수량
+         let inputValue = $(check.parentElement)[0].children[0].value;
 
-        // 입고금액
-        let itemPurchase = parseInt(check.parentElement.parentElement.children[8].innerText.replace(/[^0-9]/gi, ''));
-        let returnItemMoney = inputValue * itemPurchase;
+         $(check.parentElement)[0].children[1].value = inputValue;
 
-        console.log(itemPurchase);
-        console.log(returnItemMoney);
+        let returnAmount = $(".returnAmount");
+        let itemPurchase = $(".itemPurchase");
 
-        returnTotalMoney += returnItemMoney;
-        console.log(returnTotalMoney);
-        document.getElementById('returnTotalMoney').value = returnTotalMoney.toLocaleString('ko-KR') + "원";
+        let total = 0;
+        for(let i = 0; i < returnAmount.length; i++){
+
+            total += returnAmount[i].value * parseInt(itemPurchase[i].innerText.replace(',',''));
+        }
+        console.log(total);
+        document.getElementById('returnTotalMoney').value = total.toLocaleString('ko-KR') + "원";
         document.getElementById('reTotal').value = returnTotalMoney;
-
-        $(check.parentElement)[0].children[1].value = inputValue;
-
+        let secondCount = returnAmount;
     }
 
-
+    <!-- 레이어 팝업 -->
     $(".detail-main").click(function() {
         $(this).next(".detail-sub-tr").find(".detail-sub").slideToggle(300);
         $(this).toggleClass('on').siblings().removeClass('on');
@@ -249,22 +259,115 @@
     }
 
 </script>
-<!-- 체크박스 선택 스크립트 -->
+<!-- 체크박스 선택 스크립트(하나만 선택되도록 하기) -->
 <script type="text/javascript">
-    $(document).ready(function() {
-        $("#cbx_chkAll2").click(function() {
-            if($("#cbx_chkAll2").is(":checked")) $("input[name=chk2]").prop("checked", true);
-            else $("input[name=chk2]").prop("checked", false);
-        });
 
-        $("input[name=chk2]").click(function() {
-            var total = $("input[name=chk2]").length;
-            var checked = $("input[name=chk2]:checked").length;
+    $("input[name=chk1]").on('change',function(){
 
-            if(total != checked) $("#cbx_chkAll2").prop("checked", false);
-            else $("#cbx_chkAll2").prop("checked", true);
-        });
+        let count = 0;
+        for(let i =0; i < $("input[name=chk1]").length; i++){
+
+            if($("input[name=chk1]")[i].checked){
+                count++;
+            }
+
+            if(count == 2){
+                alert("등록은 하나만 체크가 가능합니다.");
+                $("input[name=chk1]")[i].checked = false;
+                return;
+            }
+        }
     });
+
+    $("input[name=chk2]").on('change',function(){
+
+        let count = 0;
+        for(let i =0; i < $("input[name=chk2]").length; i++){
+
+            if($("input[name=chk2]")[i].checked){
+                count++;
+            }
+
+            if(count == 2){
+                alert("삭제는 하나만 체크가 가능합니다.");
+                $("input[name=chk2]")[i].checked = false;
+                return;
+            }
+        }
+    });
+
+
+    <!-- 품목추가할 아이템 번호 불러오기  -->
+    function getCheckboxValue(){
+
+        var insertOne = "";
+
+        $("[name=chk1]").each(function(){
+            if( $(this).is(":checked") ){
+                if(insertOne == ""){
+                    insertOne = $(this).val();
+                }else {
+                    insertOne += '@'+$(this).val();
+                }
+            }
+        });
+
+        var rNo = document.getElementById('rNo').value;
+
+        $.ajax({
+            url: "/reItem/user/insertOneReItem",
+            type: "POST",
+            data: {"insertOne": insertOne , "rNo" : rNo},
+            success: function(data){
+                console.log(data); // success, failed
+
+                 if(data == 'success') {
+                     alert("추가성공");
+                     location.href="/reItem/user/reviseReItem?rNo="+rNo;
+                 }
+            },
+            error: function(){
+                alert("추가실패");
+            }
+        });
+    }
+
+    <!-- 아이템 한줄 삭제 -->
+    function deleteItems(){
+
+        var deleteNum = "";
+
+        $("[name=chk2]").each(function(){
+            if( $(this).is(":checked") ){
+                if(deleteNum == ""){
+                    deleteNum = $(this).val();
+                }else {
+                    deleteNum += '@'+$(this).val();
+                }
+            }
+        });
+
+        var rNo = document.getElementById('rNo').value;
+        var returnCount = document.getElementById("returnCount2").value;
+
+        $.ajax({
+            url: "/reItem/user/deleteReItem",
+            type: "POST",
+            data: {"deleteNum": deleteNum , "rNo" : rNo, "returnCount" : returnCount},
+            success: function(data){
+                console.log(data); // success, failed
+
+                if(data == 'success') {
+                    alert("삭제성공");
+                    location.href="/reItem/user/reviseReItem?rNo="+rNo;
+                }
+            },
+            error: function(){
+                alert("삭제실패");
+            }
+        });
+    }
+
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
