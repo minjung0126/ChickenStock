@@ -118,10 +118,10 @@
                   <tbody style="cursor:pointer">
                    <th:block th:if="${ noticeList.size() > 0 }">
                     <tr th:each="noticeList : ${ noticeList }">
-                      <td th:text="${ noticeList.noticeNo }"></td>
-                      <td th:text="${ noticeList.noticeName }"></td>
-                      <td th:text="${ noticeList.empName }"></td>
-                      <td th:text="${ noticeList.noticeRegistDate }"></td>
+                      <td class="notice" th:text="${ noticeList.noticeNo }"></td>
+                      <td class="notice" th:text="${ noticeList.noticeName }"></td>
+                      <td class="notice" th:text="${ noticeList.empName }"></td>
+                      <td class="notice" th:text="${ noticeList.noticeRegistDate }"></td>
                     </tr>
                    </th:block>
                   <th:block th:if="${ noticeList.size() == 0 }">
@@ -191,8 +191,8 @@
     });
   </script>
   <script>
-    if(document.getElementsByTagName("td")) {
-      const $tds = document.getElementsByTagName("td");
+    if(document.getElementsByClassName("notice")) {
+      const $tds = document.getElementsByClassName("notice");
       for (let i = 0; i < $tds.length; i++) {
 
         $tds[i].onclick = function () {
