@@ -57,6 +57,17 @@
         <result property="storeName" column="STORE_NAME"/>
         <result property="totalMoney" column="TOTAL_MONEY"/>
         <result property="relListDate" column="REL_LIST_DATE"/>
+        <result property="orderNo" column="ORDER_NO"/>
+        <result property="rNum" column="RNUM"/>
+        <result property="orderCode" column="orderCode"/>
+        <result property="recCode" column="REC_CODE"/>
+        <result property="recAmount" column="REC_AMOUNT"/>
+        <result property="recTotalMoney" column="REC_TOTALMONEY"/>
+        <result property="orderDate" column="ORDER_DATE"/>
+        <result property="recDate" column="REC_DATE"/>
+        <association property="receiveStore" resultMap="receiveStoreResultMap"/>
+        <association property="recReleaseItem" resultMap="recReleaseItemResultMap"/>
+        <association property="recStoreOrder" resultMap="recStoreOrderResultMap"/>
     </resultMap>
 
     <resultMap id="recReleaseItemResultMap" type="com.chicken.project.storeReceive.model.dto.RecReleaseItemDTO">
@@ -72,6 +83,26 @@
         <result property="orderNo" column="ORDER_NO"/>
         <result property="relCodeDetail" column="REL_CODE_DETAIL"/>
         <result property="relListYn" column="REL_LIST_YN"/>
+        <result property="orderCode" column="orderCode"/>
+        <result property="recCode" column="REC_CODE"/>
+        <result property="fileName" column="FILE_NAME"/>
+        <result property="itemName" column="ITEM_NAME"/>
+        <result property="categoryName" column="CATEGORY_NAME"/>
+        <result property="itemStandard" column="ITEM_STANDARD"/>
+        <result property="itemMake" column="ITEM_MAKE"/>
+        <result property="recAmount" column="REC_AMOUNT"/>
+        <result property="itemSales" column="ITEM_SALES"/>
+        <result property="recMoney" column="REC_MONEY"/>
+        <result property="orderDate" column="ORDER_DATE"/>
+        <result property="recDate" column="REC_DATE"/>
+       <association property="itemInfo" resultMap="itemInfoResultMap"/>
+       <association property="itemCategory" resultMap="itemCategoryResultMap"/>
+       <association property="itemFile" resultMap="itemFileResultMap"/>
+       <association property="recStoreOrder" resultMap="recStoreOrderResultMap"/>
+       <association property="recReleaseItemHistory" resultMap="recReleaseItemHistoryResultMap"/>
+       <association property="receiveStore" resultMap="receiveStoreResultMap"/>
+       <association property="receiveStoreItem" resultMap="receiveStoreItemResultMap"/>
+
     </resultMap>
 
     <resultMap id="recReleaseItemHistoryResultMap" type="com.chicken.project.storeReceive.model.dto.RecReleaseItemHistoryDTO">
@@ -91,15 +122,6 @@
         <result property="orderCode" column="orderCode"/>
         <result property="countOrderNo" column="countOrderNo"/>
         <result property="rNum" column="RNUM"/>
-        <association property="recOrderHandler" resultMap="recOrderHandlerResultMap"/>
-        <association property="recCart" resultMap="recCartResultMap"/>
-        <association property="itemInfo" resultMap="itemInfoResultMap"/>
-        <association property="itemFile" resultMap="itemFileResultMap"/>
-        <association property="itemCategory" resultMap="itemCategoryResultMap"/>
-        <association property="recRelOrdHandler" resultMap="recRelOrdHandlerResultMap"/>
-        <association property="recReleaseItem" resultMap="recReleaseItemResultMap"/>
-        <association property="receiveStore" resultMap="receiveStoreResultMap"/>
-        <association property="receiveStoreItem" resultMap="receiveStoreItemResultMap"/>
     </resultMap>
 
     <resultMap id="recTaxBillResultMap" type="com.chicken.project.storeReceive.model.dto.RecTaxBillDTO">
@@ -144,96 +166,121 @@
         <result property="itemNo" column="ITEM_NO"/>
     </resultMap>
 
-    <select id="selectAllOrder" resultMap="recStoreOrderResultMap">
-    SELECT
-                           DISTINCT (TO_CHAR('O' || LPAD(SO.ORDER_NO, 4, '0'))) orderCode
-                         , SO.ORDER_NO
-                         , SO.ORDER_DATE
-                         , C.STORE_NAME
-                         , RS.REC_CODE
-                      FROM STORE_ORDER SO
-                      JOIN ORDER_HANDLER OH ON (SO.ORDER_NO = OH.ORDER_NO)
-                      JOIN CART C ON (OH.CART_NO = C.CART_NO)
-                      LEFT JOIN RECEIVE_STORE RS ON (SO.ORDER_NO = RS.ORDER_NO)
-                     WHERE C.STORE_NAME = '종각점'
-                     ORDER BY 2
+    <select id="selectTotalCount" resultType="_int" parameterType="hashmap">
+        SELECT
+               COUNT(DISTINCT(R.REL_CODE))
+          FROM RELEASE R
+          JOIN RELEASE_ITEM RI ON (RI.REL_CODE = R.REL_CODE)
+          LEFT JOIN RECEIVE_STORE RS ON (RI.ORDER_NO = RS.ORDER_NO)
+          JOIN STORE_ORDER SO ON (RI.ORDER_NO = SO.ORDER_NO)
     </select>
 
-    <select id="selectAllReceive" resultMap="recStoreOrderResultMap">
-            SELECT
-                                 (TO_CHAR('O' || LPAD(SO.ORDER_NO, 4, '0'))) orderCode
-                                , RS.REC_CODE
-                                , SO.ORDER_NO
-                                , COUNT(RS.REC_CODE)-1 countRecCode
-                                , SUM(RI.REC_AMOUNT) sumRecAmount
-                                , RS.REC_TOTALMONEY
-                                , RS.REC_DATE
-                                , SO.ORDER_DATE
-                                , RS.STORE_NAME
-                             FROM RECEIVE_STORE RS
-                             JOIN STORE_ORDER SO ON(RS.ORDER_NO = SO.ORDER_NO)
-                             JOIN RECEIVE_STORE_ITEM RI ON (RS.REC_CODE = RI.REC_CODE)
-                            WHERE RS.STORE_NAME = '종각점'
-                            GROUP BY RS.REC_CODE
-                                   , RS.REC_TOTALMONEY
-                                   , RS.REC_DATE
-                                   , RS.STORE_NAME
-                                   , SO.ORDER_NO
-                                   , SO.ORDER_DATE
-                            ORDER BY 2
-        </select>
+    <select id="selectAllRelease" resultMap="recReleaseResultMap">
+SELECT
+    A.RNUM
+, A.REL_CODE
+, A.orderCode
+, A.REL_NAME
+, A.REL_DATE
+, A.REL_YN
+, A.STORE_NAME
+, A.TOTAL_MONEY
+, A.REL_LIST_DATE
+, A.ORDER_NO
+, A.REC_CODE
+, A.REC_AMOUNT
+, A.REC_TOTALMONEY
+, A.ORDER_DATE
+, A.REC_DATE
+FROM  (SELECT
+         ROWNUM RNUM
+     , B.REL_CODE
+     , B.orderCode
+     , B.REL_NAME
+     , B.REL_DATE
+     , B.REL_YN
+     , B.STORE_NAME
+     , B.TOTAL_MONEY
+     , B.REL_LIST_DATE
+     , B.ORDER_NO
+     , B.REC_CODE
+     , B.REC_AMOUNT
+     , B.REC_TOTALMONEY
+     , B.ORDER_DATE
+     , B.REC_DATE
+FROM (SELECT
+               DISTINCT (R.REL_CODE)
+             , (TO_CHAR('O' || LPAD(RI.ORDER_NO, 4, '0'))) orderCode
+             , R.REL_NAME
+             , R.REL_DATE
+             , R.REL_YN
+             , R.STORE_NAME
+             , R.TOTAL_MONEY
+             , R.REL_LIST_DATE
+             , RI.ORDER_NO
+             , RS.REC_CODE
+             , RS.REC_AMOUNT
+             , RS.REC_TOTALMONEY
+             , SO.ORDER_DATE
+             , RS.REC_DATE
+          FROM RELEASE R
+          JOIN RELEASE_ITEM RI ON (RI.REL_CODE = R.REL_CODE)
+          LEFT JOIN RECEIVE_STORE RS ON (RI.ORDER_NO = RS.ORDER_NO)
+          JOIN STORE_ORDER SO ON (RI.ORDER_NO = SO.ORDER_NO)
+         ORDER BY RS.REC_CODE DESC,
+                  RI.ORDER_NO) B
+<![CDATA[
+     WHERE ROWNUM <= #{ endRow }
+                ]]>
+        ) A
+     WHERE A.RNUM >= #{ startRow }
+     ORDER BY 1 ASC
+    </select>
 
-        <select id="selectAllOrderItem" resultMap="recStoreOrderResultMap">
-            SELECT
-                  (TO_CHAR('O' || LPAD(SO.ORDER_NO, 4, '0'))) orderCode
-                 , SO.ORDER_NO
-                 , I.ITEM_NO
-                 , I.ITEM_NAME
-                 , IF.FILE_NAME
-                 , IC.CATEGORY_NAME
-                 , I.ITEM_STANDARD
-                 , I.ITEM_MAKE
-                 , C.CART_AMOUNT
-                 , RI.REL_AMOUNT
-                 , I.ITEM_SALES
-                 , SO.ORDER_DATE
-              FROM STORE_ORDER SO
-              JOIN ORDER_HANDLER OH ON (SO.ORDER_NO = OH.ORDER_NO)
-              JOIN CART C ON (OH.CART_NO = C.CART_NO)
-              JOIN ITEM_INFO I ON (C.ITEM_NO = I.ITEM_NO)
-              JOIN ITEM_FILE IF ON (I.ITEM_NO = IF.ITEM_NO)
-              JOIN ITEM_CATEGORY IC ON (I.CATEGORY_NO = IC.CATEGORY_NO)
-              LEFT JOIN REL_ORD_HANDLER ROH ON (C.CART_NO = ROH.CART_NO)
-              LEFT JOIN RELEASE_ITEM RI ON (ROH.REL_CODE_DETAIL = RI.REL_CODE_DETAIL)
-             WHERE SO.ORDER_NO = #{ orderNo }
-             ORDER BY SO.ORDER_NO
-        </select>
-
-        <select id="selectAllReceiveItem" resultMap="recStoreOrderResultMap">
-            SELECT
-                   (TO_CHAR('O' || LPAD(SO.ORDER_NO, 4, '0'))) orderCode
-                 , SO.ORDER_NO
-                 , RC.REC_CODE
-                 , I.ITEM_NO
-                 , I.ITEM_NAME
-                 , IF.FILE_NAME
-                 , IC.CATEGORY_NAME
-                 , I.ITEM_STANDARD
-                 , I.ITEM_MAKE
-                 , C.CART_AMOUNT
-                 , I.ITEM_SALES
-                 , RC.REC_DATE
-                 , RCI.REC_AMOUNT
-                 , RCI.REC_MONEY
-              FROM STORE_ORDER SO
-              JOIN ORDER_HANDLER OH ON (SO.ORDER_NO = OH.ORDER_NO)
-              JOIN CART C ON (OH.CART_NO = C.CART_NO)
-              JOIN ITEM_INFO I ON (C.ITEM_NO = I.ITEM_NO)
-              JOIN ITEM_FILE IF ON (I.ITEM_NO = IF.ITEM_NO)
-              JOIN ITEM_CATEGORY IC ON (I.CATEGORY_NO = IC.CATEGORY_NO)
-              JOIN RECEIVE_STORE RC ON (RC.ORDER_NO = SO.ORDER_NO)
-         LEFT JOIN RECEIVE_STORE_ITEM RCI ON (I.ITEM_NO = RCI.ITEM_NO)
-             WHERE SO.ORDER_NO = #{ orderNo }
-             ORDER BY SO.ORDER_NO
-        </select>
+    <select id="selectAllItem" resultMap="recReleaseItemResultMap">
+        SELECT
+            (TO_CHAR('O' || LPAD(SO.ORDER_NO, 4, '0'))) orderCode
+             , SO.ORDER_NO
+             , RS.REC_CODE
+             , I.ITEM_NO
+             , IF.FILE_NAME
+             , I.ITEM_NAME
+             , IC.CATEGORY_NAME
+             , I.ITEM_STANDARD
+             , I.ITEM_MAKE
+             , RLI.ORDER_AMOUNT
+             , RLI.REL_AMOUNT
+             , RSI.REC_AMOUNT
+             , I.ITEM_SALES
+             , RSI.REC_MONEY
+             , SO.ORDER_DATE
+             , RS.REC_DATE
+             , RLI.REL_CODE
+        FROM RELEASE_ITEM RLI
+                 JOIN ITEM_INFO I ON (RLI.ITEM_NO = I.ITEM_NO)
+                 JOIN ITEM_CATEGORY IC ON (I.CATEGORY_NO = IC.CATEGORY_NO)
+                 JOIN ITEM_FILE IF ON (I.ITEM_NO = IF.ITEM_NO)
+                 JOIN STORE_ORDER SO ON (RLI.ORDER_NO = SO.ORDER_NO)
+                 LEFT JOIN RELEASE_ITEM_HISTORY RIH ON (RLI.REL_CODE_DETAIL = RIH.REL_CODE_DETAIL)
+                 LEFT JOIN RECEIVE_STORE RS ON (RLI.ORDER_NO = RS.ORDER_NO)
+                 LEFT JOIN RECEIVE_STORE_ITEM RSI ON RLI.ITEM_NO = RSI.ITEM_NO AND RSI.REC_CODE = RS.REC_CODE
+        GROUP BY SO.ORDER_NO
+               , RS.REC_CODE
+               , RLI.REL_CODE
+               , I.ITEM_NO
+               , IF.FILE_NAME
+               , I.ITEM_NAME
+               , IC.CATEGORY_NAME
+               , I.ITEM_STANDARD
+               , I.ITEM_MAKE
+               , RLI.ORDER_AMOUNT
+               , RLI.REL_AMOUNT
+               , RSI.REC_AMOUNT
+               , I.ITEM_SALES
+               , RSI.REC_MONEY
+               , SO.ORDER_DATE
+               , RS.REC_DATE
+        HAVING RLI.REL_CODE = #{ relCode }
+        ORDER BY I.ITEM_NO
+    </select>
 </mapper>

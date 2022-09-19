@@ -42,7 +42,7 @@
                 <div class="container-fluid" style="margin-top:30px">
                     <h3>입고 관리</h3>
                     <br>
-                    <form action="/receive/admin/list">
+                    <form action="/receive/user/list">
                         <div>
                             <div class="input-group mb-3 col-12 float-start">
                                 <select id="searchCondition" name="searchCondition" class="form-control col-2" style="max-width: max-content;">
@@ -77,31 +77,35 @@
                                     <th>입고 금액</th>
                                     <th>주문일</th>
                                     <th>입고일</th>
+                                    <th>가맹점</th>
                                     <th>입고 상태</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <div th:each="order, stat : ${ orderList }" th:if="${ orderList.get(stat.index).receiveStore.recCode eq null }">
+                                <div th:each="release, stat : ${ releaseList }">
                                     <tr class="detail-main">
-                                        <td th:text="${ order.rNum }">1</td>
-                                        <td th:text="${ order.orderCode }">190201</td>
-                                        <td></td>
-<!--                                        <td th:text="|${ orderItem[0].get(0).itemInfo.itemName }|"></td>-->
-                                        <td th:if="${ orderItem.size() > 1}"
-                                            th:text="|${ orderItem[0].get(0).itemInfo.itemName } 외 ${ orderItem.size()-1 }개 품목|"></td>
-                                        <td th:if="${ orderItem.size() == 1}"
-                                            th:text="${ orderItem[0].get(0).itemInfo.itemName }"></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td th:text="${ order.orderDate }"></td>
-                                        <td></td>
-                                        <td><button type="button" class="btn btn-warning btn-sm" onclick="insertReceive()" style="color: #fff;">입고 등록</button></td>
+                                        <td th:text="${ release.rNum }">1</td>
+                                        <td th:text="${ release.orderCode }">190201</td>
+                                        <td th:if="${ release.recCode eq null }"></td>
+                                        <td th:if="${ release.recCode ne null }" th:text="${ release.recCode }"></td>
+                                        <td th:text="${ release.relName }"></td>
+                                        <td th:if="${ release.recCode eq null }"></td>
+                                        <td th:if="${ release.recCode ne null }" th:text="${ release.recAmount }"></td>
+                                        <td th:if="${ release.recCode eq null }"></td>
+                                        <td th:if="${ release.recCode ne null }" th:text="|${ #numbers.formatInteger(release.recTotalMoney, 0, 'COMMA') }원|"></td>
+                                        <td th:text="${ release.orderDate }"></td>
+                                        <td th:if="${ release.recCode eq null }"></td>
+                                        <td th:if="${ release.recCode ne null }" th:text="${ release.recDate }"></td>
+                                        <td th:text="${ release.storeName }"></td>
+                                        <td th:if="${ release.recCode eq null }"><button type="button" class="btn btn-warning btn-sm" onclick="insertReceive(this)" style="color: #fff;">입고 등록</button></td>
+                                        <td th:if="${ release.recCode ne null }"><button type="button" class="btn btn-light btn-sm" disabled style="color: #fff; background: #ccc;">입고 완료</button></td>
                                     </tr>
-                                    <tr class="detail-sub-tr">
-                                        <td class="detail-sub-td p-0" colspan="9">
+                                    <tr class="detail-sub-tr" th:if="${ receiveItem.get(stat.index).size() ne 0 }">
+                                        <td class="detail-sub-td p-0" colspan="10">
                                             <div class="detail-sub" style="display: none">
-                                                <table width="100%" th:each="order2 : ${ orderItem }"
-                                                       th:if="${ order.orderNo eq order2[0].orderNo }">
+                                                <table width="100%" th:each="receive : ${ receiveItem }"
+                                                       th:if="${ release.orderCode eq receive[0].orderCode}"
+                                                class="recTable" id="recTable">
                                                     <thead>
                                                     <tr>
                                                         <th>번호</th>
@@ -117,93 +121,36 @@
                                                         <th>출고 수량</th>
                                                         <th>입고 단가</th>
                                                         <th>입고 금액</th>
-                                                        <th>주문일</th>
+                                                        <th th:if="${ release.recCode eq null }" th:text="주문일">주문일</th>
+                                                        <th th:if="${ release.recCode ne null }" th:text="입고일">주문일</th>
                                                     </tr>
                                                     </thead>
-                                                    <tr th:each="order3, stat : ${ order2 }">
+                                                    <tr th:each="receive2, stat : ${ receive }">
                                                         <td th:text="${ stat.count }">1</td>
-                                                        <td th:text="${ order3.orderCode }">190201</td>
-                                                        <td></td>
-                                                        <td th:text="${ order3.itemInfo.itemNo }">100001</td>
+                                                        <td class="recOrderNo" th:value="${ receive2.orderNo }" th:text="${ receive2.orderCode }">190201</td>
+<!--                                                        <td th:if="${ releaseList.get(stat.index).recCode eq null }"></td>-->
+<!--                                                        <td th:if="${ releaseList.get(stat.index).recCode ne null }" th:text="${ receive2.recCode }"></td>-->
+                                                        <td th:text="${ receive2.recCode }"></td>
+                                                        <td class="recItemNo" th:value="${ receive2.itemNo }" th:text="${ receive2.itemNo }">100001</td>
                                                         <td>
                                                             <div class="img-info">
                                                                 <div class="img-info__img">
-                                                                    <img th:src="'/itemImage/' + ${ order3.itemFile.fileName }" alt="">
+                                                                    <img th:src="'/itemImage/' + ${ receive2.fileName }" alt="">
                                                                 </div>
                                                             </div>
                                                         </td>
-                                                        <td th:text="${ order3.itemInfo.itemName }">닭다리</td>
-                                                        <td th:text="${ order3.itemCategory.categoryName }">식재료</td>
-                                                        <td th:text="${ order3.itemInfo.itemStandard }">1kg</td>
-                                                        <td th:text="${ order3.itemInfo.itemMake }">하림</td>
-                                                        <td th:text="${ order3.recCart.cartAmount }">30</td>
-                                                        <td th:if="${ order3.recReleaseItem.relAmount eq null}" th:text="0"></td>
-                                                        <td th:if="${ order3.recReleaseItem.relAmount ne null}" th:text="${ order3.recReleaseItem.relAmount }"></td>
-                                                        <td th:text="|${ #numbers.formatInteger(order3.itemInfo.itemSales, 0, 'COMMA') }원|">4,500</td>
-                                                        <td></td>
-                                                        <td th:text="${ order3.orderDate }">2022-02-02</td>
-                                                    </tr>
-                                                </table>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </div>
-                                <div th:each="receive, stat : ${ receiveList }" th:if="${ orderList.get(stat.index).receiveStore.recCode ne null }">
-                                    <tr class="detail-main">
-                                        <td th:text="${ receive.rNum }">1</td>
-                                        <td th:text="${ receive.orderCode }">190201</td>
-                                        <td th:text="${ receive.receiveStore.recCode }"></td>
-                                        <td>닭다리 외 2개 품목</td>
-                                        <td th:text="${ receive.receiveStore.sumRecAmount }"></td>
-                                        <td th:text="|${ #numbers.formatInteger(receive.receiveStore.recTotalMoney, 0, 'COMMA') }원|"></td>
-                                        <td th:text="${ receive.orderDate }"></td>
-                                        <td th:text="${ receive.receiveStore.recDate }"></td>
-                                        <td><button type="button" class="btn btn-light btn-sm" onclick="insertReceive()" style="background: #ccc; color: #fff;" disabled>입고 완료</button></td>
-                                    </tr>
-                                    <tr class="detail-sub-tr">
-                                        <td class="detail-sub-td p-0" colspan="9">
-                                            <div class="detail-sub" style="display: none">
-                                                <table width="100%" th:each="receive2 : ${ receiveItem }"
-                                                       >
-                                                    <thead>
-                                                    <tr>
-                                                        <th>번호</th>
-                                                        <th>발주 번호</th>
-                                                        <th>입고 번호</th>
-                                                        <th>상품코드</th>
-                                                        <th>썸네일</th>
-                                                        <th>상품명</th>
-                                                        <th>카테고리</th>
-                                                        <th>규격</th>
-                                                        <th>제조사</th>
-                                                        <th>발주 수량</th>
-                                                        <th>입고 수량</th>
-                                                        <th>입고 단가</th>
-                                                        <th>입고 금액</th>
-                                                        <th>입고일</th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tr th:each="receive3, stat : ${ receive2 }">
-                                                        <td th:text="${ receive3.rNum }">1</td>
-                                                        <td th:text="${ receive3.orderCode }">190201</td>
-                                                        <td th:text="${ receive3.receiveStore.recCode }">11111</td>
-                                                        <td th:text="${ receive3.itemInfo.itemNo }">100001</td>
-                                                        <td>
-                                                            <div class="img-info">
-                                                                <div class="img-info__img">
-                                                                    <img th:src="'/itemImage/' + ${ receive3.itemFile.fileName }" alt="">
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td th:text="${ receive3.itemInfo.itemName }">닭다리</td>
-                                                        <td th:text="${ receive3.itemCategory.categoryName }">식재료</td>
-                                                        <td th:text="${ receive3.itemInfo.itemStandard }">1kg</td>
-                                                        <td th:text="${ receive3.itemInfo.itemMake }">하림</td>
-                                                        <td th:text="${ receive3.recCart.cartAmount }">30</td>
-                                                        <td th:text="${ receive3.receiveStoreItem.recAmount }">33</td>
-                                                        <td th:text="|${ #numbers.formatInteger(receive3.itemInfo.itemSales, 0, 'COMMA') }원|">4,500</td>
-                                                        <td th:text="|${ #numbers.formatInteger(receive3.receiveStoreItem.recMoney, 0, 'COMMA') }원|"></td>
-                                                        <td th:text="${ receive3.receiveStore.recDate }">2022-02-02</td>
+                                                        <td th:text="${ receive2.itemName }">닭다리</td>
+                                                        <td th:text="${ receive2.categoryName }">식재료</td>
+                                                        <td th:text="${ receive2.itemStandard }">1kg</td>
+                                                        <td th:text="${ receive2.itemMake }">하림</td>
+                                                        <td th:text="${ receive2.orderAmount }">30</td>
+                                                        <td class="recAmount" th:value="${ receive2.relAmount }" th:text="${ receive2.relAmount }"></td>
+                                                        <td class="sales" th:value="${ receive2.itemSales }" th:text="|${ #numbers.formatInteger(receive2.itemSales, 0, 'COMMA') }원|">4,500</td>
+                                                        <td th:if="${ receive2.recCode eq null }"></td>
+                                                        <td th:if="${ receive2.recCode ne null }" th:text="|${ #numbers.formatInteger(receive2.recMoney, 0, 'COMMA') }원|"></td>
+                                                        <td th:if="${ receive2.recCode eq null }" th:text="${ receive2.orderDate }"></td>
+                                                        <td th:if="${ receive2.recCode ne null }" th:text="${ receive2.recDate }"></td>
+
                                                     </tr>
                                                 </table>
                                             </div>
@@ -218,13 +165,45 @@
                 </div>
                 <!-- E: table -->
                 <!-- S: paging -->
-                <div class="d-flex justify-content-center mb-4">
-                    <button type="button" class="btn btn-light disabled" id="startPage"><<</button>
-                    <button type="button" class="btn btn-light mx-1 disabled"><</button>
-                    <button type="button" class="btn btn-warning mx-1" disabled style="color:white">1</button>
-                    <button type="button" class="btn btn-light mx-1">2</button>
-                    <button type="button" class="btn btn-light mx-1">></button>
-                    <button type="button" class="btn btn-light mx-1" id="maxPage">>></button>
+                <!-- 페이지 처리 -->
+                <div class="pagingArea" align="center">
+                    <!-- 맨 앞으로 이동 버튼 -->
+                    <button class="btn btn-light mx-1" style="cursor:pointer; background: #ccc; color: #fff;"
+                            th:onclick="'location.href=\'/receive/user/list?currentPage='+ @{${selectCriteria.startPage}} + '\''"
+                            th:disabled="${selectCriteria.pageNo == 1}"
+                    >
+                        <<
+                    </button>
+                    <!-- 이전 페이지 버튼 -->
+                    <button class="btn btn-light" style="cursor:pointer; background: #ccc; color: #fff;"
+                            th:onclick="'location.href=\'/receive/user/list?currentPage='+ @{${selectCriteria.pageNo - 1}} + '\''"
+                            th:disabled="${selectCriteria.pageNo == 1}"
+                    >
+                        <
+                    </button>
+                    <!-- 숫자 버튼 -->
+                    <th:block th:each="page : ${#numbers.sequence(selectCriteria.startPage, selectCriteria.endPage)}">
+                        <button class="btn btn-warning mx-1" style="cursor:pointer; color: #fff;"
+                                th:text="${ page }"
+                                th:onclick="'location.href=\'/receive/user/list?currentPage='+ @{${page}} + '\''"
+                                th:disabled="${ selectCriteria.pageNo eq page }">
+                        </button>
+                    </th:block>
+
+                    <!-- 다음 페이지 버튼 -->
+                    <button class="btn btn-light mx-1" style="cursor:pointer; background: #ccc; color: #fff;"
+                            th:onclick="'location.href=\'/receive/user/list?currentPage='+ @{${selectCriteria.pageNo + 1}} + '\''"
+                            th:disabled="${selectCriteria.pageNo == selectCriteria.maxPage}"
+                    >
+                        >
+                    </button>
+                    <!-- 마지막 페이지로 이동 버튼 -->
+                    <button class="btn btn-light mx-1" style="cursor:pointer; background: #ccc; color: #fff;"
+                            th:onclick="'location.href=\'/receive/user/list?currentPage='+ @{${selectCriteria.maxPage}} + '\''"
+                            th:disabled="${selectCriteria.pageNo == selectCriteria.maxPage}"
+                    >
+                        >>
+                    </button>
                 </div>
                 <!-- E: paging -->
 
@@ -246,19 +225,22 @@
     }
 </script>
 
-<!-- 입고 등록 메시지 띄우기 -->
-<script>
-    function insertReceive(){
-        var answer = confirm('입고를 진행하시겠습니까?');
-        if(answer){
-            location.href='user_receive.html';
-        }
-        if(answer){
-            var answer2 = alert('입고가 완료되었습니다.'); // 선택 항목만 입고되도록, 입고등록 완료시 alert 띄우고 조회화면으로 이동
-        }
+<!--&lt;!&ndash; 입고 등록 메시지 띄우기 &ndash;&gt;-->
+<!--<script>-->
+<!--    function insertReceive(check){-->
+<!--        console.log(check);-->
 
-    }
-</script>
+<!--        // var answer = confirm('입고를 진행하시겠습니까?');-->
+<!--        // if(answer){-->
+<!--        //     // location.href='user_receive.html';-->
+<!--        //-->
+<!--        // }-->
+<!--        // if(answer){-->
+<!--        //     var answer2 = alert('입고가 완료되었습니다.'); // 선택 항목만 입고되도록, 입고등록 완료시 alert 띄우고 조회화면으로 이동-->
+<!--        // }-->
+
+<!--    }-->
+<!--</script>-->
 
 <!-- table js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
@@ -357,6 +339,87 @@
         });
     });
 
+</script>
+
+<!-- 입고 -->
+<script>
+    function insertReceive(check){
+
+        let click = $(check.parentElement.parentElement.nextElementSibling.getElementsByClassName('recTable')[0].children[1]);
+        console.log(click);
+        let tr = click.children.length;
+        for(let i = 0; i < tr.length; i++){
+            let test = click.getElementsByClassName('recItemNo')[i].innerText;
+            console.log(test);
+        }
+        // let rowLength = document.getElementById('recTable').tBodies[0].rows.length;
+        // // let empNameHidden = document.getElementById('empName').value;
+        // // console.log(empNameHidden);
+        // // let click = $(check.parentElement.parentElement.nextElementSibling.getElementsByClassName('recTable'));
+        // let click = $(check).closest('#recTable');
+        // let test = click.find('tbody tr #recItemNo');
+        // console.log(click);
+        // console.log(test)
+
+        // for(let i = 0; i < tr; i++){
+        //     let receiveItem = [];
+        //     let receiveItemNo = '';
+        //     let receiveAmount = '';
+        //     let receiveSales = '';
+        //     let receiveOrderNo = '';
+        //     for(let i = 0; i < tr; i++){
+        //         receiveItemNo = click.getElementsByClassName('recItemNo')[i];
+        //         // receiveAmount = document.getElementsByClassName('recAmount')[i].value;
+        //         // receiveSales = document.getElementsByClassName('sales')[i].value;
+        //         // receiveOrderNo = document.getElementsByClassName('recOrderNo')[i].value;
+        //             receiveItem[i] = receiveItemNo;
+        //         // receiveItem[i] = receiveItemNo + ' ' + receiveAmount + ' ' + receiveSales + ' ' + receiveOrderNo;
+        //     }
+        //     console.log(receiveItem);
+        // }
+        // console.log(click);
+        // console.log(tr);
+        //
+        //
+        // if(rowLength == 0){
+        //     alert('입고할 품목을 등록해주세요.');
+        // } else{
+            // let answer = confirm('입고를 진행하시겠습니까?');
+            // let receiveItem = [];
+            // let receiveItemNo = '';
+            // let receiveAmount = '';
+            // let receiveSales = '';
+            // let receiveOrderNo = '';
+            // for(let i = 0; i < rowLength; i++){
+            //     receiveItemNo = document.getElementsByClassName('recItemNo')[i].value;
+            //     receiveAmount = document.getElementsByClassName('recAmount')[i].value;
+            //     receiveSales = document.getElementsByClassName('sales')[i].value;
+            //     receiveOrderNo = document.getElementsByClassName('recOrderNo')[i].value;
+            //     receiveItem[i] = receiveItemNo + ' ' + receiveAmount + ' ' + receiveSales + ' ' + receiveOrderNo;
+            // }
+            // console.log(receiveItem);
+            // alert(receiveItem);
+            //
+            // let form = document.createElement('form');
+            //
+            // let registList = document.createElement('input');
+            // registList.setAttribute('type', 'hidden');
+            // registList.setAttribute('name', 'registList');
+            // registList.setAttribute('value', receiveItem.toString());
+            //
+            // let empName = document.createElement('input');
+            // empName.setAttribute('type', 'hidden');
+            // empName.setAttribute('name', 'empName');
+            // empName.setAttribute('value', empNameHidden);
+            //
+            // form.appendChild(registList);
+            // form.appendChild(empName);
+            // form.setAttribute('method', 'post');
+            // form.setAttribute('action', '/receive/admin/regist');
+            // document.body.appendChild(form);
+            // form.submit();
+        // }
+    }
 </script>
 </body>
 </html>

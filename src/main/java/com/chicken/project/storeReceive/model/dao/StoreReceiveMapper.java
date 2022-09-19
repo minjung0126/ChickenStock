@@ -1,6 +1,8 @@
 package com.chicken.project.storeReceive.model.dao;
 
 import com.chicken.project.common.paging.SelectCriteria;
+import com.chicken.project.storeReceive.model.dto.RecReleaseDTO;
+import com.chicken.project.storeReceive.model.dto.RecReleaseItemDTO;
 import com.chicken.project.storeReceive.model.dto.RecStoreOrderDTO;
 import com.chicken.project.storeReceive.model.dto.ReceiveStoreDTO;
 import org.apache.ibatis.annotations.Mapper;
@@ -11,11 +13,9 @@ import java.util.Map;
 @Mapper
 public interface StoreReceiveMapper {
 
-    List<RecStoreOrderDTO> selectAllOrder();
+    int selectTotalCount(Map<String, String> searchMap);
 
-    List<RecStoreOrderDTO> selectAllReceive();
+    List<RecReleaseDTO> selectAllRelease(SelectCriteria selectCriteria);
 
-    List<RecStoreOrderDTO> selectAllOrderItem(int orderNo);
-
-    List<RecStoreOrderDTO> selectAllReceiveItem(int orderNo);
+    List<RecReleaseItemDTO> selectAllItem(String relCode);
 }

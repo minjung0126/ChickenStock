@@ -37,4 +37,6 @@ public interface ItemService {
     int insertItemHistory() throws ItemInsertException;
 
     ItemInfoDTO selectOneItem(String itemNoInput);
+
+    List<ItemInfoDTO> selectMainItem();
 }

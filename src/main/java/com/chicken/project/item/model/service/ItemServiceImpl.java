@@ -125,4 +125,12 @@ public class ItemServiceImpl implements ItemService{
         ItemInfoDTO oneItem = itemMapper.selectOneItem(itemNoInput);
         return oneItem;
     }
+
+    @Override
+    public List<ItemInfoDTO> selectMainItem() {
+
+        List<ItemInfoDTO> itemList = itemMapper.selectMainItem();
+
+        return itemList;
+    }
 }

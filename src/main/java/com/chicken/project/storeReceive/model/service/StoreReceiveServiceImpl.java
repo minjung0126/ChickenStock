@@ -1,12 +1,14 @@
 package com.chicken.project.storeReceive.model.service;
 
+import com.chicken.project.common.paging.SelectCriteria;
 import com.chicken.project.storeReceive.model.dao.StoreReceiveMapper;
-import com.chicken.project.storeReceive.model.dto.RecStoreOrderDTO;
-import com.chicken.project.storeReceive.model.dto.ReceiveStoreDTO;
+import com.chicken.project.storeReceive.model.dto.RecReleaseDTO;
+import com.chicken.project.storeReceive.model.dto.RecReleaseItemDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class StoreReceiveServiceImpl implements StoreReceiveService{
@@ -19,35 +21,27 @@ public class StoreReceiveServiceImpl implements StoreReceiveService{
         this.storeReceiveMapper = storeReceiveMapper;
     }
 
+
     @Override
-    public List<RecStoreOrderDTO> selectAllOrder() {
+    public int selectTotalCount(Map<String, String> searchMap) {
 
-        List<RecStoreOrderDTO> orderList = storeReceiveMapper.selectAllOrder();
+        int result = storeReceiveMapper.selectTotalCount(searchMap);
 
-        return orderList;
+        return result;
     }
 
     @Override
-    public List<RecStoreOrderDTO> selectAllReceive() {
+    public List<RecReleaseDTO> selectAllRelease(SelectCriteria selectCriteria) {
 
-        List<RecStoreOrderDTO> receiveList = storeReceiveMapper.selectAllReceive();
-
-        return receiveList;
+        List<RecReleaseDTO> releaseList = storeReceiveMapper.selectAllRelease(selectCriteria);
+        return releaseList;
     }
 
     @Override
-    public List<RecStoreOrderDTO> selectAllOrderItem(int orderNo) {
+    public List<RecReleaseItemDTO> selectAllItem(String relCode) {
 
-        List<RecStoreOrderDTO> orderItemList = storeReceiveMapper.selectAllOrderItem(orderNo);
+        List<RecReleaseItemDTO> itemList = storeReceiveMapper.selectAllItem(relCode);
 
-        return orderItemList;
-    }
-
-    @Override
-    public List<RecStoreOrderDTO> selectAllReceiveItem(int orderNo) {
-
-        List<RecStoreOrderDTO> receiveItemList = storeReceiveMapper.selectAllReceiveItem(orderNo);
-
-        return receiveItemList;
+        return itemList;
     }
 }
