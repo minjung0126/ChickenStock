@@ -60,10 +60,12 @@
                   <thead>
                     <tr>
                       <th>상품코드</th>
+                      <th>썸네일</th>
                       <th>상품명</th>
                       <th>카테고리</th>
                       <th>규격</th>
                       <th>제조사</th>
+                      <th>매입단가</th>
                       <th>재고량</th>
                       <th>품절여부</th>
                     </tr>
@@ -71,10 +73,18 @@
                   <tbody>
                     <tr th:each="item : ${ itemList }">
                       <td th:text="${ item.itemNo }">100000</td>
+                      <td>
+                        <div class="img-info">
+                          <div class="img-info__img">
+                            <img th:src="'/itemImage/' + ${ item.itemFile.fileName }" alt="">
+                          </div>
+                        </div>
+                      </td>
                       <td th:text="${ item.itemName }">닭다리</td>
                       <td th:text="${ item.categoryName }">식재료</td>
                       <td th:text="${ item.itemStandard }">1kg</td>
                       <td th:text="${ item.itemMake }">하림(국내산)</td>
+                      <td th:text="${ item.itemPurchase }"></td>
                       <td th:text="${ item.itemAmount }">100</td>
                       <td th:if="${ item.itemSoldoutYn eq 'Y' }" >
                         <span class="active-circle bg-danger"></span><span th:text="${ '품절' }"></span>
