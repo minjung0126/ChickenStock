@@ -66,7 +66,7 @@
                         <div class="dateList1"> 반품 신청일 :
                             <span id="dueDate" th:text="${ updateItem.rDate }"></span>
                         </div>
-                        <form id="updateForm" name="updateForm" th:action="@{/reItem/user/reviseReItem}" method="post">
+                        <form id="updateForm" name="updateForm" th:action="@{/reItem/user/reviseReItem}" method="post" style="width: auto;">
                         <div class="dateList2" style="font-weight: bold;">
                             <select id="rReason" name="rReason" class="form-control col-4" style="max-width: max-content; margin-right: 10px; display: inline-block; border: none;">
                                 <option value="date"> - 반품사유 - </option>
