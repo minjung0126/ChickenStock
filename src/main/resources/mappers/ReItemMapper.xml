@@ -238,7 +238,7 @@
         (
           #{ storeName }
         , #{ returnTotalMoney }
-        , SYSDATE
+        , TO_CHAR(SYSDATE,'yyyy-MM-dd HH24:MI:SS')
         , '반품금액 입금'
         )
     </insert>
