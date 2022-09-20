@@ -13,17 +13,17 @@ public class CartDTO {
     private String itemSoldoutYn;
     private String cartYn;
     private String storeName;
+    private int orderNo;
     private int cartNo;
-    private int storeAmount;
     private int balance;
-    private int lastCartNo;
+    private int lastOrderNo;
     private OrderItemFileDTO itemFile;
+    private int totalPrice;
 
     public CartDTO() {
     }
 
-
-    public CartDTO(int itemNo, String itemName, String categoryName, int categoryNo, String itemStandard, String itemMake, int itemSales, int cartAmount, String itemSoldoutYn, String cartYn, String storeName, int cartNo, int storeAmount, int balance, int lastCartNo, OrderItemFileDTO itemFile) {
+    public CartDTO(int itemNo, String itemName, String categoryName, int categoryNo, String itemStandard, String itemMake, int itemSales, int cartAmount, String itemSoldoutYn, String cartYn, String storeName, int orderNo, int cartNo, int balance, int lastOrderNo, OrderItemFileDTO itemFile, int totalPrice) {
         this.itemNo = itemNo;
         this.itemName = itemName;
         this.categoryName = categoryName;
@@ -35,11 +35,12 @@ public class CartDTO {
         this.itemSoldoutYn = itemSoldoutYn;
         this.cartYn = cartYn;
         this.storeName = storeName;
+        this.orderNo = orderNo;
         this.cartNo = cartNo;
-        this.storeAmount = storeAmount;
         this.balance = balance;
-        this.lastCartNo = lastCartNo;
+        this.lastOrderNo = lastOrderNo;
         this.itemFile = itemFile;
+        this.totalPrice = totalPrice;
     }
 
     public int getItemNo() {
@@ -130,20 +131,20 @@ public class CartDTO {
         this.storeName = storeName;
     }
 
+    public int getOrderNo() {
+        return orderNo;
+    }
+
+    public void setOrderNo(int orderNo) {
+        this.orderNo = orderNo;
+    }
+
     public int getCartNo() {
         return cartNo;
     }
 
     public void setCartNo(int cartNo) {
         this.cartNo = cartNo;
-    }
-
-    public int getStoreAmount() {
-        return storeAmount;
-    }
-
-    public void setStoreAmount(int storeAmount) {
-        this.storeAmount = storeAmount;
     }
 
     public int getBalance() {
@@ -154,12 +155,12 @@ public class CartDTO {
         this.balance = balance;
     }
 
-    public int getLastCartNo() {
-        return lastCartNo;
+    public int getLastOrderNo() {
+        return lastOrderNo;
     }
 
-    public void setLastCartNo(int lastCartNo) {
-        this.lastCartNo = lastCartNo;
+    public void setLastOrderNo(int lastOrderNo) {
+        this.lastOrderNo = lastOrderNo;
     }
 
     public OrderItemFileDTO getItemFile() {
@@ -168,6 +169,14 @@ public class CartDTO {
 
     public void setItemFile(OrderItemFileDTO itemFile) {
         this.itemFile = itemFile;
+    }
+
+    public int getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(int totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
     @Override
@@ -184,11 +193,12 @@ public class CartDTO {
                 ", itemSoldoutYn='" + itemSoldoutYn + '\'' +
                 ", cartYn='" + cartYn + '\'' +
                 ", storeName='" + storeName + '\'' +
+                ", orderNo=" + orderNo +
                 ", cartNo=" + cartNo +
-                ", storeAmount=" + storeAmount +
                 ", balance=" + balance +
-                ", lastCartNo=" + lastCartNo +
+                ", lastOrderNo=" + lastOrderNo +
                 ", itemFile=" + itemFile +
+                ", totalPrice=" + totalPrice +
                 '}';
     }
 }

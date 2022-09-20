@@ -5,15 +5,17 @@ import java.sql.Date;
 public class StoreBreakdownDTO {
 
     private String storeName;
-    private Date breakdownDate;
+    private String breakdownDate;
     private int withdrawal;
+    private String content;
 
     public StoreBreakdownDTO() {}
 
-    public StoreBreakdownDTO(String storeName, Date breakdownDate, int withdrawal) {
+    public StoreBreakdownDTO(String storeName, String breakdownDate, int withdrawal, String content) {
         this.storeName = storeName;
         this.breakdownDate = breakdownDate;
         this.withdrawal = withdrawal;
+        this.content = content;
     }
 
     public String getStoreName() {
@@ -24,11 +26,11 @@ public class StoreBreakdownDTO {
         this.storeName = storeName;
     }
 
-    public Date getBreakdownDate() {
+    public String getBreakdownDate() {
         return breakdownDate;
     }
 
-    public void setBreakdownDate(Date breakdownDate) {
+    public void setBreakdownDate(String breakdownDate) {
         this.breakdownDate = breakdownDate;
     }
 
@@ -40,12 +42,21 @@ public class StoreBreakdownDTO {
         this.withdrawal = withdrawal;
     }
 
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
     @Override
     public String toString() {
         return "StoreBreakdownDTO{" +
                 "storeName='" + storeName + '\'' +
-                ", breakdownDate=" + breakdownDate +
+                ", breakdownDate='" + breakdownDate + '\'' +
                 ", withdrawal=" + withdrawal +
+                ", content='" + content + '\'' +
                 '}';
     }
 }

@@ -61,7 +61,7 @@
 /* 품절 상품 제외 */
 #itemCondition {
     position: absolute;
-    left: 750px;
+    right: 290px;
     top: 135px;
     text-align: center;
 }
@@ -81,7 +81,7 @@
 #order > .btn {
     height: 38px;
     position: absolute;
-    left: 1010px;
+    right: 50px;
     top: 127px;
 }
 
@@ -89,7 +89,7 @@
 #addProduct > .btn {
     height: 38px;
     position: absolute;
-    left: 880px;
+    right: 150px;
     top: 127px;
 
 }
@@ -113,7 +113,7 @@
 
  /* table */
  .table {
-    margin-top: 165px;
+     margin-top: 180px;
  }
 
 /* 검색 */
@@ -148,7 +148,7 @@
 
 /* 페이징 */
 #pageBox {
-    margin-top: 30px;
+    margin-top: 60px;
     margin-bottom: 100px;
 }
 

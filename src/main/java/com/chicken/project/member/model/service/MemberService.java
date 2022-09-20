@@ -1,9 +1,12 @@
 package com.chicken.project.member.model.service;
 
-import org.springframework.security.core.userdetails.UserDetails;
+import com.chicken.project.member.model.dto.EmployeeDTO;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
+import javax.mail.MessagingException;
+import java.io.UnsupportedEncodingException;
 
 public interface MemberService extends UserDetailsService{
 
+    int updateEmailCode(EmployeeDTO emp) throws MessagingException, UnsupportedEncodingException;
 }

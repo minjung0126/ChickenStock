@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
 
   <title>chicken stock</title>
+  <link rel="shortcut icon" th:href="@{ /images/logo.png }" type="image/x-icon">
 
   <link rel="stylesheet" type="text/css" th:href="@{/css/common/common.css}"/>
   <link rel="stylesheet" th:href="@{/css/mypage/mypage.css}"/>
@@ -33,14 +34,12 @@
       }
     }
 
-    const result = "${msg}"
-    if(result == "success"){
-      alert("비밀번호 수정에 성공하셨습니다.")
-    } else if(result == "fail"){
-      alert("비밀번호 수정에 실패하셨습니다.")
+    var isMessage = true;
+
+    if(isMessage) {
+      alert("${ message }");
+      isMessage = false
     }
-
-
   </script>
 
 </head>
@@ -68,16 +67,16 @@
             <h3>비밀번호 수정</h3>
             <hr>
             <div id="con">
-              <form action="" method="post" onsubmit="ck_infor();">
-            
-                <label for="id">아이디</label>
-                <input type="text" name="username" id="id" value="userId" readonly="readonly"><br>
+              <form action="/mypage/member_mypage" method="post" onsubmit="ck_infor();">
+
+                <label for="empId">아이디</label>
+                <input type="text" name="empId" id="empId" value="userId" readonly="readonly"><br>
 
                 <label for="nowPwd">현재 비밀번호</label>
                 <input type="password" name="nowPwd" id="nowPwd" placeholder="현재 비밀번호 입력" ><br>
 
-                <label for="newPwd">새 비밀번호</label>
-                <input type="password" name="password" id="newPwd" placeholder="새 비밀번호 입력" ><br>
+                <label for="empPwd">새 비밀번호</label>
+                <input type="password" name="empPwd" id="empPwd" placeholder="새 비밀번호 입력" ><br>
               
                 <label for="newPwd2">새 비밀번호 재입력</label>
                 <input type="password" name="newPwd2" id="newPwd2" placeholder="새 비밀번호 재입력"><br>
@@ -95,6 +94,17 @@
     </div>
     <!-- E: container -->
   </div>
+
+
+  <script th:inline="javascript">
+
+    alert(${message});
+    // let message = '[[${message}]]';
+    //
+    // if(message != null) {
+    //   alert(message);
+    // }
+  </script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 </body>

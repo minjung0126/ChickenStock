@@ -120,6 +120,7 @@ public class ReItemController {
 
         mv.addObject("reList",storeReList);
         mv.addObject("selectCriteria", selectCriteria);
+        mv.setViewName("/reItem/user/storeReList");
 
         return mv;
     }
