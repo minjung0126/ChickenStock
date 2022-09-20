@@ -6,8 +6,8 @@ import com.chicken.project.member.model.dto.EmployeeDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,10 +24,11 @@ public class EmailController {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
     private final EmailService emailService;
-
+    private final PasswordEncoder passwordEncoder;
     @Autowired
-    public EmailController(EmailService emailService) {
+    public EmailController(EmailService emailService, PasswordEncoder passwordEncoder) {
         this.emailService = emailService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping("/ckEmail")
@@ -65,7 +66,7 @@ public class EmailController {
 
         emp.setEmpId(request.getParameter("empId"));
         emp.setEmpEmail(request.getParameter("email"));
-        emp.setEmpPwd(request.getParameter("new_pwd"));
+        emp.setEmpPwd(passwordEncoder.encode(request.getParameter("new_pwd")));
         String code = String.valueOf( request.getParameter("emailCode"));
         emp.setEmailCode(code);
 
@@ -76,9 +77,11 @@ public class EmailController {
         if(emailCode.equals(emp.getEmailCode())){
 
             emp.setEmailCode(emailCode.getEmailCode());
-            emailService.updatePwd(emp);
+            int result = emailService.updatePwd(emp);
 
-            SessionUtil.invalidateSession(request, response);
+            if(result > 0 ){
+                SessionUtil.invalidateSession(request, response);
+            }
         }
 
         return "redirect:/";

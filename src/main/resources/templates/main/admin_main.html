@@ -6,9 +6,10 @@
 
   <title>chicken stock</title>
 
-
+  <link rel="stylesheet" th:href="@{/css/common/common.css}"/>
   <!-- table css -->
   <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/common/style.css}"/>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
   <!-- datepicker js & css -->
   <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"/>
@@ -18,282 +19,209 @@
   <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 
   <!-- fullcalendar -->
-  <link rel="stylesheet" th:href="@{https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css}">
+  <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/core/main.min.css' rel='stylesheet' />
+  <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/daygrid/main.min.css' rel='stylesheet' />
+  <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/timegrid/main.min.css' rel='stylesheet' />
+  <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/list/main.min.css' rel='stylesheet' />
 
-  <!-- <script src="../lib/gcal.js"></script> -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
-  <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.2/main.min.css' rel='stylesheet' />
-  <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.2/main.min.js'></script>
-
-  <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css' rel='stylesheet' />
-  <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js'></script>
-	<link rel="stylesheet" type="text/css" th:href="@{/css/common/style.css}"/>
-  <script th:src="@{/js/common.js}"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-  <link rel="stylesheet" th:href="@{/css/common/common.css}"/>
-  <!-- fullcalendar -->
-  <script>
-    $(function(){
-
-      let list;
-
-      /* 일정 조회 */
-      $.ajax({
-        url:"/calendar/calList",
-        type: "GET",
-        success: function (data){
-
-          console.log(data);
-          let even = {};
-          let allEvent = [];
-          for(let index in data){
-
-            even = {
-              title : data[index].calName,
-              start : data[index].startDay,
-              end : data[index].endDay,
-              con : data[index].content,
-              groupId : data[index].calNo
-            };
-
-            allEvent.push(even);
-          }
-          let eventList = allEvent;
-
-          let calendarEl = $('#calendar')[0];
-          let calendar = new FullCalendar.Calendar(calendarEl, {
-
-            /* 공휴일 */
-            googleCalendarApiKey: 'AIzaSyCDi0sVIXFLB5pKLfgmEgPvvieZ3a375dQ',
-            eventSources: [
-              {
-                googleCalendarId: 'ko.south_korea#holiday@group.v.calendar.google.com',
-                color: '#EB503B',
-                textColor: 'white',
-              }
-            ],
-
-
-            locale: "ko",
-            headerToolbar: {
-              left: 'prev,next,today',
-              center: 'title',
-              right: 'addEventButton'
-
-            },
-            expandRows: false,
-            editable: true,
-            selectable: true,
-            businessHours: true,
-            dayMaxEvents: 3, // allow "more" link when too many events
-            dayMaxEventRows: true,
-            views:{
-              timeGrid: {
-                dayMaxEventRows : 2
-              }
-            },
-            events: eventList
-          });
-
-          calendar.render();
-        }
-      });
-
-    });
-
-    FullCalendar.globalLocales.push(function () {
-      'use strict';
-
-      var ko = {
-        code: 'ko',
-        buttonText: {
-          today: '오늘',
-          month: '월',
-          week: '주',
-          day: '일',
-          list: '일정목록',
-        },
-        weekText: '주',
-        allDayText: '종일',
-        moreLinkText: '개',
-        noEventsText: '일정이 없습니다',
-      };
-
-      return ko;
-
-    }());
-
-    const result = "${message}"
-    if(result == "success"){
-      alert("일정을 수정하였습니다.")
-    } else if(result == "fail"){
-      alert("일정 수정에 실패하였습니다.")
-    }
-
-  </script>
 </head>
 <body>
-  <div class="wrap">
+<div class="wrap">
 
-    <!-- S: header -->
-    <div th:include="common/adminHeader.html"></div>
-    <!-- E: header -->
+  <!-- S: header -->
+  <div th:include="common/adminHeader.html"></div>
+  <!-- E: header -->
 
-    <!-- S: container -->
-    <div class="container px-0">
+  <!-- S: container -->
+  <div class="container px-0">
 
-      <!-- S: aside -->
-      <div th:replace="common/adminSidebar.html"></div>
-      <!-- E: aside -->
+    <!-- S: aside -->
+    <div th:replace="common/adminSidebar.html"></div>
+    <!-- E: aside -->
 
-      <!-- S: main layout -->
-      <div class="main_layout">
-        <div class="main_layout_inner">
+    <!-- S: main layout -->
+    <div class="main_layout">
+      <div class="main_layout_inner">
 
-          <!-- 작업 영역 -->
-          <!-- S: table -->
-          <div class="container-fluid" style="margin-top:30px">
-            <div class="row mx-5">
-              <div class="col px-5 py-1">
-                <h4>재고현황</h4>
-                <div class=" d-flex justify-content-end">
-                  <i class="fa fa-plus mx-4" style="color: #aaa; cursor: pointer;"></i>
-                  <i class="fa fa-refresh" style="color: #aaa; cursor: pointer;"></i>
-                </div>
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th>번호</th>
-                      <th>상품코드</th>
-                      <th>상품명</th>
-                      <th>카테고리</th>
-                      <th>규격</th>
-                      <th>제조사(원산지)</th>
-                      <th>재고량</th>
-                      <th>품절여부</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>1</td>
-                      <td>100000</td>
-                      <td>닭다리</td>
-                      <td>식재료</td>
-                      <td>1kg</td>
-                      <td>하림(국내산)</td>
-                      <td>100</td>
-                      <td>
-                        <span class="active-circle bg-danger"></span>품절
-                      </td>
+        <!-- 작업 영역 -->
+        <!-- S: table -->
+        <div class="container-fluid" style="margin-top:30px">
+          <div class="row mx-5">
+            <div class="col px-5 py-1">
+              <h4>재고현황</h4>
+              <div class=" d-flex justify-content-end">
+                <i class="fa fa-plus mx-4" style="color: #aaa; cursor: pointer;"></i>
+                <i class="fa fa-refresh" style="color: #aaa; cursor: pointer;"></i>
+              </div>
+              <table class="table">
+                <thead>
+                <tr>
+                  <th>번호</th>
+                  <th>상품코드</th>
+                  <th>상품명</th>
+                  <th>카테고리</th>
+                  <th>규격</th>
+                  <th>제조사(원산지)</th>
+                  <th>재고량</th>
+                  <th>품절여부</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>100000</td>
+                  <td>닭다리</td>
+                  <td>식재료</td>
+                  <td>1kg</td>
+                  <td>하림(국내산)</td>
+                  <td>100</td>
+                  <td>
+                    <span class="active-circle bg-danger"></span>품절
+                  </td>
 
-                    </tr>
-                    <tr>
-                      <td>1</td>
-                      <td>100000</td>
-                      <td>닭다리</td>
-                      <td>식재료</td>
-                      <td>1kg</td>
-                      <td>하림(국내산)</td>
-                      <td>100</td>
-                      <td>
-                        <span class="active-circle bg-danger"></span>품절
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>1</td>
-                      <td>100000</td>
-                      <td>닭다리</td>
-                      <td>식재료</td>
-                      <td>1kg</td>
-                      <td>하림(국내산)</td>
-                      <td>100</td>
-                      <td>
-                        <span class="active-circle bg-success"></span>보유
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>100000</td>
+                  <td>닭다리</td>
+                  <td>식재료</td>
+                  <td>1kg</td>
+                  <td>하림(국내산)</td>
+                  <td>100</td>
+                  <td>
+                    <span class="active-circle bg-danger"></span>품절
+                  </td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>100000</td>
+                  <td>닭다리</td>
+                  <td>식재료</td>
+                  <td>1kg</td>
+                  <td>하림(국내산)</td>
+                  <td>100</td>
+                  <td>
+                    <span class="active-circle bg-success"></span>보유
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="row mx-5">
+            <div class="col p-5">
+              <h4>일정</h4>
+              <div class=" d-flex justify-content-end">
+                <i class="fa fa-plus mx-4" style="color: #aaa; cursor: pointer;"></i>
+                <i class="fa fa-refresh" style="color: #aaa; cursor: pointer;"></i>
+              </div>
+              <div id='calendar-container' class="px-5">
+                <div id='calendar' class="py-1"></div>
               </div>
             </div>
-            <div class="row mx-5">
-              <div class="col p-5">
-                <h4>일정</h4>
-                <div class=" d-flex justify-content-end">
-                  <i class="fa fa-plus mx-4" style="color: #aaa; cursor: pointer;"></i>
-                  <i class="fa fa-refresh" style="color: #aaa; cursor: pointer;"></i>
-                </div>
-                <div id='calendar-container' class="px-5">
-                  <div id='calendar' class="py-1"></div>
-                </div>
+            <div class="col p-5">
+              <h4>공지사항</h4>
+              <div class=" d-flex justify-content-end">
+                <button class="fa fa-plus mx-4" style="color: #aaa; cursor: pointer; border: none"
+                        th:onclick="'location.href=\'/notice/admin/insert\''"></button>
+                <button class="fa fa-refresh" style="color: #aaa; cursor: pointer; border: none"
+                        th:onclick="'location.href=\'/member/moveMain\''"></button>
               </div>
-              <div class="col p-5">
-                <h4>공지사항</h4>
-                <div class=" d-flex justify-content-end">
-                  <button class="fa fa-plus mx-4" style="color: #aaa; cursor: pointer; border: none"
-                          th:onclick="'location.href=\'/notice/admin/insert\''"></button>
-                  <button class="fa fa-refresh" style="color: #aaa; cursor: pointer; border: none"
-                          th:onclick="'location.href=\'/member/moveMain\''"></button>
-                </div>
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th>번호</th>
-                      <th>제목</th>
-                      <th>작성자</th>
-                      <th>등록일</th>
-                    </tr>
-                  </thead>
-                  <tbody style="cursor:pointer">
-                   <th:block th:if="${ noticeList.size() > 0 }">
-                    <tr th:each="noticeList : ${ noticeList }">
-                      <td th:text="${ noticeList.noticeNo }"></td>
-                      <td th:text="${ noticeList.noticeName }"></td>
-                      <td th:text="${ noticeList.empName }"></td>
-                      <td th:text="${ noticeList.noticeRegistDate }"></td>
-                    </tr>
-                   </th:block>
-                  <th:block th:if="${ noticeList.size() == 0 }">
-                    <tr>
-                      <td colspan="4">조회된 결과가 없습니다.</td>
-                    </tr>
-                  </th:block>
-                  </tbody>
-                </table>
-              </div>
+              <table class="table">
+                <thead>
+                <tr>
+                  <th>번호</th>
+                  <th>제목</th>
+                  <th>작성자</th>
+                  <th>등록일</th>
+                </tr>
+                </thead>
+                <tbody style="cursor:pointer">
+                <th:block th:if="${ noticeList.size() > 0 }">
+                  <tr th:each="noticeList : ${ noticeList }">
+                    <td th:text="${ noticeList.noticeNo }"></td>
+                    <td th:text="${ noticeList.noticeName }"></td>
+                    <td th:text="${ noticeList.empName }"></td>
+                    <td th:text="${ noticeList.noticeRegistDate }"></td>
+                  </tr>
+                </th:block>
+                <th:block th:if="${ noticeList.size() == 0 }">
+                  <tr>
+                    <td colspan="4">조회된 결과가 없습니다.</td>
+                  </tr>
+                </th:block>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
       </div>
-      <!-- E: main layout -->
     </div>
-    <!-- E: container -->
+    <!-- E: main layout -->
   </div>
-  
-  <!-- table js -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <!-- E: container -->
+</div>
 
-  <!-- datepicker js -->
-  <script src="../assets/js/daterange.js"></script>
+<!-- table js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
-  <!-- fullcalendar js -->
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/core/main.min.js'></script>
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/interaction/main.min.js'></script>
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/daygrid/main.min.js'></script>
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/timegrid/main.min.js'></script>
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/list/main.min.js'></script>
-  <script>
-    if(document.getElementsByTagName("td")) {
-      const $tds = document.getElementsByTagName("td");
-      for (let i = 0; i < $tds.length; i++) {
+<!-- datepicker js -->
+<script src="../assets/js/daterange.js"></script>
 
-        $tds[i].onclick = function () {
-          const noticeNo = this.parentNode.children[0].innerText;
-          location.href = "/notice/admin/detail?noticeNo=" + noticeNo
+<!-- fullcalendar js -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/core/main.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/interaction/main.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/daygrid/main.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/timegrid/main.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/list/main.min.js'></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+      plugins: [ 'interaction', 'dayGrid', 'timeGrid', 'list' ],
+      height: 'parent',
+      header: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'dayGridMonth'
+      },
+      defaultView: 'dayGridMonth',
+      navLinks: true, // can click day/week names to navigate views
+      editable: true,
+      eventLimit: true, // allow "more" link when too many events
+      events: [
+        {
+          title: 'All Day Event',
+          start: '2020-02-01',
+        },
+        {
+          title: 'Long Event',
+          start: '2020-02-07',
+          end: '2020-02-10'
+        },
+        {
+          title: 'Conference',
+          start: '2020-02-11',
+          end: '2020-02-13'
         }
+      ]
+    });
+
+    calendar.render();
+  });
+</script>
+<script>
+  if(document.getElementsByTagName("td")) {
+    const $tds = document.getElementsByTagName("td");
+    for (let i = 0; i < $tds.length; i++) {
+
+      $tds[i].onclick = function () {
+        const noticeNo = this.parentNode.children[0].innerText;
+        location.href = "/notice/admin/detail?noticeNo=" + noticeNo
       }
     }
-  </script>
+  }
+</script>
 </body>
 </html>
