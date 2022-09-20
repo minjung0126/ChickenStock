@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8"/>
   <title>chicken stock</title>
+  <link rel="shortcut icon" th:href="@{ /images/logo.png }" type="image/x-icon">
 
   <link rel="stylesheet" type="text/css" th:href="@{/css/common/common.css}"/>
   <link rel="stylesheet" type="text/css" th:href="@{/css/common/style.css}"/>
@@ -10,6 +11,8 @@
   <link rel="stylesheet" type="text/css" th:href="@{/css/notice/notice.css}"/>
   <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script th:src="@{/js/common.js}"></script>
 </head>
 <body>
 <div class="wrap">
@@ -36,7 +39,7 @@
           <table class="table">
             <colgroup>
               <col style="width:60px">
-              <col style="">
+              <col style="width:500px">
               <col style="width:100px">
               <col style="width:100px">
               <col style="width:100px">
@@ -51,13 +54,20 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="notice : ${ noticeList }" style="cursor:pointer">
-              <td th:text="${ notice.noticeNo }"></td>
-              <td th:text="${ notice.noticeName }"></td>
-              <td th:text="${ notice.empName }"></td>
-              <td th:text="${ notice.noticeCount }"></td>
-              <td th:text="${ notice.noticeRegistDate }"></td>
-            </tr>
+            <th:block th:if="${ noticeList.size() > 0 }" >
+              <tr th:each="notice : ${ noticeList }" style="cursor:pointer">
+                <td th:text="${ notice.noticeNo }"></td>
+                <td th:text="${ notice.noticeName }"></td>
+                <td th:text="${ notice.empName }"></td>
+                <td th:text="${ notice.noticeCount }"></td>
+                <td th:text="${ notice.noticeRegistDate }"></td>
+              </tr>
+            </th:block>
+            <th:block th:if="${ noticeList.size() == 0 }">
+              <tr>
+                <td colspan="5">조회된 결과가 없습니다.</td>
+              </tr>
+            </th:block>
             </tbody>
           </table>
         </div>

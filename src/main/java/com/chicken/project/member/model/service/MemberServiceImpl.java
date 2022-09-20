@@ -1,5 +1,7 @@
 package com.chicken.project.member.model.service;
 
+import com.chicken.project.email.common.MailHandler;
+import com.chicken.project.email.common.TempKey;
 import com.chicken.project.member.model.dao.EmployeeMapper;
 import com.chicken.project.member.model.dao.StoreMemberMapper;
 import com.chicken.project.member.model.dto.*;
@@ -23,6 +25,8 @@ public class MemberServiceImpl implements MemberService {
     private final EmployeeMapper employeeMapper;
 
     private final StoreMemberMapper storeMapper;
+
+
 
     @Autowired
     public MemberServiceImpl(EmployeeMapper employeeMapper, StoreMemberMapper storeMapper) {
@@ -83,10 +87,9 @@ public class MemberServiceImpl implements MemberService {
             log.info("[storeMember] check = " + store);
         }
 
-
-
         return member != null? member: store;
 
     }
+
 
 }

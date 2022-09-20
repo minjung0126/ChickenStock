@@ -2,7 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>chicken stock</title>
+  <link rel="shortcut icon" th:href="@{ /images/logo.png }" type="image/x-icon">
+  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+  <script th:src="@{/js/common.js}"></script>
 </head>
 <body>
 <div id="layerPopRegist" style="display:none; width: 70%; height: 770px; position: absolute; z-index: 1;">
@@ -39,7 +42,7 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label class="mb-2">상품명</label>
-                <input type="text" name="itemName" class="form-control" value="">
+                <input type="text" name="itemName" class="form-control" value="" required>
               </div>
             </div>
 <!--            <div class="col-md-6">-->
@@ -69,20 +72,20 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label class="mb-2">판매규격</label>
-                <input type="text" name="itemStandard" class="form-control" value="">
+                <input type="text" name="itemStandard" class="form-control" value="" required>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
                 <label class="mb-2">제조사</label>
-                <input type="text" name="itemMake" class="form-control" value="">
+                <input type="text" name="itemMake" class="form-control" value="" required>
               </div>
             </div>
 
             <div class="col-md-6">
               <div class="form-group">
                 <label class="mb-2">재고량</label>
-                <input type="text" name="itemAmount" class="form-control" value="">
+                <input type="text" name="itemAmount" class="form-control" value="" required>
               </div>
             </div>
             <div class="col-md-6">
@@ -97,13 +100,13 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label class="mb-2">매입 단가</label>
-                <input type="text" name="itemPurchase" class="form-control" value="">
+                <input type="text" name="itemPurchase" class="form-control" value="" required>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
                 <label class="mb-2">매출 단가</label>
-                <input type="text" name="itemSales" class="form-control" value="">
+                <input type="text" name="itemSales" class="form-control" value="" required>
               </div>
             </div>
           </div>

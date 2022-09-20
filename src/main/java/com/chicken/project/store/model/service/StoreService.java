@@ -4,7 +4,6 @@ import com.chicken.project.exception.store.StoreDeleteException;
 import com.chicken.project.exception.store.StoreInsertException;
 import com.chicken.project.exception.store.StoreUpdateException;
 import com.chicken.project.store.model.dto.StoreDTO;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 

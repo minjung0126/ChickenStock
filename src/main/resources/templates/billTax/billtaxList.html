@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
 
   <title>chicken stock</title>
+    <link rel="shortcut icon" th:href="@{ /images/logo.png }" type="image/x-icon">
 
     <link rel="stylesheet" type="text/css" th:href="@{/css/common/common.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/billtax/billtaxList.css}"/>
@@ -18,6 +19,7 @@
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" th:href="@{/css/common/style.css}"/>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script th:src="@{/js/common.js}"></script>
 
 </head>
 <body>
@@ -46,9 +48,9 @@
                   <div class="input-group mb-3 col-12 float-start">
                   <select id="searchCondition" name="searchCondition" class="form-control col-2" style="max-width: max-content; display: inline-block;">
                       <option> - 선택 - </option>
-                      <option name="STORE_NAME store" value="storeName">가맹점명</option>
+                      <option th:selected="${ selectCriteria.getSearchCondition() == 'storeName' }" name="STORE_NAME store" value="storeName">가맹점명</option>
                   </select>
-                  <input class="form-control me-2 col-4" type="search" id="searchValue" name="searchValue" placeholder="내용을 입력해주세요." style="max-width: max-content;">
+                  <input class="form-control me-2 col-4" type="search" id="searchValue" name="searchValue" th:value="${ selectCriteria.getSearchValue() }" placeholder="내용을 입력해주세요." style="max-width: max-content;">
                   <button class="btn btn-warning" type="submit" style="color:#fff">검색</button>
                   </div>
               </form>
@@ -66,7 +68,7 @@
                   <td th:text="${ tax.taxNo }"></td>
                   <td th:text="${ tax.storeName }" ></td>
                   <td th:text="${ tax.taxDate }"></td>
-                  <td><button th:taxNo ="${ tax.taxNo }"  th:onclick="select(this)" class="btn btn-warning me-1">세금계산서 확인하기</button>
+                  <td><button th:taxNo ="${ tax.taxNo }"  th:onclick="select(this)" class="btn btn-warning me-1" style="color: #fff;">세금계산서 확인하기</button>
                     <div class="box" id="layerPop" style="width: auto; height: auto; margin: 0 auto; margin-top: 100px; padding-top: 50px; background-color: #fff; display:none; z-index: 1;">
                     <table id="taxTable" width='700' cellpadding='0' cellspacing='0' align='center' class='border_all_red'>
                     <tr>
@@ -260,14 +262,14 @@
               <div class="d-flex justify-content-center"  style="z-index: 0">
                   <!-- 맨 앞으로 이동 버튼 -->
                   <button type="button" class="btn btn-light" id="startPage"
-                          th:onclick="'location.href=\'/billTax/billtaxList?currentPage='+ @{${selectCriteria.startPage}} + '\''"
+                          th:onclick="'location.href=\'/billTax/billtaxList?currentPage='+ @{${selectCriteria.startPage}} + '&searchCondition=' + @{${ selectCriteria.searchCondition }} + '&searchValue=' + @{${ selectCriteria.searchValue }} +  '\''"
                           th:disabled="${selectCriteria.pageNo == 1}"
                   >
                       <<
                   </button>
                   <!-- 이전 페이지 버튼 -->
                   <button type="button" class="btn btn-light mx-1 disabled"
-                          th:onclick="'location.href=\'/billTax/billtaxList?currentPage='+ @{${selectCriteria.pageNo - 1}} + '\''"
+                          th:onclick="'location.href=\'/billTax/billtaxList?currentPage='+ @{${selectCriteria.pageNo - 1}} + '&searchCondition=' + @{${ selectCriteria.searchCondition }} + '&searchValue=' + @{${ selectCriteria.searchValue }} +  '\''"
                           th:disabled="${selectCriteria.pageNo == 1}"
                   >
                       <
@@ -276,21 +278,21 @@
                   <th:block th:each="page : ${#numbers.sequence(selectCriteria.startPage, selectCriteria.endPage)}">
                       <button type="button" class="btn btn-warning mx-1" disabled style="color:white"
                               th:text="${ page }"
-                              th:onclick="'location.href=\'/billTax/billtaxList?currentPage='+ @{${page}} + '\''"
+                              th:onclick="'location.href=\'/billTax/billtaxList?currentPage='+ @{${page}} + '&searchCondition=' + @{${ selectCriteria.searchCondition }} + '&searchValue=' + @{${ selectCriteria.searchValue }} +  '\''"
                               th:disabled="${ selectCriteria.pageNo eq page }">
                       </button>
                   </th:block>
 
                   <!-- 다음 페이지 버튼 -->
                   <button type="button" class="btn btn-light mx-1"
-                          th:onclick="'location.href=\'/billTax/billtaxList?currentPage='+ @{${selectCriteria.pageNo + 1}} + '\''"
+                          th:onclick="'location.href=\'/billTax/billtaxList?currentPage='+ @{${selectCriteria.pageNo + 1}} + '&searchCondition=' + @{${ selectCriteria.searchCondition }} + '&searchValue=' + @{${ selectCriteria.searchValue }} +  '\''"
                           th:disabled="${selectCriteria.pageNo == selectCriteria.maxPage}"
                   >
                       >
                   </button>
                   <!-- 마지막 페이지로 이동 버튼 -->
                   <button type="button" class="btn btn-light" id="maxPage"
-                          th:onclick="'location.href=\'/billTax/billtaxList?currentPage='+ @{${selectCriteria.maxPage}} + '\''"
+                          th:onclick="'location.href=\'/billTax/billtaxList?currentPage='+ @{${selectCriteria.maxPage}} + '&searchCondition=' + @{${ selectCriteria.searchCondition }} + '&searchValue=' + @{${ selectCriteria.searchValue }} +  '\''"
                           th:disabled="${selectCriteria.pageNo == selectCriteria.maxPage}"
                   >
                       >>

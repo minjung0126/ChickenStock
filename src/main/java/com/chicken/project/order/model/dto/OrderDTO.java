@@ -1,9 +1,5 @@
 package com.chicken.project.order.model.dto;
 
-import com.chicken.project.member.model.dto.StoreMemberDTO;
-
-import java.util.Date;
-import java.util.List;
 
 public class OrderDTO {
 
@@ -19,7 +15,7 @@ public class OrderDTO {
     private int orderAmount; //주문량
     private String itemSoldoutYn; //품절여부
     private String interYn; //관심여부
-    private Date orderDate; //주문일
+    private String orderDate; //주문일
     private OrderItemFileDTO itemFile;
     private String storeName;
     private int cartAmount;
@@ -27,7 +23,7 @@ public class OrderDTO {
     public OrderDTO() {
     }
 
-    public OrderDTO(int itemNo, String itemName, int categoryNo, String categoryName, String itemStandard, String itemMake, int itemSales, int storeAmount, int orderAmount, String itemSoldoutYn, String interYn, Date orderDate, OrderItemFileDTO itemFile, String storeName, int cartAmount) {
+    public OrderDTO(int itemNo, String itemName, int categoryNo, String categoryName, String itemStandard, String itemMake, int itemSales, int storeAmount, int orderAmount, String itemSoldoutYn, String interYn, String orderDate, OrderItemFileDTO itemFile, String storeName, int cartAmount) {
         this.itemNo = itemNo;
         this.itemName = itemName;
         this.categoryNo = categoryNo;
@@ -133,11 +129,11 @@ public class OrderDTO {
         this.interYn = interYn;
     }
 
-    public Date getOrderDate() {
+    public String getOrderDate() {
         return orderDate;
     }
 
-    public void setOrderDate(Date orderDate) {
+    public void setOrderDate(String orderDate) {
         this.orderDate = orderDate;
     }
 

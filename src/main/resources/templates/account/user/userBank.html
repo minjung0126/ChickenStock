@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
 
   <title>chicken stock</title>
+  <link rel="shortcut icon" th:href="@{ /images/logo.png }" type="image/x-icon">
 
   <link rel="stylesheet" type="text/css" th:href="@{/css/common/common.css}"/>
   <link rel="stylesheet" type="text/css" th:href="@{/css/common/style.css}"/>
@@ -14,6 +15,8 @@
   <link rel="stylesheet" type="text/css" th:href="@{/css/account/account_list.css}"/>
   <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script th:src="@{/js/common.js}"></script>
 </head>
 <body>
 <div class="wrap">
@@ -36,7 +39,7 @@
         <!-- 작업 영역 -->
         <!-- S: table -->
         <div class="container-fluid" style="margin-top:30px">
-          <h3>예치금 관리</h3>
+          <h3>입출금 내역</h3>
           <br>
 
           <!-- S: text area -->
@@ -46,49 +49,53 @@
           <!-- E: text area -->
 
           <div class="row">
-            <table class="table col-6">
-              <colgroup>
-                <col style="width: 10%;">
-                <col style="width: 20%;">
-                <col style="width: 10%;">
-              </colgroup>
-              <thead>
-              <tr>
-                <th>일시</th>
-                <th>입금액</th>
-                <th>비고</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr th:each="deposit : ${ storeDeposit }">
-                <td th:text="${ deposit.getDepositDate() }"></td>
-                <td th:text="${ #numbers.formatInteger(deposit.getDepositMoney(), 0, 'COMMA') }"></td>
-                <td></td>
-              </tr>
-              </tbody>
-            </table>
+            <div class="col-6">
+              <table class="table">
+                <colgroup>
+                  <col style="width: 20%;">
+                  <col style="width: 15%;">
+                  <col style="width: 15%;">
+                </colgroup>
+                <thead>
+                <tr>
+                  <th>일시</th>
+                  <th>입금액</th>
+                  <th>비고</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="deposit : ${ storeDeposit }">
+                  <td th:text="${ deposit.getDepositDate() }"></td>
+                  <td th:text="${ #numbers.formatInteger(deposit.getDepositMoney(), 0, 'COMMA') }"></td>
+                  <td th:text="${ deposit.getContent() }"></td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
 
-            <table class="table col-6">
-              <colgroup>
-                <col style="width: 10%;">
-                <col style="width: 20%;">
-                <col style="width: 10%;">
-              </colgroup>
-              <thead>
-              <tr>
-                <th>일시</th>
-                <th>출금액</th>
-                <th>비고</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr th:each="breakdown : ${ storeBreakdown }">
-                <td th:text="${ breakdown.getBreakdownDate() }"></td>
-                <td th:text="${ #numbers.formatInteger( breakdown.getWithdrawal(), 0, 'COMMA') }"></td>
-                <td></td>
-              </tr>
-              </tbody>
-            </table>
+            <div class="col-6">
+              <table class="table">
+                <colgroup>
+                  <col style="width: 20%;">
+                  <col style="width: 15%;">
+                  <col style="width: 15%;">
+                </colgroup>
+                <thead>
+                <tr>
+                  <th>일시</th>
+                  <th>출금액</th>
+                  <th>비고</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="breakdown : ${ storeBreakdown }">
+                  <td th:text="${ breakdown.getBreakdownDate() }"></td>
+                  <td th:text="${ #numbers.formatInteger( breakdown.getWithdrawal(), 0, 'COMMA') }"></td>
+                  <td th:text="${ breakdown.getContent() }"></td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>

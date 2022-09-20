@@ -70,14 +70,12 @@ public class NoticeServiceImpl implements NoticeService{
     @Transactional
     public int deleteNotice(int noticeNo) throws NoticeDeleteException {
 
-        int result = noticeMapper.deleteNoticeFile(noticeNo);
+        int result =  noticeMapper.deleteNoticeFile(noticeNo);
+        int result2 = noticeMapper.deleteNotice(noticeNo);
 
-        if(!(result > 0)){
+        if(!(result2 > 0)){
 
             throw new NoticeDeleteException("공지사항 삭제 실패!");
-        } else {
-
-            noticeMapper.deleteNotice(noticeNo);
         }
 
         return result;
@@ -91,9 +89,16 @@ public class NoticeServiceImpl implements NoticeService{
 
         int result = noticeMapper.updateNotice(notice);
 
-        if(!(result > 0)){
+        if(notice.getNoticeFile() != null){
 
-            throw new NoticeUpdateException("공지사항 수정 실패!");
+            int deleteFileResult = noticeMapper.deleteNoticeFile(notice.getNoticeFile().getNoticeNo());
+
+            if(deleteFileResult > 0){
+                NoticeFileDTO noticeFile = notice.getNoticeFile();
+                noticeFile.setNoticeNo(notice.getNoticeFile().getNoticeNo());
+
+                int insertFileResult = noticeMapper.noticeFileInsert(noticeFile);
+            }
         }
 
         return result;

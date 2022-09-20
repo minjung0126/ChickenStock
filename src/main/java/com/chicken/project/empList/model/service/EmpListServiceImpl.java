@@ -24,9 +24,9 @@ public class EmpListServiceImpl implements EmpListService {
 
     /* 직원 정보 리스트 조회 */
     @Override
-    public List<EmployeeDTO> selectAllEmployee() {
+    public List<EmployeeDTO> selectAllEmployee(SelectCriteria selectCriteria) {
 
-        List<EmployeeDTO> empList = employeeMapper.selectAllEmployee();
+        List<EmployeeDTO> empList = employeeMapper.selectAllEmployee(selectCriteria);
 
         return empList;
     }
@@ -80,4 +80,11 @@ public class EmpListServiceImpl implements EmpListService {
         return result;
     }
 
+    @Override
+    public int selectTotalCount() {
+
+        int result = employeeMapper.selectTotalCount();
+
+        return result;
+    }
 }

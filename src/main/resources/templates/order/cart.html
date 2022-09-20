@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
-
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
 
   <title>chicken stock</title>
+  <link rel="shortcut icon" th:href="@{ /images/logo.png }" type="image/x-icon">
   <!-- common css -->
   <link rel="stylesheet" type="text/css" th:href="@{/css/common/common.css}"/>
   <!-- cart css -->
@@ -58,9 +58,9 @@
               </div>
 
               <div class="balanceBox" style="font-weight: bold;">
-                <div id="balance">가용 금액 : <p class="money">1,000,000원</p></div>
-                <div id="devide">|</div>
-                <div id="cartPrice">장바구니 : <p class="money">180,000 원</p></div>
+                <div id="balance" style="font-weight: bold;"> 예치금 잔액 :
+                  <span style="font-weight: bold;" th:text="|${ #numbers.formatInteger(balance.getBalance(), 0, 'COMMA')}원|"></span>
+                </div>
               </div>
 
               <div class="search-area" align="center">
@@ -77,7 +77,7 @@
               </div>
 
             <div id="itemCondition">
-              <p th:onclick="'location.href=\'/order/list/available\''">품절 상품 제외</p>
+              <p th:onclick="'location.href=\'/order/cart/available\''">품절 상품 제외</p>
             </div>
 
               <div id="addProduct">
@@ -86,22 +86,23 @@
 
               <div id="order">
                 <input type="hidden" name="cartNoList" id="result">
+                <input type="hidden" name="totalPrice" id="result1">
                 <button class="btn btn-warning" type="submit" style="color:#fff" th:onclick="getBoxValue()">주문하기</button>
               </div>
             </div>
 
-            <table class="table">
+            <table class="table" id="cartTable">
               <thead>
                 <tr>
-                  <th style="width: 90px;">상품코드</th>
-                  <th style="width: 110px;">상품사진</th>
-                  <th style="width: 150px;">상품명</th>
-                  <th style="width: 150px;">카테고리</th>
-                  <th style="width: 60px;">규격</th>
-                  <th style="width: 100px;">제조사</th>
-                  <th style="width: 100px;">판매가격</th>
-                  <th style="width: 100px;">수량</th>
-                  <th style="width: 90px;">품절여부</th>
+                  <th>상품코드</th>
+                  <th>상품사진</th>
+                  <th>상품명</th>
+                  <th>카테고리</th>
+                  <th>규격</th>
+                  <th>제조사</th>
+                  <th>판매가격</th>
+                  <th>수량</th>
+                  <th>품절여부</th>
                   <th>합계</th>
                   <th>삭제</th>
                 </tr>
@@ -109,7 +110,7 @@
               <tbody>
               <form action="insetItemIntoCartForm" method="post" id="cartForm">
               <tr th:each="cart : ${ cartList }">
-                <td th:text="${ cart.itemNo }" name="insertItem">상품코드</td>
+                <td th:text="${ cart.itemNo }">상품코드</td>
                 <td>
                   <div class="img-info">
                     <div class="img-info__img">
@@ -146,31 +147,40 @@
 
                 <td th:text="${ cart.itemStandard }">규격</td>
                 <td th:text="${ cart.itemMake }">제조사(원산지)</td>
-                <td th:text="${ cart.itemSales }">판매가격</td>
+                <td th:text="${ cart.itemSales }" id="eachPrice" th:value="${ cart.itemSales }">판매가격</td>
                 <td align="center"><input type="number" name="insertItem" size="6" placeholder="입력" id="cartAmount" th:value="${ cart.cartAmount }"
-                                          class="cartAmount" min="1" max="1000"></td>
+                                          class="cartAmount" min="1" max="1000" onchange="inputValueChange(this);"></td>
                 <td th:if="${ cart.itemSoldoutYn eq 'Y' }">
                   <span class="active-circle bg-danger"></span><span th:text="${ '품절' }"></span>
                 </td>
                 <td th:if="${ cart.itemSoldoutYn eq 'N' }">
                   <span class="active-circle bg-success"></span><span th:text="${ '판매중' }" name="available" th:value="${ cart.itemNo }"></span>
                 </td>
-
-                <td>합계</td>
+                <td class="cartItemPrice" id="cartItemPrice">합계</td>
                 <td>
                   <div id="delete">
-                    <button type="button" class="btn btn-secondary deleteBtn" th:dataCartNo="${ cart.cartNo }" th:onclick="orderConfirm()">삭제</button>
+                    <button type="button" class="btn btn-secondary deleteBtn" th:itemNo="${ cart.itemNo }" th:onclick="deleteCart(this.getAttribute('itemNo'))">삭제</button>
                   </div>
                 </td>
               </tr>
               </form>
               </tbody>
+              <tfoot>
+              <tr>
+                <th colspan="7"></th>
+                <th>전체 수량</th>
+                <th id="cartTotalAmount" class="cartTotalAmount" style="font-weight: bold"></th>
+                <th>총액</th>
+                <th id="cartTotalMoney" class="cartTotalMoney" style="font-weight: bold"></th>
+              </tr>
+              </tfoot>
+
             </table>
 
             <!-- 삭제 버튼 form -->
-            <form th:action="@{/order/cart/delete}" method="post" class="quantity_delete_form">
-              <input type="hidden" name="cartNo" class="deleteCartNo">
-            </form>
+<!--            <form th:action="@{/order/cart/delete}" method="post" class="quantity_delete_form">-->
+<!--              <input type="hidden" name="cartNo" class="deleteCartNo">-->
+<!--            </form>-->
 
           </div>
           <!-- E: table -->
@@ -219,10 +229,10 @@
       var year = date.getFullYear();
       var month = date.getMonth();
       var clockDate = date.getDate();
-      var day = date.getDay();
+      var day = date.getDay()+1;
       var week = ['일', '월', '화', '수', '목', '금', '토'];
 
-      dueDateTest.innerText = `${year}년 ${month+1}월 ${clockDate+1}일 ${week[day+1]}요일`;
+      dueDateTest.innerText = `${year}년 ${month+1}월 ${clockDate+1}일 ${week[day]}요일`;
     }
 
     dueDate();
@@ -271,38 +281,7 @@
     init();
   </script>
 
-  <!-- 장바구니 상품 주문 -->
-  <script th:inline="javascript">
-    function orderConfirm() {
-      var result = confirm("선택 제품을 주문하시겠습니까?\n총 금액 : 180,000원\n총 수량 : 30\n가용 금액 : 1,000,000원\n예상 잔액 : 820,000원");
-      if(result == true) {
-        location = url;
-      }
-    }
-  </script>
 
-  <!-- 수량 변경 -->
-  <script th:inline="javascript">
-    function reviseAmount() {
-        let amount = prompt("변경하실 수량을 입력해주세요.");
-
-        if (amount == null || amount == "") {
-            alert("수량을 확인 후 다시 입력해주세요.");
-        } else {
-            alert("해당 상품의 수량이 " + amount + "(으)로 변경되었습니다.");
-        }
-    }
-  </script>
-
-  <!-- 장바구니 품목 삭제 -->
-  <script th:inline="javascript">
-    function deleteConfirm() {
-        var result = confirm("선택 제품을 장바구니에서 삭제하시겠습니까?");
-        if(result == true) {
-            alert("선택 제품이 장바구니에서 삭제되었습니다.");
-        }
-    }
-  </script>
 
   <!-- 체크 박스 전체 선택 -->
   <script th:inline="javascript">
@@ -319,55 +298,135 @@
   <script th:inline="javascript">
     function getBoxValue() {
 
-      // 선택된 목록 가져오기
-     // let query = document.getElementsByName("available");
-      let selectedEls = document.querySelectorAll("[name=available]");
+      let result = confirm('전체 상품을 주문하시겠습니까? (품절 상품은 자동으로 주문에서 제외됩니다.)');
 
-      // 선택된 목록에서 value 찾기
-      let cartInfo = [];
-      let obj = {};
-      selectedEls.forEach((el) => {
+      if(result) {
 
-        obj = {
-          itemNo : $(el)[0].parentElement.parentElement.children[0].innerText,
-          cartAmount : $(el)[0].parentElement.parentElement.children[7].children[0].value,
-          categoryNo : $(el)[0].parentElement.parentElement.children[3].children[1].value
-        }
+        // 선택된 목록 가져오기
+        // let query = document.getElementsByName("available");
+        let selectedEls = document.querySelectorAll("[name=available]");
 
-        cartInfo.push(obj);
-      });
+        // 선택된 목록에서 value 찾기
+        let cartInfo = [];
+        let obj = {};
+        selectedEls.forEach((el) => {
 
-      console.log(cartInfo);
+          obj = {
+            itemNo: $(el)[0].parentElement.parentElement.children[0].innerText,
+            cartAmount: $(el)[0].parentElement.parentElement.children[7].children[0].value,
+            categoryNo: $(el)[0].parentElement.parentElement.children[3].children[1].value,
+            totalPrice: $(el)[0].parentElement.parentElement.parentElement.parentElement.children[2].children[0].children[4].innerText
 
-      // 출력
-      document.getElementById('result').innerText = JSON.stringify(cartInfo);
+          }
 
-      let form = document.createElement('form');
+          cartInfo.push(obj);
+        });
 
-      let cartNoList = document.createElement('input');
-      cartNoList.setAttribute('type', 'hidden');
-      cartNoList.setAttribute('name', 'cartNoList');
-      cartNoList.setAttribute('value', JSON.stringify(cartInfo));
-      form.appendChild(cartNoList);
-      form.setAttribute('method', 'post');
-      form.setAttribute('action', '/order/insert/items/do');
-      document.body.appendChild(form);
-      form.submit();
+        console.log(cartInfo);
 
-      console.log(cartNoList);
+        // 출력
+        document.getElementById('result').innerText = JSON.stringify(cartInfo);
+
+        let form = document.createElement('form');
+
+        let cartNoList = document.createElement('input');
+        cartNoList.setAttribute('type', 'hidden');
+        cartNoList.setAttribute('name', 'cartNoList');
+        cartNoList.setAttribute('value', JSON.stringify(cartInfo));
+        form.appendChild(cartNoList);
+        form.setAttribute('method', 'post');
+        form.setAttribute('action', '/order/insert/items/do');
+        document.body.appendChild(form);
+        form.submit();
+
+        console.log(cartNoList);
+
+      } else {
+        return;
+      }
     }
   </script>
 
-  <script th:inline="javascript">
-    $(".deleteBtn").on("click", function (e) {
-          e.preventDefault();
-          const cartNo = $(this).date("cartNo");
-          $(".deleteCartNo").val(cartNo);
-          $(".quantity_delete_form").submit();
-    });
+  <!-- 전체 수량 + 총액 계산 -->
+  <script>
+    function inputValueChange(check){
+
+        console.log(check);
+
+        // 발주 수량
+        let inputValue = $(check.parentElement)[0].children[0].value;
+        console.log(inputValue);
+
+        // 발주 금액
+        let itemPurchase = parseInt($(check.parentElement).siblings()[6].innerText.replace(/[^0-9]/gi, ''));
+        let cartItemMoney = inputValue * itemPurchase;
+        $(check.parentElement).siblings()[8].innerText = cartItemMoney.toLocaleString('ko-KR');
+
+        // 총 발주 수량 & 총 발주 금액
+        let inputValueTot = document.getElementsByClassName('cartAmount');
+        let itemMoneyTot = document.getElementsByClassName('cartItemPrice');
+        let cartTotalAmount = 0;
+        let cartTotalMoney = 0;
+        for(let i = 0; i < inputValueTot.length; i++){
+          cartTotalAmount += Number(inputValueTot[i].value);
+          cartTotalMoney += parseInt(itemMoneyTot[i].innerText.replace(/[^0-9]/gi, ''));
+        }
+        console.log(cartTotalAmount);
+        console.log(cartTotalMoney);
+        document.getElementById('cartTotalAmount').innerText = cartTotalAmount.toLocaleString('ko-KR');
+        document.getElementById('cartTotalMoney').innerText = cartTotalMoney.toLocaleString('ko-KR');
+      }
+
   </script>
 
+  <!-- 총 입고수량 & 총 입고금액 초기값 -->
+  <script>
 
+    let lengthTest = document.getElementsByClassName('cartAmount');
+
+    for(let i = 0; i < lengthTest.length; i++) {
+
+      let cartItemMoney = ($('.cartAmount')[i].value) * ($('.cartAmount')[i].parentElement.parentElement.children[6].innerText);
+      $('.cartAmount')[i].parentElement.parentElement.children[9].innerText = cartItemMoney.toLocaleString('ko-KR');
+
+    }
+
+    let inputValueTot = document.getElementsByClassName('cartAmount');
+    let itemMoneyTot = document.getElementsByClassName('cartItemPrice');
+    let cartTotalAmount = 0;
+    let cartTotalMoney = 0;
+    for(let i = 0; i < inputValueTot.length; i++){
+      cartTotalAmount += Number(inputValueTot[i].value);
+      cartTotalMoney += parseInt(itemMoneyTot[i].innerText.replace(/[^0-9]/gi, ''));
+    }
+
+    document.getElementById('cartTotalAmount').innerText = cartTotalAmount.toLocaleString('ko-KR');
+    document.getElementById('cartTotalMoney').innerText = cartTotalMoney.toLocaleString('ko-KR');
+
+    let total = document.getElementById('cartTotalMoney').innerText;
+    let number = total.replace(/,/g, "");
+
+  </script>
+
+  <!-- 삭제 -->
+  <script th:inline="javascript">
+    /*<![CDATA[*/
+    function deleteCart(itemNo) {
+      $.ajax({
+        type: "POST"
+        ,url: "/order/cart/delete"
+        ,data: {"itemNo":itemNo}
+        ,success:function(data){
+          alert("장바구니 상품이 삭제 되었습니다.");
+          location.href = "/order/cart/list"
+        }
+        ,error:function(data){
+          alert("상품 삭제에 실패하였습니다.");
+        }
+      });
+    }
+    /*]]>*/
+  </script>
 
 </body>
 </html>

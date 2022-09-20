@@ -1,5 +1,7 @@
 package com.chicken.project.main.controller;
 
+import com.chicken.project.item.model.dto.ItemInfoDTO;
+import com.chicken.project.item.model.service.ItemServiceImpl;
 import com.chicken.project.member.model.dto.AdminImpl;
 import com.chicken.project.member.model.dto.StoreImpl;
 import com.chicken.project.notice.model.dto.NoticeDTO;
@@ -26,10 +28,13 @@ public class MemberMain {
     private final NoticeServiceImpl noticeService;
     private final StoreItemService storeItemService;
 
+    private final ItemServiceImpl itemService;
+
     @Autowired
-    public MemberMain(NoticeServiceImpl noticeService, StoreItemService storeItemService){
+    public MemberMain(NoticeServiceImpl noticeService, ItemServiceImpl itemService, StoreItemService storeItemService){
 
         this.noticeService = noticeService;
+        this.itemService = itemService;
         this.storeItemService = storeItemService;
     }
 
@@ -46,8 +51,10 @@ public class MemberMain {
             if(((AdminImpl)user).getEmpRoleList().get(0).getAuthCode().equals("1") || ((AdminImpl)user).getEmpRoleList().get(0).getAuthCode().equals("2")){
 
                 List<NoticeDTO> noticeList = noticeService.selectMainNotice();
+                List<ItemInfoDTO> itemList = itemService.selectMainItem();
 
                 mv.addObject("noticeList", noticeList);
+                mv.addObject("itemList", itemList);
                 mv.setViewName("/main/admin_main");
             }
         }
@@ -69,11 +76,8 @@ public class MemberMain {
                 mv.addObject("noticeList", noticeList);
                 mv.setViewName("/main/user_main");
 
-
             }
         }
-
-
 
         return mv;
     }

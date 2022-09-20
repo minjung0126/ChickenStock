@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
 
     <title>chicken stock</title>
+    <link rel="shortcut icon" th:href="@{ /images/logo.png }" type="image/x-icon">
+
     <link rel="stylesheet" type="text/css" th:href="@{/css/common/common.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/billtax/billList.css}"/>
     <!-- datepicker js & css -->
@@ -17,7 +19,7 @@
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" th:href="@{/css/common/style.css}"/>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-
+    <script th:src="@{/js/common.js}"></script>
 
 </head>
 <body>
@@ -53,7 +55,7 @@
                             <tr th:each="tax : ${ taxBillList }" >
                                 <td th:text="${ tax.taxNo }"></td>
                                 <td th:text="${ tax.taxDate }"></td>
-                                <td><button th:taxNo ="${ tax.taxNo }"  th:onclick="select(this)" class="btn btn-warning me-1">세금계산서 확인하기</button>
+                                <td><button th:taxNo ="${ tax.taxNo }"  th:onclick="select(this)" class="btn btn-warning me-1" style="color: #fff;">세금계산서 확인하기</button>
                                     <div class="box" id="layerPop" style="width: auto; height: auto; margin: 0 auto; margin-top: 100px; padding-top: 50px; background-color: #fff; display:none; z-index: 1;">
                                         <table table id="taxTable" width='700' cellpadding='0' cellspacing='0' align='center'class='border_all'>
                                             <tr>

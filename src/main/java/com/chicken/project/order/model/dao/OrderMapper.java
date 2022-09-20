@@ -7,6 +7,7 @@ import com.chicken.project.order.model.dto.OrderDTO;
 import com.chicken.project.order.model.dto.OrderHistoryDTO;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -16,9 +17,7 @@ public interface OrderMapper {
     List<OrderDTO> selectAllItem(SelectCriteria selectCriteria);
 
     List<CartDTO> selectCartItem(SelectCriteria selectCriteria);
-
-    List<OrderDTO> selectOrderHistory();
-
+    
     int selectTotalCount(Map<String, String> searchMap);
 
     int selectInterestCount(InterestDTO interest);
@@ -38,14 +37,32 @@ public interface OrderMapper {
     int insertCartList(List<String> itemNoList);
 
     int insertItemIntoCart(int itemNo, int cartAmount, String storeName);
+    
+    int insertStoreOrderNo(CartDTO cart);
 
-    String deleteCartItem(int cartNo);
+    int insertOrderItems(CartDTO cart);
 
-    void insertStoreOrderNo(OrderHistoryDTO orderHistory);
-
-    void insertOrderItems(CartDTO cart);
-
-    void insertOrderHandler(OrderHistoryDTO orderHistory);
+    int insertOrderHandler(CartDTO cart);
 
     void resetCartItems(CartDTO cart);
+
+    void deleteCartItem(CartDTO cart);
+
+    int selectBalance(CartDTO store);
+
+    
+    int selectOrderHistoryCount(Map<String, Object> searchMap);
+
+    List<OrderHistoryDTO> selectOrderHistory(SelectCriteria selectCriteria);
+    int insertStoreBreakdown(CartDTO cart);
+
+    int updateStoreBalance(CartDTO cart);
+
+    int selectCartAvailableItemCount(Map<String, String> searchMap);
+
+    List<OrderDTO> selectCartAvailableItem(SelectCriteria selectCriteria);
+
+    void cancelOrder(OrderHistoryDTO history);
+
+    String selectFinalOrderDate(OrderHistoryDTO history);
 }

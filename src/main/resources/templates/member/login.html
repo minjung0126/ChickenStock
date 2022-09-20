@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>로그인</title>
+    <link rel="shortcut icon" th:href="@{ /images/logo.png }" type="image/x-icon">
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
 
     <link rel="stylesheet" type="text/css" th:href="@{/css/member/member.css}"/>
@@ -19,7 +20,7 @@
                 <input type="password" class="form_box" id="login_pw" name="password" placeholder="비밀번호 입력" required/>
                 <button type="submit" id="btn" class="btn btn-warning">로그인</button>
             </form>
-            <a href="ckEmail.html" id="updatePwd">비밀번호 재설정</a>
+            <a th:href="@{/member/ckEmail}" id="updatePwd">비밀번호 재설정</a>
             <p class="copyright">Copyright © 2022 chickenstock. All rights reserved.</p>
         </div>
     </div>

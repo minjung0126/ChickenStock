@@ -4,6 +4,7 @@
 <head>
   <meta charset="utf-8"/>
   <title>chicken stock</title>
+  <link rel="shortcut icon" th:href="@{ /images/logo.png }" type="image/x-icon">
 
   <link rel="stylesheet" th:href="@{/css/common/common.css}"/>
   <!-- table css -->
@@ -16,6 +17,7 @@
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"/>
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script th:src="@{/js/common.js}"></script>
 
   <!-- fullcalendar -->
   <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/core/main.min.css' rel='stylesheet' />
@@ -135,10 +137,10 @@
                   <tbody style="cursor:pointer">
                   <th:block th:if="${ noticeList.size() > 0 }">
                     <tr th:each="noticeList : ${ noticeList }">
-                      <td th:text="${ noticeList.noticeNo }"></td>
-                      <td th:text="${ noticeList.noticeName }"></td>
-                      <td th:text="${ noticeList.empName }"></td>
-                      <td th:text="${ noticeList.noticeRegistDate }"></td>
+                      <td class="notice" th:text="${ noticeList.noticeNo }"></td>
+                      <td class="notice" th:text="${ noticeList.noticeName }"></td>
+                      <td class="notice" th:text="${ noticeList.empName }"></td>
+                      <td class="notice" th:text="${ noticeList.noticeRegistDate }"></td>
                     </tr>
                   </th:block>
                   <th:block th:if="${ noticeList.size() == 0 }">
@@ -209,8 +211,8 @@
     });
   </script>
   <script>
-    if(document.getElementsByTagName("td")) {
-      const $tds = document.getElementsByTagName("td");
+    if(document.getElementsByClassName("notice")) {
+      const $tds = document.getElementsByClassName("notice");
       for (let i = 0; i < $tds.length; i++) {
 
         $tds[i].onclick = function () {
