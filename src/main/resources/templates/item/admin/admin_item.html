@@ -193,24 +193,47 @@
 
       // start
       let row = $(this).closest('tr');
-      let itemNo = row.find("#itemNo").text();
-      console.log(itemNo);
+      let no = row.find("#itemNo").text();
+      console.log(no);
 
-      // let form = document.createElement('form');
-      //
-      // let itemNoInput = document.createElement('input');
-      // itemNoInput.setAttribute('type', 'hidden');
-      // itemNoInput.setAttribute('name', 'itemNoInput');
-      // itemNoInput.setAttribute('value', itemNo);
-      //
-      // form.appendChild(itemNoInput);
-      // form.setAttribute('method', 'get');
-      // form.setAttribute('action', 'itemDetail');
-      // document.body.appendChild(form);
-      // form.submit();
+      let form = document.createElement('form');
+
+      let itemNo = document.createElement('input');
+      itemNo.setAttribute('type', 'hidden');
+      itemNo.setAttribute('name', 'itemNo');
+      itemNo.setAttribute('value', no);
+
+      form.appendChild(itemNo);
 
 
-      openLayer('layerPopDetail', 9, 10);
+
+       /* 팝업 */
+
+        //창 크기 지정
+        var width = 1200;
+        var height = 800;
+
+        //pc화면기준 가운데 정렬
+        var left = (window.screen.width / 2) - (width/2);
+        var top = (window.screen.height / 4);
+
+        //윈도우 속성 지정
+        var windowStatus = 'width='+width+', height='+height+', left='+left+', top='+top+', scrollbars=yes, status=yes, resizable=yes, titlebar=yes';
+
+        //연결하고싶은url
+        const url = "/item/admin/itemDetail?itemNo=" + itemNo.value;
+
+        //등록된 url 및 window 속성 기준으로 팝업창을 연다.
+        window.open(url, "품목 상세 조회", windowStatus);
+        // form.setAttribute('method', 'get');
+        // form.setAttribute('action', url);
+        // document.body.appendChild(form);
+        // form.submit();
+
+
+
+      // openLayer('layerPopDetail', 9, 10);
+      // location.href="/admin_item_detail.html";
     });
     $("tbody tr input").click(function(event){
       event.stopPropagation();
@@ -365,6 +388,27 @@
   });
 </script>
 
+<!-- 상품 상세 페이지 팝업 띄우기 -->
+<!--<script type="text/javascript">-->
+<!--  function showItemDetail() {-->
 
+<!--    //창 크기 지정-->
+<!--    var width = 1200;-->
+<!--    var height = 800;-->
+
+<!--    //pc화면기준 가운데 정렬-->
+<!--    var left = (window.screen.width / 2) - (width/2);-->
+<!--    var top = (window.screen.height / 4);-->
+
+<!--    //윈도우 속성 지정-->
+<!--    var windowStatus = 'width='+width+', height='+height+', left='+left+', top='+top+', scrollbars=yes, status=yes, resizable=yes, titlebar=yes';-->
+
+<!--    //연결하고싶은url-->
+<!--    const url = "admin_item_detail.html";-->
+
+<!--    //등록된 url 및 window 속성 기준으로 팝업창을 연다.-->
+<!--    window.open(url, "hello popup", windowStatus);-->
+<!--  }-->
+<!--</script>-->
 </body>
 </html>
