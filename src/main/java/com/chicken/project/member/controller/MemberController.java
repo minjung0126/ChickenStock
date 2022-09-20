@@ -33,6 +33,11 @@ public class MemberController {
     @GetMapping("/main/admin_main")
     public void empMain(){}
 
+    @GetMapping("/failure")
+    public String loginFail(){
+
+        return "/member/failure";
+    };
 
 
 }

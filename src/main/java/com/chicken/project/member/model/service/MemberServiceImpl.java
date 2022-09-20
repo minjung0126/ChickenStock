@@ -87,8 +87,6 @@ public class MemberServiceImpl implements MemberService {
             log.info("[storeMember] check = " + store);
         }
 
-
-
         return member != null? member: store;
 
     }

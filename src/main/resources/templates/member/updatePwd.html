@@ -26,22 +26,22 @@
     </script>
 </head>
 <body>
-    <div class="wrap">
-        <div class="box">
-            <h3>비밀번호 재설정</h3>
-            <p>비밀번호를 재설정합니다. <br> 인증코드 입력 후 새로운 비밀번호를 입력해주세요.</p>
+<div class="wrap">
+    <div class="box">
+        <h3>비밀번호 재설정</h3>
+        <p>비밀번호를 재설정합니다. <br> 인증코드 입력 후 새로운 비밀번호를 입력해주세요.</p>
 
-            <form action="/member/updatePwd" method="post" onsubmit="ck_infor();">
-                <input type="hidden" id="empId" name="empId" th:value="${ mvId }"/>
-                <input type="hidden" id="email" name="email" th:value="${ mvEmail }"/>
-                <input type="text" class="form_box" id="code" name="code" placeholder="인증코드 입력"/>
-                <input type="password" class="form_box" id="newPwd" name="new_pwd" placeholder="새 비밀번호 입력해주세요"/>
-                <input type="password" class="form_box" id="newPwd2" name="re_pwd" placeholder="다시 한번 입력해주세요."/>
-                <button type="submit" id="btn" class="btn btn-warning">비밀번호 재설정</button>
-            </form>
-            <p class="copyright">Copyright © 2022 chickenstock. All rights reserved.</p>
-        </div>
+        <form action="/member/updatePwd" method="post" onsubmit="ck_infor();">
+            <input type="hidden" id="empId" name="empId" th:value="${ mvId }"/>
+            <input type="hidden" id="email" name="email" th:value="${ mvEmail }"/>
+            <input type="text" class="form_box" id="code" name="code" placeholder="인증코드 입력"/>
+            <input type="password" class="form_box" id="newPwd" name="new_pwd" placeholder="새 비밀번호 입력해주세요"/>
+            <input type="password" class="form_box" id="newPwd2" name="re_pwd" placeholder="다시 한번 입력해주세요."/>
+            <button type="submit" id="btn" class="btn btn-warning">비밀번호 재설정</button>
+        </form>
+        <p class="copyright">Copyright © 2022 chickenstock. All rights reserved.</p>
     </div>
+</div>
 </body>
 
 </html>
