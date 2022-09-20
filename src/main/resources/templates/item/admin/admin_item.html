@@ -165,7 +165,7 @@
 
         <!-- E: paging -->
 
-        <div th:include="item/admin/admin_item_detail.html"></div>
+<!--        <div th:include="item/admin/admin_item_detail.html"></div>-->
 
       </div>
     </div>
@@ -196,18 +196,19 @@
       let itemNo = row.find("#itemNo").text();
       console.log(itemNo);
 
-      let form = document.createElement('form');
+      // let form = document.createElement('form');
+      //
+      // let itemNoInput = document.createElement('input');
+      // itemNoInput.setAttribute('type', 'hidden');
+      // itemNoInput.setAttribute('name', 'itemNoInput');
+      // itemNoInput.setAttribute('value', itemNo);
+      //
+      // form.appendChild(itemNoInput);
+      // form.setAttribute('method', 'get');
+      // form.setAttribute('action', 'itemDetail');
+      // document.body.appendChild(form);
+      // form.submit();
 
-      let itemNoInput = document.createElement('input');
-      itemNoInput.setAttribute('type', 'hidden');
-      itemNoInput.setAttribute('name', 'itemNoInput');
-      itemNoInput.setAttribute('value', itemNo);
-
-      form.appendChild(itemNoInput);
-      form.setAttribute('method', 'get');
-      form.setAttribute('action', 'itemDetail');
-      document.body.appendChild(form);
-      form.submit();
 
       openLayer('layerPopDetail', 9, 10);
     });
@@ -344,27 +345,6 @@
     }
 
 
-
-
-    // $.ajax({
-    //             url: "receive/admin/list/new",
-    //             // dataType: "json",
-    //             // contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-    //             type: "post",
-    //             data: {
-    //                 itemNo: itemNoVal
-    //             },
-    //             success: function (data) {
-    //                 console.log("success", data);
-    //             },
-    //             error: function () {
-    //                 alert("error");
-    //             }
-    //         });
-
-    // location.href = "/receive/admin/list/new?itemNo=" + arr;
-
-
   }
 </script>
 
@@ -384,7 +364,6 @@
     });
   });
 </script>
-
 
 
 </body>

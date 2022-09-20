@@ -6,6 +6,7 @@ import com.chicken.project.item.model.dto.ItemCategoryDTO;
 import com.chicken.project.item.model.dto.ItemFileDTO;
 import com.chicken.project.item.model.dto.ItemInfoDTO;
 import com.chicken.project.item.model.service.ItemService;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -20,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -109,25 +111,25 @@ public class ItemController {
     }
 
     /* 상품 상세 조회 */
-    @GetMapping(value = "itemDetail", produces = "application/json; charset = UTF-8")
-    @ResponseBody
-    public String getItemOne(HttpServletRequest request) {
-
-        Gson gson  = new GsonBuilder().setDateFormat("yyyy-MM-dd hh:mm:ss:SSS")
-                .setPrettyPrinting() 								// json 문자열 이쁘게 출력
-                .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)  // 기본값
-                .serializeNulls()									// 필드값이 null이어도 직렬화한다.
-                .disableHtmlEscaping()								// 직렬화 시 escape 시퀀스 처리하지 않는다.
-                .create();
-
-        String itemNoInput = request.getParameter("itemNoInput");
-
-        ItemInfoDTO item = itemService.selectOneItem(itemNoInput);
-
-
-        return "";
-
-    }
+//    @GetMapping("/admin/itemDetail")
+//    @ResponseBody
+//    public String getItemOne(@RequestParam("itemNo") String itemNo, HttpServletResponse response) {
+//
+//        Gson gson  = new GsonBuilder().setDateFormat("yyyy-MM-dd hh:mm:ss:SSS")
+//                .setPrettyPrinting() 								// json 문자열 이쁘게 출력
+//                .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)  // 기본값
+//                .serializeNulls()									// 필드값이 null이어도 직렬화한다.
+//                .disableHtmlEscaping()								// 직렬화 시 escape 시퀀스 처리하지 않는다.
+//                .create();
+//
+//        String itemNoInput = request.getParameter("itemNoInput");
+//
+//        ItemInfoDTO item = itemService.selectOneItem(itemNoInput);
+//
+//
+//        return "";
+//
+//    }
 
 
     @PostMapping("/admin/regist")
