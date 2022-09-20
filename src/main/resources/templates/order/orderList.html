@@ -100,6 +100,7 @@
               <th>규격</th>
               <th>제조사</th>
               <th>판매가격</th>
+              <th>재고량</th>
               <th>수량</th>
               <th>품절여부</th>
               <th>관심등록</th>
@@ -139,6 +140,7 @@
                 <td th:text="${ order.itemStandard }">규격</td>
                 <td th:text="${ order.itemMake }">제조사(원산지)</td>
                 <td th:text="|${ #numbers.formatInteger(order.itemSales, 0, 'COMMA') }원|">>판매가격</td>
+                <td th:text="${ order.storeAmount }">재고량</td>
                 <td align="center"><input type="number" name="cartAmount" size="6" placeholder="입력" id="cartAmount"
                                           class="cartAmount" min="1" max="1000"></td>
 
@@ -250,7 +252,6 @@
     let week = ['일', '월', '화', '수', '목', '금', '토'];
 
     deadlineTest.innerText = `${year}년 ${month+1}월 ${clockDate}일 ${week[day]}요일 23시 59분 59초`;
-
   }
 
   deadline();
@@ -347,19 +348,19 @@
       return;
     }
 
-    if (!$('#cartAmount').val()) {
-      alert('상품의 수량을 입력해주세요.');
-      return;
-    }
-
     // 선택된 목록에서 value 찾기
     let itemInfo = [];
     let obj = {};
+    let checkValue = true;
     selectedEls.forEach((el) => {
 
       obj = {
         itemNo: el.value,
         cartAmount : $(el).parents("tr")[0].children[9].children[0].value
+      }
+      if($(el).parents("tr")[0].children[9].children[0].value == ''){
+        alert("체크한 항목의 수량을 입력해주세요.");
+        checkValue = false;
       }
 
       itemInfo.push(obj);
@@ -367,6 +368,7 @@
       // result += el.value + ' ';
     });
     console.log(itemInfo);
+    if(checkValue){
 
     // 출력
     document.getElementById('result').innerText = JSON.stringify(itemInfo);
@@ -383,7 +385,10 @@
     document.body.appendChild(form);
     form.submit();
 
-    console.log(itemNoList);
+      console.log(itemNoList);
+
+    }
+
   }
 </script>
 

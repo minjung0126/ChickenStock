@@ -309,6 +309,7 @@ public class ReItemController {
             selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount);
         }
 
+        log.info("뭐냐고 시발아 " + selectCriteria);
         List<ReListDTO> storeReturnList = reItemService.selectReturnList(selectCriteria);
 
         mv.addObject("returnList",storeReturnList);

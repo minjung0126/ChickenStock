@@ -21,7 +21,7 @@ public class SelectCriteria {
 
 
     public SelectCriteria() {}
-    public SelectCriteria(int pageNo, int totalCount, int limit, int buttonAmount, int maxPage, int startPage, int endPage, int startRow, int endRow, String storeName, String orderDate) {
+    public SelectCriteria(int pageNo, int totalCount, int limit, int buttonAmount, int maxPage, int startPage, int endPage, int startRow, int endRow, String searchCondition, String searchValue) {
         this.pageNo = pageNo;
         this.totalCount = totalCount;
         this.limit = limit;
@@ -31,8 +31,8 @@ public class SelectCriteria {
         this.endPage = endPage;
         this.startRow = startRow;
         this.endRow = endRow;
-        this.storeName = storeName;
-        this.orderDate = orderDate;
+        this.searchCondition = searchCondition;
+        this.searchValue = searchValue;
     }
 
     public SelectCriteria(int pageNo, int totalCount, int limit, int buttonAmount, int maxPage, int startPage, int endPage, int startRow, int endRow, String searchCondition, String searchValue, String startDate, String endDate, String storeName) {
