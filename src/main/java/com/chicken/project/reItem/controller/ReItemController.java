@@ -60,6 +60,7 @@ public class ReItemController {
 
         List<ReItemDTO> insertItem = new ArrayList<>();
 
+
         for(int i = 0; i < returnCount2.length; i++){
 
             ReItemDTO reI = new ReItemDTO();
@@ -120,6 +121,7 @@ public class ReItemController {
 
         mv.addObject("reList",storeReList);
         mv.addObject("selectCriteria", selectCriteria);
+        mv.setViewName("/reItem/user/storeReList");
 
         return mv;
     }
@@ -293,6 +295,7 @@ public class ReItemController {
         searchMap.put("searchCondition", searchCondition);
         searchMap.put("searchValue", searchValue);
 
+        log.info("값이 들어오시나요 알려주세요 " + searchMap);
         int totalCount = reItemService.selectTotalCount(searchMap);
 
         int limit = 6;
