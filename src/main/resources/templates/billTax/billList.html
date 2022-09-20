@@ -55,7 +55,7 @@
                             <tr th:each="tax : ${ taxBillList }" >
                                 <td th:text="${ tax.taxNo }"></td>
                                 <td th:text="${ tax.taxDate }"></td>
-                                <td><button th:taxNo ="${ tax.taxNo }"  th:onclick="select(this)" class="btn btn-warning me-1">세금계산서 확인하기</button>
+                                <td><button th:taxNo ="${ tax.taxNo }"  th:onclick="select(this)" class="btn btn-warning me-1" style="color: #fff;">세금계산서 확인하기</button>
                                     <div class="box" id="layerPop" style="width: auto; height: auto; margin: 0 auto; margin-top: 100px; padding-top: 50px; background-color: #fff; display:none; z-index: 1;">
                                         <table table id="taxTable" width='700' cellpadding='0' cellspacing='0' align='center'class='border_all'>
                                             <tr>

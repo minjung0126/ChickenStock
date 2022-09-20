@@ -1,5 +1,6 @@
 package com.chicken.project.reItem.model.dto;
 
+
 public class ReItemDTO {
 
     private String rDate;  // 반품신청일
@@ -12,13 +13,15 @@ public class ReItemDTO {
     private String itemStandard; // 품목규격
     private String itemMake; // 제조사
     private String itemSales; // 매출단가
-    private String originName; //원본파일명
+    private String fileName; //원본파일명
     private int rNo;   // 반품번호
+    private int firstCount;
+    private int storeAmount; // 가맹점 픔목수량
 
     public ReItemDTO() {
     }
 
-    public ReItemDTO(String rDate, String rReason, int returnTotalMoney, int returnCount, int itemNo, String itemName, String categoryName, String itemStandard, String itemMake, String itemSales, String originName, int rNo) {
+    public ReItemDTO(String rDate, String rReason, int returnTotalMoney, int returnCount, int itemNo, String itemName, String categoryName, String itemStandard, String itemMake, String itemSales, String fileName, int rNo, int firstCount, int storeAmount) {
         this.rDate = rDate;
         this.rReason = rReason;
         this.returnTotalMoney = returnTotalMoney;
@@ -29,8 +32,10 @@ public class ReItemDTO {
         this.itemStandard = itemStandard;
         this.itemMake = itemMake;
         this.itemSales = itemSales;
-        this.originName = originName;
+        this.fileName = fileName;
         this.rNo = rNo;
+        this.firstCount = firstCount;
+        this.storeAmount = storeAmount;
     }
 
     public String getrDate() {
@@ -113,12 +118,12 @@ public class ReItemDTO {
         this.itemSales = itemSales;
     }
 
-    public String getOriginName() {
-        return originName;
+    public String getFileName() {
+        return fileName;
     }
 
-    public void setOriginName(String originName) {
-        this.originName = originName;
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
     public int getrNo() {
@@ -127,6 +132,22 @@ public class ReItemDTO {
 
     public void setrNo(int rNo) {
         this.rNo = rNo;
+    }
+
+    public int getFirstCount() {
+        return firstCount;
+    }
+
+    public void setFirstCount(int firstCount) {
+        this.firstCount = firstCount;
+    }
+
+    public int getStoreAmount() {
+        return storeAmount;
+    }
+
+    public void setStoreAmount(int storeAmount) {
+        this.storeAmount = storeAmount;
     }
 
     @Override
@@ -142,8 +163,10 @@ public class ReItemDTO {
                 ", itemStandard='" + itemStandard + '\'' +
                 ", itemMake='" + itemMake + '\'' +
                 ", itemSales='" + itemSales + '\'' +
-                ", originName='" + originName + '\'' +
+                ", fileName='" + fileName + '\'' +
                 ", rNo=" + rNo +
+                ", firstCount=" + firstCount +
+                ", storeAmount=" + storeAmount +
                 '}';
     }
 }

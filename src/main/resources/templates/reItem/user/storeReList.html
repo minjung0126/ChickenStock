@@ -26,7 +26,7 @@
     <div th:include="common/userHeader.html"></div>
 
     <!-- S: container -->
-    <div class="container">
+    <div class="container px-0">
 
         <!-- sidebar -->
         <div th:replace="common/userSidebar.html"></div>
@@ -40,18 +40,6 @@
                 <div class="container-fluid" style="margin-top:30px">
                     <h3>반품요청 목록 조회</h3>
                     <br>
-                    <div class="input-group mb-3 col-7">
-                        <select id="searchCondition" class="form-control" style="display: none ">
-                            <option value="date">날짜</option>
-                        </select>
-                        <input type="date" class="form-control col-2" id="searchValue" name="searchValue" value="">
-                        <button class="btn btn-light" type="button" disabled>~</button>
-                        <input type="date" class="form-control col-2" id="searchValue" name="searchValue" value="">
-                        <button class="btn btn-light px-3" type="button" disabled></button>
-                        <input class="form-control me-2 col-4" type="text" placeholder="검색어를 입력해주세요.">
-                        <button class="btn btn-warning" type="submit" style="color:#fff">검색</button>
-                    </div>
-
                     <table class="table">
                         <thead>
                         <tr>
@@ -75,7 +63,8 @@
                                         <i class="fa fa-ellipsis-v"></i>
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="triggerId1">
-                                        <a class="dropdown-item" th:onclick="|location.href='@{/reItem/user/reviseReItem(rNo=${re.rNo})}'|"><i class="fa fa-pencil mr-1"></i>수정</a>
+                                        <a class="dropdown-item" th:onclick="|location.href='@{/reItem/user/itemViewReList(rNo=${re.rNo})}'|"><i class="fa fa-eye mr-1"></i>상세보기</a>
+<!--                                        <a class="dropdown-item" th:onclick="|location.href='@{/reItem/user/reviseReItem(rNo=${re.rNo})}'|"><i class="fa fa-pencil mr-1"></i>수정</a>-->
                                         <form id="deleteForm" th:action="@{/reItem/user/storeReList}" method="post">
                                         <a  class="dropdown-item text-danger" onclick="deleteForm()"><i class="fa fa-trash mr-1"></i>삭제</a>
                                             <input type="hidden" name="rNo" th:value="${ re.rNo }">
@@ -89,6 +78,9 @@
                                        aria-expanded="false">
                                         <i class="fa fa-ellipsis-v"></i>
                                     </a>
+                                    <div class="dropdown-menu" aria-labelledby="triggerId1">
+                                        <a class="dropdown-item" th:onclick="|location.href='@{/reItem/user/itemViewReList(rNo=${re.rNo})}'|"><i class="fa fa-eye mr-1"></i>상세보기</a>
+                                    </div>
                                 </div>
                             </td>
                         </tr>
@@ -143,6 +135,7 @@
     </div>
     <!-- E: container -->
 </div>
+
 <script th:inline="javascript">
     /*<![CDATA[*/
 
