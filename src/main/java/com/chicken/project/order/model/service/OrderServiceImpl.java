@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -192,7 +193,7 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
-    public int selectOrderHistoryCount(Map<String, String> searchMap) {
+    public int selectOrderHistoryCount(Map<String, Object> searchMap) {
 
         int result = orderMapper.selectOrderHistoryCount(searchMap);
 
@@ -219,5 +220,30 @@ public class OrderServiceImpl implements OrderService{
 
         return orderMapper.updateStoreBalance(cart);
     }
+
+    @Override
+    public int selectCartAvailableItemCount(Map<String, String> searchMap) {
+
+        return orderMapper.selectCartAvailableItemCount(searchMap);
+    }
+
+    @Override
+    public List<OrderDTO> selectCartAvailableItem(SelectCriteria selectCriteria) {
+
+        return orderMapper.selectCartAvailableItem(selectCriteria);
+    }
+
+    @Override
+    public void cancelOrder(OrderHistoryDTO history) {
+
+        orderMapper.cancelOrder(history);
+    }
+
+    @Override
+    public String selectFinalOrderDate(OrderHistoryDTO history) {
+
+        return orderMapper.selectFinalOrderDate(history);
+    }
+
 
 }

@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
 
   <title>chicken stock</title>
-  <link rel="shortcut icon" th:href="@{ /images/logo.png }" type="image/x-icon">
+  <link rel="shortcut icon" th:href="@{/images/logo.png }" type="image/x-icon">
 
   <link rel="stylesheet" th:href="@{/css/common/common.css}"/>
 
@@ -49,7 +49,6 @@
         <div class="container-fluid" style="margin-top:30px">
             <h3><i class="fa-solid fa-list-check"></i> 발주 내역</h3>
 			<br>
-          <form action="/order/history">
             <div class="input-box mb-3 col-12">
                 <div class="dateList1"> 입고 예정일 : 
                     <span id="dueDate">입고예정</span>
@@ -57,23 +56,22 @@
                 <div class="dateList2"> 발주 마감일 : 
                     <span id="deadline">마감일</span>
                 </div>
-                <div class="dateList3" style="font-weight: bold;"> 최종 발주일(수정일) : 
-                    <span id="finalDate">테스트 중입니다.</span>
+                <div class="dateList3" style="font-weight: bold;">
+                    <span id="finalDate" th:text="|최종 발주일 : ${ history.orderDate }|">테스트 중입니다.</span>
                 </div>
-                <div class="datePick">
-                  <input type="text" name="orderDate" id="orderDate" placeholder="날짜 선택" />
+              <form th:action="@{/order/history/do}">
+                <div class="datePicker">
+                  <input type="text" class="pickDate" id="orderDate" placeholder="날짜 선택"/>
+                <input type="hidden" id="pickDate" name="pickDate">
                 </div>
-
+              </form>
               <div id="cancelBox">
                 <input type="hidden" name="" id="">
-                <button class="btn btn-warning" type="submit" style="color:#fff" id="cancelBtn" onclick=''>발주 취소</button>
+                <button class="btn btn-warning" type="submit" style="color:#fff" id="cancelBtn" th:onclick="'location.href=\'/order/cancel\''">발주 취소</button>
               </div>
-
             </div>
 
-
-
-            <table class="table">
+            <table class="table" id="table">
                 <thead>
                   <tr>
                     <th>상품코드</th>
@@ -88,35 +86,44 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr th:each="order : ${ orderList }">
-                    <td><p th:text="${ order.itemNo }"/></td>
+                  <tr th:each="history : ${ historyList }">
+                    <td><p th:text="${ history.itemNo }"/></td>
                     <td>
                       <div class="img-info">
                         <div class="img-info__img">
-                          <img th:src="'/images/' + ${ order.itemFile.fileName }" alt="">
+                          <img th:src="'/images/' + ${ history.itemFile.fileName }" alt="">
                         </div>
                       </div>
                     </td>
-                    <td th:text="${ order.itemName }">상품명</td>
-                    <td th:if="${ order.categoryNo eq 1 }">
+                    <td th:text="${ history.itemName }">상품명</td>
+                    <td th:if="${ history.categoryNo eq 1 }">
                       <span th:text="${ '식자재' }"/></td>
-                    <td th:if="${ order.categoryNo eq 2 }">
+                    <td th:if="${ history.categoryNo eq 2 }">
                       <span th:text="${ '기타' }"/></td>
-                    <td th:if="${ order.categoryNo eq 3 }">
+                    <td th:if="${ history.categoryNo eq 3 }">
                       <span th:text="${ '닭고기' }"/></td>
-                    <td th:if="${ order.categoryNo eq 4 }">
+                    <td th:if="${ history.categoryNo eq 4 }">
                       <span th:text="${ '소스/파우더/식용유' }"/></td>
-                    <td th:if="${ order.categoryNo eq 5 }">
+                    <td th:if="${ history.categoryNo eq 5 }">
                       <span th:text="${ '음료' }"/></td>
-                    <td th:if="${ order.categoryNo eq 6 }">
+                    <td th:if="${ history.categoryNo eq 6 }">
                       <span th:text="${ '포장용품' }"/></td>
-                    <td><p th:text="${ order.itemStandard }"></td>
-                    <td><p th:text="${ order.itemMake }"></td>
-                    <td><p th:text="${ order.itemSales }"></td>
-                    <td><p th:text="${ order.cartAmount }" class="cartAmount" id="cartAmount" th:name="cartAmount"></td>
+                    <td><p th:text="${ history.itemStandard }"></td>
+                    <td><p th:text="${ history.itemMake }"></td>
+                    <td><p th:text="${ history.itemSales }"></td>
+                    <td><p th:text="${ history.cartAmount }" class="cartAmount" id="cartAmount" th:name="cartAmount"></td>
                     <td class="cartItemPrice" id="cartItemPrice">합계</td>
                   </tr>
                 </tbody>
+                <tfoot>
+                <tr>
+                  <th colspan="5"></th>
+                  <th>전체 수량</th>
+                  <th id="cartTotalAmount" class="cartTotalAmount" style="font-weight: bold"></th>
+                  <th>총액</th>
+                  <th id="cartTotalMoney" class="cartTotalMoney" style="font-weight: bold"></th>
+                </tr>
+                </tfoot>
               </table>
               </div>
             </div>
@@ -195,12 +202,6 @@
     deadline();
   </script>
 
-    <!-- 상품 조회 페이지로 연결 -->
-    <script type="text/javascript">
-        function linkToOrder() {
-        url.href = 'order.html'
-        }
-    </script>
 
   <!-- 체크 박스 전체 선택 -->
   <script type="text/javascript">
@@ -226,64 +227,72 @@
 
   <!-- 날짜 선택 -->
   <script>
-    $('#orderDate').daterangepicker({
-      "singleDatePicker": true,
-      "showDropdowns": true,
-      "minYear": 2020,
-      "maxYear": 2030,
-      "showWeekNumbers": true,
-      "locale": {
-        "format": "YYYY/MM/DD",
-        "separator": " - ",
-        "applyLabel": "선택",
-        "cancelLabel": "취소",
-        "fromLabel": "From",
-        "toLabel": "To",
-        "customRangeLabel": "Custom",
-        "weekLabel": "W",
-        "daysOfWeek": [
-          "일",
-          "월",
-          "화",
-          "수",
-          "목",
-          "금",
-          "토"
-        ],
-        "monthNames": [
-          "1월",
-          "2월",
-          "3월",
-          "4월",
-          "5월",
-          "6월",
-          "7월",
-          "8월",
-          "9월",
-          "10월",
-          "11월",
-          "12월"
-        ],
-        "firstDay": 1
-      },
-      "startDate": "2022/09/19",
-      "endDate": "2022/09/19",
-      "minDate": "2020/01/01",
-      "maxDate": "2030/12/31",
-      "opens": "center",
-      "applyButtonClasses": "btn-warning"
-    }, function(start, end, label) {
-      console.log(start.format('YYYY/MM/DD'));
-    });
 
+
+          $(function () {
+
+              $('.pickDate').daterangepicker({
+                  "singleDatePicker": true,
+                  "showDropdowns": true,
+                  "minYear": 2020,
+                  "maxYear": 2030,
+                  "showWeekNumbers": true,
+                  "locale": {
+                      "format": "YYYY/MM/DD",
+                      "separator": " - ",
+                      "applyLabel": "선택",
+                      "cancelLabel": "취소",
+                      "fromLabel": "From",
+                      "toLabel": "To",
+                      "customRangeLabel": "Custom",
+                      "weekLabel": "W",
+                      "daysOfWeek": [
+                          "일",
+                          "월",
+                          "화",
+                          "수",
+                          "목",
+                          "금",
+                          "토"
+                      ],
+                      "monthNames": [
+                          "1월",
+                          "2월",
+                          "3월",
+                          "4월",
+                          "5월",
+                          "6월",
+                          "7월",
+                          "8월",
+                          "9월",
+                          "10월",
+                          "11월",
+                          "12월"
+                      ],
+                      "firstDay": 1
+                  },
+                  "startDate": "2022/09/19",
+                  "endDate": "2022/09/19",
+                  "minDate": "2020/01/01",
+                  "maxDate": "2030/12/31",
+                  "opens": "center",
+                  "applyButtonClasses": "btn-warning"
+              })
+          });
   </script>
 
+  <script>
+          const name = document.getElementById('orderDate').value;
+          document.getElementById("dateBtn").value = name;
+  </script>
+
+  <!-- 총 입고수량 & 총 입고금액 초기값 -->
   <script>
     let lengthTest = document.getElementsByClassName('cartAmount');
 
     for(let i = 0; i < lengthTest.length; i++) {
 
-      let cartItemMoney = ($('.cartAmount')[i].value) * ($('.cartAmount')[i].parentElement.parentElement.children[6].innerText);
+      let cartItemMoney = ($('.cartAmount')[i].innerText) * ($('.cartAmount')[i].parentElement.parentElement.children[6].innerText);
       $('.cartAmount')[i].parentElement.parentElement.children[8].innerText = cartItemMoney.toLocaleString('ko-KR');
 
     }
@@ -293,9 +302,16 @@
     let cartTotalAmount = 0;
     let cartTotalMoney = 0;
     for(let i = 0; i < inputValueTot.length; i++){
-      cartTotalAmount += Number(inputValueTot[i].value);
+      cartTotalAmount += Number(inputValueTot[i].innerText);
       cartTotalMoney += parseInt(itemMoneyTot[i].innerText.replace(/[^0-9]/gi, ''));
     }
+
+    document.getElementById('cartTotalAmount').innerText = cartTotalAmount.toLocaleString('ko-KR');
+    document.getElementById('cartTotalMoney').innerText = cartTotalMoney.toLocaleString('ko-KR');
+
+    let total = document.getElementById('cartTotalMoney').innerText;
+    let number = total.replace(/,/g, "");
+
   </script>
 
 </body>

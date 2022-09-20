@@ -1,43 +1,36 @@
 package com.chicken.project.order.model.dto;
 
-import java.util.Date;
 
 public class OrderHistoryDTO {
 
     private int itemNo;
-    private String itemName;
-    private String categoryName;
     private int categoryNo;
+    private int cartAmount;
+    private String itemName;
     private String itemStandard;
     private String itemMake;
     private int itemSales;
-    private int cartAmount;
-    private String itemSoldoutYn;
-    private String cartYn;
-    private String storeName;
-    private int cartNo;
-    private int orderNo;
     private String orderDate;
+    private String cartYn;
+    private int orderNo;
+    private String storeName;
     private OrderItemFileDTO itemFile;
 
     public OrderHistoryDTO() {
     }
 
-    public OrderHistoryDTO(int itemNo, String itemName, String categoryName, int categoryNo, String itemStandard, String itemMake, int itemSales, int cartAmount, String itemSoldoutYn, String cartYn, String storeName, int cartNo, int orderNo, String orderDate, OrderItemFileDTO itemFile) {
+    public OrderHistoryDTO(int itemNo, int categoryNo, int cartAmount, String itemName, String itemStandard, String itemMake, int itemSales, String orderDate, String cartYn, int orderNo, String storeName, OrderItemFileDTO itemFile) {
         this.itemNo = itemNo;
-        this.itemName = itemName;
-        this.categoryName = categoryName;
         this.categoryNo = categoryNo;
+        this.cartAmount = cartAmount;
+        this.itemName = itemName;
         this.itemStandard = itemStandard;
         this.itemMake = itemMake;
         this.itemSales = itemSales;
-        this.cartAmount = cartAmount;
-        this.itemSoldoutYn = itemSoldoutYn;
-        this.cartYn = cartYn;
-        this.storeName = storeName;
-        this.cartNo = cartNo;
-        this.orderNo = orderNo;
         this.orderDate = orderDate;
+        this.cartYn = cartYn;
+        this.orderNo = orderNo;
+        this.storeName = storeName;
         this.itemFile = itemFile;
     }
 
@@ -49,28 +42,28 @@ public class OrderHistoryDTO {
         this.itemNo = itemNo;
     }
 
-    public String getItemName() {
-        return itemName;
-    }
-
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
-    }
-
-    public String getCategoryName() {
-        return categoryName;
-    }
-
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
-    }
-
     public int getCategoryNo() {
         return categoryNo;
     }
 
     public void setCategoryNo(int categoryNo) {
         this.categoryNo = categoryNo;
+    }
+
+    public int getCartAmount() {
+        return cartAmount;
+    }
+
+    public void setCartAmount(int cartAmount) {
+        this.cartAmount = cartAmount;
+    }
+
+    public String getItemName() {
+        return itemName;
+    }
+
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
     }
 
     public String getItemStandard() {
@@ -97,20 +90,12 @@ public class OrderHistoryDTO {
         this.itemSales = itemSales;
     }
 
-    public int getCartAmount() {
-        return cartAmount;
+    public String getOrderDate() {
+        return orderDate;
     }
 
-    public void setCartAmount(int cartAmount) {
-        this.cartAmount = cartAmount;
-    }
-
-    public String getItemSoldoutYn() {
-        return itemSoldoutYn;
-    }
-
-    public void setItemSoldoutYn(String itemSoldoutYn) {
-        this.itemSoldoutYn = itemSoldoutYn;
+    public void setOrderDate(String orderDate) {
+        this.orderDate = orderDate;
     }
 
     public String getCartYn() {
@@ -121,22 +106,6 @@ public class OrderHistoryDTO {
         this.cartYn = cartYn;
     }
 
-    public String getStoreName() {
-        return storeName;
-    }
-
-    public void setStoreName(String storeName) {
-        this.storeName = storeName;
-    }
-
-    public int getCartNo() {
-        return cartNo;
-    }
-
-    public void setCartNo(int cartNo) {
-        this.cartNo = cartNo;
-    }
-
     public int getOrderNo() {
         return orderNo;
     }
@@ -145,12 +114,12 @@ public class OrderHistoryDTO {
         this.orderNo = orderNo;
     }
 
-    public String getOrderDate() {
-        return orderDate;
+    public String getStoreName() {
+        return storeName;
     }
 
-    public void setOrderDate(String orderDate) {
-        this.orderDate = orderDate;
+    public void setStoreName(String storeName) {
+        this.storeName = storeName;
     }
 
     public OrderItemFileDTO getItemFile() {
@@ -165,19 +134,16 @@ public class OrderHistoryDTO {
     public String toString() {
         return "OrderHistoryDTO{" +
                 "itemNo=" + itemNo +
-                ", itemName='" + itemName + '\'' +
-                ", categoryName='" + categoryName + '\'' +
                 ", categoryNo=" + categoryNo +
+                ", cartAmount=" + cartAmount +
+                ", itemName='" + itemName + '\'' +
                 ", itemStandard='" + itemStandard + '\'' +
                 ", itemMake='" + itemMake + '\'' +
                 ", itemSales=" + itemSales +
-                ", cartAmount=" + cartAmount +
-                ", itemSoldoutYn='" + itemSoldoutYn + '\'' +
+                ", orderDate=" + orderDate +
                 ", cartYn='" + cartYn + '\'' +
-                ", storeName='" + storeName + '\'' +
-                ", cartNo=" + cartNo +
                 ", orderNo=" + orderNo +
-                ", orderDate='" + orderDate + '\'' +
+                ", storeName='" + storeName + '\'' +
                 ", itemFile=" + itemFile +
                 '}';
     }

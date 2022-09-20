@@ -51,7 +51,7 @@ public interface OrderService {
 
     void deleteCartItem(CartDTO cart);
 
-    int selectOrderHistoryCount(Map<String, String> searchMap);
+    int selectOrderHistoryCount(Map<String, Object> searchMap);
 
     List<OrderHistoryDTO> selectOrderHistory(SelectCriteria selectCriteria);
 
@@ -59,4 +59,12 @@ public interface OrderService {
     int insertStoreBreakdown(CartDTO cart);
 
     int updateStoreBalance(CartDTO cart);
+
+    int selectCartAvailableItemCount(Map<String, String> searchMap);
+
+    List<OrderDTO> selectCartAvailableItem(SelectCriteria selectCriteria);
+
+    void cancelOrder(OrderHistoryDTO history);
+
+    String selectFinalOrderDate(OrderHistoryDTO history);
 }

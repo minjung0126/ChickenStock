@@ -58,8 +58,8 @@
               </div>
 
               <div class="balanceBox" style="font-weight: bold;">
-                <div id="balance"> 잔액 :
-                  <span th:text="${ #numbers.formatInteger(balance.getBalance(), 0, 'COMMA') }"> 원</span>
+                <div id="balance" style="font-weight: bold;"> 예치금 잔액 :
+                  <span style="font-weight: bold;" th:text="|${ #numbers.formatInteger(balance.getBalance(), 0, 'COMMA')}원|"></span>
                 </div>
               </div>
 
@@ -77,7 +77,7 @@
               </div>
 
             <div id="itemCondition">
-              <p th:onclick="'location.href=\'/order/list/available\''">품절 상품 제외</p>
+              <p th:onclick="'location.href=\'/order/cart/available\''">품절 상품 제외</p>
             </div>
 
               <div id="addProduct">
@@ -307,44 +307,52 @@
   <script th:inline="javascript">
     function getBoxValue() {
 
-      // 선택된 목록 가져오기
-     // let query = document.getElementsByName("available");
-      let selectedEls = document.querySelectorAll("[name=available]");
+      let result = confirm('전체 상품을 주문하시겠습니까?');
 
-      // 선택된 목록에서 value 찾기
-      let cartInfo = [];
-      let obj = {};
-      selectedEls.forEach((el) => {
+      if(result) {
 
-        obj = {
-          itemNo : $(el)[0].parentElement.parentElement.children[0].innerText,
-          cartAmount : $(el)[0].parentElement.parentElement.children[7].children[0].value,
-          categoryNo : $(el)[0].parentElement.parentElement.children[3].children[1].value,
-          totalPrice : $(el)[0].parentElement.parentElement.parentElement.parentElement.children[2].children[0].children[4].innerText
+        // 선택된 목록 가져오기
+        // let query = document.getElementsByName("available");
+        let selectedEls = document.querySelectorAll("[name=available]");
 
-        }
+        // 선택된 목록에서 value 찾기
+        let cartInfo = [];
+        let obj = {};
+        selectedEls.forEach((el) => {
 
-        cartInfo.push(obj);
-      });
+          obj = {
+            itemNo: $(el)[0].parentElement.parentElement.children[0].innerText,
+            cartAmount: $(el)[0].parentElement.parentElement.children[7].children[0].value,
+            categoryNo: $(el)[0].parentElement.parentElement.children[3].children[1].value,
+            totalPrice: $(el)[0].parentElement.parentElement.parentElement.parentElement.children[2].children[0].children[4].innerText
 
-      console.log(cartInfo);
+          }
 
-      // 출력
-      document.getElementById('result').innerText = JSON.stringify(cartInfo);
+          cartInfo.push(obj);
+        });
 
-      let form = document.createElement('form');
+        console.log(cartInfo);
 
-      let cartNoList = document.createElement('input');
-      cartNoList.setAttribute('type', 'hidden');
-      cartNoList.setAttribute('name', 'cartNoList');
-      cartNoList.setAttribute('value', JSON.stringify(cartInfo));
-      form.appendChild(cartNoList);
-      form.setAttribute('method', 'post');
-      form.setAttribute('action', '/order/insert/items/do');
-      document.body.appendChild(form);
-      form.submit();
+        // 출력
+        document.getElementById('result').innerText = JSON.stringify(cartInfo);
 
-      console.log(cartNoList);
+        let form = document.createElement('form');
+
+        let cartNoList = document.createElement('input');
+        cartNoList.setAttribute('type', 'hidden');
+        cartNoList.setAttribute('name', 'cartNoList');
+        cartNoList.setAttribute('value', JSON.stringify(cartInfo));
+        form.appendChild(cartNoList);
+        form.setAttribute('method', 'post');
+        form.setAttribute('action', '/order/insert/items/do');
+        document.body.appendChild(form);
+        form.submit();
+
+        console.log(cartNoList);
+
+      } else {
+        return;
+      }
     }
   </script>
 

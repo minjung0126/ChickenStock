@@ -157,17 +157,10 @@
                           aria-expanded="false">
                             <i class="fa fa-ellipsis-v" id="dotMenu"></i>
                       </a>
-                      <div th:if="${interYn eq 'Y'}" class="dropdown-menu" aria-labelledby="triggerId1">
+                      <div class="dropdown-menu" aria-labelledby="triggerId1">
                         <a class="dropdown-item" href="javascript:void(0);" th:field="*{ order.cartAmount }"
                            th:itemNo="${ order.itemNo }" th:onclick="interest(this.getAttribute('itemNo'))">
-                          <i class="fa-solid fa-heart-circle-plus">관심 설정</i>
-                        </a>
-                      </div>
-
-                      <div th:if="${interYn eq 'N'}" class="dropdown-menu" aria-labelledby="triggerId1">
-                        <a class="dropdown-item" href="javascript:void(0);" th:field="*{ order.cartAmount }"
-                           th:itemNo="${ order.itemNo }" th:onclick="interestDelete(this.getAttribute('itemNo'))">
-                          <i class="fa-solid fa-heart-circle-plus">관심 삭제</i>
+                          <i class="fa-solid fa-heart-circle-plus" id="test">관심 설정</i>
                         </a>
                       </div>
 
@@ -218,13 +211,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
-  <script th:inline="javascript">
-    let message = [[${message}]];
+<!--  <script th:inline="javascript">-->
+<!--    let message = [[${message}]];-->
 
-    if(message != null && message !== '') {
-      alert(message);
-    }
-  </script>
+<!--    if(message != null && message !== '') {-->
+<!--      alert(message);-->
+<!--    }-->
+<!--  </script>-->
 
   <script type="text/javascript" th:src="@{/js/element.js}"></script>
   
@@ -330,17 +323,6 @@
   </script>
 
 
-
-    <!-- 장바구니 담기 -->
-  <script th:inline="javascript">
-    function cartAlert(itemNo) {
-      let result = confirm("선택 제품이 장바구니에 담겼습니다.\n장바구니로 이동하시겠습니까?");
-      if(result == true) {
-        location = url;
-      }
-    }
-  </script>
-
   <!-- 체크 박스 전체 선택 -->
   <script th:inline="javascript">
     function selectAll(selectAll)  {
@@ -355,11 +337,22 @@
   <!-- 체크박스 한 줄 가져오기 -->
   <script th:inline="javascript">
     function getCheckboxValue() {
+
       // 선택된 목록 가져오기
       const query = 'input[name="cartCheckBox"]:checked';
       const selectedEls = document.querySelectorAll(query);
 
       console.log(query);
+
+      if ($("input:checkbox[name='cartCheckBox']").is(":checked")==false) {
+        alert("상품을 선택하신 후 다시 시도하세요.");
+        return;
+      }
+
+      if (!$('#cartAmount').val()) {
+            alert('상품의 수량을 입력해주세요.');
+            return;
+      }
 
       // 선택된 목록에서 value 찾기
       let itemInfo = [];
