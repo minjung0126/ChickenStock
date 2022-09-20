@@ -308,7 +308,7 @@ public class ReItemServiceImpl implements ReItemService{
     @Transactional
     public int updateReItem(List<ReItemDTO> updateItem, String storeName) {
 
-        int result = 0;
+        int result1 = 0;
 //
         Map<String, Object> up = new HashMap<>();
         up.put("returnTotalMoney", updateItem.get(0).getReturnTotalMoney());
@@ -316,56 +316,62 @@ public class ReItemServiceImpl implements ReItemService{
         up.put("rReason", updateItem.get(0).getrReason());
 
 
-        result = reItemMapper.updateReturnItems(up);
-        log.info("값이 들어올까요>?" + result);
+        result1 = reItemMapper.updateReturnItems(up);
+        log.info("값이 들어올까요>?" + result1);
 
-        if(result > 0){
-
-            result = 0; //초기화
+        if(result1 > 0){
 
             List<Map<String, Object>> upList = new ArrayList<>();
 
             for(int i =0; i < updateItem.size(); i++){
 
                 Map<String, Object> maps = new HashMap<>();
-                maps.put("returnCount", updateItem.get(i).getReturnCount());
+                maps.put("returnCount", updateItem.get(i).getFirstCount());
                 maps.put("itemNo", updateItem.get(i).getItemNo());
                 maps.put("storeName", storeName);
                 maps.put("rNo", updateItem.get(i).getrNo());
                 upList.add(maps);
 
-                result = reItemMapper.updateRItem(maps);
-                log.info("값이 들어올까요>?????" + result);
             }
 
-            if(result > 0) {
-
-                result = 0;
-
-                Map<String, Object> map = null;
+            int result2 = 0;
+            if(result1 > 0) {
 
                 for(int i =0; i < upList.size(); i++) {
-                   int P = updateItem.get(i).getReturnCount(); //고정값
-                   int M = updateItem.get(i).getFirstCount();  //변화값
-                    map = upList.get(i);
+                    Map<String, Object> maps = upList.get(i);
+                    Map<String, Object> map = new HashMap<>();
+                    result2 = reItemMapper.updateRItem(maps);
 
-                    if(P > M) {
+                    if(result2 >0) {
+                        int P = updateItem.get(i).getReturnCount(); //고정값
+                        int M = updateItem.get(i).getFirstCount();  //변화값
+                        map.put("itemNo", maps.get("itemNo"));
+                        map.put("rNo", maps.get("rNo"));
+                        map.put("storeName",maps.get("storeName"));
 
-                        int V = P - M;
-                        map.put("V",V);
-                        result = reItemMapper.updateReAcountP(map); //수량을 줄였을 때 +
-                        log.info("값이 들어올까요>!>!>!>?" + result);
-                    } else if (M > P) {
+                        log.info("P야 나와라 : " + P);
+                        log.info("M야 나와라 : " + M);
+                        int result3 = 0;
+                            if (P > M) {
 
-                        int R = M - P;
-                        map.put("R",R);
-                        result = reItemMapper.updateReAcountM(map); // 수량을 늘렸을때 -
-                        log.info("값이 들어올까요>!>>!>!>>!>!>!>!>?" + result);
+                                int V = P - M;
+                                map.put("V", V);
+                                result3 = reItemMapper.updateReAcountP(map); //수량을 줄였을 때 +
+                                log.info("값이 들어올까요>!>!>!>?" + result3);
+                            } else if (M > P) {
+
+                                int R = M - P;
+                                map.put("R", R);
+                                log.info("이제 확인용 말을 쓸게 없어요" + map);
+                                result3 = reItemMapper.updateReAcountM(map); // 수량을 늘렸을때 -
+                                log.info("값이 들어올까요>!>>!>!>>!>!>!>!>?" + result3);
+                            }
+
                     }
                 }
             }
         }
 
-        return result;
+        return result1;
     }
 }

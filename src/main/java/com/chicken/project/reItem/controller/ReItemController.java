@@ -115,6 +115,7 @@ public class ReItemController {
             selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount, storeName);
         }
 
+        log.info("tq" + selectCriteria);
         List<ReListDTO> storeReList = reItemService.selectReList(selectCriteria);
 
         mv.addObject("reList",storeReList);
@@ -255,6 +256,9 @@ public class ReItemController {
         int result = reItemService.updateReItem(updateItem, storeImpl.getStoreName());
 
         if(result > 0) {
+            ReItemDTO update = reItemService.selectUpReItem(String.valueOf(rNo));
+            log.info(" 뭐라고 쓸까여 이제 할말도 ㅇ넚어"+update);
+            mv.addObject("updateItem", update);
             mv.setViewName("redirect:/reItem/user/reviseReItem");
         }
 
