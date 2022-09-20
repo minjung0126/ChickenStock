@@ -1,4 +1,4 @@
-package com.chicken.project.member.email;
+package com.chicken.project.email.common;
 
 import java.util.Random;
 

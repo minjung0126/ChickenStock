@@ -10,7 +10,7 @@
   <link rel="stylesheet" th:href="@{/css/common/common.css}"/>
   <!-- table css -->
   <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
-	<link rel="stylesheet" type="text/css" th:href="@{/css/common/style.css}"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/common/style.css}"/>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
   <!-- datepicker js & css -->
   <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"/>
@@ -28,180 +28,180 @@
 
 </head>
 <body>
-  <div class="wrap">
+<div class="wrap">
 
-    <!-- S: header -->
-    <div th:include="common/adminHeader.html"></div>
-    <!-- E: header -->
+  <!-- S: header -->
+  <div th:include="common/adminHeader.html"></div>
+  <!-- E: header -->
 
-    <!-- S: container -->
-    <div class="container px-0">
+  <!-- S: container -->
+  <div class="container px-0">
 
-      <!-- S: aside -->
-      <div th:replace="common/adminSidebar.html"></div>
-      <!-- E: aside -->
+    <!-- S: aside -->
+    <div th:replace="common/adminSidebar.html"></div>
+    <!-- E: aside -->
 
-      <!-- S: main layout -->
-      <div class="main_layout">
-        <div class="main_layout_inner">
+    <!-- S: main layout -->
+    <div class="main_layout">
+      <div class="main_layout_inner">
 
-          <!-- 작업 영역 -->
-          <!-- S: table -->
-          <div class="container-fluid" style="margin-top:30px">
-            <div class="row mx-5">
-              <div class="col px-5 py-1">
-                <h4>재고현황</h4>
-                <div class=" d-flex justify-content-end">
-                  <button class="fa fa-plus mx-4" style="color: #aaa; cursor: pointer; border: none"
-                          th:onclick="'location.href=\'/item/admin/list\''"></button>
-                  <button class="fa fa-refresh" style="color: #aaa; cursor: pointer; border: none"
-                          th:onclick="'location.href=\'/member/moveMain\''"></button>
-                </div>
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th>상품코드</th>
-                      <th>상품명</th>
-                      <th>카테고리</th>
-                      <th>규격</th>
-                      <th>제조사</th>
-                      <th>재고량</th>
-                      <th>품절여부</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr th:each="item : ${ itemList }">
-                      <td th:text="${ item.itemNo }">100000</td>
-                      <td th:text="${ item.itemName }">닭다리</td>
-                      <td th:text="${ item.categoryName }">식재료</td>
-                      <td th:text="${ item.itemStandard }">1kg</td>
-                      <td th:text="${ item.itemMake }">하림(국내산)</td>
-                      <td th:text="${ item.itemAmount }">100</td>
-                      <td th:if="${ item.itemSoldoutYn eq 'Y' }" >
-                        <span class="active-circle bg-danger"></span><span th:text="${ '품절' }"></span>
-                      </td>
-                      <td th:if="${ item.itemSoldoutYn eq 'N' }" >
-                        <span class="active-circle bg-success"></span><span th:text="${ '보유' }"></span>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+        <!-- 작업 영역 -->
+        <!-- S: table -->
+        <div class="container-fluid" style="margin-top:30px">
+          <div class="row mx-5">
+            <div class="col px-5 py-1">
+              <h4>재고현황</h4>
+              <div class=" d-flex justify-content-end">
+                <button class="fa fa-plus mx-4" style="color: #aaa; cursor: pointer; border: none"
+                        th:onclick="'location.href=\'/item/admin/list\''"></button>
+                <button class="fa fa-refresh" style="color: #aaa; cursor: pointer; border: none"
+                        th:onclick="'location.href=\'/member/moveMain\''"></button>
+              </div>
+              <table class="table">
+                <thead>
+                <tr>
+                  <th>상품코드</th>
+                  <th>상품명</th>
+                  <th>카테고리</th>
+                  <th>규격</th>
+                  <th>제조사</th>
+                  <th>재고량</th>
+                  <th>품절여부</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="item : ${ itemList }">
+                  <td th:text="${ item.itemNo }">100000</td>
+                  <td th:text="${ item.itemName }">닭다리</td>
+                  <td th:text="${ item.categoryName }">식재료</td>
+                  <td th:text="${ item.itemStandard }">1kg</td>
+                  <td th:text="${ item.itemMake }">하림(국내산)</td>
+                  <td th:text="${ item.itemAmount }">100</td>
+                  <td th:if="${ item.itemSoldoutYn eq 'Y' }" >
+                    <span class="active-circle bg-danger"></span><span th:text="${ '품절' }"></span>
+                  </td>
+                  <td th:if="${ item.itemSoldoutYn eq 'N' }" >
+                    <span class="active-circle bg-success"></span><span th:text="${ '보유' }"></span>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="row mx-5">
+            <div class="col p-5">
+              <h4>일정</h4>
+              <div class=" d-flex justify-content-end">
+                <i class="fa fa-plus mx-4" style="color: #aaa; cursor: pointer;"></i>
+                <i class="fa fa-refresh" style="color: #aaa; cursor: pointer;"></i>
+              </div>
+              <div id='calendar-container' class="px-5">
+                <div id='calendar' class="py-1"></div>
               </div>
             </div>
-            <div class="row mx-5">
-              <div class="col p-5">
-                <h4>일정</h4>
-                <div class=" d-flex justify-content-end">
-                  <i class="fa fa-plus mx-4" style="color: #aaa; cursor: pointer;"></i>
-                  <i class="fa fa-refresh" style="color: #aaa; cursor: pointer;"></i>
-                </div>
-                <div id='calendar-container' class="px-5">
-                  <div id='calendar' class="py-1"></div>
-                </div>
+            <div class="col p-5">
+              <h4>공지사항</h4>
+              <div class=" d-flex justify-content-end">
+                <button class="fa fa-plus mx-4" style="color: #aaa; cursor: pointer; border: none"
+                        th:onclick="'location.href=\'/notice/admin/insert\''"></button>
+                <button class="fa fa-refresh" style="color: #aaa; cursor: pointer; border: none"
+                        th:onclick="'location.href=\'/member/moveMain\''"></button>
               </div>
-              <div class="col p-5">
-                <h4>공지사항</h4>
-                <div class=" d-flex justify-content-end">
-                  <button class="fa fa-plus mx-4" style="color: #aaa; cursor: pointer; border: none"
-                          th:onclick="'location.href=\'/notice/admin/insert\''"></button>
-                  <button class="fa fa-refresh" style="color: #aaa; cursor: pointer; border: none"
-                          th:onclick="'location.href=\'/member/moveMain\''"></button>
-                </div>
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th>번호</th>
-                      <th>제목</th>
-                      <th>작성자</th>
-                      <th>등록일</th>
-                    </tr>
-                  </thead>
-                  <tbody style="cursor:pointer">
-                   <th:block th:if="${ noticeList.size() > 0 }">
-                    <tr th:each="noticeList : ${ noticeList }">
-                      <td class="notice" th:text="${ noticeList.noticeNo }"></td>
-                      <td class="notice" th:text="${ noticeList.noticeName }"></td>
-                      <td class="notice" th:text="${ noticeList.empName }"></td>
-                      <td class="notice" th:text="${ noticeList.noticeRegistDate }"></td>
-                    </tr>
-                   </th:block>
-                  <th:block th:if="${ noticeList.size() == 0 }">
-                    <tr>
-                      <td colspan="4">조회된 결과가 없습니다.</td>
-                    </tr>
-                  </th:block>
-                  </tbody>
-                </table>
-              </div>
+              <table class="table">
+                <thead>
+                <tr>
+                  <th>번호</th>
+                  <th>제목</th>
+                  <th>작성자</th>
+                  <th>등록일</th>
+                </tr>
+                </thead>
+                <tbody style="cursor:pointer">
+                <th:block th:if="${ noticeList.size() > 0 }">
+                  <tr th:each="noticeList : ${ noticeList }">
+                    <td class="notice" th:text="${ noticeList.noticeNo }"></td>
+                    <td class="notice" th:text="${ noticeList.noticeName }"></td>
+                    <td class="notice" th:text="${ noticeList.empName }"></td>
+                    <td class="notice" th:text="${ noticeList.noticeRegistDate }"></td>
+                  </tr>
+                </th:block>
+                <th:block th:if="${ noticeList.size() == 0 }">
+                  <tr>
+                    <td colspan="4">조회된 결과가 없습니다.</td>
+                  </tr>
+                </th:block>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
       </div>
-      <!-- E: main layout -->
     </div>
-    <!-- E: container -->
+    <!-- E: main layout -->
   </div>
-  
-  <!-- table js -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <!-- E: container -->
+</div>
 
-  <!-- datepicker js -->
-  <script src="../assets/js/daterange.js"></script>
+<!-- table js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
-  <!-- fullcalendar js -->
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/core/main.min.js'></script>
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/interaction/main.min.js'></script>
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/daygrid/main.min.js'></script>
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/timegrid/main.min.js'></script>
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/list/main.min.js'></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      var calendarEl = document.getElementById('calendar');
-      var calendar = new FullCalendar.Calendar(calendarEl, {
-        plugins: [ 'interaction', 'dayGrid', 'timeGrid', 'list' ],
-        height: 'parent',
-        header: {
-          left: 'prev,next today',
-          center: 'title',
-          right: 'dayGridMonth'
+<!-- datepicker js -->
+<script src="../assets/js/daterange.js"></script>
+
+<!-- fullcalendar js -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/core/main.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/interaction/main.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/daygrid/main.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/timegrid/main.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/list/main.min.js'></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+      plugins: [ 'interaction', 'dayGrid', 'timeGrid', 'list' ],
+      height: 'parent',
+      header: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'dayGridMonth'
+      },
+      defaultView: 'dayGridMonth',
+      navLinks: true, // can click day/week names to navigate views
+      editable: true,
+      eventLimit: true, // allow "more" link when too many events
+      events: [
+        {
+          title: 'All Day Event',
+          start: '2020-02-01',
         },
-        defaultView: 'dayGridMonth',
-        navLinks: true, // can click day/week names to navigate views
-        editable: true,
-        eventLimit: true, // allow "more" link when too many events
-        events: [
-          {
-            title: 'All Day Event',
-            start: '2020-02-01',
-          },
-          {
-            title: 'Long Event',
-            start: '2020-02-07',
-            end: '2020-02-10'
-          },
-          {
-            title: 'Conference',
-            start: '2020-02-11',
-            end: '2020-02-13'
-          }
-        ]
-      });
-
-      calendar.render();
-    });
-  </script>
-  <script>
-    if(document.getElementsByClassName("notice")) {
-      const $tds = document.getElementsByClassName("notice");
-      for (let i = 0; i < $tds.length; i++) {
-
-        $tds[i].onclick = function () {
-          const noticeNo = this.parentNode.children[0].innerText;
-          location.href = "/notice/admin/detail?noticeNo=" + noticeNo
+        {
+          title: 'Long Event',
+          start: '2020-02-07',
+          end: '2020-02-10'
+        },
+        {
+          title: 'Conference',
+          start: '2020-02-11',
+          end: '2020-02-13'
         }
+      ]
+    });
+
+    calendar.render();
+  });
+</script>
+<script>
+  if(document.getElementsByClassName("notice")) {
+    const $tds = document.getElementsByClassName("notice");
+    for (let i = 0; i < $tds.length; i++) {
+
+      $tds[i].onclick = function () {
+        const noticeNo = this.parentNode.children[0].innerText;
+        location.href = "/notice/admin/detail?noticeNo=" + noticeNo
       }
     }
-  </script>
+  }
+</script>
 </body>
 </html>
