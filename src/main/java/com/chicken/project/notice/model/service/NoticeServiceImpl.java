@@ -70,14 +70,12 @@ public class NoticeServiceImpl implements NoticeService{
     @Transactional
     public int deleteNotice(int noticeNo) throws NoticeDeleteException {
 
-        int result = noticeMapper.deleteNoticeFile(noticeNo);
+        int result = noticeMapper.deleteNotice(noticeNo);
+        int result2 =  noticeMapper.deleteNoticeFile(noticeNo);
 
         if(!(result > 0)){
 
             throw new NoticeDeleteException("공지사항 삭제 실패!");
-        } else {
-
-            noticeMapper.deleteNotice(noticeNo);
         }
 
         return result;
