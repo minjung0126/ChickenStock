@@ -22,7 +22,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/item")
@@ -94,7 +97,7 @@ public class ItemController {
         List<ItemCategoryDTO> itemCategoryList = itemService.selectCategory();
 
         mv.addObject("itemList", itemList);
-        mv.addObject("selectCriteria", selectCriteria);
+            mv.addObject("selectCriteria", selectCriteria);
         log.info("[itemController] SelectCriteria : " + selectCriteria);
 
         mv.addObject("itemPreCategoryList", itemPreCategoryList);
