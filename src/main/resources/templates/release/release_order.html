@@ -94,6 +94,7 @@
               <thead>
                 <tr>
                   <th>상품코드</th>
+                  <th>발주번호</th>
                   <th>상품명</th>
                   <th>카테고리</th>
                   <th>규격</th>
@@ -110,6 +111,7 @@
                 <tr th:each="order : ${ orderList }" class="release-tr-add">
                   <form th:action="@{ /release/orderInsertUpdate }" method="post">
                     <td th:text="${ order.releaseItemInfoDTO.itemNo }"></td>
+                    <td th:text="${ order.storeOrderDTO.orderNo }"></td>
                     <td th:text="${ order.releaseItemInfoDTO.itemName }"></td>
                     <td th:text="${ order.releaseItemCategoryDTO.categoryName}"></td>
                     <td th:text="${ order.releaseItemInfoDTO.itemStandard }"></td>
@@ -166,6 +168,7 @@
             <thead>
               <tr>
                 <th>상품코드</th>
+                <th>발주번호</th>
                 <th>상품명</th>
                 <th>카테고리</th>
                 <th>규격</th>
@@ -182,6 +185,7 @@
             <tr th:each="orderN : ${ orderListN }" class="tr-itemName">
             <form th:action="@{ /release/orderDeleteUpdate }" method="post">
                 <td th:text="${ orderN.releaseItemInfoDTO.itemNo }"></td>
+                <td th:text="${ orderN.storeOrderDTO.orderNo }"></td>
                 <td th:text="${ orderN.releaseItemInfoDTO.itemName }"></td>
                 <td th:text="${ orderN.releaseItemCategoryDTO.categoryName}"></td>
                 <td th:text="${ orderN.releaseItemInfoDTO.itemStandard }"></td>
