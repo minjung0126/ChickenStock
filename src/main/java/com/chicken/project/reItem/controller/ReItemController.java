@@ -310,6 +310,7 @@ public class ReItemController {
 
         mv.addObject("returnList",storeReturnList);
         mv.addObject("selectCriteria", selectCriteria);
+        mv.setViewName("/reItem/admin/adminReList");
 
         return mv;
 
