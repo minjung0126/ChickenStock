@@ -76,11 +76,8 @@ public class MemberMain {
                 mv.addObject("noticeList", noticeList);
                 mv.setViewName("/main/user_main");
 
-
             }
         }
-
-
 
         return mv;
     }

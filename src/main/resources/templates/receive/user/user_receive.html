@@ -18,6 +18,7 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"/>
 
+    <script th:src="@{/js/common.js}"></script>
 </head>
 <body>
 <div class="wrap">
@@ -42,7 +43,7 @@
                 <div class="container-fluid" style="margin-top:30px">
                     <h3>입고 관리</h3>
                     <br>
-                    <form action="/receive/user/list">
+                    <form action="/storeReceive/user/list">
                         <div>
                             <div class="input-group mb-3 col-12 float-start">
                                 <select id="searchCondition" name="searchCondition" class="form-control col-2" style="max-width: max-content;">
@@ -104,7 +105,7 @@
                                         <td class="detail-sub-td p-0" colspan="10">
                                             <div class="detail-sub" style="display: none">
                                                 <table width="100%" th:each="receive : ${ receiveItem }"
-                                                       th:if="${ release.orderCode eq receive[0].orderCode}"
+                                                       th:if="${ release.relCode eq receive[0].relCode}"
                                                 class="recTable" id="recTable">
                                                     <thead>
                                                     <tr>
@@ -127,7 +128,7 @@
                                                     </thead>
                                                     <tr th:each="receive2, stat : ${ receive }">
                                                         <td th:text="${ stat.count }">1</td>
-                                                        <td class="recOrderNo" th:value="${ receive2.orderNo }" th:text="${ receive2.orderCode }">190201</td>
+                                                        <td th:text="${ receive2.orderCode }">190201</td>
 <!--                                                        <td th:if="${ releaseList.get(stat.index).recCode eq null }"></td>-->
 <!--                                                        <td th:if="${ releaseList.get(stat.index).recCode ne null }" th:text="${ receive2.recCode }"></td>-->
                                                         <td th:text="${ receive2.recCode }"></td>
@@ -150,7 +151,8 @@
                                                         <td th:if="${ receive2.recCode ne null }" th:text="|${ #numbers.formatInteger(receive2.recMoney, 0, 'COMMA') }원|"></td>
                                                         <td th:if="${ receive2.recCode eq null }" th:text="${ receive2.orderDate }"></td>
                                                         <td th:if="${ receive2.recCode ne null }" th:text="${ receive2.recDate }"></td>
-
+                                                        <input type="hidden" id="categoryNo" class="categoryNo" th:value="${ receive2.itemCategory.categoryNo }">
+                                                        <input type="hidden" id="recOrderNo" class="recOrderNo" th:value="${ receive2.orderNo }">
                                                     </tr>
                                                 </table>
                                             </div>
@@ -169,14 +171,14 @@
                 <div class="pagingArea" align="center">
                     <!-- 맨 앞으로 이동 버튼 -->
                     <button class="btn btn-light mx-1" style="cursor:pointer; background: #ccc; color: #fff;"
-                            th:onclick="'location.href=\'/receive/user/list?currentPage='+ @{${selectCriteria.startPage}} + '\''"
+                            th:onclick="'location.href=\'/storeReceive/user/list?currentPage='+ @{${selectCriteria.startPage}} + '\''"
                             th:disabled="${selectCriteria.pageNo == 1}"
                     >
                         <<
                     </button>
                     <!-- 이전 페이지 버튼 -->
                     <button class="btn btn-light" style="cursor:pointer; background: #ccc; color: #fff;"
-                            th:onclick="'location.href=\'/receive/user/list?currentPage='+ @{${selectCriteria.pageNo - 1}} + '\''"
+                            th:onclick="'location.href=\'/storeReceive/user/list?currentPage='+ @{${selectCriteria.pageNo - 1}} + '\''"
                             th:disabled="${selectCriteria.pageNo == 1}"
                     >
                         <
@@ -185,21 +187,21 @@
                     <th:block th:each="page : ${#numbers.sequence(selectCriteria.startPage, selectCriteria.endPage)}">
                         <button class="btn btn-warning mx-1" style="cursor:pointer; color: #fff;"
                                 th:text="${ page }"
-                                th:onclick="'location.href=\'/receive/user/list?currentPage='+ @{${page}} + '\''"
+                                th:onclick="'location.href=\'/storeReceive/user/list?currentPage='+ @{${page}} + '\''"
                                 th:disabled="${ selectCriteria.pageNo eq page }">
                         </button>
                     </th:block>
 
                     <!-- 다음 페이지 버튼 -->
                     <button class="btn btn-light mx-1" style="cursor:pointer; background: #ccc; color: #fff;"
-                            th:onclick="'location.href=\'/receive/user/list?currentPage='+ @{${selectCriteria.pageNo + 1}} + '\''"
+                            th:onclick="'location.href=\'/storeReceive/user/list?currentPage='+ @{${selectCriteria.pageNo + 1}} + '\''"
                             th:disabled="${selectCriteria.pageNo == selectCriteria.maxPage}"
                     >
                         >
                     </button>
                     <!-- 마지막 페이지로 이동 버튼 -->
                     <button class="btn btn-light mx-1" style="cursor:pointer; background: #ccc; color: #fff;"
-                            th:onclick="'location.href=\'/receive/user/list?currentPage='+ @{${selectCriteria.maxPage}} + '\''"
+                            th:onclick="'location.href=\'/storeReceive/user/list?currentPage='+ @{${selectCriteria.maxPage}} + '\''"
                             th:disabled="${selectCriteria.pageNo == selectCriteria.maxPage}"
                     >
                         >>
@@ -345,43 +347,60 @@
 <script>
     function insertReceive(check){
 
-
         let click = $(check.parentElement.parentElement.nextElementSibling.getElementsByClassName('recTable')[0].children[1]);
         console.log(click);
-        let tr = click.children;
+        let tr = click[0].children;
 
-        let reciveList = []; // 배열
-        let recive = {};  // 객체
+        let receiveList = []; // 배열
+        let receive = {};  // 객체
         // push를 이용해서 객체배열을 만들려고함
 
-
-
+        let count = 0;
         for(let i = 0; i < tr.length; i++){
-            // let test = click.getElementsByClassName('recItemNo')[i].innerText;
-            // console.log(test);
-            let count = 0;
+
             if($(click[0].children).find(".recAmount")[i].innerText == $(click[0].children).find(".ordAmount")[i].innerText){
                 count++;
             }
-            console.log(count);
+        }
+        console.log(tr.length);
+
+        for(let i = 0; i < tr.length; i++){
 
             if(count == tr.length){
-                recive = {
+
+                receive = {
                     recItemNo : $(click[0].children).find(".recItemNo")[i].innerText,
-                    recOrderNo : $(click[0].children).find(".recOrderNo")[i].innerText,
                     recAmount : $(click[0].children).find(".recAmount")[i].innerText,
-                    sales : $(click[0].children).find(".sales")[i].innerText.replace(/[^0-9]/gi, '')
+                    sales : $(click[0].children).find(".sales")[i].innerText.replace(/[^0-9]/gi, ''),
+                    categoryNo : $(click[0].children).find(".categoryNo").val(),
+                    recOrderNo : $(click[0].children).find(".recOrderNo").val()
                 }
-            } else{
+                receiveList.push(receive);
+                } else{
                 alert('발주 수량과 출고 수량을 다시 확인해주세요.');
                 return;
             }
+        }
+        console.log(receiveList);
 
+        let answer = confirm('입고를 진행하시겠습니까?');
+        if(answer){
+            let form = document.createElement('form');
 
-            reciveList.push(recive);
+            let hidden = document.createElement('input');
+            hidden.setAttribute('type', 'hidden');
+            hidden.setAttribute('name', 'receiveList');
+            hidden.setAttribute('value', JSON.stringify(receiveList));
+
+            form.appendChild(hidden);
+            form.setAttribute('method', 'post');
+            form.setAttribute('action', '/storeReceive/user/regist');
+            document.body.appendChild(form);
+            form.submit();
         }
 
-        console.log(reciveList);
+
+
 
         // if(rowLength == 0){
         //     alert('입고할 품목을 등록해주세요.');
