@@ -97,14 +97,9 @@ public class StoreReceiveServiceImpl implements StoreReceiveService{
     }
 
     @Override
-    public Integer selectOneItem(Object recItemNo, String storeName) {
+    public int selectOneItem(Object recItemNo, String storeName) {
 
-        Integer result = storeReceiveMapper.selectOneItem(recItemNo, storeName);
-
-        if(result == null){
-            result = 0;
-        }
-
+        int result = storeReceiveMapper.selectOneItem(recItemNo, storeName);
         return result;
     }
 

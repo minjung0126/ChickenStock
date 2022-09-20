@@ -28,7 +28,7 @@ public interface StoreReceiveMapper {
 
     int insertReceiveStoreItem(Map<String, Object> recList);
 
-    Integer selectOneItem(Object recItemNo, String storeName);
+    int selectOneItem(Object recItemNo, String storeName);
 
     int updateOneItem(Map<String, Object> recList);
 

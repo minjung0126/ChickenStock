@@ -32,7 +32,7 @@ public interface StoreReceiveService {
     @Transactional
     void insertReceiveStoreItem(Map<String, Object> recList) throws ReceiveInsertException;
 
-    Integer selectOneItem(Object recItemNo, String storeName);
+    int selectOneItem(Object recItemNo, String storeName);
 
     @Transactional
     void updateOneItem(Map<String, Object> recList) throws ReceiveUpdateException;

@@ -209,7 +209,7 @@ public class StoreReceiveController {
                 storeReceiveService.insertReceiveStoreItem(recList.get(i));
 
                 // 품목 등록 여부에 따라 insert, update
-                Integer result2 = storeReceiveService.selectOneItem(recList.get(i).get("recItemNo"), storeName);
+                int result2 = storeReceiveService.selectOneItem(recList.get(i).get("recItemNo"), storeName);
                 if(result2 > 0){
                     storeReceiveService.updateOneItem(recList.get(i));
                 } else {

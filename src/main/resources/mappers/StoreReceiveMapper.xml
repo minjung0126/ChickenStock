@@ -381,9 +381,9 @@ FROM (SELECT
         )
     </insert>
 
-    <select id="selectOneItem" resultMap="recStoItemInfoResultMap">
+    <select id="selectOneItem" resultType="_int">
         SELECT
-               *
+               COUNT(*)
           FROM STO_ITEM_INFO
          WHERE ITEM_NO = #{ recItemNo }
            AND STORE_NAME = #{ storeName }
