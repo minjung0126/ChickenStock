@@ -165,6 +165,7 @@ public class ReItemController {
         Map<String, String> item = new HashMap<>();
         item.put("storeName",storeImpl.getStoreName());
         item.put("rNo",rNo);
+        item.put("returnItemNo", String.valueOf(returnItems.getReturnItemNo()));
 
         ReItemDTO updateItem = reItemService.selectUpReItem(rNo);
         List<ReItemDTO> updateItems = reItemService.selectReItems(item);
@@ -232,9 +233,10 @@ public class ReItemController {
                                     , @ModelAttribute ReItemDTO returnItems
                                     , ModelAndView mv
                                     , @RequestParam String rReason
-                                    , @RequestParam int returnTotalMoney
+                                    , @RequestParam int total
                                     ,  String[] firstCount
-                                    , @RequestParam int rNo){
+                                    , @RequestParam int rNo
+                                    , int[] returnItemNo){
 
         List<ReItemDTO> updateItem = new ArrayList<>();
 
@@ -242,18 +244,21 @@ public class ReItemController {
 
             ReItemDTO reI = new ReItemDTO();
             reI.setItemNo(Integer.parseInt(itemNo2[i]));
-            reI.setReturnTotalMoney(returnTotalMoney);
+            reI.setReturnTotalMoney(total);
             reI.setrReason(rReason);
             reI.setrNo(rNo);
+            reI.setReturnItemNo(returnItemNo[i]);
 
             if(firstCount[i] != "") {
                 reI.setReturnCount(Integer.parseInt(returnCount2[i]));
                 reI.setFirstCount(Integer.parseInt(firstCount[i]));
+                reI.setReturnItemNo(returnItemNo[i]);
                 updateItem.add(reI);
             }
 
         }
 
+        log.info("현석님 열심히 하세요 " + updateItem);
         int result = reItemService.updateReItem(updateItem, storeImpl.getStoreName());
 
         if(result > 0) {
