@@ -25,4 +25,8 @@ public interface EmployeeMapper {
     int updateEmailCode(EmployeeDTO emp);
 
     int selectTotalCount();
+
+    EmployeeDTO selectEmailCode(EmployeeDTO emp);
+
+    int updatePwd(EmployeeDTO emp);
 }

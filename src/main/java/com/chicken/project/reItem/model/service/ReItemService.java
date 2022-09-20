@@ -48,4 +48,16 @@ public interface ReItemService {
     List<ReItemDTO> selectReItems(Map<String, String> item);
 
     List<StoreItemDTO> selectItems(Map<String, String> item);
+
+    ReItemDTO viewReItem(String rNo);
+
+    List<ReItemDTO> viewReItems(Map<String, String> viewItem);
+
+    int insertOneItem(Map<String, Object> insertItem);
+
+    // 상품 하나 지우기
+    int deleteOneItem(Map<String, Object> deleteItem);
+
+    @Transactional
+    int updateReItem(List<ReItemDTO> updateItem, String storeName);
 }
