@@ -6,7 +6,6 @@
 
   <title>chicken stock</title>
   <script type="text/javascript" th:src="@{http://code.jquery.com/jquery-3.6.0.min.js}"></script>
-  <script th:src="@{/js/common.js}"></script>
 
 </head>
 <body>
@@ -53,13 +52,13 @@
                 <a href="/order/cart/list" title="">장바구니</a>
               </li>
               <li>
-                <a href="" title="">발주 내역</a>
+                <a href="/order/history" title="">발주 내역</a>
               </li>
             </ul>
           </div>
 
           <div class="accordion_dep type1 ">
-            <a href="#" title=""><img src="/images/container.png" width="18px" height="18px"> 입고조회</a>
+            <a href="/storeReceive/user/list" title=""><img src="/images/container.png" width="18px" height="18px"> 입고조회</a>
           </div>
 
           <div class="accordion_dep type2">

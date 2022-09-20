@@ -2,177 +2,61 @@ package com.chicken.project.order.model.service;
 
 import com.chicken.project.common.paging.SelectCriteria;
 import com.chicken.project.exception.order.InterestException;
-import com.chicken.project.order.model.dao.OrderMapper;
 import com.chicken.project.order.model.dto.CartDTO;
 import com.chicken.project.order.model.dto.InterestDTO;
 import com.chicken.project.order.model.dto.OrderDTO;
 import com.chicken.project.order.model.dto.OrderHistoryDTO;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
 
-@Service("orderService")
-public class OrderService {
-    private final OrderMapper orderMapper;
+public interface OrderService {
+    List<OrderDTO> selectAllItem(SelectCriteria selectCriteria);
 
-    public OrderService(OrderMapper orderMapper) {
+    int selectTotalCount(Map<String, String> searchMap);
 
-        this.orderMapper = orderMapper;
-    }
+    int selectInterestCount(InterestDTO interest);
 
-    public List<OrderDTO> selectAllItem(SelectCriteria selectCriteria) {
+    int insertInterest(InterestDTO interest) throws InterestException;
 
-        return orderMapper.selectAllItem(selectCriteria);
+    int deleteInterest(InterestDTO interest) throws InterestException;
 
-    }
+    int selectCartTotalCount(Map<String, String> searchMap);
 
+    List<CartDTO> selectCartItem(SelectCriteria selectCriteria);
 
-    public List<OrderDTO> selectOrderHistory() {
+    int selectAvailableItemCount(Map<String, String> searchMap);
 
-        return orderMapper.selectOrderHistory();
-    }
+    List<OrderDTO> selectAvailableItem(SelectCriteria selectCriteria);
 
+    int selectInterestItemCount(Map<String, String> searchMap);
 
-    public int selectTotalCount(Map<String, String> searchMap) {
-
-        int result = orderMapper.selectTotalCount(searchMap);
-
-        return result;
-
-    }
-
-    public int selectInterestCount(InterestDTO interest) {
-
-        int interCheck = orderMapper.selectInterestCount(interest);
-
-        return interCheck;
-    }
-
-    @Transactional
-    public int insertInterest(InterestDTO interest) throws InterestException {
-
-        int insert = orderMapper.insertInterest(interest);
-
-        if (!(insert > 0)) {
-
-            throw new InterestException("관심 등록에 실패하셨습니다.");
-        }
-
-        return insert;
-    }
-
-    @Transactional
-    public int deleteInterest(InterestDTO interest) throws InterestException {
-
-        int delete = orderMapper.deleteInterest(interest);
-
-        if (!(delete > 0)) {
-
-            throw new InterestException("관심 삭제에 실패하셨습니다.");
-        }
-
-        return delete;
-
-    }
-
-    public int selectCartTotalCount(Map<String, String> searchMap) {
-
-        int result = orderMapper.selectTotalCount(searchMap);
-
-        return result;
-
-    }
+    List<OrderDTO> selectInterestItem(SelectCriteria selectCriteria);
 
 
-    public List<CartDTO> selectCartItem(SelectCriteria selectCriteria) {
-
-        return orderMapper.selectCartItem(selectCriteria);
-    }
-
-    public int selectAvailableItemCount(Map<String, String> searchMap) {
-
-        int result = orderMapper.selectAvailableItemCount(searchMap);
-
-        return result;
-    }
-
-    public List<OrderDTO> selectAvailableItem(SelectCriteria selectCriteria) {
-
-        return orderMapper.selectAvailableItem(selectCriteria);
-    }
-
-    public int selectInterestItemCount(Map<String, String> searchMap) {
-
-        int result = orderMapper.selectInterestItemCount(searchMap);
-
-        return result;
-    }
-
-
-    public List<OrderDTO> selectInterestItem(SelectCriteria selectCriteria) {
-
-        return orderMapper.selectInterestItem(selectCriteria);
-
-    }
-
-    @Transactional
-    public void InsertCartList(List<String> itemNoList) {
-
-        int result = orderMapper.insertCartList(itemNoList);
-
-    }
+//    void InsertCartList(List<String> itemNoList);
 
     /* 발주 신청 완료 */
-    @Transactional
-    public void insertItemIntoCart(int itemNo, int cartAmount, String storeName) {
 
-        orderMapper.insertItemIntoCart(itemNo, cartAmount, storeName);
-
-    }
+    void insertItemIntoCart(int itemNo, int cartAmount, String storeName);
 
 
+    int insertStoreOrderNo(CartDTO cart);
 
-    @Transactional
-    public String deleteCartItem(int cartNo) {
+    int insertOrderItems(CartDTO cart);
 
-        return orderMapper.deleteCartItem(cartNo);
+    int insertOrderHandler(CartDTO cart);
 
-    }
+    void resetCartItems(CartDTO cart);
 
-    @Transactional
-    public int insertStoreOrderNo(OrderHistoryDTO orderHistory) {
+    void deleteCartItem(CartDTO cart);
 
-        orderMapper.insertStoreOrderNo(orderHistory);
-        int orderResult = orderHistory.getLastOrderNo();
+    int selectOrderHistoryCount(Map<String, String> searchMap);
 
-        System.out.println("orderResult 테테중 = " + orderResult);
+    List<OrderHistoryDTO> selectOrderHistory(SelectCriteria selectCriteria);
 
-        return orderResult;
-    }
 
-    @Transactional
-    public int insertOrderItems(CartDTO cart) {
+    int insertStoreBreakdown(CartDTO cart);
 
-        orderMapper.insertOrderItems(cart);
-        int cartResult = cart.getLastCartNo();
-
-        System.out.println("cartResult 테테중 = " + cartResult);
-
-        return cartResult;
-    }
-
-    @Transactional
-    public void insertOrderHandler(OrderHistoryDTO orderHistory) {
-
-        orderMapper.insertOrderHandler(orderHistory);
-
-    }
-
-    @Transactional
-    public void resetCartItems(CartDTO cart) {
-
-        orderMapper.resetCartItems(cart);
-    }
+    int updateStoreBalance(CartDTO cart);
 }

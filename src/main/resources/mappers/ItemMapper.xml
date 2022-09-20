@@ -216,4 +216,40 @@
           FROM ITEM_INFO I
           JOIN ITEM_HISTORY IH ON (I.ITEM_NO = IH.ITEM_NO)
     </select>
+
+    <select id="selectMainItem" resultMap="itemInfoResultMap">
+        SELECT
+                B.ITEM_NO
+              , B.ITEM_NAME
+              , B.CATEGORY_NAME
+              , B.ITEM_STANDARD
+              , B.ITEM_PURCHASE
+              , B.ITEM_AMOUNT
+              , B.ITEM_MAKE
+              , B.FILE_NAME
+              , B.ITEM_SOLDOUT_YN
+              , B.soldout
+          FROM (SELECT
+                        I.ITEM_NO
+                      , I.ITEM_NAME
+                      , IC.CATEGORY_NAME
+                      , I.ITEM_STANDARD
+                      , I.ITEM_PURCHASE
+                      , I.ITEM_SALES
+                      , I.ITEM_AMOUNT
+                      , I.ITEM_MAKE
+                      , IF.FILE_NAME
+                      , I.ITEM_SOLDOUT_YN
+                      , CASE WHEN I.ITEM_AMOUNT = 0 THEN '품절'
+                             ELSE '보유'
+                              END soldout
+                   FROM ITEM_INFO I
+                   JOIN ITEM_CATEGORY IC ON (I.CATEGORY_NO = IC.CATEGORY_NO)
+                   JOIN ITEM_FILE IF ON (I.ITEM_NO = IF.ITEM_NO)
+                  WHERE I.ITEM_DELETE_YN = 'N'
+                ORDER BY 1 DESC ) B
+    <![CDATA[
+                WHERE ROWNUM <= 3
+                ]]>
+    </select>
 </mapper>

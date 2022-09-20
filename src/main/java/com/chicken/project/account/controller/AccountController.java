@@ -130,6 +130,7 @@ public class AccountController {
         return mv;
     }
 
+    /* 가맹점 입출금 내역 조회 */
     @GetMapping("/user/bank")
     public ModelAndView userBankPage(ModelAndView mv, @AuthenticationPrincipal User user){
 

@@ -1,5 +1,7 @@
 package com.chicken.project.main.controller;
 
+import com.chicken.project.item.model.dto.ItemInfoDTO;
+import com.chicken.project.item.model.service.ItemServiceImpl;
 import com.chicken.project.member.model.dto.AdminImpl;
 import com.chicken.project.member.model.dto.StoreImpl;
 import com.chicken.project.notice.model.dto.NoticeDTO;
@@ -23,10 +25,13 @@ public class MemberMain {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
     private final NoticeServiceImpl noticeService;
 
+    private final ItemServiceImpl itemService;
+
     @Autowired
-    public MemberMain(NoticeServiceImpl noticeService){
+    public MemberMain(NoticeServiceImpl noticeService, ItemServiceImpl itemService){
 
         this.noticeService = noticeService;
+        this.itemService = itemService;
     }
 
     @RequestMapping("/moveMain")
@@ -42,8 +47,10 @@ public class MemberMain {
             if(((AdminImpl)user).getEmpRoleList().get(0).getAuthCode().equals("1") || ((AdminImpl)user).getEmpRoleList().get(0).getAuthCode().equals("2")){
 
                 List<NoticeDTO> noticeList = noticeService.selectMainNotice();
+                List<ItemInfoDTO> itemList = itemService.selectMainItem();
 
                 mv.addObject("noticeList", noticeList);
+                mv.addObject("itemList", itemList);
                 mv.setViewName("/main/admin_main");
             }
         }

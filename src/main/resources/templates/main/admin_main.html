@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
 
   <title>chicken stock</title>
+  <link rel="shortcut icon" th:href="@{ /images/logo.png }" type="image/x-icon">
 
   <link rel="stylesheet" th:href="@{/css/common/common.css}"/>
   <!-- table css -->
@@ -17,6 +18,7 @@
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"/>
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
   <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+  <script th:src="@{/js/common.js}"></script>
 
   <!-- fullcalendar -->
   <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/core/main.min.css' rel='stylesheet' />
@@ -50,58 +52,36 @@
             <div class="col px-5 py-1">
               <h4>재고현황</h4>
               <div class=" d-flex justify-content-end">
-                <i class="fa fa-plus mx-4" style="color: #aaa; cursor: pointer;"></i>
-                <i class="fa fa-refresh" style="color: #aaa; cursor: pointer;"></i>
+                <button class="fa fa-plus mx-4" style="color: #aaa; cursor: pointer; border: none"
+                        th:onclick="'location.href=\'/item/admin/list\''"></button>
+                <button class="fa fa-refresh" style="color: #aaa; cursor: pointer; border: none"
+                        th:onclick="'location.href=\'/member/moveMain\''"></button>
               </div>
               <table class="table">
                 <thead>
                 <tr>
-                  <th>번호</th>
                   <th>상품코드</th>
                   <th>상품명</th>
                   <th>카테고리</th>
                   <th>규격</th>
-                  <th>제조사(원산지)</th>
+                  <th>제조사</th>
                   <th>재고량</th>
                   <th>품절여부</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>100000</td>
-                  <td>닭다리</td>
-                  <td>식재료</td>
-                  <td>1kg</td>
-                  <td>하림(국내산)</td>
-                  <td>100</td>
-                  <td>
-                    <span class="active-circle bg-danger"></span>품절
+                <tr th:each="item : ${ itemList }">
+                  <td th:text="${ item.itemNo }">100000</td>
+                  <td th:text="${ item.itemName }">닭다리</td>
+                  <td th:text="${ item.categoryName }">식재료</td>
+                  <td th:text="${ item.itemStandard }">1kg</td>
+                  <td th:text="${ item.itemMake }">하림(국내산)</td>
+                  <td th:text="${ item.itemAmount }">100</td>
+                  <td th:if="${ item.itemSoldoutYn eq 'Y' }" >
+                    <span class="active-circle bg-danger"></span><span th:text="${ '품절' }"></span>
                   </td>
-
-                </tr>
-                <tr>
-                  <td>1</td>
-                  <td>100000</td>
-                  <td>닭다리</td>
-                  <td>식재료</td>
-                  <td>1kg</td>
-                  <td>하림(국내산)</td>
-                  <td>100</td>
-                  <td>
-                    <span class="active-circle bg-danger"></span>품절
-                  </td>
-                </tr>
-                <tr>
-                  <td>1</td>
-                  <td>100000</td>
-                  <td>닭다리</td>
-                  <td>식재료</td>
-                  <td>1kg</td>
-                  <td>하림(국내산)</td>
-                  <td>100</td>
-                  <td>
-                    <span class="active-circle bg-success"></span>보유
+                  <td th:if="${ item.itemSoldoutYn eq 'N' }" >
+                    <span class="active-circle bg-success"></span><span th:text="${ '보유' }"></span>
                   </td>
                 </tr>
                 </tbody>
@@ -139,10 +119,10 @@
                 <tbody style="cursor:pointer">
                 <th:block th:if="${ noticeList.size() > 0 }">
                   <tr th:each="noticeList : ${ noticeList }">
-                    <td th:text="${ noticeList.noticeNo }"></td>
-                    <td th:text="${ noticeList.noticeName }"></td>
-                    <td th:text="${ noticeList.empName }"></td>
-                    <td th:text="${ noticeList.noticeRegistDate }"></td>
+                    <td class="notice" th:text="${ noticeList.noticeNo }"></td>
+                    <td class="notice" th:text="${ noticeList.noticeName }"></td>
+                    <td class="notice" th:text="${ noticeList.empName }"></td>
+                    <td class="notice" th:text="${ noticeList.noticeRegistDate }"></td>
                   </tr>
                 </th:block>
                 <th:block th:if="${ noticeList.size() == 0 }">
@@ -212,8 +192,8 @@
   });
 </script>
 <script>
-  if(document.getElementsByTagName("td")) {
-    const $tds = document.getElementsByTagName("td");
+  if(document.getElementsByClassName("notice")) {
+    const $tds = document.getElementsByClassName("notice");
     for (let i = 0; i < $tds.length; i++) {
 
       $tds[i].onclick = function () {

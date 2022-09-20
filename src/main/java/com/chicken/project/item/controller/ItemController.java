@@ -5,8 +5,7 @@ import com.chicken.project.common.paging.SelectCriteria;
 import com.chicken.project.item.model.dto.ItemCategoryDTO;
 import com.chicken.project.item.model.dto.ItemFileDTO;
 import com.chicken.project.item.model.dto.ItemInfoDTO;
-import com.chicken.project.item.model.service.ItemService;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.chicken.project.item.model.service.ItemServiceImpl;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -14,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,7 +20,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
@@ -32,10 +29,10 @@ import java.util.*;
 public class ItemController {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
-    private final ItemService itemService;
+    private final ItemServiceImpl itemService;
 
     @Autowired
-    public ItemController(ItemService itemService){
+    public ItemController(ItemServiceImpl itemService){
 
         this.itemService = itemService;
     }
@@ -68,12 +65,12 @@ public class ItemController {
         int totalCount = itemService.selectTotalCount(searchMap);
         log.info("[itemController] totalBoardCount : " + totalCount);
 
-        int limit;
-        if(searchCondition != null && !"".equals(searchCondition)) {
-            limit = totalCount;
-        } else{
-            limit = 10;
-        }
+        int limit = 10;
+//        if(searchCondition != null && !"".equals(searchCondition)) {
+//            limit = totalCount;
+//        } else{
+//            limit = 10;
+//        }
 
         int buttonAmount = 5;
 

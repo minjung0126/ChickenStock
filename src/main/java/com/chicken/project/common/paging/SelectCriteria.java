@@ -17,8 +17,23 @@ public class SelectCriteria {
 
     private String storeName;     //가맹점 로그인 세션
 
+    private String orderDate;
+
 
     public SelectCriteria() {}
+    public SelectCriteria(int pageNo, int totalCount, int limit, int buttonAmount, int maxPage, int startPage, int endPage, int startRow, int endRow, String storeName, String orderDate) {
+        this.pageNo = pageNo;
+        this.totalCount = totalCount;
+        this.limit = limit;
+        this.buttonAmount = buttonAmount;
+        this.maxPage = maxPage;
+        this.startPage = startPage;
+        this.endPage = endPage;
+        this.startRow = startRow;
+        this.endRow = endRow;
+        this.storeName = storeName;
+        this.orderDate = orderDate;
+    }
 
     public SelectCriteria(int pageNo, int totalCount, int limit, int buttonAmount, int maxPage, int startPage, int endPage, int startRow, int endRow, String searchCondition, String searchValue, String startDate, String endDate, String storeName) {
         this.pageNo = pageNo;
@@ -69,20 +84,6 @@ public class SelectCriteria {
         this.endDate = endDate;
     }
 
-    public SelectCriteria(int pageNo, int totalCount, int limit, int buttonAmount, int maxPage, int startPage, int endPage, int startRow, int endRow, String searchCondition, String searchValue) {
-        this.pageNo = pageNo;
-        this.totalCount = totalCount;
-        this.limit = limit;
-        this.buttonAmount = buttonAmount;
-        this.maxPage = maxPage;
-        this.startPage = startPage;
-        this.endPage = endPage;
-        this.startRow = startRow;
-        this.endRow = endRow;
-        this.searchCondition = searchCondition;
-        this.searchValue = searchValue;
-    }
-
     public SelectCriteria(int pageNo, int totalCount, int limit, int buttonAmount, int maxPage, int startPage, int endPage, int startRow, int endRow, String storeName) {
         this.pageNo = pageNo;
         this.totalCount = totalCount;
@@ -96,6 +97,7 @@ public class SelectCriteria {
         this.storeName = storeName;
 
     }
+
 
     public int getPageNo() {
         return pageNo;
@@ -209,6 +211,7 @@ public class SelectCriteria {
         this.storeName = storeName;
     }
 
+
     @Override
     public String toString() {
         return "SelectCriteria{" +
@@ -226,6 +229,7 @@ public class SelectCriteria {
                 ", startDate='" + startDate + '\'' +
                 ", endDate='" + endDate + '\'' +
                 ", storeName='" + storeName + '\'' +
+                ", orderDate='" + orderDate + '\'' +
                 '}';
     }
 }
