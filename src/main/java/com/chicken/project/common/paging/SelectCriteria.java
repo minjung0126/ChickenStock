@@ -14,9 +14,7 @@ public class SelectCriteria {
     private String searchValue;			//검색어
     private String startDate;
     private String endDate;
-
     private String storeName;     //가맹점 로그인 세션
-
     private String orderDate;
 
 

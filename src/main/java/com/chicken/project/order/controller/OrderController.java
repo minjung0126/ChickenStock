@@ -10,6 +10,8 @@ import com.chicken.project.order.model.dto.OrderDTO;
 import com.chicken.project.order.model.dto.OrderHistoryDTO;
 import com.chicken.project.order.model.service.OrderServiceImpl;
 import com.chicken.project.common.paging.SelectCriteria;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.chicken.project.store.model.dto.BalanceDTO;
 import org.json.simple.JSONArray;
@@ -32,6 +34,8 @@ import java.util.*;
 public class OrderController {
     private final OrderServiceImpl orderService;
     private final AccountServiceImpl accountService;
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
+
 
     @Autowired
     public OrderController(OrderServiceImpl orderService, AccountServiceImpl accountService) {
@@ -56,6 +60,7 @@ public class OrderController {
 
         String searchCondition = request.getParameter("searchCondition");
         String searchValue = request.getParameter("searchValue");
+
 
 
         Map<String, String> searchMap = new HashMap<>();
@@ -108,18 +113,18 @@ public class OrderController {
         String interYn = "";
 
         if (interCheck == 0) {
-            orderService.insertInterest(interest);
             interYn = "Y";
-            order.setInterYn("Y");
+            order.setInterYn(interYn);
+            orderService.insertInterest(interest);
+
         } else if (interCheck == 1) {
-            orderService.deleteInterest(interest);
             interYn = "N";
-            order.setInterYn("N");
+            order.setInterYn(interYn);
+            orderService.deleteInterest(interest);
+
         }
 
         rttr.addFlashAttribute("message", "관심 상품 등록 성공!");
-        mv.addObject("interYn",interYn);
-
         return "redirect:/order/list";
     }
 
@@ -318,8 +323,14 @@ public class OrderController {
             cart.setItemNo(itemNo);
             cart.setCartAmount(cartAmount);
             cart.setStoreName(storeName);
+            int result = orderService.checkItemOverlap(cart);
 
-            orderService.insertItemIntoCart(itemNo, cartAmount, storeName);
+            if(result == 0) {
+                orderService.insertItemIntoCart(cart);
+
+            } else {
+                orderService.updateItemIntoCart(cart);
+            }
         }
 
         mv.addObject("orderList", orderList);
@@ -338,8 +349,7 @@ public class OrderController {
 
         String storeName = ((StoreImpl) user).getStoreName();
         String currentPage = request.getParameter("currentPage");
-
-        System.out.println(storeName);
+        CartDTO cart = new CartDTO();
 
         int pageNo = 1;
 
@@ -357,6 +367,12 @@ public class OrderController {
 
         int totalCount = orderService.selectCartTotalCount(searchMap);
 
+        if (totalCount < 1) {
+            cart.setCartCount("empty");
+        } else {
+            cart.setCartCount("have");
+        }
+
         int limit = 6;
         int buttonAmount = 5;
 
@@ -371,6 +387,7 @@ public class OrderController {
         List<CartDTO> cartList = orderService.selectCartItem(selectCriteria);
         BalanceDTO balance = accountService.selectBalance(storeName);
 
+        mv.addObject("cart", cart);
         mv.addObject("cartList", cartList);
         mv.addObject("selectCriteria", selectCriteria);
         mv.addObject("balance", balance);
@@ -495,57 +512,71 @@ public class OrderController {
                                       @AuthenticationPrincipal User user) throws InterestException, ParseException {
 
         String storeName = ((StoreImpl) user).getStoreName();
-
         CartDTO cart = new CartDTO();
-
         cart.setStoreName(storeName);
 
-        int orderNoResult = orderService.insertStoreOrderNo(cart);
-
         JSONParser jsonParse = new JSONParser();
-        JSONArray jsonArr = (JSONArray) jsonParse.parse(cartNoList);
+        JSONArray jsonArray = (JSONArray) jsonParse.parse(cartNoList);
 
-        for(int i = 0; i < jsonArr.size(); i++) {
+        for (int i = 0; i < jsonArray.size(); i++) {
 
-            int itemNo = Integer.parseInt(((JSONObject) jsonArr.get(i)).get("itemNo").toString());
-            int cartAmount = Integer.parseInt(((JSONObject) jsonArr.get(i)).get("cartAmount").toString());
-            int categoryNo = Integer.parseInt(((JSONObject) jsonArr.get(i)).get("categoryNo").toString());
-            String price = ((JSONObject) jsonArr.get(i)).get("totalPrice").toString();
-            int totalPrice = Integer.parseInt(price.replace(",",""));
+            String price = ((JSONObject) jsonArray.get(i)).get("totalPrice").toString();
+            int totalPrice = Integer.parseInt(price.replace(",", ""));
 
-            cart.setItemNo(itemNo);
-            cart.setCartAmount(cartAmount);
-            cart.setCategoryNo(categoryNo);
             cart.setTotalPrice(totalPrice);
-
-            orderService.resetCartItems(cart);
-
-            int cartNoResult = orderService.insertOrderItems(cart);
-
-            cart.setOrderNo(orderNoResult);
-            cart.setCartNo(cartNoResult);
 
         }
 
-        int result = orderService.insertOrderHandler(cart);
+        int checkPrice = cart.getTotalPrice();
 
-        if(result > 0){
+        int balanceCheck = orderService.checkBalance(cart);
 
-            int result2 = orderService.insertStoreBreakdown(cart);
+        if(checkPrice < balanceCheck) {
+            int orderNoResult = orderService.insertStoreOrderNo(cart);
 
-            if(result2 > 0){
+            JSONArray jsonArr = (JSONArray) jsonParse.parse(cartNoList);
 
-                int result3 = orderService.updateStoreBalance(cart);
+            for (int i = 0; i < jsonArr.size(); i++) {
 
-                if(result3 > 0){
+                int itemNo = Integer.parseInt(((JSONObject) jsonArr.get(i)).get("itemNo").toString());
+                int cartAmount = Integer.parseInt(((JSONObject) jsonArr.get(i)).get("cartAmount").toString());
+                int categoryNo = Integer.parseInt(((JSONObject) jsonArr.get(i)).get("categoryNo").toString());
+                String price = ((JSONObject) jsonArr.get(i)).get("totalPrice").toString();
+                int totalPrice = Integer.parseInt(price.replace(",", ""));
 
-                    mv.setViewName("order/orderSuccess");
-                } else{
+                cart.setItemNo(itemNo);
+                cart.setCartAmount(cartAmount);
+                cart.setCategoryNo(categoryNo);
+                cart.setTotalPrice(totalPrice);
 
-                    mv.setViewName("order/orderFailure");
-                }
+                orderService.resetCartItems(cart);
+
+                int cartNoResult = orderService.insertOrderItems(cart);
+
+                cart.setOrderNo(orderNoResult);
+                cart.setCartNo(cartNoResult);
+
+                orderService.insertOrderHandler(cart);
 
             }
+
+                int result = orderService.insertStoreBreakdown(cart);
+
+                if (result > 0) {
+
+                    int result1 = orderService.updateStoreBalance(cart);
+
+                    if (result1 > 0) {
+
+                        mv.setViewName("order/orderSuccess");
+                    }
+
+                }
+
+        } else {
+
+            mv.setViewName("order/orderFailure");
+            return mv;
         }
 
         return mv;
