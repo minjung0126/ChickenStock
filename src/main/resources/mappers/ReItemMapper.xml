@@ -46,14 +46,9 @@
         FROM ( SELECT
         DISTINCT R.R_NO
         FROM RETURN_ITEM R
-        <if test="searchCondition == 'storeName'">
-            JOIN RETURN_PROGRESS RP ON (R.R_NO = RP.R_NO)
-            JOIN RETURN_ITEM_INFO RII ON(RII.REF_R_NO = R.R_NO)
-            JOIN STORE S ON(S.STORE_NAME = RII.STORE_NAME)
-        </if>
-        <if test="searchCondition == 'rProgress'">
-            JOIN RETURN_PROGRESS RP ON (R.R_NO = RP.R_NO)
-        </if>
+        JOIN RETURN_PROGRESS RP ON (R.R_NO = RP.R_NO)
+        JOIN RETURN_ITEM_INFO RII ON(RII.REF_R_NO = R.R_NO)
+        JOIN STORE S ON(S.STORE_NAME = RII.STORE_NAME)
         <where>
             <if test="searchCondition == 'storeName'">
                 S.STORE_NAME LIKE '%' || #{ searchValue } || '%'
@@ -541,7 +536,7 @@
         UPDATE
             STO_ITEM_INFO
         SET STORE_AMOUNT = STORE_AMOUNT  + #{ V }
-        WHERE ITEM_NO = (SELECT #{ itemNo } FROM RETURN_ITEM_INFO WHERE REF_R_NO = #{ rNo } AND ITEM_NO = #{ itemNo })
+        WHERE ITEM_NO = (SELECT #{ itemNo } FROM RETURN_ITEM_INFO WHERE REF_R_NO = #{ rNo } AND ITEM_NO = #{ itemNo } AND ROWNUM = 1)
           AND STORE_NAME = #{ storeName }
     </update>
 
@@ -549,7 +544,7 @@
         UPDATE
             STO_ITEM_INFO A
         SET A.STORE_AMOUNT = (A.STORE_AMOUNT  - #{ R })
-        WHERE A.ITEM_NO = (SELECT B.ITEM_NO FROM RETURN_ITEM_INFO B WHERE B.REF_R_NO = #{ rNo } AND B.ITEM_NO = #{ itemNo })
+        WHERE A.ITEM_NO = (SELECT B.ITEM_NO FROM RETURN_ITEM_INFO B WHERE B.REF_R_NO = #{ rNo } AND B.ITEM_NO = #{ itemNo } AND ROWNUM = 1)
           AND A.STORE_NAME = #{ storeName }
     </update>
 
