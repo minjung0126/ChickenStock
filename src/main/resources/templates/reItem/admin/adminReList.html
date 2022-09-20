@@ -18,6 +18,7 @@
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" th:href="@{/css/common/style.css}"/>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script th:src="@{/js/common.js}"></script>
 </head>
 <body>
 <div class="wrap">
@@ -42,11 +43,11 @@
                         <div class="input-group mb-3 col-12 float-start">
                             <select id="searchCondition" name="searchCondition" class="form-control col-2" style="max-width: max-content; display: inline-block;">
                                 <option> - 선택 - </option>
-                                <option name="STORE_NAME store" value="storeName">가맹점명</option>
-                                <option name="RETURN_PROGRESS returnProgress" value="returnProgress">반품상태</option>
-                                <option name="R_PROGRESS rProgress" value="rProgress">처리상태</option>
+                                <option th:selected="${ selectCriteria.getSearchCondition() == 'storeName' }" name="STORE_NAME store" value="storeName">가맹점명</option>
+                                <option th:selected="${ selectCriteria.getSearchCondition() == 'returnProgress' }" name="RETURN_PROGRESS returnProgress" value="returnProgress">반품상태</option>
+                                <option th:selected="${ selectCriteria.getSearchCondition() == 'rProgress' }" name="R_PROGRESS rProgress" value="rProgress">처리상태</option>
                             </select>
-                            <input class="form-control me-2 col-4" type="search" id="searchValue" name="searchValue" placeholder="내용을 입력해주세요." style="max-width: max-content;">
+                            <input class="form-control me-2 col-4" type="search" id="searchValue" name="searchValue" th:value="${ selectCriteria.getSearchValue() }" placeholder="내용을 입력해주세요." style="max-width: max-content;">
                             <button class="btn btn-warning" type="submit" style="color:#fff">검색</button>
                         </div>
                     </form>
@@ -84,7 +85,7 @@
                                 </form>
                             </td>
                             <td>
-                                <button class="btn btn-warning me-1" th:onclick="|location.href='@{/reItem/admin/adminReItem(rNo=${ re.rNo }, storeName=${ re.storeName }, returnProgress=${ re.returnProgress })}'|">상세보기</button>
+                                <button class="btn btn-warning me-1" style="color: #fff" th:onclick="|location.href='@{/reItem/admin/adminReItem(rNo=${ re.rNo }, storeName=${ re.storeName }, returnProgress=${ re.returnProgress })}'|">상세보기</button>
                             </td>
                         </tr>
 
@@ -96,14 +97,14 @@
                 <div class="d-flex justify-content-center"  style="z-index: 0">
                     <!-- 맨 앞으로 이동 버튼 -->
                     <button type="button" class="btn btn-light" id="startPage"
-                            th:onclick="'location.href=\'/reItem/admin/adminReList?currentPage='+ @{${selectCriteria.startPage}} + '\''"
+                            th:onclick="'location.href=\'/reItem/admin/adminReList?currentPage='+ @{${selectCriteria.startPage}} + '&searchCondition=' + @{${ selectCriteria.searchCondition }} + '&searchValue=' + @{${ selectCriteria.searchValue }} +  '\''"
                             th:disabled="${ selectCriteria.pageNo == 1}"
                     >
                         <<
                     </button>
                     <!-- 이전 페이지 버튼 -->
                     <button type="button" class="btn btn-light mx-1 disabled"
-                            th:onclick="'location.href=\'/reItem/admin/adminReList?currentPage='+ @{${selectCriteria.pageNo - 1}} + '\''"
+                            th:onclick="'location.href=\'/reItem/admin/adminReList?currentPage='+ @{${selectCriteria.pageNo - 1}} + '&searchCondition=' + @{${ selectCriteria.searchCondition }} + '&searchValue=' + @{${ selectCriteria.searchValue }} +  '\''"
                             th:disabled="${ selectCriteria.pageNo == 1}"
                     >
                         <
@@ -112,21 +113,21 @@
                     <th:block th:each="page : ${#numbers.sequence(selectCriteria.startPage, selectCriteria.endPage)}">
                         <button type="button" class="btn btn-warning mx-1" disabled style="color:white"
                                 th:text="${ page }"
-                                th:onclick="'location.href=\'/reItem/admin/adminReList?currentPage='+ @{${page}} + '\''"
+                                th:onclick="'location.href=\'/reItem/admin/adminReList?currentPage='+ @{${page}} + '&searchCondition=' + @{${ selectCriteria.searchCondition }} + '&searchValue=' + @{${ selectCriteria.searchValue }} +  '\''"
                                 th:disabled="${ selectCriteria.pageNo eq page }">
                         </button>
                     </th:block>
 
                     <!-- 다음 페이지 버튼 -->
                     <button type="button" class="btn btn-light mx-1"
-                            th:onclick="'location.href=\'/reItem/admin/adminReList?currentPage='+ @{${selectCriteria.pageNo + 1}} + '\''"
+                            th:onclick="'location.href=\'/reItem/admin/adminReList?currentPage='+ @{${selectCriteria.pageNo + 1}} + '&searchCondition=' + @{${ selectCriteria.searchCondition }} + '&searchValue=' + @{${ selectCriteria.searchValue }} +  '\''"
                             th:disabled="${ selectCriteria.pageNo == selectCriteria.maxPage}"
                     >
                         >
                     </button>
                     <!-- 마지막 페이지로 이동 버튼 -->
                     <button type="button" class="btn btn-light" id="maxPage"
-                            th:onclick="'location.href=\'/reItem/admin/adminReList?currentPage='+ @{${selectCriteria.maxPage}} + '\''"
+                            th:onclick="'location.href=\'/reItem/admin/adminReList?currentPage='+ @{${selectCriteria.maxPage}} + '&searchCondition=' + @{${ selectCriteria.searchCondition }} + '&searchValue=' + @{${ selectCriteria.searchValue }} +  '\''"
                             th:disabled="${selectCriteria.pageNo == selectCriteria.maxPage}"
                     >
                         >>

@@ -36,7 +36,6 @@ public class MemberMain {
         this.noticeService = noticeService;
         this.itemService = itemService;
         this.storeItemService = storeItemService;
-
     }
 
     @RequestMapping("/moveMain")

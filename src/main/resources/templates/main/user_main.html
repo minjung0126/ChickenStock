@@ -17,6 +17,7 @@
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"/>
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script th:src="@{/js/common.js}"></script>
 
   <!-- fullcalendar -->
   <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/core/main.min.css' rel='stylesheet' />
@@ -210,8 +211,8 @@
     });
   </script>
   <script>
-    if(document.getElementsByTagName("notice")) {
-      const $tds = document.getElementsByTagName("notice");
+    if(document.getElementsByClassName("notice")) {
+      const $tds = document.getElementsByClassName("notice");
       for (let i = 0; i < $tds.length; i++) {
 
         $tds[i].onclick = function () {

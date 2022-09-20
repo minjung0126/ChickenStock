@@ -1,5 +1,6 @@
 package com.chicken.project.order.controller;
 
+import com.chicken.project.account.model.service.AccountServiceImpl;
 import com.chicken.project.common.paging.Pagenation;
 import com.chicken.project.exception.order.InterestException;
 import com.chicken.project.member.model.dto.StoreImpl;
@@ -7,41 +8,38 @@ import com.chicken.project.order.model.dto.CartDTO;
 import com.chicken.project.order.model.dto.InterestDTO;
 import com.chicken.project.order.model.dto.OrderDTO;
 import com.chicken.project.order.model.dto.OrderHistoryDTO;
-import com.chicken.project.order.model.service.OrderService;
+import com.chicken.project.order.model.service.OrderServiceImpl;
 import com.chicken.project.common.paging.SelectCriteria;
 
+import com.chicken.project.store.model.dto.BalanceDTO;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.ModelAndViewDefiningException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping("order")
 public class OrderController {
-    private final OrderService orderService;
+    private final OrderServiceImpl orderService;
+    private final AccountServiceImpl accountService;
 
     @Autowired
-    public OrderController(OrderService orderService) {
+    public OrderController(OrderServiceImpl orderService, AccountServiceImpl accountService) {
         this.orderService = orderService;
+        this.accountService = accountService;
     }
 
-    //상품 목록 전체 조회
+    /* 상품 조회 리스트 출력 */
     @GetMapping(value = "/list")
     public ModelAndView inquire(ModelAndView mv,
                                 HttpServletRequest request,
@@ -65,10 +63,9 @@ public class OrderController {
         searchMap.put("searchValue", searchValue);
         searchMap.put("storeName", storeName);
 
-
         int totalCount = orderService.selectTotalCount(searchMap);
 
-        int limit = 10;
+        int limit = 6;
         int buttonAmount = 5;
 
         SelectCriteria selectCriteria = null;
@@ -88,12 +85,13 @@ public class OrderController {
 
     }
 
-    //관심 설정 저장
+    /* 관심 설정 저장 */
     @ResponseBody
     @PostMapping ("/list/interest/insert")
     public String interestControl(HttpServletRequest request,
                                         RedirectAttributes rttr,
-                                        @AuthenticationPrincipal User user
+                                        @AuthenticationPrincipal User user,
+                                        ModelAndView mv
                                   ) throws InterestException {
 
         String storeName = ((StoreImpl) user).getStoreName();
@@ -101,30 +99,31 @@ public class OrderController {
         InterestDTO interest = new InterestDTO();
         OrderDTO order = new OrderDTO();
 
-        //itemNo 값 가져오기 + DTO에 저장
         int itemNo = Integer.parseInt(request.getParameter("itemNo"));
         interest.setItemNo(itemNo);
 
         interest.setStoreName(storeName);
 
-        //기존 관심 설정 여부 판단
         int interCheck = orderService.selectInterestCount(interest);
         String interYn = "";
 
-        //관심 설정이 되어 있으면 삭제를, 되어 있지 않으면 추가를 한다.
         if (interCheck == 0) {
             orderService.insertInterest(interest);
-
+            interYn = "Y";
+            order.setInterYn("Y");
         } else if (interCheck == 1) {
             orderService.deleteInterest(interest);
+            interYn = "N";
+            order.setInterYn("N");
         }
 
         rttr.addFlashAttribute("message", "관심 상품 등록 성공!");
+        mv.addObject("interYn",interYn);
 
         return "redirect:/order/list";
     }
 
-    // 관심 설정 상품만 조회
+    /* 관심 설정 상품만 조회 */
     @GetMapping("/list/interest/select")
     public ModelAndView interestList(ModelAndView mv,
                                      HttpServletRequest request,
@@ -149,7 +148,7 @@ public class OrderController {
 
         int totalCount = orderService.selectInterestItemCount(searchMap);
 
-        int limit = 10;
+        int limit = 6;
         int buttonAmount = 5;
 
         SelectCriteria selectCriteria = null;
@@ -169,7 +168,7 @@ public class OrderController {
 
     }
 
-    //품절 상품 제외하고 보기
+    /* 품절 상품 제외 */
     @GetMapping("/list/available")
     public ModelAndView availableList(ModelAndView mv,
                                       HttpServletRequest request,
@@ -194,7 +193,7 @@ public class OrderController {
 
         int totalCount = orderService.selectAvailableItemCount(searchMap);
 
-        int limit = 10;
+        int limit = 6;
         int buttonAmount = 5;
 
         SelectCriteria selectCriteria = null;
@@ -214,7 +213,7 @@ public class OrderController {
 
     }
 
-    //카트에 넣기 (GET)
+    /* 장바구니에 담기 */
     @GetMapping(value = "/list/insert")
     public ModelAndView insertCart (HttpServletRequest request,
                                     ModelAndView mv,
@@ -237,10 +236,9 @@ public class OrderController {
         searchMap.put("searchValue", searchValue);
         searchMap.put("storeName", storeName);
 
-        //int totalCount = orderService.selectCartTotalCount(searchMap);
         int totalCount = orderService.selectTotalCount(searchMap);
 
-        int limit = 10;
+        int limit = 6;
         int buttonAmount = 5;
 
         SelectCriteria selectCriteria = null;
@@ -260,7 +258,7 @@ public class OrderController {
         return mv;
     }
 
-    //카트에 넣기 (POST)
+    /* 장바구니에 담기 */
     @PostMapping(value="/list/insert")
     public ModelAndView insertCartList(HttpServletRequest request,
                                        ModelAndView mv,
@@ -284,10 +282,9 @@ public class OrderController {
         searchMap.put("searchValue", searchValue);
         searchMap.put("storeName", storeName);
 
-        //int totalCount = orderService.selectCartTotalCount(searchMap);
         int totalCount = orderService.selectTotalCount(searchMap);
 
-        int limit = 10;
+        int limit = 6;
         int buttonAmount = 5;
 
         SelectCriteria selectCriteria = null;
@@ -333,7 +330,7 @@ public class OrderController {
         return mv;
     }
 
-    //장바구니 목록 조회
+    /* 장바구니 리스트 출력 */
     @GetMapping(value = "/cart/list")
     public ModelAndView cartList(ModelAndView mv,
                                  HttpServletRequest request,
@@ -360,7 +357,7 @@ public class OrderController {
 
         int totalCount = orderService.selectCartTotalCount(searchMap);
 
-        int limit = 10;
+        int limit = 6;
         int buttonAmount = 5;
 
         SelectCriteria selectCriteria = null;
@@ -372,19 +369,16 @@ public class OrderController {
         }
 
         List<CartDTO> cartList = orderService.selectCartItem(selectCriteria);
-//        CartDTO store = new CartDTO();
-//        int balanceNo = orderService.selectBalance(store);
-//        store.setBalance(balanceNo);
-//        int balance = store.getBalance();
-//
-//        mv.addObject("balance", balance);
+        BalanceDTO balance = accountService.selectBalance(storeName);
+
         mv.addObject("cartList", cartList);
         mv.addObject("selectCriteria", selectCriteria);
+        mv.addObject("balance", balance);
         mv.setViewName("order/cart");
         return mv;
     }
 
-    /* 장바구니 아이템 삭제 (DELETE) */
+    /* 장바구니 상품 삭제 */
     @PostMapping(value ="/cart/delete")
     public String deleteCartItem(HttpServletRequest request, @AuthenticationPrincipal User user) {
 
@@ -401,22 +395,53 @@ public class OrderController {
         return "redirect:/order/cart/list";
     }
 
+    /* 장바구니 | 품절 상품 제외 */
+    @GetMapping("/cart/available")
+    public ModelAndView cartAvailableList(ModelAndView mv,
+                                      HttpServletRequest request,
+                                      @AuthenticationPrincipal User user) {
 
+        String storeName = ((StoreImpl) user).getStoreName();
+        String currentPage = request.getParameter("currentPage");
 
-    @GetMapping("/history")
-    public ModelAndView orderHistory(ModelAndView mv, @AuthenticationPrincipal StoreImpl storeImpl) {
+        int pageNo = 1;
 
-        String storeName = storeImpl.getStoreName();
-        List<OrderDTO> orderHistory = orderService.selectOrderHistory();
+        if (currentPage != null && !"".equals(currentPage)) {
+            pageNo = Integer.parseInt(currentPage);
+        }
 
-        mv.addObject("orderHistory", orderHistory);
-        mv.setViewName("order/orderHistory");
+        String searchCondition = request.getParameter("searchCondition");
+        String searchValue = request.getParameter("searchValue");
 
+        Map<String, String> searchMap = new HashMap<>();
+        searchMap.put("searchCondition", searchCondition);
+        searchMap.put("searchValue", searchValue);
+        searchMap.put("storeName", storeName);
+
+        int totalCount = orderService.selectCartAvailableItemCount(searchMap);
+
+        int limit = 6;
+        int buttonAmount = 5;
+
+        SelectCriteria selectCriteria = null;
+
+        if (searchCondition != null && !"".equals(searchCondition)) {
+            selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount, searchCondition, searchValue, storeName);
+        } else {
+            selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount, storeName);
+        }
+
+        List<OrderDTO> orderList = orderService.selectCartAvailableItem(selectCriteria);
+
+        mv.addObject("orderList", orderList);
+        mv.addObject("selectCriteria", selectCriteria);
+        mv.setViewName("order/cart");
         return mv;
+
     }
 
 
-    /* 발주하기--GET (INSERT) */
+    /* 발주하기 */
     @GetMapping(value = "/insert/items/page")
     public ModelAndView insertItemsPage (HttpServletRequest request,
                                     ModelAndView mv,
@@ -441,7 +466,7 @@ public class OrderController {
 
         int totalCount = orderService.selectCartTotalCount(searchMap);
 
-        int limit = 10;
+        int limit = 6;
         int buttonAmount = 5;
 
         SelectCriteria selectCriteria = null;
@@ -462,13 +487,12 @@ public class OrderController {
     }
 
 
-    /* 발주하기--POST (INSERT) */
-    /* 민수님 여기예요 */
+    /* 발주하기 */
     @PostMapping(value="/insert/items/do")
     public ModelAndView insertItemsDo(HttpServletRequest request,
-                                       ModelAndView mv,
-                                       @RequestParam("cartNoList") String cartNoList,
-                                       @AuthenticationPrincipal User user) throws InterestException, ParseException {
+                                      ModelAndView mv,
+                                      @RequestParam("cartNoList") String cartNoList,
+                                      @AuthenticationPrincipal User user) throws InterestException, ParseException {
 
         String storeName = ((StoreImpl) user).getStoreName();
 
@@ -505,11 +529,96 @@ public class OrderController {
 
         int result = orderService.insertOrderHandler(cart);
 
-        mv.setViewName("order/orderSuccess");
+        if(result > 0){
+
+            int result2 = orderService.insertStoreBreakdown(cart);
+
+            if(result2 > 0){
+
+                int result3 = orderService.updateStoreBalance(cart);
+
+                if(result3 > 0){
+
+                    mv.setViewName("order/orderSuccess");
+                } else{
+
+                    mv.setViewName("order/orderFailure");
+                }
+
+            }
+        }
 
         return mv;
     }
 
+    /* 발주 내역 조회 */
+    @GetMapping(value = "/history")
+    public ModelAndView history(ModelAndView mv,
+                                HttpServletRequest request,
+                                @AuthenticationPrincipal User user) throws java.text.ParseException {
+
+        String storeName = ((StoreImpl) user).getStoreName();
+        String currentPage = request.getParameter("currentPage");
+
+        OrderHistoryDTO history = new OrderHistoryDTO();
+        history.setStoreName(storeName);
+
+        int pageNo = 1;
+
+        if (currentPage != null && !"".equals(currentPage)) {
+            pageNo = Integer.parseInt(currentPage);
+        }
+
+        String searchCondition = request.getParameter("searchCondition");
+        String searchValue = request.getParameter("searchValue");
+
+        Map<String, Object> searchMap = new HashMap<>();
+        searchMap.put("searchCondition", searchCondition);
+        searchMap.put("searchValue", searchValue);
+        searchMap.put("storeName", storeName);
+
+        int totalCount = orderService.selectOrderHistoryCount(searchMap);
+
+        int limit = 50;
+        int buttonAmount = 5;
+
+        SelectCriteria selectCriteria = null;
+
+        if (searchCondition != null && !"".equals(searchCondition)) {
+            selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount, searchCondition, searchValue, storeName);
+        } else {
+            selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount, storeName);
+        }
+
+        List<OrderHistoryDTO> historyList = orderService.selectOrderHistory(selectCriteria);
+
+        String result = orderService.selectFinalOrderDate(history);
+        history.setOrderDate(result);
+
+        System.out.println("제발 테스트 날짜 : " + history.getOrderDate());
+
+        mv.addObject("historyList", historyList);
+        mv.addObject("history", history);
+        mv.addObject("selectCriteria", selectCriteria);
+        mv.setViewName("order/orderHistory");
+        return mv;
+
+    }
+
+
+    @GetMapping(value ="/cancel")
+    public String cancelOrder(@AuthenticationPrincipal User user) {
+
+        String storeName = ((StoreImpl) user).getStoreName();
+
+        OrderHistoryDTO history = new OrderHistoryDTO();
+
+        history.setStoreName(storeName);
+
+        orderService.cancelOrder(history);
+
+        return "redirect:/order/history";
+    }
 
 
 

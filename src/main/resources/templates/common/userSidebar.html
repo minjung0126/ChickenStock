@@ -17,13 +17,8 @@
             <a th:href="@{/member/moveMain}" title=""><img src="/images/home.png" width="18px" height="18px"> 홈</a>
           </div>
 
-          <div class="accordion_dep type2">
-            <a th:href="@{/mypage/store_mypage}" title=""><img src="/images/mypage.png" width="18px" height="18px"> 마이페이지</a>
-            <ul>
-              <li>
-                 <a th:href="@{/mypage/store_mypage}" title="">비밀번호 재설정</a>
-              </li>
-            </ul>
+          <div class="accordion_dep type1 ">
+            <a th:href="@{/mypage/store_mypage}" title=""><img src="/images/items.png" width="18px" height="18px"> 비밀번호 수정</a>
           </div>
 
           <div class="accordion_dep type2">
@@ -52,7 +47,7 @@
                 <a href="/order/cart/list" title="">장바구니</a>
               </li>
               <li>
-                <a href="" title="">발주 내역</a>
+                <a href="/order/history" title="">발주 내역</a>
               </li>
             </ul>
           </div>
