@@ -100,6 +100,10 @@
               <th>규격</th>
               <th>제조사</th>
               <th>판매가격</th>
+<<<<<<< HEAD
+              <th>재고량</th>
+=======
+>>>>>>> origin/main
               <th>수량</th>
               <th>품절여부</th>
               <th>관심등록</th>
@@ -139,6 +143,10 @@
                 <td th:text="${ order.itemStandard }">규격</td>
                 <td th:text="${ order.itemMake }">제조사(원산지)</td>
                 <td th:text="|${ #numbers.formatInteger(order.itemSales, 0, 'COMMA') }원|">>판매가격</td>
+<<<<<<< HEAD
+                <td th:text="${ order.storeAmount }">재고량</td>
+=======
+>>>>>>> origin/main
                 <td align="center"><input type="number" name="cartAmount" size="6" placeholder="입력" id="cartAmount"
                                           class="cartAmount" min="1" max="1000"></td>
 
@@ -367,6 +375,7 @@
       // result += el.value + ' ';
     });
     console.log(itemInfo);
+    if(checkValue){
 
     // 출력
     document.getElementById('result').innerText = JSON.stringify(itemInfo);
@@ -383,7 +392,10 @@
     document.body.appendChild(form);
     form.submit();
 
-    console.log(itemNoList);
+      console.log(itemNoList);
+
+    }
+
   }
 </script>
 
