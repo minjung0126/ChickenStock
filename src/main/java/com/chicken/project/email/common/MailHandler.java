@@ -1,18 +1,22 @@
-package com.chicken.project.member.email;
+package com.chicken.project.email.common;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.stereotype.Component;
 
 import javax.activation.DataSource;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
 
+@Component
 public class MailHandler {
     private JavaMailSender mailSender;
     private MimeMessage message;
     private MimeMessageHelper messageHelper;
 
+    @Autowired
     public MailHandler(JavaMailSender mailSender) throws MessagingException{
 
         this.mailSender = mailSender;

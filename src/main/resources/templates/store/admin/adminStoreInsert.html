@@ -13,6 +13,7 @@
   <link rel="stylesheet" type="text/css" th:href="@{/css/notice/notice.css}"/>
   <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script th:src="@{/js/common.js}"></script>
 </head>
 <body>
@@ -97,7 +98,7 @@
                   <tr>
                     <th>사업자 등록번호</th>
                     <td>
-                      <input type="text" name="storeNo" maxlength="12" placeholder="사업자 등록번호를 입력하세요"/>
+                      <input type="text" oninput="autoHypen(this)" name="storeNo" maxlength="12" placeholder="사업자 등록번호를 입력하세요"/>
                     </td>
                   </tr>
                 </tbody>
@@ -118,5 +119,13 @@
   </div>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script>
+      const autoHypen = (target) => {
+        target.value = target.value
+                .replace(/[^0-9]/g, "")
+                .replace(/^(\d{0,3})(\d{0,2})(\d{0,5})$/g, "$1-$2-$3")
+                .replace(/(\-{1,2})$/g, "");
+      };
+    </script>
 </body>
 </html>

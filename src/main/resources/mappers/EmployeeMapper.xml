@@ -12,6 +12,7 @@
         <result property="birth" column="EMP_BIRTH"/>
         <result property="empRole" column="EMP_ROLE"/>
         <result property="rnum" column="RNUM"/>
+        <result property="emailCode" column="EMAIL_CODE"/>
 
         <association property="empRoleList" resultMap="empRoleResultMap"/>
         <association property="calendar" resultMap="calendarResultMap"/>
@@ -24,7 +25,6 @@
         <result property="endDay" column="CAL_END"/>
         <result property="content" column="CAL_CONTENT"/>
         <result property="edit" column="CAL_EDIT"/>
-        <result property="emailCode" column="EMAIL_CODE"/>
     </resultMap>
 
     <resultMap id="authResultMap" type="AuthDTO">
@@ -86,9 +86,9 @@
 
     <insert id="insertEmployee" parameterType="EmployeeDTO">
         INSERT
-          INTO EMPLOYEE
+        INTO EMPLOYEE
         (
-          EMP_ID
+            EMP_ID
         , EMP_NAME
         , EMP_PHONE
         , EMP_EMAIL
@@ -96,32 +96,32 @@
         , EMP_BIRTH
         )
         VALUES
-        (
-          #{ empId }
-        , #{ empName }
-        , #{ empPhone }
-        , #{ empEmail }
-        , #{ empPwd }
-        , #{ birth }
-        )
+            (
+                #{ empId }
+            , #{ empName }
+            , #{ empPhone }
+            , #{ empEmail }
+            , #{ empPwd }
+            , #{ birth }
+            )
     </insert>
     <insert id="insertEmpRole" parameterType="EmpRoleDTO">
         INSERT
-          INTO EMP_ROLE
+        INTO EMP_ROLE
         (
-          AUTH_CODE
+            AUTH_CODE
         , EMP_ID
         )
         VALUES
-        (
-          '2'
-        , #{ empId }
-        )
+            (
+                '2'
+            , #{ empId }
+            )
     </insert>
 
     <select id="selectEmpInfo" resultMap="employeeResultMap">
         SELECT
-               A.EMP_ID
+            A.EMP_ID
              , A.EMP_NAME
              , A.EMP_PHONE
              , A.EMP_EMAIL
@@ -129,31 +129,31 @@
              , A.EMP_BIRTH
              , B.AUTH_CODE
              , C.AUTH_NAME
-          FROM EMPLOYEE A
-          LEFT JOIN EMP_ROLE B ON (A.EMP_ID = B.EMP_ID)
-          LEFT JOIN AUTH_CODE C ON (B.AUTH_CODE = C.AUTH_CODE)
-         WHERE A.EMP_ID = #{ empId }
+        FROM EMPLOYEE A
+                 LEFT JOIN EMP_ROLE B ON (A.EMP_ID = B.EMP_ID)
+                 LEFT JOIN AUTH_CODE C ON (B.AUTH_CODE = C.AUTH_CODE)
+        WHERE A.EMP_ID = #{ empId }
     </select>
 
     <select id="selectEmpId" resultMap="employeeResultMap">
         SELECT
-              EMP_ID
-         FROM EMPLOYEE
+            EMP_ID
+        FROM EMPLOYEE
         WHERE EMP_ID = #{ empId }
     </select>
 
     <insert id="insertAuth" parameterType="EmpRoleDTO">
         INSERT
         INTO EMP_ROLE A
-        (
+            (
           A.AUTH_CODE
         , A.EMP_ID
         )
         VALUES
-        (
-         '1'
-        , #{ empId }
-        )
+            (
+            '1'
+                , #{ empId }
+            )
     </insert>
 
     <select id="selectCkAdminAuth" resultType="_int">
@@ -165,18 +165,18 @@
 
     <select id="selectCalendar" resultMap="calendarResultMap">
         SELECT
-               CAL_NAME
+            CAL_NAME
              , CAL_START
              , (CAL_END+1) CAL_END
              , CAL_CONTENT
-          FROM CALENDAR
+        FROM CALENDAR
     </select>
 
     <insert id="insertCalendar" parameterType="CalendarDTO">
         INSERT
         INTO CALENDAR
         (
-          CAL_NO
+            CAL_NO
         , CAL_NAME
         , CAL_START
         , CAL_END
@@ -184,21 +184,21 @@
         , EMP_ID
         )
         VALUES
-        (
-          SEQ_CALNO.NEXTVAL
-        , #{ calName }
-        , #{ startDay }
-        , #{ endDay }
-        , #{ content }
-        , #{ empId }
-        )
+            (
+                SEQ_CALNO.NEXTVAL
+            , #{ calName }
+            , #{ startDay }
+            , #{ endDay }
+            , #{ content }
+            , #{ empId }
+            )
     </insert>
 
     <delete id="deleteCal" parameterType="CalendarDTO">
         DELETE
-          FROM CALENDAR
-         WHERE CAL_NAME = #{ calName }
-           AND CAL_CONTENT = #{ content }
+        FROM CALENDAR
+        WHERE CAL_NAME = #{ calName }
+          AND CAL_CONTENT = #{ content }
     </delete>
 
     <select id="selectCalNo" resultMap="calendarResultMap">
@@ -223,7 +223,7 @@
 
     <update id="updateEmpPwd" parameterType="EmployeeDTO">
         UPDATE
-               EMPLOYEE
+            EMPLOYEE
         SET
             EMP_PWD = #{ empPwd }
         WHERE EMP_ID = #{ empId }
@@ -231,26 +231,33 @@
 
     <update id="updateEmailCode" parameterType="EmployeeDTO">
         UPDATE
-               EMPLOYEE
-           SET
-               EMAIL_CODE = #{ emailCode }
-         WHERE EMP_EMAIL = #{ empEmail }
-           AND EMP_ID = #{ empId }
+            EMPLOYEE
+        SET
+            EMAIL_CODE = #{ emailCode }
+        WHERE EMP_EMAIL = #{ empEmail }
+          AND EMP_ID = #{ empId }
     </update>
 
-    <select id="selectEmailCode" resultType="_int">
+    <select id="selectEmailCode" resultMap="employeeResultMap" resultType="String">
         SELECT
-               COUNT(EMAIL_CODE)
-          FROM EMPLOYEE
+            EMAIL_CODE
+        FROM EMPLOYEE
         WHERE EMP_EMAIL = #{ empEmail }
-           AND EMP_ID = #{ empId };
+          AND EMP_ID = #{ empId }
     </select>
 
+    <update id="updatePwd" parameterType="EmployeeDTO">
+        UPDATE
+            EMPLOYEE
+        SET
+            EMP_PWD = #{ empPwd }
+        WHERE EMAIL_CODE = #{ emailCode }
+    </update>
 
     <select id="selectTotalCount" resultType="_int">
         SELECT
             COUNT(*)
-          FROM EMPLOYEE
+        FROM EMPLOYEE
     </select>
 
 

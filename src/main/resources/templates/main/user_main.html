@@ -49,66 +49,63 @@
           <div class="container-fluid" style="margin-top:30px">
             <div class="row mx-5">
               <div class="col px-5 py-1">
-                <h4>재고현황</h4>
+                <h4><a th:href="@{ /storeItem/itemListSelect}">재고현황</a></h4>
                 <div class=" d-flex justify-content-end">
-                  <i class="fa fa-plus mx-4" style="color: #aaa; cursor: pointer;"></i>
-                  <i class="fa fa-refresh" style="color: #aaa; cursor: pointer;"></i>
+                  <a th:href="@{ /storeItem/itemListSelect}"><i class="fa fa-plus mx-4" style="color: #aaa; cursor: pointer;"></i></a>
                 </div>
-                <table class="table">
+                <div style="height: 170px; overflow: hidden">
+                <table class="table banner">
                   <thead>
-                    <tr>
-                      <th>번호</th>
-                      <th>상품코드</th>
-                      <th>상품명</th>
-                      <th>카테고리</th>
-                      <th>규격</th>
-                      <th>제조사(원산지)</th>
-                      <th>재고량</th>
-                      <th>품절여부</th>
-                    </tr>
+                  <tr>
+                    <th>상품번호</th>
+                    <th>썸네일</th>
+                    <th>상품명</th>
+                    <th>카테고리</th>
+                    <th>규격</th>
+                    <th>제조사</th>
+                    <th>매입단가</th>
+                    <th>재고량</th>
+                    <th>재고현황</th>
+                    <th>품절여부</th>
+                  </tr>
                   </thead>
                   <tbody>
+                  <th:block th:if="${ storeItemList.size() > 0}">
+                  <tr class="slider" th:each="storeItem : ${ storeItemList }" th:if="${ storeItem.storeAmount < 10 }">
+                    <td th:text="${ storeItem.itemNo }">100000</td>
+                    <td>
+                      <div class="img-info">
+                        <div class="img-info__img">
+                          <img th:src="'/images/' + ${storeItem.itemFileDTO.fileName }" width="20" height="20" alt="">
+                        </div>
+                      </div>
+                    </td>
+                    <td th:text="${ storeItem.itemInfoDTO.itemName }">닭다리</td>
+                    <td th:text="${ storeItem.itemCategoryDTO.categoryName }">식재료</td>
+                    <td th:text="${ storeItem.itemInfoDTO.itemStandard }">1kg</td>
+                    <td th:text="${ storeItem.itemInfoDTO.itemMake }"></td>
+                    <td th:text="${ storeItem.itemInfoDTO.itemSales }"></td>
+                    <td th:text="${ storeItem.storeAmount }"></td>
+                    <td style="color: red;">
+                      <img src="/images/warning.png" alt="warning" width="30px" height="30px">
+                      <strong>재고부족!!!</strong>
+                    </td>
+                    <td th:if="${ storeItem.itemInfoDTO.itemSoldoutYn eq 'Y' }" >
+                      <span class="active-circle bg-danger"></span>
+                    <td th:if="${ storeItem.itemInfoDTO.itemSoldoutYn eq 'N' }" >
+                      <span class="active-circle bg-success"></span>
+                    </td>
+                  </tr>
+                  </th:block>
+                  <th:block th:if="${ storeItemList.size() == 0 }">
                     <tr>
-                      <td>1</td>
-                      <td>100000</td>
-                      <td>닭다리</td>
-                      <td>식재료</td>
-                      <td>1kg</td>
-                      <td>하림(국내산)</td>
-                      <td>100</td>
-                      <td>
-                        <span class="active-circle bg-danger"></span>품절
-                      </td>
-                      
+                      <td colspan="9">조회된 결과가 없습니다.</td>
                     </tr>
-                    <tr>
-                      <td>1</td>
-                      <td>100000</td>
-                      <td>닭다리</td>
-                      <td>식재료</td>
-                      <td>1kg</td>
-                      <td>하림(국내산)</td>
-                      <td>100</td>
-                      <td>
-                        <span class="active-circle bg-danger"></span>품절
-                      </td>
-                      
-                    </tr>
-                    <tr>
-                      <td>1</td>
-                      <td>100000</td>
-                      <td>닭다리</td>
-                      <td>식재료</td>
-                      <td>1kg</td>
-                      <td>하림(국내산)</td>
-                      <td>100</td>
-                      <td>
-                        <span class="active-circle bg-success"></span>보유
-                      </td>
-                    </tr>
+                  </th:block>
                   </tbody>
                 </table>
-                
+                </div>
+
               </div>
             </div>
             <div class="row mx-5">
@@ -224,6 +221,22 @@
         }
       }
     }
+  </script>
+
+  <script>
+    $(document).ready(function() {
+
+      setInterval(function() { rollingStart(); }, 2000);
+
+      function rollingStart() {
+
+        $(".banner > tbody").append($(".banner > tbody").find("tr:first"));
+        $(".banner > tbody > tr").animate({ opacity : '0.5' }, 2000, function (){
+
+          $(".banner > tbody > tr").css('opacity', '1');
+        });
+      }
+    });
   </script>
 </body>
 </html>
