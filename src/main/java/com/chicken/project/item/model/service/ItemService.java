@@ -39,4 +39,14 @@ public interface ItemService {
     ItemInfoDTO selectOneItem(String itemNoInput);
 
     List<ItemInfoDTO> selectMainItem();
+
+
+    @Transactional
+    int updateItem(ItemInfoDTO item) throws ItemUpdateException;
+
+    @Transactional
+    int deleteItemFile2(ItemInfoDTO item) throws ItemUpdateException;
+
+    @Transactional
+    int insertItemFile(ItemFileDTO itemFile) throws ItemInsertException;
 }
