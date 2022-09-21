@@ -150,20 +150,18 @@
                 <td th:if="${ order.itemSoldoutYn eq 'N' }" >
                   <span class="active-circle bg-success"></span><span th:text="${ '판매중' }"></span>
                 </td>
-
                 <td>
                   <div class="dropdown open">
                     <a href="javascript:void(0);" class="px-2" id="triggerId1" data-toggle="dropdown" aria-haspopup="true"
                        aria-expanded="false">
-                      <i class="fa fa-ellipsis-v" id="dotMenu"></i>
+                      <i class="fa fa-ellipsis-v" id="dotMenu1"></i>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="triggerId1">
                       <a class="dropdown-item" href="javascript:void(0);" th:field="*{ order.cartAmount }"
                          th:itemNo="${ order.itemNo }" th:onclick="interest(this.getAttribute('itemNo'))">
-                        <i class="fa-solid fa-heart-circle-plus" id="test">관심 설정</i>
+                        <i class="fa-solid fa-heart-circle-plus" id="test1">관심 설정</i>
                       </a>
                     </div>
-
                   </div>
                 </td>
               </tr>
@@ -302,25 +300,6 @@
   /*]]>*/
 </script>
 
-<!-- 관심 삭제 -->
-<script th:inline="javascript">
-  /*<![CDATA[*/
-  function interestDelete(itemNo) {
-    $.ajax({
-      type: "POST"
-      ,url: "/order/list/interest/insert"
-      ,data: {"itemNo":itemNo}
-      ,success:function(data){
-        alert("해당 상품이 관심 삭제 되었습니다.");
-      }
-      ,error:function(data){
-        alert("관심 상품 저장에 실패하였습니다.");
-      }
-    });
-  }
-  /*]]>*/
-</script>
-
 
 <!-- 체크 박스 전체 선택 -->
 <script th:inline="javascript">
@@ -386,6 +365,8 @@
     form.submit();
 
       console.log(itemNoList);
+
+      alert("상품이 장바구니에 담겼습니다.")
 
     }
 

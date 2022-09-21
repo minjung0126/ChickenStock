@@ -83,7 +83,6 @@
               <div id="addProduct">
                 <button class="btn btn-warning" style="color:#fff" th:onclick="'location.href=\'/order/list\''"><i class="fa-solid fa-magnifying-glass"></i> 제품 추가</button>
               </div>
-
               <div id="order">
                 <input type="hidden" name="cartNoList" id="result">
                 <input type="hidden" name="totalPrice" id="result1">
@@ -93,7 +92,7 @@
 
             <table class="table" id="cartTable">
               <thead>
-                <tr>
+                <tr th:if="${ cart.cartCount eq 'have' }">
                   <th>상품코드</th>
                   <th>상품사진</th>
                   <th>상품명</th>
@@ -105,6 +104,10 @@
                   <th>품절여부</th>
                   <th>합계</th>
                   <th>삭제</th>
+                </tr>
+
+                <tr th:if="${ cart.cartCount eq 'empty'}">
+                  <th style="text-align: right">장바구니가 비어있습니다. 상품을 담아주세요.</th>
                 </tr>
               </thead>
               <tbody>
@@ -176,11 +179,6 @@
               </tfoot>
 
             </table>
-
-            <!-- 삭제 버튼 form -->
-<!--            <form th:action="@{/order/cart/delete}" method="post" class="quantity_delete_form">-->
-<!--              <input type="hidden" name="cartNo" class="deleteCartNo">-->
-<!--            </form>-->
 
           </div>
           <!-- E: table -->
@@ -342,8 +340,10 @@
         console.log(cartNoList);
 
       } else {
+
         return;
       }
+
     }
   </script>
 
@@ -375,7 +375,8 @@
         console.log(cartTotalMoney);
         document.getElementById('cartTotalAmount').innerText = cartTotalAmount.toLocaleString('ko-KR');
         document.getElementById('cartTotalMoney').innerText = cartTotalMoney.toLocaleString('ko-KR');
-      }
+
+    }
 
   </script>
 

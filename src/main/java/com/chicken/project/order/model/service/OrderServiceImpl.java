@@ -81,7 +81,7 @@ public class OrderServiceImpl implements OrderService{
     @Override
     public int selectCartTotalCount(Map<String, String> searchMap) {
 
-        int result = orderMapper.selectTotalCount(searchMap);
+        int result = orderMapper.selectCartTotalCount(searchMap);
 
         return result;
 
@@ -124,24 +124,6 @@ public class OrderServiceImpl implements OrderService{
 
     }
 
-//    @Override
-//    @Transactional
-//    public void InsertCartList(List<String> itemNoList) {
-//
-//        orderMapper.insertCartList(itemNoList);
-//
-//    }
-
-    @Override
-    /* 발주 신청 완료 */
-    @Transactional
-    public void insertItemIntoCart(int itemNo, int cartAmount, String storeName) {
-
-        orderMapper.insertItemIntoCart(itemNo, cartAmount, storeName);
-
-    }
-
-
 
     @Override
     @Transactional
@@ -167,14 +149,10 @@ public class OrderServiceImpl implements OrderService{
 
     @Override
     @Transactional
-    public int insertOrderHandler(CartDTO cart) {
+    public void insertOrderHandler(CartDTO cart) {
 
-        int result = orderMapper.insertOrderHandler(cart);
+        orderMapper.insertOrderHandler(cart);
 
-//        orderMapper.insertStoreBreakdown(cart);
-//        orderMapper.updateStoreBalance(cart);
-
-        return result;
     }
 
     @Override
@@ -243,6 +221,28 @@ public class OrderServiceImpl implements OrderService{
     public String selectFinalOrderDate(OrderHistoryDTO history) {
 
         return orderMapper.selectFinalOrderDate(history);
+    }
+
+    @Override
+    public int checkItemOverlap(CartDTO cart) {
+        return orderMapper.checkItemOverlap(cart);
+    }
+
+    @Override
+    public void insertItemIntoCart(CartDTO cart) {
+
+        orderMapper.insertItemIntoCart(cart);
+    }
+
+    @Override
+    public void updateItemIntoCart(CartDTO cart) {
+
+        orderMapper.updateItemIntoCart(cart);
+    }
+
+    @Override
+    public int checkBalance(CartDTO cart) {
+        return orderMapper.checkBalance(cart);
     }
 
 
