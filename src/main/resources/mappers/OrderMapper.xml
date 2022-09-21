@@ -640,7 +640,7 @@
         )
         VALUES
             (
-                #{ storeName }
+              #{ storeName }
             , TO_CHAR(SYSDATE,'yyyy-MM-dd HH24:MI:SS')
             , #{ totalPrice }
             , '출금'
