@@ -151,6 +151,9 @@ public class OrderController {
         searchMap.put("searchValue", searchValue);
         searchMap.put("storeName", storeName);
 
+        OrderDTO order = new OrderDTO();
+        order.setStoreName(storeName);
+
         int totalCount = orderService.selectInterestItemCount(searchMap);
 
         int limit = 6;
