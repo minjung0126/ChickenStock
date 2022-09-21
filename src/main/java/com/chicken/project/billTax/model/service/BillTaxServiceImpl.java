@@ -78,4 +78,12 @@ public class BillTaxServiceImpl implements BillTaxService{
         return billTaxMapper.selectTsMenuList(recCode);
     }
 
+    @Override
+    public int selectTotalCountS(Map<String, String> searchMap) {
+
+        int result =billTaxMapper.selectTotalCountS(searchMap);
+
+        return result;
+
+    }
 }

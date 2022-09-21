@@ -5,12 +5,14 @@ import com.chicken.project.account.model.dto.AccountApplyDTO;
 import com.chicken.project.account.model.dto.AccountDTO;
 import com.chicken.project.account.model.dto.StoreBreakdownDTO;
 import com.chicken.project.account.model.dto.StoreDepositDTO;
+import com.chicken.project.common.paging.SelectCriteria;
 import com.chicken.project.store.model.dto.BalanceDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 @Service("accountService")
 public class AccountServiceImpl implements AccountService{
@@ -25,9 +27,9 @@ public class AccountServiceImpl implements AccountService{
 
     /* 본사 가맹점 입금신청 조회 */
     @Override
-    public List<AccountApplyDTO> selectAccountApplyList() {
+    public List<AccountApplyDTO> selectAccountApplyList(SelectCriteria selectCriteria) {
 
-        return accountMapper.selectAccountApplyList();
+        return accountMapper.selectAccountApplyList(selectCriteria);
     }
 
 
@@ -119,5 +121,11 @@ public class AccountServiceImpl implements AccountService{
     public List<StoreBreakdownDTO> selectStoreBreakdown(String storeName) {
 
         return accountMapper.selectStoreBreakdown(storeName);
+    }
+
+    @Override
+    public int selectTotalCount(Map<String, String> searchMap) {
+
+        return accountMapper.selectTotalCount(searchMap);
     }
 }

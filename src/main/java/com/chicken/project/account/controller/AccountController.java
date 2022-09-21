@@ -5,7 +5,8 @@ import com.chicken.project.account.model.dto.AccountDTO;
 import com.chicken.project.account.model.dto.StoreBreakdownDTO;
 import com.chicken.project.account.model.dto.StoreDepositDTO;
 import com.chicken.project.account.model.service.AccountService;
-import com.chicken.project.account.model.service.AccountServiceImpl;
+import com.chicken.project.common.paging.Pagenation;
+import com.chicken.project.common.paging.SelectCriteria;
 import com.chicken.project.member.model.dto.StoreImpl;
 import com.chicken.project.store.model.dto.BalanceDTO;
 import org.slf4j.Logger;
@@ -22,7 +23,9 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/account/*")
@@ -39,11 +42,43 @@ public class AccountController {
 
     /* 관리자 입금신청 내역 조회 */
     @GetMapping("/admin/list")
-    public ModelAndView accountAdminList(ModelAndView mv) {
+    public ModelAndView accountAdminList(ModelAndView mv, HttpServletRequest request) {
 
-        List<AccountApplyDTO> accountApplyList = accountService.selectAccountApplyList();
+        String currentPage = request.getParameter("currentPage");
+        int pageNo = 1;
+
+        if(currentPage != null && !"".equals(currentPage)) {
+            pageNo = Integer.parseInt(currentPage);
+        }
+
+        String searchCondition = request.getParameter("searchCondition");
+
+        Map<String, String> searchMap = new HashMap<>();
+        searchMap.put("searchCondition", searchCondition);
+
+        log.info("[AccountController] searchMap = " + searchMap);
+
+        int totalCount = accountService.selectTotalCount(searchMap);
+
+        log.info("[AccountController] totalCount = " + totalCount);
+
+        int limit = 6;
+        int buttonAmount = 5;
+
+        SelectCriteria selectCriteria = null;
+
+        if(searchCondition != null && !"".equals(searchCondition)) {
+            selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount, searchCondition);
+        } else {
+            selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount);
+        }
+
+        log.info("[AccountController] selectCriteria = " + selectCriteria);
+
+        List<AccountApplyDTO> accountApplyList = accountService.selectAccountApplyList(selectCriteria);
 
         mv.addObject("accountApplyList", accountApplyList);
+        mv.addObject("selectCriteria", selectCriteria);
         mv.setViewName("/account/admin/adminAccountList");
 
         return mv;

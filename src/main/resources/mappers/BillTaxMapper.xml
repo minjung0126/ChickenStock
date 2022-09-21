@@ -112,7 +112,7 @@
                 RS.STORE_NAME LIKE '%' || #{ searchValue } || '%'
             </if>
         </where>
-        ORDER BY C.TAX_NO ASC ) B
+        ORDER BY C.TAX_NO DESC ) B
         <![CDATA[
                 WHERE ROWNUM <= #{ endRow }
                   ]]>
@@ -121,7 +121,7 @@
         JOIN STORE_ORDER SO ON (RS.ORDER_NO = SO.ORDER_NO)
         JOIN STORE S ON(S.STORE_NAME = RS.STORE_NAME)
         WHERE A.RNUM >= #{ startRow }
-        ORDER BY A.TAX_NO ASC
+        ORDER BY A.TAX_NO DESC
     </select>
 
     <select id="selectTotalCount" resultType="_int" parameterType="hashmap">
@@ -136,6 +136,14 @@
                 RS.STORE_NAME LIKE '%' || #{ searchValue } || '%'
             </if>
         </where>
+    </select>
+
+    <select id="selectTotalCountS" resultType="_int" parameterType="hashmap">
+        SELECT
+        COUNT(*)
+        FROM TAXBILL T
+        JOIN RECEIVE_STORE RS ON(RS.REC_CODE = T.REC_CODE)
+       WHERE RS.STORE_NAME = #{ storeName }
     </select>
 
     <select id="selectTaxMenuList" resultMap="billTaxResultMap" parameterType="String">
@@ -229,7 +237,7 @@
                 RS.STORE_NAME LIKE '%' || #{ searchValue } || '%'
             </if>
         </where>
-        ORDER BY C.TS_NO ASC
+        ORDER BY C.TS_NO DESC
         ) B
         <![CDATA[
                         WHERE ROWNUM <= #{ endRow }
@@ -239,7 +247,7 @@
         JOIN STORE_ORDER SO ON (RS.ORDER_NO = SO.ORDER_NO)
         JOIN STORE S ON(S.STORE_NAME = RS.STORE_NAME)
         WHERE A.RNUM >= #{ startRow }
-        ORDER BY A.TS_NO ASC
+        ORDER BY A.TS_NO DESC
     </select>
 
     <select id="selectTsMenuList" resultMap="tsBillTaxResultMap" parameterType="String">
