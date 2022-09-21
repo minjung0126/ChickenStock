@@ -184,19 +184,18 @@
     <!-- 관심 설정 상품 리스트 출력 -->
     <select id="selectInterestItem" resultMap="orderResultMap">
         SELECT
-        A.RNUM
+          A.RNUM
         , A.ITEM_NO
         , A.ITEM_NAME
-        , D.CATEGORY_NAME
         , A.CATEGORY_NO
         , A.ITEM_STANDARD
         , A.ITEM_MAKE
         , A.ITEM_SALES
-        , E.STORE_AMOUNT
         , A.ITEM_SOLDOUT_YN
-        , F.FILE_NO
-        , F.ORIGIN_NAME
-        , F.FILE_NAME
+        , A.FILE_NO
+        , A.ORIGIN_NAME
+        , A.FILE_NAME
+        , A.STORE_NAME
         FROM (SELECT ROWNUM RNUM
         , B.ITEM_NO
         , B.ITEM_NAME
@@ -205,38 +204,43 @@
         , B.ITEM_MAKE
         , B.ITEM_SALES
         , B.ITEM_SOLDOUT_YN
+        , B.FILE_NO
+        , B.ORIGIN_NAME
+        , B.FILE_NAME
+        , B.STORE_NAME
         FROM (SELECT
-        C.ITEM_NO
+          C.ITEM_NO
         , C.ITEM_NAME
         , C.CATEGORY_NO
         , C.ITEM_STANDARD
         , C.ITEM_MAKE
         , C.ITEM_SALES
         , C.ITEM_SOLDOUT_YN
+        , D.FILE_NO
+        , D.ORIGIN_NAME
+        , D.FILE_NAME
+        , F.STORE_NAME
         FROM ITEM_INFO C
+        LEFT JOIN ITEM_FILE D ON (C.ITEM_NO = D.ITEM_NO)
+        LEFT JOIN INTEREST F ON (C.ITEM_NO = F.ITEM_NO)
+        WHERE F.STORE_NAME = #{ storeName }
         <if test="searchCondition == 'category'">
-            JOIN ITEM_CATEGORY D ON(C.CATEGORY_NO = D.CATEGORY_NO)
+            JOIN ITEM_CATEGORY E ON(C.CATEGORY_NO = E.CATEGORY_NO)
         </if>
         <where>
             <if test="searchCondition == 'category'">
-                D.CATEGORY_NAME LIKE '%' || #{ searchValue } || '%'
+                E.CATEGORY_NAME LIKE '%' || #{ searchValue } || '%'
             </if>
             <if test="searchCondition == 'itemName'">
                 C.ITEM_NAME LIKE '%' || #{ searchValue } || '%'
             </if>
         </where>
-        ORDER BY C.ITEM_NO ASC
         ) B
         <![CDATA[
                   WHERE ROWNUM <= #{ endRow }
                   ]]>
         ) A
-        JOIN ITEM_CATEGORY D ON (A.CATEGORY_NO = D.CATEGORY_NO)
-        LEFT JOIN STO_ITEM_INFO E ON (A.ITEM_NO = E.ITEM_NO)
-        LEFT JOIN ITEM_FILE F ON (A.ITEM_NO = F.ITEM_NO)
-        LEFT JOIN INTEREST G ON (A.ITEM_NO = G.ITEM_NO)
         WHERE A.RNUM >= #{ startRow }
-        AND G.STORE_NAME = #{ storeName }
         ORDER BY A.ITEM_NO ASC
     </select>
 

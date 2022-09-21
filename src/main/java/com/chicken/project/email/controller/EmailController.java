@@ -67,14 +67,13 @@ public class EmailController {
         emp.setEmpId(request.getParameter("empId"));
         emp.setEmpEmail(request.getParameter("email"));
         emp.setEmpPwd(passwordEncoder.encode(request.getParameter("new_pwd")));
-        String code = String.valueOf( request.getParameter("emailCode"));
-        emp.setEmailCode(code);
+        emp.setEmailCode(request.getParameter("code"));
 
         log.info("[EmailController] emp : " + emp);
 
         EmployeeDTO emailCode = emailService.selectEmailCode(emp);
 
-        if(emailCode.equals(emp.getEmailCode())){
+        if(emailCode.getEmailCode().equals(emp.getEmailCode())){
 
             emp.setEmailCode(emailCode.getEmailCode());
             int result = emailService.updatePwd(emp);
