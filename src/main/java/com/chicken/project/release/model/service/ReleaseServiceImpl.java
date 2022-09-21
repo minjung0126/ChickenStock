@@ -25,6 +25,7 @@ public class ReleaseServiceImpl implements ReleaseService{
 
         List<ReleaseOrderDTO> orderDTO = releaseMapper.releaseOrderSelect(releaseSelectCriteria);
 
+        System.out.println(orderDTO);
         return orderDTO;
     }
 

@@ -64,6 +64,7 @@ public class Pagenation {
         /* pageNo와 totalCount가 넘어온 상태이기 때문에
          * 페이징처리에 필요한 나머지 변수만 선언을 한다.
          * */
+
         int maxPage;			//전체 페이지에서 가장 마지막 페이지
         int startPage;			//한번에 표시될 페이지 버튼의 시작할 페이지
         int endPage;			//한번에 표시될 페이지 버튼의 끝나는 페이지

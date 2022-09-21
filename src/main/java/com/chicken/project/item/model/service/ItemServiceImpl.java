@@ -123,6 +123,7 @@ public class ItemServiceImpl implements ItemService{
     public ItemInfoDTO selectOneItem(String itemNoInput) {
 
         ItemInfoDTO oneItem = itemMapper.selectOneItem(itemNoInput);
+
         return oneItem;
     }
 
@@ -132,5 +133,45 @@ public class ItemServiceImpl implements ItemService{
         List<ItemInfoDTO> itemList = itemMapper.selectMainItem();
 
         return itemList;
+    }
+
+    @Override
+    @Transactional
+    public int updateItem(ItemInfoDTO item) throws ItemUpdateException {
+
+        int result = itemMapper.updateItem(item);
+
+        if (!(result > 0)) {
+
+            throw new ItemUpdateException("재고 수정에 실패하셨습니다.");
+        }
+
+        return result;
+    }
+
+    @Override
+    @Transactional
+    public int deleteItemFile2(int itemNo) throws ItemUpdateException{
+
+        int result = itemMapper.deleteItemFile2(itemNo);
+
+        if(!(result > 0)){
+            throw new ItemUpdateException("상품 이미지 삭제에 실패하셨습니다.");
+        }
+
+        return result;
+    }
+
+    @Override
+    @Transactional
+    public int insertItemFile(ItemFileDTO itemFile) throws ItemInsertException{
+
+        int result = itemMapper.insertItemFile(itemFile);
+
+        if(!(result > 0)){
+            throw new ItemInsertException("상품 등록에 실패하셨습니다.");
+        }
+
+        return result;
     }
 }

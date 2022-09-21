@@ -29,7 +29,6 @@ public class StoreController {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-
     public StoreController(StoreService storeService, PasswordEncoder passwordEncoder) {
 
         this.storeService = storeService;
