@@ -54,13 +54,20 @@
                 </tr>
               </thead>
               <tbody>
-                <tr th:each="notice : ${ noticeList }" style="cursor:pointer">
-                  <td th:text="${ notice.noticeNo }"></td>
-                  <td th:text="${ notice.noticeName }"></td>
-                  <td th:text="${ notice.empName }"></td>
-                  <td th:text="${ notice.noticeCount }"></td>
-                  <td th:text="${ notice.noticeRegistDate }"></td>
-                </tr>
+                <th:block th:if="${ noticeList.size() > 0 }" >
+                  <tr th:each="notice : ${ noticeList }" style="cursor:pointer">
+                    <td th:text="${ notice.noticeNo }"></td>
+                    <td th:text="${ notice.noticeName }"></td>
+                    <td th:text="${ notice.empName }"></td>
+                    <td th:text="${ notice.noticeCount }"></td>
+                    <td th:text="${ notice.noticeRegistDate }"></td>
+                  </tr>
+                </th:block>
+                <th:block th:if="${ noticeList.size() == 0 }">
+                  <tr>
+                    <td colspan="5">조회된 결과가 없습니다.</td>
+                  </tr>
+                </th:block>
               </tbody>
             </table>
           </div>

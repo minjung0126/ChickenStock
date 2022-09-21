@@ -68,10 +68,10 @@
                   <input type="hidden" name="currentPage" value="1">
                   <select id="searchCondition" name="searchCondition" style="text-align: center;">
                     <option>== 선택 ==</option>
-                    <option name="itemName" value="itemName">상품명</option>
-                    <option name="category" value="category">카테고리</option>
+                    <option th:selected="${ selectCriteria.getSearchCondition() == 'itemName' }" name="itemName" value="itemName">상품명</option>
+                    <option th:selected="${ selectCriteria.getSearchCondition() == 'category' }" name="category" value="category">카테고리</option>
                   </select>
-                  <input class="form-control" type="search" id="searchValue" name="searchValue" placeholder="검색 내용을 입력해주세요.">
+                  <input class="form-control" type="search" id="searchValue" name="searchValue"  th:value="${ selectCriteria.getSearchValue() }" placeholder="검색 내용을 입력해주세요.">
                   <button class="btn btn-warning" type="submit" style="color:#fff">검색</button>
                 </form>
               </div>
@@ -83,7 +83,6 @@
               <div id="addProduct">
                 <button class="btn btn-warning" style="color:#fff" th:onclick="'location.href=\'/order/list\''"><i class="fa-solid fa-magnifying-glass"></i> 제품 추가</button>
               </div>
-
               <div id="order">
                 <input type="hidden" name="cartNoList" id="result">
                 <input type="hidden" name="totalPrice" id="result1">
@@ -93,7 +92,7 @@
 
             <table class="table" id="cartTable">
               <thead>
-                <tr>
+                <tr th:if="${ cart.cartCount eq 'have' }">
                   <th>상품코드</th>
                   <th>상품사진</th>
                   <th>상품명</th>
@@ -105,6 +104,10 @@
                   <th>품절여부</th>
                   <th>합계</th>
                   <th>삭제</th>
+                </tr>
+
+                <tr th:if="${ cart.cartCount eq 'empty'}">
+                  <th style="text-align: right">장바구니가 비어있습니다. 상품을 담아주세요.</th>
                 </tr>
               </thead>
               <tbody>
@@ -177,36 +180,31 @@
 
             </table>
 
-            <!-- 삭제 버튼 form -->
-<!--            <form th:action="@{/order/cart/delete}" method="post" class="quantity_delete_form">-->
-<!--              <input type="hidden" name="cartNo" class="deleteCartNo">-->
-<!--            </form>-->
-
           </div>
           <!-- E: table -->
           <!-- S: paging -->
           <div class="d-flex justify-content-center" id="pageBox">
             <button class="btn btn-light"
-                    th:onclick="'location.href=\'/order/cart/list?currentPage='+ @{${selectCriteria.startPage}} + '\''"
+                    th:onclick="'location.href=\'/order/cart/list?currentPage='+ @{${selectCriteria.startPage}} + '&searchCondition=' + @{${ selectCriteria.searchCondition }} + '&searchValue=' + @{${ selectCriteria.searchValue }} +  '\''"
                     th:disabled="${selectCriteria.pageNo == 1}"><<</button>
 
             <button class="btn btn-light mx-1"
-                    th:onclick="'location.href=\'/order/cart/list?currentPage='+ @{${selectCriteria.pageNo - 1}} + '\''"
+                    th:onclick="'location.href=\'/order/cart/list?currentPage='+ @{${selectCriteria.pageNo - 1}} + '&searchCondition=' + @{${ selectCriteria.searchCondition }} + '&searchValue=' + @{${ selectCriteria.searchValue }} +  '\''"
                     th:disabled="${selectCriteria.pageNo == 1}"><</button>
 
             <th:block th:each="page : ${#numbers.sequence(selectCriteria.startPage, selectCriteria.endPage)}">
               <button class="btn btn-warning mx-1" disabled style="color:white"
                       th:text="${ page }"
-                      th:onclick="'location.href=\'/order/cart/list?currentPage='+ @{${page}} + '\''"
+                      th:onclick="'location.href=\'/order/cart/list?currentPage='+ @{${page}} + '&searchCondition=' + @{${ selectCriteria.searchCondition }} + '&searchValue=' + @{${ selectCriteria.searchValue }} +  '\''"
                       th:disabled="${ selectCriteria.pageNo eq page }"></button>
             </th:block>
 
             <button class="btn btn-light mx-1"
-                    th:onclick="'location.href=\'/order/cart/list?currentPage='+ @{${selectCriteria.pageNo + 1}} + '\''"
+                    th:onclick="'location.href=\'/order/cart/list?currentPage='+ @{${selectCriteria.pageNo + 1}} + '&searchCondition=' + @{${ selectCriteria.searchCondition }} + '&searchValue=' + @{${ selectCriteria.searchValue }} +  '\''"
                     th:disabled="${selectCriteria.pageNo == selectCriteria.maxPage}">></button>
 
             <button class="btn btn-light"
-                    th:onclick="'location.href=\'/order/cart/list?currentPage='+ @{${selectCriteria.maxPage}} + '\''"
+                    th:onclick="'location.href=\'/order/cart/list?currentPage='+ @{${selectCriteria.maxPage}} + '&searchCondition=' + @{${ selectCriteria.searchCondition }} + '&searchValue=' + @{${ selectCriteria.searchValue }} +  '\''"
                     th:disabled="${selectCriteria.pageNo == selectCriteria.maxPage}">>></button>
           </div>
           <!-- E: paging -->
@@ -342,8 +340,10 @@
         console.log(cartNoList);
 
       } else {
+
         return;
       }
+
     }
   </script>
 
@@ -375,7 +375,8 @@
         console.log(cartTotalMoney);
         document.getElementById('cartTotalAmount').innerText = cartTotalAmount.toLocaleString('ko-KR');
         document.getElementById('cartTotalMoney').innerText = cartTotalMoney.toLocaleString('ko-KR');
-      }
+
+    }
 
   </script>
 

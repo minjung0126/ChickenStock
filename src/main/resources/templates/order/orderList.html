@@ -65,10 +65,10 @@
                 <input type="hidden" name="currentPage" value="1">
                 <select id="searchCondition" name="searchCondition" style="text-align: center;">
                   <option>== 선택 ==</option>
-                  <option name="itemName" value="itemName">상품명</option>
-                  <option name="category" value="category">카테고리</option>
+                  <option name="itemName" value="itemName" th:selected="${ selectCriteria.getSearchCondition() == 'itemName' }">상품명</option>
+                  <option name="category" value="category" th:selected="${ selectCriteria.getSearchCondition() == 'category' }">카테고리</option>
                 </select>
-                <input class="form-control" type="search" id="searchValue" name="searchValue" placeholder="검색 내용을 입력해주세요.">
+                <input class="form-control" type="search" id="searchValue" name="searchValue" th:value="${ selectCriteria.getSearchValue() }" placeholder="검색 내용을 입력해주세요.">
                 <button class="btn btn-warning" type="submit" style="color:#fff">검색</button>
               </form>
             </div>
@@ -116,10 +116,10 @@
                   </div>
                 </td>
                 <td th:text="${ order.itemNo }" id="itemNo" name="test">상품코드</td>
-                <td>
+                <td>S
                   <div class="img-info">
                     <div class="img-info__img">
-                      <img th:src="'/images/' + ${ order.itemFile.fileName }" alt="">
+                      <img th:src="'/itemImage/' + ${ order.itemFile.fileName }" alt="">
                     </div>
                   </div>
                 </td>
@@ -150,20 +150,18 @@
                 <td th:if="${ order.itemSoldoutYn eq 'N' }" >
                   <span class="active-circle bg-success"></span><span th:text="${ '판매중' }"></span>
                 </td>
-
                 <td>
                   <div class="dropdown open">
                     <a href="javascript:void(0);" class="px-2" id="triggerId1" data-toggle="dropdown" aria-haspopup="true"
                        aria-expanded="false">
-                      <i class="fa fa-ellipsis-v" id="dotMenu"></i>
+                      <i class="fa fa-ellipsis-v" id="dotMenu1"></i>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="triggerId1">
                       <a class="dropdown-item" href="javascript:void(0);" th:field="*{ order.cartAmount }"
                          th:itemNo="${ order.itemNo }" th:onclick="interest(this.getAttribute('itemNo'))">
-                        <i class="fa-solid fa-heart-circle-plus" id="test">관심 설정</i>
+                        <i class="fa-solid fa-heart-circle-plus" id="test1">관심 설정</i>
                       </a>
                     </div>
-
                   </div>
                 </td>
               </tr>
@@ -176,26 +174,26 @@
         <!-- S: paging -->
         <div class="d-flex justify-content-center" id="pageBox">
           <button class="btn btn-light"
-                  th:onclick="'location.href=\'/order/list?currentPage='+ @{${selectCriteria.startPage}} + '\''"
+                  th:onclick="'location.href=\'/order/list?currentPage='+ @{${selectCriteria.startPage}} + '&searchCondition=' + @{${ selectCriteria.searchCondition }} + '&searchValue=' + @{${ selectCriteria.searchValue }} +  '\''"
                   th:disabled="${selectCriteria.pageNo == 1}"><<</button>
 
           <button class="btn btn-light mx-1"
-                  th:onclick="'location.href=\'/order/list?currentPage='+ @{${selectCriteria.pageNo - 1}} + '\''"
+                  th:onclick="'location.href=\'/order/list?currentPage='+ @{${selectCriteria.pageNo - 1}} + '&searchCondition=' + @{${ selectCriteria.searchCondition }} + '&searchValue=' + @{${ selectCriteria.searchValue }} +  '\''"
                   th:disabled="${selectCriteria.pageNo == 1}"><</button>
 
           <th:block th:each="page : ${#numbers.sequence(selectCriteria.startPage, selectCriteria.endPage)}">
             <button class="btn btn-warning mx-1" disabled style="color:white"
                     th:text="${ page }"
-                    th:onclick="'location.href=\'/order/list?currentPage='+ @{${page}} + '\''"
+                    th:onclick="'location.href=\'/order/list?currentPage='+ @{${page}} + '&searchCondition=' + @{${ selectCriteria.searchCondition }} + '&searchValue=' + @{${ selectCriteria.searchValue }} +  '\''"
                     th:disabled="${ selectCriteria.pageNo eq page }"></button>
           </th:block>
 
           <button class="btn btn-light mx-1"
-                  th:onclick="'location.href=\'/order/list?currentPage='+ @{${selectCriteria.pageNo + 1}} + '\''"
+                  th:onclick="'location.href=\'/order/list?currentPage='+ @{${selectCriteria.pageNo + 1}} + '&searchCondition=' + @{${ selectCriteria.searchCondition }} + '&searchValue=' + @{${ selectCriteria.searchValue }} +  '\''"
                   th:disabled="${selectCriteria.pageNo == selectCriteria.maxPage}">></button>
 
           <button class="btn btn-light"
-                  th:onclick="'location.href=\'/order/list?currentPage='+ @{${selectCriteria.maxPage}} + '\''"
+                  th:onclick="'location.href=\'/order/list?currentPage='+ @{${selectCriteria.maxPage}} + '&searchCondition=' + @{${ selectCriteria.searchCondition }} + '&searchValue=' + @{${ selectCriteria.searchValue }} +  '\''"
                   th:disabled="${selectCriteria.pageNo == selectCriteria.maxPage}">>></button>
         </div>
 
@@ -302,25 +300,6 @@
   /*]]>*/
 </script>
 
-<!-- 관심 삭제 -->
-<script th:inline="javascript">
-  /*<![CDATA[*/
-  function interestDelete(itemNo) {
-    $.ajax({
-      type: "POST"
-      ,url: "/order/list/interest/insert"
-      ,data: {"itemNo":itemNo}
-      ,success:function(data){
-        alert("해당 상품이 관심 삭제 되었습니다.");
-      }
-      ,error:function(data){
-        alert("관심 상품 저장에 실패하였습니다.");
-      }
-    });
-  }
-  /*]]>*/
-</script>
-
 
 <!-- 체크 박스 전체 선택 -->
 <script th:inline="javascript">
@@ -386,6 +365,8 @@
     form.submit();
 
       console.log(itemNoList);
+
+      alert("상품이 장바구니에 담겼습니다.")
 
     }
 
