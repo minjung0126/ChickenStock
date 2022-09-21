@@ -45,7 +45,7 @@ public interface ItemService {
     int updateItem(ItemInfoDTO item) throws ItemUpdateException;
 
     @Transactional
-    int deleteItemFile2(ItemInfoDTO item) throws ItemUpdateException;
+    int deleteItemFile2(int itemNo) throws ItemUpdateException;
 
     @Transactional
     int insertItemFile(ItemFileDTO itemFile) throws ItemInsertException;

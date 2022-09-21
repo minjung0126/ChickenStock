@@ -5,12 +5,7 @@ import com.chicken.project.common.paging.SelectCriteria;
 import com.chicken.project.item.model.dto.ItemCategoryDTO;
 import com.chicken.project.item.model.dto.ItemFileDTO;
 import com.chicken.project.item.model.dto.ItemInfoDTO;
-import com.chicken.project.item.model.service.ItemService;
 import com.chicken.project.item.model.service.ItemServiceImpl;
-import com.google.gson.FieldNamingPolicy;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import org.junit.runner.Request;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +17,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -134,6 +128,7 @@ public class ItemController {
     }
 
     @PostMapping("/admin/update")
+    @ResponseBody
     public String itemUpdate(@ModelAttribute ItemInfoDTO item, @RequestParam(value="itemNo", required = false) int itemNo, @RequestParam(value="file", required = false) MultipartFile file, RedirectAttributes rttr) throws Exception{
 
 
@@ -162,26 +157,24 @@ public class ItemController {
         if(file.getSize() > 0) {
             originFileName = file.getOriginalFilename();
             ext = originFileName.substring(originFileName.lastIndexOf("."));
-            changeName = UUID.randomUUID().toString().replace("-",  "");
+            changeName = UUID.randomUUID().toString().replace("-", "");
 
 
             ItemFileDTO itemFile = new ItemFileDTO();
 
 
-            if(result > 0) {
+            if (result > 0) {
 
-                if(item.getItemFile() != null){
-                    int result2 = itemService.deleteItemFile2(item);
+                int result2 = itemService.deleteItemFile2(itemNo);
 
-                    if(result2 > 0){
+                if (result2 > 0) {
 
-                        itemFile.setItemNo(itemNo);
-                        itemFile.setOriginName(originFileName);
-                        itemFile.setFileName(changeName + ext);
+                    itemFile.setItemNo(itemNo);
+                    itemFile.setOriginName(originFileName);
+                    itemFile.setFileName(changeName + ext);
 
-                        itemService.insertItemFile(itemFile);
-                    }
-                } else{
+                    itemService.insertItemFile(itemFile);
+                } else {
 
                     itemFile.setItemNo(itemNo);
                     itemFile.setOriginName(originFileName);
@@ -191,6 +184,7 @@ public class ItemController {
                 }
 
             }
+
 
             try {
                 file.transferTo(new File(filePath + "\\" + changeName + ext));
@@ -202,7 +196,12 @@ public class ItemController {
         }
 
         rttr.addFlashAttribute("message", "품목 수정 성공!");
-        return "redirect:/item/admin/list";
+        String str = "failed";
+        if(result > 0){
+            str = "success";
+        }
+
+        return str;
     }
 
 

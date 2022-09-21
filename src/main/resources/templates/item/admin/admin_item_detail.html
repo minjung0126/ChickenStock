@@ -31,16 +31,17 @@
             <i class="fa fa-shopping-cart text-center mr-1"></i>
             상품 상세 조회
           </a>
-          <a class="nav-link" id="stock-tab" data-toggle="pill" href="#stock" role="tab" aria-controls="stock" aria-selected="false">
+<!--          <a class="nav-link" id="stock-tab" data-toggle="pill" href="#stock" role="tab" aria-controls="stock" aria-selected="false">
             <i class="fa fa-truck text-center mr-1"></i>
             재고 조회
-          </a>
+          </a>-->
         </div>
       </div>
       <div class="tab-content px-4 py-3 px-md-5 " id="v-pills-tabContent" >
         <div class="tab-pane fade show active" id="detail" role="tabpanel" aria-labelledby="detail-tab">
           <h3 class="mt-3 mb-4">상품 정보</h3>
-          <form method="post" action="/item/admin/update" id="itemForm" enctype="multipart/form-data">
+          <form  id="itemForm"  method="post" action="/item/admin/update" enctype="multipart/form-data">
+
 <!--            onsubmit="window.close(); window.opener.location.reload();"-->
             <input type="hidden" name="itemNo" th:value="${ item.itemNo }"/>
             <div class="row">
@@ -125,7 +126,7 @@
               </div>
             </div>
             <div class="mt-3 d-flex justify-content-center">
-              <button class="btn btn-warning me-1" style="color: #fff;" type="submit">수정</button>
+              <button class="btn btn-warning me-1" id="btnModify" style="color: #fff;" type="button">수정</button>
               <button class="btn btn-light ms-1" type="reset">취소</button>
             </div>
           </form>
@@ -310,7 +311,28 @@
     $("#input-file-detail").on('change', function(){
       readURL(this);
     });
+
+
   });
+
+  $("#btnModify").on('click', function (){
+
+      if(confirm("수정하겠습니까?")){
+          $("#itemForm").submit();
+      }
+
+      window.onend
+  });
+
+  function closeSelf(f) {
+      //f.submit();
+     // opener.location.reload(true);
+      opener.location.href="/item/admin/list1";
+      self.close();
+
+
+  }
+
   function readURL(input) {
     if (input.files && input.files[0]) {
       var reader = new FileReader();

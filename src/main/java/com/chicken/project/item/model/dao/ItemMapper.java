@@ -27,7 +27,7 @@ public interface ItemMapper {
 
     int updateItem(ItemInfoDTO item);
 
-    int deleteItemFile2(ItemInfoDTO item);
+    int deleteItemFile2(int item);
 
     int insertItemFile(ItemFileDTO itemFile);
 }
