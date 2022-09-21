@@ -151,9 +151,9 @@ public class ItemServiceImpl implements ItemService{
 
     @Override
     @Transactional
-    public int deleteItemFile2(ItemInfoDTO item) throws ItemUpdateException{
+    public int deleteItemFile2(int itemNo) throws ItemUpdateException{
 
-        int result = itemMapper.deleteItemFile2(item);
+        int result = itemMapper.deleteItemFile2(itemNo);
 
         if(!(result > 0)){
             throw new ItemUpdateException("상품 이미지 삭제에 실패하셨습니다.");
