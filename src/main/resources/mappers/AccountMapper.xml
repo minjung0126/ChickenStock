@@ -53,13 +53,42 @@
         <result property="content" column="CONTENT"/>
     </resultMap>
 
+<!--    <select id="selectAccountApplyList" resultMap="accountApplyResultMap">-->
+<!--        SELECT-->
+<!--               A.RNUM-->
+<!--             , A.*-->
+<!--             , B.ACCOUNT_DEPOSIT-->
+<!--          FROM ACCOUNT_APPLY A-->
+<!--          LEFT JOIN ACCOUNT B ON (A.DEPOSIT_NUM = B.DEPOSIT_NUM)-->
+<!--         ORDER BY B.DEPOSIT_NUM DESC-->
+<!--    </select>-->
+
     <select id="selectAccountApplyList" resultMap="accountApplyResultMap">
         SELECT
-               A.*
-             , B.ACCOUNT_DEPOSIT
-          FROM ACCOUNT_APPLY A
-          LEFT JOIN ACCOUNT B ON (A.DEPOSIT_NUM = B.DEPOSIT_NUM)
-         ORDER BY B.DEPOSIT_NUM DESC
+               A.RNUM
+             , A.*
+             , D.ACCOUNT_DEPOSIT
+          FROM(SELECT ROWNUM RNUM
+                    , B.*
+                 FROM (SELECT C.*
+                         FROM ACCOUNT_APPLY C
+                 LEFT JOIN ACCOUNT D ON (C.DEPOSIT_NUM = D.DEPOSIT_NUM)
+         ORDER BY C.DEPOSIT_NUM DESC
+         )B
+        <![CDATA[
+                  WHERE ROWNUM <= #{ endRow }
+                  ]]>
+         )A
+         LEFT JOIN ACCOUNT D ON (A.DEPOSIT_NUM = D.DEPOSIT_NUM)
+         WHERE A.RNUM >= #{ startRow }
+         ORDER BY 1 ASC
+    </select>
+
+    <select id="selectTotalCount" resultType="_int" parameterType="hashmap">
+    SELECT
+           COUNT(*)
+      FROM ACCOUNT
+     ORDER BY DEPOSIT_NUM DESC
     </select>
 
     <select id="selectAccountList" resultMap="accountResultMap">

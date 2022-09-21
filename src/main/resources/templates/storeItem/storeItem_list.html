@@ -20,6 +20,9 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script th:src="@{/js/common.js}"></script>
+
 </head>
 <body>
 <div class="wrap">
@@ -45,15 +48,15 @@
                     <br>
                     <form th:action="@{ /storeItem/itemListSelect }">
                         <div class="input-group mb-3 col-3 float-right" style="min-width: max-content">
-                            <select type="" class="form-control" id="searchCondition" th:name="searchCondition"
+                            <select type="" class="form-control" id="searchCondition" name="searchCondition"
                                     style="height: 40px; min-width: max-content">
                                 <option value="category">카테고리</option>
-                                <option value="searchItemName">상품명</option>
+                                <option value="searchItemName" th:selected="${ selectCriteria.getSearchCondition() == 'searchItemName'}">상품명</option>
                             </select>
                             <button class="btn btn-light px-1" type="button" disabled></button>
-                            <input class="form-control me-2" type="text" id="storeName" th:name="searchValue"
+                            <input class="form-control me-2" type="text" id="storeName" name="searchValue" th:value="${ selectCriteria.getSearchValue() }"
                                    style="min-width: max-content">
-                            <button class="btn btn-warning" onclick="find();" type="submit" style="color:#fff">검색
+                            <button class="btn btn-warning" type="submit" style="color:#fff">검색
                             </button>
                         </div>
                     </form>
@@ -73,41 +76,57 @@
                             <th>규격</th>
                             <th>제조사</th>
                             <th>매입단가</th>
-                            <th>매출단가</th>
                             <th>재고량</th>
-                            <th>품절여부</th>
+                            <th>재고입력</th>
+                            <th>재고현황</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr th:each="item, stat : ${ itemList }">
                             <td>
                                 <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" name="chk1" th:value="${ item.itemNo }"/>
+                                    <input type="checkbox" class="form-check-input" name="chk1" th:value="${ item.itemInfoDTO.itemName }"/>
                                     <label class="form-check-label"></label>
                                 </div>
                             </td>
-                            <td th:text="${ item.rNum }">1</td>
-                            <td th:text="${ item.itemNo }">100000</td>
+                            <td th:text="${ item.itemInfoDTO.rNum }">1</td>
+                            <td th:text="${ item.itemInfoDTO.itemNo }">100000</td>
                             <td>
                                 <div class="img-info">
                                     <div class="img-info__img">
-                                        <img th:src="'/images/' + ${ item.itemFile.fileName }" alt="">
+                                        <img th:src="'/itemImage/' + ${ item.itemFileDTO.fileName }" alt="">
                                     </div>
                                 </div>
                             </td>
-                            <td th:text="${ item.itemName }">닭다리</td>
-                            <td th:text="${ item.categoryName }">식재료</td>
-                            <td th:text="${ item.itemStandard }">1kg</td>
-                            <td th:text="${ item.itemMake }">하림(국내산)</td>
-                            <td th:text="${ item.itemPurchase }">5,500</td>
-                            <td th:text="${ item.itemSales }">6,000</td>
-                            <td th:text="${ item.itemAmount }">100</td>
-                            <td th:if="${ item.itemSoldoutYn eq 'Y' }" >
-                                <span class="active-circle bg-danger"></span><span th:text="${ '품절' }"></span>
+                            <td th:text="${ item.itemInfoDTO.itemName }">닭다리</td>
+                            <td th:text="${ item.itemCategoryDTO.categoryName }">식재료</td>
+                            <td th:text="${ item.itemInfoDTO.itemStandard }">1kg</td>
+                            <td th:text="${ item.itemInfoDTO.itemMake }"></td>
+                            <td th:text="${ item.itemInfoDTO.itemSales }"></td>
+                            <th:block  th:if="${ item.storeAmount < 10 }">
+                                <td style="color: red"><span th:text="${ item.storeAmount }"></span></td>
+                            </th:block>
+                            <th:block  th:if="${ item.storeAmount >= 10 }">
+                                <td><span th:text="${ item.storeAmount }"></span></td>
+                            </th:block>
+                            <form name="storeForm">
+                            <td>
+                                <input class="relAmount-input" type="number" min="0" name="storeAmount" style="width:60px; text-align: center; border: 1px solid rgb(255, 255, 255); border-bottom: 1px solid black">
+                                <button type="button" class="rel-btn" style="border : none; background-color: #fff;">
+                                    <img src="/images/stock.png" alt="출고" width="35px" height="35px">
+                                </button>
+                                <input type="hidden" name="itemNo" th:value="${ item.itemInfoDTO.itemNo }">
+
                             </td>
-                            <td th:if="${ item.itemSoldoutYn eq 'N' }" >
-                                <span class="active-circle bg-success"></span><span th:text="${ '보유' }"></span>
-                            </td>
+                            </form>
+                            <th:block  th:if="${ item.storeAmount < 10 }">
+                                <td style="color: red;">
+                                    <img src="/images/warning.png" alt="warning" width="30px" height="30px">
+                                </td>
+                            </th:block>
+                            <th:block  th:if="${ item.storeAmount >= 10 }">
+                                <td></td>
+                            </th:block>
                         </tr>
                         </tbody>
                     </table>
@@ -117,14 +136,14 @@
                 <div class="pagingArea" align="center">
                     <!-- 맨 앞으로 이동 버튼 -->
                     <button class="btn btn-light mx-1" style="cursor:pointer; background: #ccc; color: #fff;"
-                            th:onclick="'location.href=\'/storeItem/itemListSelect?currentPage='+ @{${selectCriteria.startPage}} + '\''"
+                            th:onclick="'location.href=\'/storeItem/itemListSelect?currentPage='+ @{${selectCriteria.startPage}} + '&searchCondition=' + @{${ selectCriteria.searchCondition }} + '&searchValue=' + @{${ selectCriteria.searchValue }} + '\''"
                             th:disabled="${selectCriteria.pageNo == 1}"
                     >
                         <<
                     </button>
                     <!-- 이전 페이지 버튼 -->
                     <button class="btn btn-light" style="cursor:pointer; background: #ccc; color: #fff;"
-                            th:onclick="'location.href=\'/storeItem/itemListSelect?currentPage='+ @{${selectCriteria.pageNo - 1}} + '\''"
+                            th:onclick="'location.href=\'/storeItem/itemListSelect?currentPage='+ @{${selectCriteria.pageNo - 1}} + '&searchCondition=' + @{${ selectCriteria.searchCondition }} + '&searchValue=' + @{${ selectCriteria.searchValue }} + '\''"
                             th:disabled="${selectCriteria.pageNo == 1}"
                     >
                         <
@@ -133,21 +152,21 @@
                     <th:block th:each="page : ${#numbers.sequence(selectCriteria.startPage, selectCriteria.endPage)}">
                         <button class="btn btn-warning mx-1" style="cursor:pointer; color: #fff;"
                                 th:text="${ page }"
-                                th:onclick="'location.href=\'/storeItem/itemListSelect?currentPage='+ @{${page}} + '\''"
+                                th:onclick="'location.href=\'/storeItem/itemListSelect?currentPage='+ @{${page}} + '&searchCondition=' + @{${ selectCriteria.searchCondition }} + '&searchValue=' + @{${ selectCriteria.searchValue }} + '\''"
                                 th:disabled="${ selectCriteria.pageNo eq page }">
                         </button>
                     </th:block>
 
                     <!-- 다음 페이지 버튼 -->
                     <button class="btn btn-light mx-1" style="cursor:pointer; background: #ccc; color: #fff;"
-                            th:onclick="'location.href=\'/storeItem/itemListSelect?currentPage='+ @{${selectCriteria.pageNo + 1}} + '\''"
+                            th:onclick="'location.href=\'/storeItem/itemListSelect?currentPage='+ @{${selectCriteria.pageNo + 1}} + '&searchCondition=' + @{${ selectCriteria.searchCondition }} + '&searchValue=' + @{${ selectCriteria.searchValue }} + '\''"
                             th:disabled="${selectCriteria.pageNo == selectCriteria.maxPage}"
                     >
                         >
                     </button>
                     <!-- 마지막 페이지로 이동 버튼 -->
                     <button class="btn btn-light mx-1" style="cursor:pointer; background: #ccc; color: #fff;"
-                            th:onclick="'location.href=\'/storeItem/itemListSelect?currentPage='+ @{${selectCriteria.maxPage}} + '\''"
+                            th:onclick="'location.href=\'/storeItem/itemListSelect?currentPage='+ @{${selectCriteria.maxPage}} + '&searchCondition=' + @{${ selectCriteria.searchCondition }} + '&searchValue=' + @{${ selectCriteria.searchValue }} + '\''"
                             th:disabled="${selectCriteria.pageNo == selectCriteria.maxPage}"
                     >
                         >>
@@ -168,10 +187,57 @@
 
 <!-- datepicker js -->
 <script src="../assets/js/daterange.js"></script>
+<script>
+
+    $(".rel-btn").on('click', function(e){
+
+        let form = $(this).parents('tr').children().eq(10);
+        let storeAmount = $(this).parents('tr').children().eq(9);
+        let inputAmount = $(this).parents('tr').children().eq(11).find(".relAmount-input");
+        let tdImg = $(this).parents('tr').children().eq(12);
+        let storeForm = form.serialize();
+
+        console.log(storeForm);
+
+        $.ajax({
+
+            url:'/storeItem/storeItemUpdate',
+            type:'POST',
+            data: storeForm,
+            contentType: 'application/x-www-form-urlencoded',
+            dataType:'json',
+            success: function (result){
+
+                if(confirm("수정하시겠습니까?") == true){
+                    storeAmount.html(result);
+                    inputAmount.val("");
+                    if(storeAmount.text() < 10){
+                        storeAmount.css('color','red');
+                        if( tdImg.children() != null ){
+                            tdImg.empty();
+                        }
+                        tdImg.append('<img src=\"/images/warning.png\" alt=\"warning\" width=\"30px\" height=\"30px\">');
+                    } else {
+                        storeAmount.css('color','black');
+                        tdImg.empty();
+                    }
+                    alert("수정하였습니다.");
+                } else {
+
+                }
+            },
+            error: function (error){
+                alert("실패하였습니다.");
+            }
+        });
+        e.stopImmediatePropagation();
+    });
+
+
+</script>
 
 <!-- 팝업으로 이동 -->
 <script>
-
     var form = document.getElementsByClassName('form-check');
 
     $(document).ready(function(){
@@ -189,33 +255,6 @@
     });
 </script>
 
-<!-- 체크 박스 전체 선택 -->
-<script type="text/javascript">
-    function selectAll(selectAll)  {
-        const checkboxes = document.getElementsByName('option');
-
-        checkboxes.forEach((checkbox) => {
-            checkbox.checked = selectAll.checked;
-        })
-    }
-</script>
-
-<!-- 선택 삭제 버튼 메시지 띄우기 -->
-<script>
-    function deleteItem(){
-        var answer = confirm('선택한 항목을 삭제하시겠습니까?');
-
-
-        if(answer){
-            var answer2 = confirm('선택한 항목을 삭제합니다.');
-            if(answer2){
-                alert('선택한 항목이 삭제되었습니다.'); // 나중에 삭제된 후 alert되도록 수정하기
-            }
-        }
-
-    }
-</script>
-
 <!-- 레이어 팝업 -->
 <script>
     function openLayer(IdName, tpos, lpos){
@@ -230,44 +269,15 @@
     }
 </script>
 
-<!-- 파일 이미지 -->
-<script>
-    $(function() {
-        $("#input-file-regist").on('change', function(){
-            readURL(this);
+<!-- 체크 박스 전체 선택 -->
+<script type="text/javascript">
+    function selectAll(selectAll)  {
+        const checkboxes = document.getElementsByName('option');
 
-            function readURL(input) {
-                if (input.files && input.files[0]) {
-                    var reader = new FileReader();
-                    reader.onload = function (e) {
-                        $('.input-file-button-regist #View').attr('src', e.target.result);
-                        $('.input-file-button-regist #View').removeClass('d-none');
-                        $('.input-file-button-regist .fa').remove();
-                    }
-                    reader.readAsDataURL(input.files[0]);
-                }
-            }
-        });
-    });
-</script>
-<script>
-    $(function() {
-        $("#input-file-detail").on('change', function(){
-            readURL(this);
-
-            function readURL(input) {
-                if (input.files && input.files[0]) {
-                    var reader = new FileReader();
-                    reader.onload = function (e) {
-                        $('.input-file-button-detail #View2').attr('src', e.target.result);
-                        $('.input-file-button-detail #View2').removeClass('d-none');
-                        $('.input-file-button-detail .fa').remove();
-                    }
-                    reader.readAsDataURL(input.files[0]);
-                }
-            }
-        });
-    });
+        checkboxes.forEach((checkbox) => {
+            checkbox.checked = selectAll.checked;
+        })
+    }
 </script>
 
 <!-- 선택된 체크박스 값 가져오기 (삭제) -->
@@ -310,29 +320,6 @@
                 }
             }
         }
-
-
-
-
-        // $.ajax({
-        //             url: "receive/admin/list/new",
-        //             // dataType: "json",
-        //             // contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-        //             type: "post",
-        //             data: {
-        //                 itemNo: itemNoVal
-        //             },
-        //             success: function (data) {
-        //                 console.log("success", data);
-        //             },
-        //             error: function () {
-        //                 alert("error");
-        //             }
-        //         });
-
-        // location.href = "/receive/admin/list/new?itemNo=" + arr;
-
-
     }
 </script>
 

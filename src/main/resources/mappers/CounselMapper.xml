@@ -38,6 +38,7 @@
         SELECT
                *
           FROM COUNSEL
+         ORDER BY COUNSEL_NO DESC
     </select>
 
     <select id="selectCounselByNo" resultMap="counselResultMap">

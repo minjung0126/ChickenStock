@@ -65,9 +65,9 @@
         <result property="recTotalMoney" column="REC_TOTALMONEY"/>
         <result property="orderDate" column="ORDER_DATE"/>
         <result property="recDate" column="REC_DATE"/>
-        <association property="receiveStore" resultMap="receiveStoreResultMap"/>
-        <association property="recReleaseItem" resultMap="recReleaseItemResultMap"/>
-        <association property="recStoreOrder" resultMap="recStoreOrderResultMap"/>
+        <collection property="receiveStore" resultMap="receiveStoreResultMap"/>
+        <collection property="recReleaseItem" resultMap="recReleaseItemResultMap"/>
+        <collection property="recStoreOrder" resultMap="recStoreOrderResultMap"/>
     </resultMap>
 
     <resultMap id="recReleaseItemResultMap" type="com.chicken.project.storeReceive.model.dto.RecReleaseItemDTO">
@@ -166,6 +166,14 @@
         <result property="itemNo" column="ITEM_NO"/>
     </resultMap>
 
+    <resultMap id="recStoItemInfoResultMap" type="com.chicken.project.storeReceive.model.dto.RecStoItemInfoDTO">
+        <id property="itemNo" column="ITEM_NO"/>
+        <result property="categoryNo" column="CATEGORY_NO"/>
+        <result property="storeAmount" column="STORE_AMOUNT"/>
+        <result property="storeName" column="STORE_NAME"/>
+        <result property="storeAccount" column="STORE_ACCOUNT"/>
+    </resultMap>
+
     <select id="selectTotalCount" resultType="_int" parameterType="hashmap">
         SELECT
                COUNT(DISTINCT(R.REL_CODE))
@@ -173,6 +181,17 @@
           JOIN RELEASE_ITEM RI ON (RI.REL_CODE = R.REL_CODE)
           LEFT JOIN RECEIVE_STORE RS ON (RI.ORDER_NO = RS.ORDER_NO)
           JOIN STORE_ORDER SO ON (RI.ORDER_NO = SO.ORDER_NO)
+          JOIN ITEM_INFO I ON (I.ITEM_NO = RI.ITEM_NO)
+        <where>
+            R.STORE_NAME = #{ storeName }
+            <if test="searchCondition == 'itemName'">
+                AND I.ITEM_NAME LIKE '%' || #{ searchValue } || '%'
+            </if>
+            <if test="startDate != null and !startDate.equals('')">
+                AND (TO_CHAR(SO.ORDER_DATE, 'YYYY-MM-DD') BETWEEN #{ startDate } AND #{ endDate }
+                OR TO_CHAR(RS.REC_DATE, 'YYYY-MM-DD') BETWEEN #{ startDate } AND #{ endDate })
+            </if>
+        </where>
     </select>
 
     <select id="selectAllRelease" resultMap="recReleaseResultMap">
@@ -227,6 +246,16 @@ FROM (SELECT
           JOIN RELEASE_ITEM RI ON (RI.REL_CODE = R.REL_CODE)
           LEFT JOIN RECEIVE_STORE RS ON (RI.ORDER_NO = RS.ORDER_NO)
           JOIN STORE_ORDER SO ON (RI.ORDER_NO = SO.ORDER_NO)
+        <where>
+            R.STORE_NAME = #{ storeName }
+            <if test="searchCondition == 'itemName'">
+               AND R.REL_CODE IN (SELECT DISTINCT(RI.REL_CODE) FROM RELEASE_ITEM RI JOIN ITEM_INFO I ON(I.ITEM_NO = RI.ITEM_NO) WHERE I.ITEM_NAME LIKE '%' || #{ searchValue } || '%')
+            </if>
+            <if test="startDate != null and !startDate.equals('')">
+                AND (TO_CHAR(SO.ORDER_DATE, 'YYYY-MM-DD') BETWEEN #{ startDate } AND #{ endDate }
+                OR TO_CHAR(RS.REC_DATE, 'YYYY-MM-DD') BETWEEN #{ startDate } AND #{ endDate })
+            </if>
+        </where>
          ORDER BY RS.REC_CODE DESC,
                   RI.ORDER_NO) B
 <![CDATA[
@@ -256,6 +285,7 @@ FROM (SELECT
              , SO.ORDER_DATE
              , RS.REC_DATE
              , RLI.REL_CODE
+             , IC.CATEGORY_NO
         FROM RELEASE_ITEM RLI
                  JOIN ITEM_INFO I ON (RLI.ITEM_NO = I.ITEM_NO)
                  JOIN ITEM_CATEGORY IC ON (I.CATEGORY_NO = IC.CATEGORY_NO)
@@ -280,7 +310,115 @@ FROM (SELECT
                , RSI.REC_MONEY
                , SO.ORDER_DATE
                , RS.REC_DATE
+               , IC.CATEGORY_NO
         HAVING RLI.REL_CODE = #{ relCode }
         ORDER BY I.ITEM_NO
     </select>
+
+    <insert id="insertReceiveStore" parameterType="hashMap">
+        INSERT
+          INTO RECEIVE_STORE
+        (
+            ORDER_NO
+          , REC_CODE
+          , REC_AMOUNT
+          , STORE_NAME
+          , REC_TOTALMONEY
+        )
+        VALUES
+        (
+           #{ orderNo }
+        , (TO_CHAR('SI' || LPAD(SEQ_STO_REC_CODE.NEXTVAL, 4, '0')))
+        , #{ recTotalAmount }
+        , #{ storeName }
+        , #{ recTotalMoney }
+        )
+    </insert>
+
+    <insert id="insertTaxBill">
+        INSERT
+          INTO TAXBILL
+        (
+            REC_CODE
+        )
+        VALUES
+        (
+            (TO_CHAR('SI' || LPAD(SEQ_STO_REC_CODE.CURRVAL, 4, '0')))
+        )
+    </insert>
+
+    <insert id="insertTsBill">
+        INSERT
+          INTO TSBILL
+        (
+            REC_CODE
+        )
+        VALUES
+        (
+            (TO_CHAR('SI' || LPAD(SEQ_STO_REC_CODE.CURRVAL, 4, '0')))
+        )
+    </insert>
+
+    <insert id="insertReceiveStoreItem" parameterType="hashMap">
+        INSERT
+          INTO RECEIVE_STORE_ITEM
+        (
+            ITEM_NO
+          , REC_CODE
+          , REC_AMOUNT
+          , REC_MONEY
+          , REC_SUPPLY
+          , REC_TAX
+        )
+        VALUES
+        (
+            #{ recItemNo }
+          , (TO_CHAR('SI' || LPAD(SEQ_STO_REC_CODE.CURRVAL, 4, '0')))
+          , #{ recAmount }
+          , #{ recMoney }
+          , #{ recSupply }
+          , #{ recTax }
+        )
+    </insert>
+
+    <select id="selectOneItem" resultType="_int">
+        SELECT
+               COUNT(*)
+          FROM STO_ITEM_INFO
+         WHERE ITEM_NO = #{ recItemNo }
+           AND STORE_NAME = #{ storeName }
+    </select>
+
+    <update id="updateOneItem">
+        UPDATE STO_ITEM_INFO
+           SET STORE_AMOUNT = (SELECT
+                                      STORE_AMOUNT
+                                 FROM STO_ITEM_INFO
+                                WHERE ITEM_NO = #{ recItemNo }
+                                  AND STORE_NAME = #{ storeName })
+            + #{ recAmount }
+        WHERE ITEM_NO = #{ recItemNo }
+          and store_name = #{ storeName }
+    </update>
+
+    <insert id="insertOneItem" parameterType="hashMap">
+        INSERT
+          INTO STO_ITEM_INFO
+        (
+            STORE_AMOUNT
+          , CATEGORY_NO
+          , ITEM_NO
+          , STORE_NAME
+          , STORE_ACCOUNT
+        )
+        VALUES
+        (
+            #{ recAmount }
+          , #{ categoryNo }
+          , #{ recItemNo }
+          , #{ storeName }
+          , #{ storeAccount }
+        )
+    </insert>
+
 </mapper>

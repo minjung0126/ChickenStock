@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" type="text/css" th:href="@{/css/release/release_detail.css}">
   <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+  <script th:src="@{/js/common.js}"></script>
 
   <style>
     .table tbody tr td:nth-last-child(1) {
@@ -81,11 +82,11 @@
             <form th:action="@{ /release/orderSelect }">
             <div class="input-group mb-3 col-5 float-right" style="min-width: max-content">
               <button class="btn btn-light px-1" type="button" disabled></button>
-              <input type="date" class="form-control" id="searchDate"  th:name="searchDate" value="" style="min-width: max-content">
+              <input type="date" class="form-control" id="searchDate"  th:name="searchDate" th:value="${ releaseSelectCriteria.getSearchDate() }" style="min-width: max-content">
               <button class="btn btn-light" type="button" disabled>~</button>
-              <input type="date" class="form-control" id="searchDate2" th:name="searchDate2" value="" style="min-width: max-content">
+              <input type="date" class="form-control" id="searchDate2" th:name="searchDate2" value="" style="min-width: max-content" th:value="${ releaseSelectCriteria.getSearchDate2() }">
               <button class="btn btn-light px-1" type="button" disabled></button>
-              <input class="form-control me-2" type="text" th:name="searchValue" placeholder="지점명" style="min-width: max-content">
+              <input class="form-control me-2" type="text" th:name="searchValue" placeholder="지점명" style="min-width: max-content" th:value="${ releaseSelectCriteria.getSearchValue() }">
               <button class="btn btn-warning" onclick="find();" type="submit" style="color:#fff">검색</button>
             </div>
             </form>
@@ -95,6 +96,7 @@
               <thead>
                 <tr>
                   <th>상품코드</th>
+                  <th>발주번호</th>
                   <th>상품명</th>
                   <th>카테고리</th>
                   <th>규격</th>
@@ -111,6 +113,7 @@
                 <tr th:each="order : ${ orderList }" class="release-tr-add">
                   <form th:action="@{ /release/orderInsertUpdate }" method="post">
                     <td th:text="${ order.releaseItemInfoDTO.itemNo }"></td>
+                    <td th:text="${ order.storeOrderDTO.orderNo }"></td>
                     <td th:text="${ order.releaseItemInfoDTO.itemName }"></td>
                     <td th:text="${ order.releaseItemCategoryDTO.categoryName}"></td>
                     <td th:text="${ order.releaseItemInfoDTO.itemStandard }"></td>
@@ -167,6 +170,7 @@
             <thead>
               <tr>
                 <th>상품코드</th>
+                <th>발주번호</th>
                 <th>상품명</th>
                 <th>카테고리</th>
                 <th>규격</th>
@@ -183,6 +187,7 @@
             <tr th:each="orderN : ${ orderListN }" class="tr-itemName">
             <form th:action="@{ /release/orderDeleteUpdate }" method="post">
                 <td th:text="${ orderN.releaseItemInfoDTO.itemNo }"></td>
+                <td th:text="${ orderN.storeOrderDTO.orderNo }"></td>
                 <td th:text="${ orderN.releaseItemInfoDTO.itemName }"></td>
                 <td th:text="${ orderN.releaseItemCategoryDTO.categoryName}"></td>
                 <td th:text="${ orderN.releaseItemInfoDTO.itemStandard }"></td>
@@ -235,8 +240,8 @@
 
       var tr1 = $("#tableY > tbody > tr:nth-child(1)");
       var td = tr1.children();
-      var relName = td.eq(2).text();
-      var storeName = td.eq(9).text();
+      var relName = td.eq(3).text();
+      var storeName = td.eq(10).text();
       var lengths = $("#tableY > tbody > tr").length;
 
       switch (lengths) {

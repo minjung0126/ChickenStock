@@ -8,21 +8,21 @@ public class StoreItemDTO {
     private String itemStandard; // 품목규격
     private String itemMake; // 제조사
     private String itemSales; // 매출단가
-    private String originName; //원본파일명
+    private String fileName; //원본파일명
     private int storeAmount; // 재고수량
     private int returnAccount; // 반품금액
 
     public StoreItemDTO() {
     }
 
-    public StoreItemDTO(int itemNo, String itemName, String categoryName, String itemStandard, String itemMake, String itemSales, String originName, int storeAmount, int returnAccount) {
+    public StoreItemDTO(int itemNo, String itemName, String categoryName, String itemStandard, String itemMake, String itemSales, String fileName, int storeAmount, int returnAccount) {
         this.itemNo = itemNo;
         this.itemName = itemName;
         this.categoryName = categoryName;
         this.itemStandard = itemStandard;
         this.itemMake = itemMake;
         this.itemSales = itemSales;
-        this.originName = originName;
+        this.fileName = fileName;
         this.storeAmount = storeAmount;
         this.returnAccount = returnAccount;
     }
@@ -75,12 +75,12 @@ public class StoreItemDTO {
         this.itemSales = itemSales;
     }
 
-    public String getOriginName() {
-        return originName;
+    public String getFileName() {
+        return fileName;
     }
 
-    public void setOriginName(String originName) {
-        this.originName = originName;
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
     public int getStoreAmount() {
@@ -108,7 +108,7 @@ public class StoreItemDTO {
                 ", itemStandard='" + itemStandard + '\'' +
                 ", itemMake='" + itemMake + '\'' +
                 ", itemSales='" + itemSales + '\'' +
-                ", originName='" + originName + '\'' +
+                ", fileName='" + fileName + '\'' +
                 ", storeAmount=" + storeAmount +
                 ", returnAccount=" + returnAccount +
                 '}';

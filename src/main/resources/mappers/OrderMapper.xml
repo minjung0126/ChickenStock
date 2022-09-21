@@ -18,6 +18,7 @@
         <result property="orderDate" column="ORDER_DATE"/>
         <result property="storeName" column="STORE_NAME"/>
         <result property="cartAmount" column="CART_AMOUNT"/>
+        <result property="interYn" column="INTER_YN"/>
 
         <association property="itemFile" resultMap="itemFileResultMap"/>
     </resultMap>
@@ -68,12 +69,13 @@
         <result property="cartAmount" column="CART_AMOUNT"/>
         <result property="storeName" column="STORE_NAME"/>
         <result property="cartNo" column="CART_NO"/>
-        <result property="orderNo" column="ORDER_NO"/>
         <result property="orderDate" column="ORDER_DATE"/>
+        <result property="cartYn" column="CART_YN"/>
 
         <association property="itemFile" resultMap="itemFileResultMap"/>
     </resultMap>
 
+    <!-- 상품 조회 리스트 카운트 -->
     <select id="selectTotalCount" resultType="_int" parameterType="hashmap">
         SELECT
         COUNT(*)
@@ -91,6 +93,7 @@
         </where>
     </select>
 
+    <!-- 상품 조회 리스트 출력 -->
     <select id="selectAllItem" resultMap="orderResultMap">
         SELECT
               A.RNUM
@@ -147,6 +150,7 @@
         ORDER BY A.ITEM_NO ASC
     </select>
 
+    <!-- 관심 설정 여부 조회 -->
     <select id="selectInterestCount" resultType="_int" parameterType="InterestDTO">
         SELECT
             COUNT(*)
@@ -155,200 +159,7 @@
           AND A.STORE_NAME = #{ storeName }
     </select>
 
-    <insert id="insertInterest" parameterType="InterestDTO">
-        INSERT INTO INTEREST
-        (
-              INTER_NO
-            , STORE_NAME
-            , CATEGORY_NO
-            , ITEM_NO
-        )
-        SELECT
-              SEQ_INTEREST_NO.NEXTVAL
-            , #{ storeName }
-            , A.CATEGORY_NO
-            , #{ itemNo }
-         FROM ITEM_INFO A
-        WHERE ITEM_NO = ${ itemNo }
-    </insert>
-
-    <delete id="deleteInterest" parameterType="InterestDTO">
-        DELETE FROM INTEREST
-         WHERE STORE_NAME = #{ storeName }
-           AND ITEM_NO = ${ itemNo }
-    </delete>
-
-    <select id="selectCartTotalCount" resultType="_int" parameterType="hashmap">
-        SELECT
-        COUNT(*)
-        FROM CART A
-        <if test="searchCondition == 'category'">
-            JOIN ITEM_CATEGORY B ON(A.CATEGORY_NO = B.CATEGORY_NO)
-        </if>
-        <if test="searchCondition == 'itemName'">
-            JOIN ITEM_INFO C ON (A.ITEM_NO = C.ITEM_NO)
-        </if>
-        <where>
-            <if test="searchCondition == 'category'">
-                B.CATEGORY_NAME LIKE '%' || #{ searchValue } || '%'
-            </if>
-            <if test="searchCondition == 'itemName'">
-                C.ITEM_NAME LIKE '%' || #{ searchValue } || '%'
-            </if>
-        WHERE A.STORE_NAME = #{ storeName }
-        </where>
-    </select>
-
-<select id="selectCartItem" resultMap="cartResultMap">
-        SELECT
-              A.RNUM
-            , A.CART_AMOUNT
-            , A.CATEGORY_NO
-            , A.ITEM_NO
-            , A.CART_NO
-            , A.ITEM_NAME
-            , A.ITEM_STANDARD
-            , A.ITEM_SALES
-            , A.ITEM_SOLDOUT_YN
-            , A.ITEM_MAKE
-            , A.FILE_NO
-            , A.ORIGIN_NAME
-            , A.FILE_NAME
-            , A.BALANCE
-            , A.TOTAL_PRICE
-    FROM (SELECT
-             ROWNUM RNUM
-           , B.CART_AMOUNT
-           , B.CATEGORY_NO
-           , B.ITEM_NO
-           , B.CART_NO
-           , B.ITEM_NAME
-           , B.ITEM_STANDARD
-           , B.ITEM_SALES
-           , B.ITEM_SOLDOUT_YN
-           , B.ITEM_MAKE
-           , B.FILE_NO
-           , B.ORIGIN_NAME
-           , B.FILE_NAME
-           , B.BALANCE
-           , B.TOTAL_PRICE
-        FROM (SELECT
-             C.CART_AMOUNT
-           , C.CATEGORY_NO
-           , C.ITEM_NO
-           , C.CART_NO
-           , E.ITEM_NAME
-           , E.ITEM_STANDARD
-           , E.ITEM_SALES
-           , E.ITEM_SOLDOUT_YN
-           , E.ITEM_MAKE
-           , F.FILE_NO
-           , F.ORIGIN_NAME
-           , F.FILE_NAME
-           , G.BALANCE
-           , H.TOTAL_PRICE
-        FROM CART C
-        LEFT JOIN ITEM_INFO E ON (C.ITEM_NO = E.ITEM_NO)
-        LEFT JOIN ITEM_FILE F ON (C.ITEM_NO = F.ITEM_NO)
-        LEFT JOIN BALANCE G ON (C.STORE_NAME = G.STORE_NAME)
-        LEFT JOIN ORDER_HANDLER H ON (C.ITEM_NO = H.TOTAL_PRICE)
-            <if test="searchCondition == 'category'">
-                LEFT JOIN ITEM_CATEGORY D ON (C.CATEGORY_NO = D.CATEGORY_NO)
-            </if>
-        <where>
-            <if test="searchCondition == 'category'">
-                D.CATEGORY_NAME LIKE '%' || #{ searchValue } || '%'
-            </if>
-            <if test="searchCondition == 'itemName'">
-                E.ITEM_NAME LIKE '%' || #{ searchValue } || '%'
-            </if>
-            AND C.STORE_NAME = #{ storeName }
-            AND C.CART_YN = 'Y'
-        </where>
-        ORDER BY C.ITEM_NO ASC
-        ) B
-        <![CDATA[
-              WHERE ROWNUM <= #{ endRow }
-        ]]>
-        ) A
-        WHERE A.RNUM >= #{ startRow }
-    </select>
-
-    <select id="selectAvailableItemCount" resultType="_int" parameterType="hashmap">
-        SELECT
-        COUNT(*)
-        FROM ITEM_INFO A
-        <if test="searchCondition == 'category'">
-            JOIN ITEM_CATEGORY B ON(A.CATEGORY_NO = B.CATEGORY_NO)
-        </if>
-        <where>
-            <if test="searchCondition == 'category'">
-                B.CATEGORY_NAME LIKE '%' || #{ searchValue } || '%'
-            </if>
-            <if test="searchCondition == 'itemName'">
-                A.ITEM_NAME LIKE '%' || #{ searchValue } || '%'
-            </if>
-        AND A.ITEM_SOLDOUT_YN = 'N'
-        </where>
-    </select>
-
-    <select id="selectAvailableItem" resultMap="orderResultMap">
-        SELECT
-        A.RNUM
-        , A.ITEM_NO
-        , A.ITEM_NAME
-        , D.CATEGORY_NAME
-        , A.CATEGORY_NO
-        , A.ITEM_STANDARD
-        , A.ITEM_MAKE
-        , A.ITEM_SALES
-        , E.STORE_AMOUNT
-        , A.ITEM_SOLDOUT_YN
-        , F.FILE_NO
-        , F.ORIGIN_NAME
-        , F.FILE_NAME
-        FROM (SELECT ROWNUM RNUM
-        , B.ITEM_NO
-        , B.ITEM_NAME
-        , B.CATEGORY_NO
-        , B.ITEM_STANDARD
-        , B.ITEM_MAKE
-        , B.ITEM_SALES
-        , B.ITEM_SOLDOUT_YN
-        FROM (SELECT
-          C.ITEM_NO
-        , C.ITEM_NAME
-        , C.CATEGORY_NO
-        , C.ITEM_STANDARD
-        , C.ITEM_MAKE
-        , C.ITEM_SALES
-        , C.ITEM_SOLDOUT_YN
-        FROM ITEM_INFO C
-        <if test="searchCondition == 'category'">
-            JOIN ITEM_CATEGORY D ON(C.CATEGORY_NO = D.CATEGORY_NO)
-        </if>
-        <where>
-            <if test="searchCondition == 'category'">
-                D.CATEGORY_NAME LIKE '%' || #{ searchValue } || '%'
-            </if>
-            <if test="searchCondition == 'itemName'">
-                C.ITEM_NAME LIKE '%' || #{ searchValue } || '%'
-            </if>
-        </where>
-        ORDER BY C.ITEM_NO ASC
-        ) B
-        <![CDATA[
-                  WHERE ROWNUM <= #{ endRow }
-                  ]]>
-        ) A
-        JOIN ITEM_CATEGORY D ON (A.CATEGORY_NO = D.CATEGORY_NO)
-        LEFT JOIN STO_ITEM_INFO E ON (A.ITEM_NO = E.ITEM_NO)
-        LEFT JOIN ITEM_FILE F ON (A.ITEM_NO = F.ITEM_NO)
-        WHERE A.RNUM >= #{ startRow }
-        AND A.ITEM_SOLDOUT_YN = 'N'
-        ORDER BY A.ITEM_NO ASC
-    </select>
-
+    <!-- 관심 설정 상품 카운트 -->
     <select id="selectInterestItemCount" resultType="_int" parameterType="hashmap">
         SELECT
         COUNT(*)
@@ -370,6 +181,7 @@
         </where>
     </select>
 
+    <!-- 관심 설정 상품 리스트 출력 -->
     <select id="selectInterestItem" resultMap="orderResultMap">
         SELECT
         A.RNUM
@@ -394,7 +206,7 @@
         , B.ITEM_SALES
         , B.ITEM_SOLDOUT_YN
         FROM (SELECT
-          C.ITEM_NO
+        C.ITEM_NO
         , C.ITEM_NAME
         , C.CATEGORY_NO
         , C.ITEM_STANDARD
@@ -428,7 +240,296 @@
         ORDER BY A.ITEM_NO ASC
     </select>
 
-    <insert id="insertItemIntoCart" parameterType="cartDTO">
+    <!-- 관심 설정 저장 -->
+    <insert id="insertInterest" parameterType="InterestDTO">
+        INSERT INTO INTEREST
+        (
+              INTER_NO
+            , STORE_NAME
+            , CATEGORY_NO
+            , ITEM_NO
+        )
+        SELECT
+              SEQ_INTEREST_NO.NEXTVAL
+            , #{ storeName }
+            , A.CATEGORY_NO
+            , #{ itemNo }
+         FROM ITEM_INFO A
+        WHERE ITEM_NO = ${ itemNo }
+    </insert>
+
+    <!-- 관심 설정 삭제 -->
+    <delete id="deleteInterest" parameterType="InterestDTO">
+        DELETE FROM INTEREST
+         WHERE STORE_NAME = #{ storeName }
+           AND ITEM_NO = ${ itemNo }
+    </delete>
+
+    <!-- 상품 조회 | 품절 상품 제외 카운트 -->
+    <select id="selectAvailableItemCount" resultType="_int" parameterType="hashmap">
+        SELECT
+        COUNT(*)
+        FROM ITEM_INFO A
+        <if test="searchCondition == 'category'">
+            JOIN ITEM_CATEGORY B ON(A.CATEGORY_NO = B.CATEGORY_NO)
+        </if>
+        <where>
+            <if test="searchCondition == 'category'">
+                B.CATEGORY_NAME LIKE '%' || #{ searchValue } || '%'
+            </if>
+            <if test="searchCondition == 'itemName'">
+                A.ITEM_NAME LIKE '%' || #{ searchValue } || '%'
+            </if>
+            AND A.ITEM_SOLDOUT_YN = 'N'
+        </where>
+    </select>
+
+    <!-- 상품 조회 | 품절 상품 제외 리스트 출력 -->
+    <select id="selectAvailableItem" resultMap="orderResultMap">
+        SELECT
+        A.RNUM
+        , A.ITEM_NO
+        , A.ITEM_NAME
+        , D.CATEGORY_NAME
+        , A.CATEGORY_NO
+        , A.ITEM_STANDARD
+        , A.ITEM_MAKE
+        , A.ITEM_SALES
+        , E.STORE_AMOUNT
+        , A.ITEM_SOLDOUT_YN
+        , F.FILE_NO
+        , F.ORIGIN_NAME
+        , F.FILE_NAME
+        FROM (SELECT ROWNUM RNUM
+        , B.ITEM_NO
+        , B.ITEM_NAME
+        , B.CATEGORY_NO
+        , B.ITEM_STANDARD
+        , B.ITEM_MAKE
+        , B.ITEM_SALES
+        , B.ITEM_SOLDOUT_YN
+        FROM (SELECT
+        C.ITEM_NO
+        , C.ITEM_NAME
+        , C.CATEGORY_NO
+        , C.ITEM_STANDARD
+        , C.ITEM_MAKE
+        , C.ITEM_SALES
+        , C.ITEM_SOLDOUT_YN
+        FROM ITEM_INFO C
+        <if test="searchCondition == 'category'">
+            JOIN ITEM_CATEGORY D ON(C.CATEGORY_NO = D.CATEGORY_NO)
+        </if>
+        <where>
+            <if test="searchCondition == 'category'">
+                D.CATEGORY_NAME LIKE '%' || #{ searchValue } || '%'
+            </if>
+            <if test="searchCondition == 'itemName'">
+                C.ITEM_NAME LIKE '%' || #{ searchValue } || '%'
+            </if>
+        </where>
+        ORDER BY C.ITEM_NO ASC
+        ) B
+        <![CDATA[
+                  WHERE ROWNUM <= #{ endRow }
+                  ]]>
+        ) A
+        JOIN ITEM_CATEGORY D ON (A.CATEGORY_NO = D.CATEGORY_NO)
+        LEFT JOIN STO_ITEM_INFO E ON (A.ITEM_NO = E.ITEM_NO)
+        LEFT JOIN ITEM_FILE F ON (A.ITEM_NO = F.ITEM_NO)
+        WHERE A.RNUM >= #{ startRow }
+        AND A.ITEM_SOLDOUT_YN = 'N'
+        ORDER BY A.ITEM_NO ASC
+    </select>
+
+    <!-- 장바구니 리스트 카운트 -->
+    <select id="selectCartTotalCount" resultType="_int" parameterType="hashmap">
+        SELECT
+        COUNT(*)
+        FROM CART A
+        <if test="searchCondition == 'category'">
+            JOIN ITEM_CATEGORY B ON(A.CATEGORY_NO = B.CATEGORY_NO)
+        </if>
+        <if test="searchCondition == 'itemName'">
+            JOIN ITEM_INFO D ON (A.ITEM_NO = D.ITEM_NO)
+        </if>
+        <where>
+            <if test="searchCondition == 'category'">
+                B.CATEGORY_NAME LIKE '%' || #{ searchValue } || '%'
+            </if>
+            <if test="searchCondition == 'itemName'">
+                D.ITEM_NAME LIKE '%' || #{ searchValue } || '%'
+            </if>
+            AND A.STORE_NAME = #{ storeName }
+            AND A.CART_YN = 'Y'
+        </where>
+    </select>
+
+    <!-- 장바구니 리스트 출력 -->
+    <select id="selectCartItem" resultMap="cartResultMap">
+        SELECT
+              A.RNUM
+            , A.ITEM_NO
+            , A.CATEGORY_NO
+            , A.CART_AMOUNT
+            , A.ITEM_NAME
+            , A.ITEM_STANDARD
+            , A.ITEM_MAKE
+            , A.ITEM_SALES
+            , A.ITEM_SOLDOUT_YN
+            , A.FILE_NO
+            , A.ORIGIN_NAME
+            , A.FILE_NAME
+            , A.TOTAL_PRICE
+        FROM (SELECT
+             ROWNUM RNUM
+            , B.ITEM_NO
+            , B.CATEGORY_NO
+            , B.CART_AMOUNT
+            , B.ITEM_NAME
+            , B.ITEM_STANDARD
+            , B.ITEM_MAKE
+            , B.ITEM_SALES
+            , B.ITEM_SOLDOUT_YN
+            , B.FILE_NO
+            , B.ORIGIN_NAME
+            , B.FILE_NAME
+            , B.TOTAL_PRICE
+        FROM (SELECT
+              C.ITEM_NO
+            , C.CATEGORY_NO
+            , C.CART_AMOUNT
+            , D.ITEM_NAME
+            , D.ITEM_STANDARD
+            , D.ITEM_MAKE
+            , D.ITEM_SALES
+            , D.ITEM_SOLDOUT_YN
+            , E.FILE_NO
+            , E.ORIGIN_NAME
+            , E.FILE_NAME
+            , F.TOTAL_PRICE
+        FROM CART C
+        LEFT JOIN ITEM_INFO D ON (C.ITEM_NO = D.ITEM_NO)
+        LEFT JOIN ITEM_FILE E ON (C.ITEM_NO = E.ITEM_NO)
+        LEFT JOIN ORDER_HANDLER F ON (C.CART_NO = F.CART_NO)
+            <if test="searchCondition == 'category'">
+                LEFT JOIN ITEM_CATEGORY G ON (C.CATEGORY_NO = G.CATEGORY_NO)
+            </if>
+        <where>
+            <if test="searchCondition == 'category'">
+                G.CATEGORY_NAME LIKE '%' || #{ searchValue } || '%'
+            </if>
+            <if test="searchCondition == 'itemName'">
+                D.ITEM_NAME LIKE '%' || #{ searchValue } || '%'
+            </if>
+            AND C.STORE_NAME = #{ storeName }
+            AND C.CART_YN = 'Y'
+        </where>
+        ORDER BY C.ITEM_NO ASC
+        ) B
+        <![CDATA[
+              WHERE ROWNUM <= #{ endRow }
+        ]]>
+        ) A
+        WHERE A.RNUM >= #{ startRow }
+    </select>
+
+    <!-- 장바구니 | 품절 상품 제외 카운트 -->
+    <select id="selectCartAvailableItemCount" resultType="_int" parameterType="hashmap">
+        SELECT
+        COUNT(*)
+        FROM CART X
+        <if test="searchCondition == 'category'">
+            JOIN ITEM_CATEGORY Y ON (X.CATEGORY_NO = Y.CATEGORY_NO)
+        </if>
+        <if test="searchCondition == 'itemName'">
+            JOIN ITEM_INFO Z ON (X.ITEM_NO = Z.ITEM_NO)
+        </if>
+        <where>
+            <if test="searchCondition == 'category'">
+                Y.CATEGORY_NAME LIKE '%' || #{ searchValue } || '%'
+            </if>
+            <if test="searchCondition == 'itemName'">
+                Z.ITEM_NAME LIKE '%' || #{ searchValue } || '%'
+            </if>
+            AND X.ITEM_SOLDOUT_YN = 'N'
+            AND X.CART_YN = 'Y'
+        </where>
+    </select>
+
+    <!-- 상품 조회 | 품절 상품 제외 리스트 출력 -->
+    <select id="selectCartAvailableItem" resultMap="cartResultMap">
+        SELECT
+        A.RNUM
+        , A.ITEM_NO
+        , A.CATEGORY_NO
+        , A.CART_AMOUNT
+        , A.ITEM_NAME
+        , A.ITEM_STANDARD
+        , A.ITEM_MAKE
+        , A.ITEM_SALES
+        , A.ITEM_SOLDOUT_YN
+        , A.FILE_NO
+        , A.ORIGIN_NAME
+        , A.FILE_NAME
+        , A.TOTAL_PRICE
+        FROM (SELECT
+        ROWNUM RNUM
+        , B.ITEM_NO
+        , B.CATEGORY_NO
+        , B.CART_AMOUNT
+        , B.ITEM_NAME
+        , B.ITEM_STANDARD
+        , B.ITEM_MAKE
+        , B.ITEM_SALES
+        , B.ITEM_SOLDOUT_YN
+        , B.FILE_NO
+        , B.ORIGIN_NAME
+        , B.FILE_NAME
+        , B.TOTAL_PRICE
+        FROM (SELECT
+        C.ITEM_NO
+        , C.CATEGORY_NO
+        , C.CART_AMOUNT
+        , D.ITEM_NAME
+        , D.ITEM_STANDARD
+        , D.ITEM_MAKE
+        , D.ITEM_SALES
+        , D.ITEM_SOLDOUT_YN
+        , E.FILE_NO
+        , E.ORIGIN_NAME
+        , E.FILE_NAME
+        , F.TOTAL_PRICE
+        FROM CART C
+        LEFT JOIN ITEM_INFO D ON (C.ITEM_NO = D.ITEM_NO)
+        LEFT JOIN ITEM_FILE E ON (C.ITEM_NO = E.ITEM_NO)
+        LEFT JOIN ORDER_HANDLER F ON (C.CART_NO = F.CART_NO)
+        <if test="searchCondition == 'category'">
+            LEFT JOIN ITEM_CATEGORY G ON (C.CATEGORY_NO = G.CATEGORY_NO)
+        </if>
+        <where>
+            <if test="searchCondition == 'category'">
+                G.CATEGORY_NAME LIKE '%' || #{ searchValue } || '%'
+            </if>
+            <if test="searchCondition == 'itemName'">
+                D.ITEM_NAME LIKE '%' || #{ searchValue } || '%'
+            </if>
+            AND C.STORE_NAME = #{ storeName }
+            AND C.CART_YN = 'Y'
+            AND D.ITEM_SOLDOUT_YN = 'N'
+        </where>
+        ORDER BY C.ITEM_NO ASC
+        ) B
+        <![CDATA[
+              WHERE ROWNUM <= #{ endRow }
+        ]]>
+        ) A
+        WHERE A.RNUM >= #{ startRow }
+    </select>
+
+
+    <!-- 장바구니에 담기 -->
+    <insert id="insertItemIntoCart" parameterType="CartDTO">
         INSERT INTO CART
         (
               CART_AMOUNT
@@ -449,6 +550,14 @@
         WHERE A.ITEM_NO = ${ itemNo }
     </insert>
 
+    <!-- 장바구니 상품 삭제 -->
+    <delete id="deleteCartItem" parameterType="CartDTO">
+        DELETE FROM CART
+        WHERE STORE_NAME = #{ storeName }
+          AND ITEM_NO = #{ itemNo }
+    </delete>
+
+    <!-- 발주를 위한 기존 장바구니 삭제 -->
     <delete id="resetCartItems" parameterType="CartDTO">
         DELETE FROM CART
         WHERE STORE_NAME = #{ storeName }
@@ -456,7 +565,8 @@
           AND ITEM_NO = #{ itemNo }
     </delete>
 
-    <insert id="insertOrderItems" parameterType="cartDTO">
+    <!-- 장바구니 새로 추가 -->
+    <insert id="insertOrderItems" parameterType="CartDTO">
         INSERT INTO CART
         (
               CART_AMOUNT
@@ -480,8 +590,8 @@
         </selectKey>
     </insert>
 
-
-    <insert id="insertStoreOrderNo" parameterType="cartDTO">
+    <!-- 발주서 번호 생성 -->
+    <insert id="insertStoreOrderNo" parameterType="CartDTO">
         INSERT INTO STORE_ORDER
         (
             ORDER_NO
@@ -498,7 +608,8 @@
 
     </insert>
 
-    <insert id="insertOrderHandler" parameterType="cartDTO">
+    <!-- 발주서 관리 데이터 및 합계 생성 -->
+    <insert id="insertOrderHandler" parameterType="CartDTO">
         INSERT INTO ORDER_HANDLER
         (
             ORDER_NO
@@ -513,96 +624,7 @@
         )
     </insert>
 
-    <delete id="deleteCartItem" parameterType="CartDTO">
-        DELETE FROM CART
-        WHERE STORE_NAME = #{ storeName }
-          AND ITEM_NO = #{ itemNo }
-    </delete>
-
-<!--    <select id="selectBalance" resultType="_int" parameterType="CartDTO">-->
-<!--        SELECT-->
-<!--            BALANCE-->
-<!--        FROM BALANCE-->
-<!--        WHERE STORE_NAME = #{ storeName }-->
-<!--    </select>-->
-
-    <!-- 발주 내역 COUNT -->
-    <select id="selectOrderHistoryCount" resultType="_int" parameterType="hashmap">
-        SELECT
-        COUNT(A.CART_NO)
-        FROM ORDER_HANDLER A
-        JOIN STORE_ORDER B ON (B.ORDER_NO = A.ORDER_NO)
-        JOIN CART C ON (A.CART_NO = C.CART_NO)
-        <where>
-            <if test="orderDate != null and !startDate.equals('')">
-                TO_CHAR(B.ORDER_DATE, 'YY/MM/DD') = #{ orderDate }
-            </if>
-        AND C.STORE_NAME = #{ storeName }
-        </where>
-    </select>
-
-    <select id="selectOrderHistory" resultMap="orderHistoryResultMap">
-        SELECT
-        A.RNUM
-        , A.CART_AMOUNT
-        , A.CATEGORY_NO
-        , A.ITEM_NO
-        , A.CART_NO
-        , A.ITEM_NAME
-        , A.ITEM_STANDARD
-        , A.ITEM_SALES
-        , A.ITEM_MAKE
-        , A.FILE_NO
-        , A.ORIGIN_NAME
-        , A.FILE_NAME
-        , A.orderDate
-        FROM (SELECT
-        ROWNUM RNUM
-        , B.CART_AMOUNT
-        , B.CATEGORY_NO
-        , B.ITEM_NO
-        , B.CART_NO
-        , B.ITEM_NAME
-        , B.ITEM_STANDARD
-        , B.ITEM_SALES
-        , B.ITEM_MAKE
-        , B.FILE_NO
-        , B.ORIGIN_NAME
-        , B.FILE_NAME
-        , B.orderDate
-        FROM (SELECT
-          C.CART_AMOUNT
-        , C.CATEGORY_NO
-        , C.ITEM_NO
-        , C.CART_NO
-        , E.ITEM_NAME
-        , E.ITEM_STANDARD
-        , E.ITEM_SALES
-        , E.ITEM_MAKE
-        , G.FILE_NO
-        , G.ORIGIN_NAME
-        , G.FILE_NAME
-        , TO_CHAR(F.ORDER_DATE, 'YY/DD/MM') AS orderDate
-        FROM CART C
-        LEFT JOIN ORDER_HANDLER D ON (C.CART_NO = D.CART_NO)
-        LEFT JOIN ITEM_INFO E ON (C.ITEM_NO = E.ITEM_NO)
-        LEFT JOIN STORE_ORDER F ON (D.ORDER_NO = F.ORDER_NO)
-        LEFT JOIN ITEM_FILE G ON (C.ITEM_NO = G.ITEM_NO)
-        <where>
-            <if test="orderDate != null and !startDate.equals('')">
-                TO_CHAR(F.ORDER_DATE, 'YY/MM/DD') = #{ orderDate }
-            </if>
-            AND C.STORE_NAME = #{ storeName }
-        </where>
-        ORDER BY C.ITEM_NO ASC
-        ) B
-        <![CDATA[
-              WHERE ROWNUM <= #{ endRow }
-        ]]>
-        ) A
-        WHERE A.RNUM >= #{ startRow }
-    </select>
-
+    <!-- 출금 내역 -->
     <insert id="insertStoreBreakdown">
         INSERT
           INTO STORE_BREAKDOWN
@@ -621,6 +643,7 @@
         )
     </insert>
 
+    <!-- 예치금 잔액 업데이트 -->
     <update id="updateStoreBalance">
         UPDATE BALANCE
         SET BALANCE = BALANCE - (SELECT B.TOTAL_PRICE FROM ORDER_HANDLER B WHERE B.CART_NO = #{ cartNo })
@@ -629,5 +652,130 @@
           AND BALANCE >= #{ totalPrice }
                                         ]]>
     </update>
+
+    <!-- 발주 내역 카운트 -->
+    <select id="selectOrderHistoryCount" resultType="_int" parameterType="hashmap">
+        SELECT
+        COUNT(A.CART_NO)
+        FROM ORDER_HANDLER A
+        JOIN STORE_ORDER B ON (B.ORDER_NO = A.ORDER_NO)
+        JOIN CART C ON (A.CART_NO = C.CART_NO)
+        <where>
+            <if test="orderDate != null and !startDate.equals('')">
+                TB.ORDER_DATE = #{ orderDate }
+            </if>
+            AND C.STORE_NAME = #{ storeName }
+        </where>
+    </select>
+
+    <!-- 발주 내역 리스트 출력 -->
+    <select id="selectOrderHistory" resultMap="orderHistoryResultMap">
+        SELECT
+          A.RNUM
+        , A.ITEM_NO
+        , A.CATEGORY_NO
+        , A.CART_AMOUNT
+        , A.ITEM_NAME
+        , A.ITEM_STANDARD
+        , A.ITEM_MAKE
+        , A.ITEM_SALES
+        , A.FILE_NO
+        , A.ORIGIN_NAME
+        , A.FILE_NAME
+        , A.ORDER_DATE
+        , A.ORDER_NO
+        FROM (SELECT ROWNUM RNUM
+        , B.ITEM_NO
+        , B.CATEGORY_NO
+        , B.CART_AMOUNT
+        , B.ITEM_NAME
+        , B.ITEM_STANDARD
+        , B.ITEM_MAKE
+        , B.ITEM_SALES
+        , B.FILE_NO
+        , B.ORIGIN_NAME
+        , B.FILE_NAME
+        , B.ORDER_DATE
+        , B.ORDER_NO
+        FROM (SELECT
+          C.ITEM_NO
+        , C.CATEGORY_NO
+        , C.CART_AMOUNT
+        , D.ITEM_NAME
+        , D.ITEM_STANDARD
+        , D.ITEM_MAKE
+        , D.ITEM_SALES
+        , E.FILE_NO
+        , E.ORIGIN_NAME
+        , E.FILE_NAME
+        , G.ORDER_DATE
+        , G.ORDER_NO
+        FROM CART C
+        LEFT JOIN ITEM_INFO D ON (C.ITEM_NO = D.ITEM_NO)
+        LEFT JOIN ITEM_FILE E ON (C.ITEM_NO = E.ITEM_NO)
+        LEFT JOIN ORDER_HANDLER F ON (C.CART_NO = F.CART_NO)
+        JOIN STORE_ORDER G ON (F.ORDER_NO = G.ORDER_NO)
+        <where>
+            AND C.STORE_NAME = #{ storeName }
+            AND C.CART_YN != 'Y'
+            <if test="orderDate != null and !startDate.equals('')">
+            AND G.ORDER_DATE = #{ orderDate }
+            </if>
+        </where>
+        ORDER BY G.ORDER_NO ASC
+        ) B
+        <![CDATA[
+                  WHERE ROWNUM <= #{ endRow }
+                  ]]>
+        ) A
+        WHERE A.RNUM >= #{ startRow }
+        ORDER BY A.ORDER_NO ASC
+    </select>
+
+    <!-- 최종 날짜 조회 -->
+    <select id="selectFinalOrderDate" resultType="string">
+        SELECT TO_CHAR(D.ORDER_DATE, 'yyyy-MM-dd')
+        FROM (SELECT A.ORDER_DATE
+        FROM STORE_ORDER A
+        LEFT JOIN ORDER_HANDLER B ON (A.ORDER_NO = B.ORDER_NO)
+        LEFT JOIN CART C ON (B.CART_NO = C.CART_NO)
+        WHERE C.STORE_NAME = #{ storeName }
+        ORDER BY A.ORDER_DATE DESC) D
+        WHERE ROWNUM = 1
+    </select>
+
+    <!-- 발주 취소 -->
+    <delete id="cancelOrder" parameterType="OrderHistoryDTO">
+        DELETE FROM ORDER
+        WHERE STORE_NAME = #{ storeName }
+          AND CART_YN = 'Y'
+          AND ITEM_NO = #{ itemNo }
+    </delete>
+
+    <!-- 장바구니 업데이트 or insert -->
+    <select id="checkItemOverlap" resultType="_int" parameterType="CartDTO">
+        SELECT
+            COUNT(*)
+        FROM CART A
+        WHERE A.ITEM_NO = ${ itemNo }
+          AND A.STORE_NAME = #{ storeName }
+          AND CART_YN = 'Y'
+    </select>
+
+     <!-- 장바구니 업데이트 -->
+    <update id="updateItemIntoCart">
+        UPDATE CART
+        SET CART_AMOUNT = (CART_AMOUNT + #{ cartAmount })
+        WHERE STORE_NAME = #{ storeName }
+          AND ITEM_NO = #{ itemNo }
+          AND CART_YN = 'Y'
+    </update>
+
+    <select id="checkBalance" resultType="_int" parameterType="CartDTO">
+        SELECT
+            BALANCE
+        FROM BALANCE
+        WHERE STORE_NAME = #{ storeName }
+    </select>
 
 </mapper>

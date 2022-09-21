@@ -32,31 +32,38 @@ public interface OrderService {
     int selectInterestItemCount(Map<String, String> searchMap);
 
     List<OrderDTO> selectInterestItem(SelectCriteria selectCriteria);
-
-
-//    void InsertCartList(List<String> itemNoList);
-
-    /* 발주 신청 완료 */
-
-    void insertItemIntoCart(int itemNo, int cartAmount, String storeName);
-
-
+    
     int insertStoreOrderNo(CartDTO cart);
 
     int insertOrderItems(CartDTO cart);
 
-    int insertOrderHandler(CartDTO cart);
+    void insertOrderHandler(CartDTO cart);
 
     void resetCartItems(CartDTO cart);
 
     void deleteCartItem(CartDTO cart);
 
-    int selectOrderHistoryCount(Map<String, String> searchMap);
+    int selectOrderHistoryCount(Map<String, Object> searchMap);
 
     List<OrderHistoryDTO> selectOrderHistory(SelectCriteria selectCriteria);
-
 
     int insertStoreBreakdown(CartDTO cart);
 
     int updateStoreBalance(CartDTO cart);
+
+    int selectCartAvailableItemCount(Map<String, String> searchMap);
+
+    List<OrderDTO> selectCartAvailableItem(SelectCriteria selectCriteria);
+
+    void cancelOrder(OrderHistoryDTO history);
+
+    String selectFinalOrderDate(OrderHistoryDTO history);
+
+    int checkItemOverlap(CartDTO cart);
+
+    void insertItemIntoCart(CartDTO cart);
+
+    void updateItemIntoCart(CartDTO cart);
+
+    int checkBalance(CartDTO cart);
 }

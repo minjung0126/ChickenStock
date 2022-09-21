@@ -7,25 +7,25 @@
 
     <link rel="stylesheet"  href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
     <link rel="stylesheet" th:href="@{/css/member/member.css}"/>
+    <script>
+        function ck_infor(){
+
+            let pw1 = document.getElementById("newPwd");
+
+            let pw2 = document.getElementById("newPwd2");
+
+            // 비밀번호 일치 검사
+
+            if(pw1.value != pw2.value){
+
+                alert("비밀번호가 일치하지 않습니다.");
+
+                return false;
+            }
+        }
+    </script>
 </head>
 <body>
-<script>
-    function ck_infor(){
-
-        let pw1 = document.getElementById("newPwd");
-
-        let pw2 = document.getElementById("newPwd2");
-
-        // 비밀번호 일치 검사
-
-        if(pw1.value != pw2.value){
-
-            alert("비밀번호가 일치하지 않습니다.");
-
-            return false;
-        }
-    }
-</script>
 <div class="wrap">
     <div class="box">
         <h3>비밀번호 재설정</h3>

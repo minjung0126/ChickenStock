@@ -6,6 +6,8 @@ import com.chicken.project.member.model.dto.AdminImpl;
 import com.chicken.project.member.model.dto.StoreImpl;
 import com.chicken.project.notice.model.dto.NoticeDTO;
 import com.chicken.project.notice.model.service.NoticeServiceImpl;
+import com.chicken.project.storeItem.model.dto.StoreItemListDTO;
+import com.chicken.project.storeItem.model.service.StoreItemService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,18 +26,20 @@ public class MemberMain {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
     private final NoticeServiceImpl noticeService;
+    private final StoreItemService storeItemService;
 
     private final ItemServiceImpl itemService;
 
     @Autowired
-    public MemberMain(NoticeServiceImpl noticeService, ItemServiceImpl itemService){
+    public MemberMain(NoticeServiceImpl noticeService, ItemServiceImpl itemService, StoreItemService storeItemService){
 
         this.noticeService = noticeService;
         this.itemService = itemService;
+        this.storeItemService = storeItemService;
     }
 
     @RequestMapping("/moveMain")
-    public ModelAndView defaultLocation(@AuthenticationPrincipal User user, ModelAndView mv){
+    public ModelAndView defaultLocation(@AuthenticationPrincipal User user, @AuthenticationPrincipal StoreImpl storeImpl,ModelAndView mv){
         System.out.println("확인");
         String url = "/member/login";
 
@@ -63,8 +67,15 @@ public class MemberMain {
 
                 List<NoticeDTO> noticeList = noticeService.selectMainNotice();
 
+                String storeName = storeImpl.getStoreName();
+
+                List<StoreItemListDTO> storeItemList = storeItemService.selectMainStoreItem(storeName);
+
+                mv.addObject("storeItemList", storeItemList);
+
                 mv.addObject("noticeList", noticeList);
                 mv.setViewName("/main/user_main");
+
             }
         }
 

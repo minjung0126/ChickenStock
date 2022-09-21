@@ -29,7 +29,6 @@ public class StoreController {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-
     public StoreController(StoreService storeService, PasswordEncoder passwordEncoder) {
 
         this.storeService = storeService;
@@ -85,7 +84,7 @@ public class StoreController {
     public String insertStore(@ModelAttribute StoreDTO store, RedirectAttributes rttr, ModelAndView mv) throws StoreInsertException {
 
         store.setStorePhone(store.getStorePhone().replace("-", ""));
-        //store.setStorePwd(passwordEncoder.encode(store.getStorePwd()));
+        store.setStorePwd(passwordEncoder.encode(store.getStorePwd()));
 
         log.info("[StoreController] store : " + store);
 

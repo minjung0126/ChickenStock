@@ -5,7 +5,6 @@ import com.chicken.project.reItem.model.dto.ReItemDTO;
 import com.chicken.project.reItem.model.dto.ReListDTO;
 import com.chicken.project.reItem.model.dto.StoreItemDTO;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -64,4 +63,26 @@ public interface ReItemMapper {
     List<ReItemDTO> selectUpReItems(Map<String, String> item);
 
     List<StoreItemDTO> selectItems(Map<String, String> item);
+
+    ReItemDTO selectViewReItem(String rNo);
+
+    List<ReItemDTO> selectViewReItems(Map<String, String> viewItem);
+
+    int insertOneItem(Map<String, Object> insertItem);
+
+    int deleteOneItem(Map<String, Object> deleteItem);
+
+    int updateOneMoney(Map<String, Object> deleteItem);
+
+    int updateItemCount(Map<String, Object> deleteItem);
+
+    int updateReturnItems(Map<String, Object> up);
+
+    int updateRItem(Map<String, Object> maps);
+
+    int updateReAcountP(Map<String, Object> map);
+
+    int updateReAcountM(Map<String, Object> map);
+
+    int selectTotalCountS(Map<String, String> searchMap);
 }
