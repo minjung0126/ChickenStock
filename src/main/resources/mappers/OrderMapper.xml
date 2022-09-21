@@ -746,7 +746,7 @@
 
     <!-- 발주 취소 -->
     <delete id="cancelOrder" parameterType="OrderHistoryDTO">
-        DELETE FROM OR
+        DELETE FROM ORDER
         WHERE STORE_NAME = #{ storeName }
           AND CART_YN = 'Y'
           AND ITEM_NO = #{ itemNo }

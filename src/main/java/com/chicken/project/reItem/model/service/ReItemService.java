@@ -60,4 +60,6 @@ public interface ReItemService {
 
     @Transactional
     int updateReItem(List<ReItemDTO> updateItem, String storeName);
+
+    int selectTotalCountS(Map<String, String> searchMap);
 }

@@ -23,4 +23,6 @@ public interface BillTaxMapper {
     List<BillTaxDTO> selectBillList(SelectCriteria selectCriteria);
 
     List<tsBillTaxDTO> selectTsList(SelectCriteria selectCriteria);
+
+    int selectTotalCountS(Map<String, String> searchMap);
 }

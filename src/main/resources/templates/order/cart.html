@@ -117,7 +117,7 @@
                 <td>
                   <div class="img-info">
                     <div class="img-info__img">
-                      <img th:src="'/images/' + ${ cart.itemFile.fileName }" alt="">
+                      <img th:src="'/itemImage/' + ${ cart.itemFile.fileName }" alt="">
                     </div>
                   </div>
                 </td>
@@ -296,55 +296,63 @@
   <script th:inline="javascript">
     function getBoxValue() {
 
-      let result = confirm('전체 상품을 주문하시겠습니까? (품절 상품은 자동으로 주문에서 제외됩니다.)');
+      let total = document.getElementById('cartTotalMoney').innerText;
 
-      if(result) {
-
-        // 선택된 목록 가져오기
-        // let query = document.getElementsByName("available");
-        let selectedEls = document.querySelectorAll("[name=available]");
-
-        // 선택된 목록에서 value 찾기
-        let cartInfo = [];
-        let obj = {};
-        selectedEls.forEach((el) => {
-
-          obj = {
-            itemNo: $(el)[0].parentElement.parentElement.children[0].innerText,
-            cartAmount: $(el)[0].parentElement.parentElement.children[7].children[0].value,
-            categoryNo: $(el)[0].parentElement.parentElement.children[3].children[1].value,
-            totalPrice: $(el)[0].parentElement.parentElement.parentElement.parentElement.children[2].children[0].children[4].innerText
-
-          }
-
-          cartInfo.push(obj);
-        });
-
-        console.log(cartInfo);
-
-        // 출력
-        document.getElementById('result').innerText = JSON.stringify(cartInfo);
-
-        let form = document.createElement('form');
-
-        let cartNoList = document.createElement('input');
-        cartNoList.setAttribute('type', 'hidden');
-        cartNoList.setAttribute('name', 'cartNoList');
-        cartNoList.setAttribute('value', JSON.stringify(cartInfo));
-        form.appendChild(cartNoList);
-        form.setAttribute('method', 'post');
-        form.setAttribute('action', '/order/insert/items/do');
-        document.body.appendChild(form);
-        form.submit();
-
-        console.log(cartNoList);
-
+      if (total == 0) {
+        alert("주문하실 상품이 없습니다.");
+        return;
       } else {
 
-        return;
+        let result = confirm('전체 상품을 주문하시겠습니까? (품절 상품은 자동으로 주문에서 제외됩니다.)');
+
+        if (result) {
+
+          // 선택된 목록 가져오기
+          // let query = document.getElementsByName("available");
+          let selectedEls = document.querySelectorAll("[name=available]");
+
+          // 선택된 목록에서 value 찾기
+          let cartInfo = [];
+          let obj = {};
+          selectedEls.forEach((el) => {
+
+            obj = {
+              itemNo: $(el)[0].parentElement.parentElement.children[0].innerText,
+              cartAmount: $(el)[0].parentElement.parentElement.children[7].children[0].value,
+              categoryNo: $(el)[0].parentElement.parentElement.children[3].children[1].value,
+              totalPrice: $(el)[0].parentElement.parentElement.parentElement.parentElement.children[2].children[0].children[4].innerText
+
+            }
+
+            cartInfo.push(obj);
+          });
+
+          console.log(cartInfo);
+
+          // 출력
+          document.getElementById('result').innerText = JSON.stringify(cartInfo);
+
+          let form = document.createElement('form');
+
+          let cartNoList = document.createElement('input');
+          cartNoList.setAttribute('type', 'hidden');
+          cartNoList.setAttribute('name', 'cartNoList');
+          cartNoList.setAttribute('value', JSON.stringify(cartInfo));
+          form.appendChild(cartNoList);
+          form.setAttribute('method', 'post');
+          form.setAttribute('action', '/order/insert/items/do');
+          document.body.appendChild(form);
+          form.submit();
+
+          console.log(cartNoList);
+
+        } else {
+
+          return;
+        }
       }
 
-    }
+    };
   </script>
 
   <!-- 전체 수량 + 총액 계산 -->

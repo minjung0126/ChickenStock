@@ -4,14 +4,16 @@ import com.chicken.project.account.model.dto.AccountApplyDTO;
 import com.chicken.project.account.model.dto.AccountDTO;
 import com.chicken.project.account.model.dto.StoreBreakdownDTO;
 import com.chicken.project.account.model.dto.StoreDepositDTO;
+import com.chicken.project.common.paging.SelectCriteria;
 import com.chicken.project.store.model.dto.BalanceDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface AccountMapper {
-    List<AccountApplyDTO> selectAccountApplyList();
+    List<AccountApplyDTO> selectAccountApplyList(SelectCriteria selectCriteria);
 
 
     BalanceDTO selectBalance(String storeName);
@@ -39,4 +41,6 @@ public interface AccountMapper {
     List<StoreBreakdownDTO> selectStoreBreakdown(String storeName);
 
     int depositInsert(int accountDeposit, String storeName);
+
+    int selectTotalCount(Map<String, String> searchMap);
 }
