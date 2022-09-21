@@ -297,13 +297,13 @@
         INSERT
         INTO ITEM_FILE
         (
-        , ORIGIN_NAME
+          ORIGIN_NAME
         , FILE_NAME
         , ITEM_NO
         )
         VALUES
         (
-        , #{ originName }
+          #{ originName }
         , #{ fileName }
         , #{ itemNo }
         )

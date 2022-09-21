@@ -146,60 +146,60 @@ public class ItemController {
         String filePath = root + "static/itemImage";
 
 
-//        log.info("루트ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ" + filePath);
-//
-//        File mkdir = new File(filePath);
-//        if(!mkdir.exists()) {
-//            mkdir.mkdirs();
-//        }
-//
-//        String originFileName = "";
-//        String ext = "";
-//        String changeName = "";
-//
-//        int result = itemService.updateItem(item);
-//
-//        if(file.getSize() > 0) {
-//            originFileName = file.getOriginalFilename();
-//            ext = originFileName.substring(originFileName.lastIndexOf("."));
-//            changeName = UUID.randomUUID().toString().replace("-",  "");
-//
-//
-//            ItemFileDTO itemFile = new ItemFileDTO();
-//
-//
-//            if(result > 0) {
-//
-//                if(item.getItemFile() != null){
-//                    int result2 = itemService.deleteItemFile2(itemNo);
-//
-//                    if(result2 > 0){
-//
-//                        itemFile.setItemNo(itemNo);
-//                        itemFile.setOriginName(originFileName);
-//                        itemFile.setFileName(changeName + ext);
-//
-//                        itemService.insertItemFile(itemFile);
-//                    }
-//                } else{
-//
-//                    itemFile.setItemNo(itemNo);
-//                    itemFile.setOriginName(originFileName);
-//                    itemFile.setFileName(changeName + ext);
-//
-//                    itemService.insertItemFile(itemFile);
-//                }
-//
-//            }
-//
-//            try {
-//                file.transferTo(new File(filePath + "\\" + changeName + ext));
-//            } catch (IOException e) {
-//
-//                e.printStackTrace();
-//                new File(filePath + "\\" + changeName + ext).delete();
-//            }
-//        }
+        log.info("루트ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ" + filePath);
+
+        File mkdir = new File(filePath);
+        if(!mkdir.exists()) {
+            mkdir.mkdirs();
+        }
+
+        String originFileName = "";
+        String ext = "";
+        String changeName = "";
+
+        int result = itemService.updateItem(item);
+
+        if(file.getSize() > 0) {
+            originFileName = file.getOriginalFilename();
+            ext = originFileName.substring(originFileName.lastIndexOf("."));
+            changeName = UUID.randomUUID().toString().replace("-",  "");
+
+
+            ItemFileDTO itemFile = new ItemFileDTO();
+
+
+            if(result > 0) {
+
+                if(item.getItemFile() != null){
+                    int result2 = itemService.deleteItemFile2(item);
+
+                    if(result2 > 0){
+
+                        itemFile.setItemNo(itemNo);
+                        itemFile.setOriginName(originFileName);
+                        itemFile.setFileName(changeName + ext);
+
+                        itemService.insertItemFile(itemFile);
+                    }
+                } else{
+
+                    itemFile.setItemNo(itemNo);
+                    itemFile.setOriginName(originFileName);
+                    itemFile.setFileName(changeName + ext);
+
+                    itemService.insertItemFile(itemFile);
+                }
+
+            }
+
+            try {
+                file.transferTo(new File(filePath + "\\" + changeName + ext));
+            } catch (IOException e) {
+
+                e.printStackTrace();
+                new File(filePath + "\\" + changeName + ext).delete();
+            }
+        }
 
         rttr.addFlashAttribute("message", "품목 수정 성공!");
         return "redirect:/item/admin/list";

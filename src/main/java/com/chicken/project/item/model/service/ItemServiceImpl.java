@@ -137,11 +137,11 @@ public class ItemServiceImpl implements ItemService{
 
     @Override
     @Transactional
-    public int updateItem(ItemInfoDTO item) throws ItemUpdateException{
+    public int updateItem(ItemInfoDTO item) throws ItemUpdateException {
 
         int result = itemMapper.updateItem(item);
 
-        if(!(result > 0)){
+        if (!(result > 0)) {
 
             throw new ItemUpdateException("재고 수정에 실패하셨습니다.");
         }
@@ -151,9 +151,9 @@ public class ItemServiceImpl implements ItemService{
 
     @Override
     @Transactional
-    public int deleteItemFile2(int itemNo) throws ItemUpdateException{
+    public int deleteItemFile2(ItemInfoDTO item) throws ItemUpdateException{
 
-        int result = itemMapper.deleteItemFile2(itemNo);
+        int result = itemMapper.deleteItemFile2(item);
 
         if(!(result > 0)){
             throw new ItemUpdateException("상품 이미지 삭제에 실패하셨습니다.");
