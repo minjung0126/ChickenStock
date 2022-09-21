@@ -28,4 +28,6 @@ public interface BillTaxService {
 
     // 거래명세서별 물품리스트
     List<tsBillTaxDTO> selectTsMenuList(String recCode);
+
+    int selectTotalCountS(Map<String, String> searchMap);
 }

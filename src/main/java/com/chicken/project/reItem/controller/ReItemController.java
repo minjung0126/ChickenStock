@@ -103,7 +103,7 @@ public class ReItemController {
         searchMap.put("searchValue", searchValue);
         searchMap.put("storeName", storeName);
 
-        int totalCount = reItemService.selectTotalCount(searchMap);
+        int totalCount = reItemService.selectTotalCountS(searchMap);
 
         int limit = 6;
         int buttonAmount = 5;
@@ -165,6 +165,7 @@ public class ReItemController {
         Map<String, String> item = new HashMap<>();
         item.put("storeName",storeImpl.getStoreName());
         item.put("rNo",rNo);
+        item.put("returnItemNo", String.valueOf(returnItems.getReturnItemNo()));
 
         ReItemDTO updateItem = reItemService.selectUpReItem(rNo);
         List<ReItemDTO> updateItems = reItemService.selectReItems(item);
@@ -232,35 +233,38 @@ public class ReItemController {
                                     , @ModelAttribute ReItemDTO returnItems
                                     , ModelAndView mv
                                     , @RequestParam String rReason
-                                    , @RequestParam int returnTotalMoney
+                                    , @RequestParam int total
                                     ,  String[] firstCount
-                                    , @RequestParam int rNo){
+                                    , @RequestParam int rNo
+                                    , int[] returnItemNo){
 
         List<ReItemDTO> updateItem = new ArrayList<>();
 
-        for(int i = 0; i < returnCount2.length; i++){
+        for(int i = 0; i < firstCount.length; i++){
 
             ReItemDTO reI = new ReItemDTO();
             reI.setItemNo(Integer.parseInt(itemNo2[i]));
-            reI.setReturnTotalMoney(returnTotalMoney);
+            reI.setReturnTotalMoney(total);
             reI.setrReason(rReason);
             reI.setrNo(rNo);
+            reI.setReturnItemNo(returnItemNo[i]);
 
-            if(returnCount2[i] != "") {
+            if(firstCount[i] != "") {
                 reI.setReturnCount(Integer.parseInt(returnCount2[i]));
                 reI.setFirstCount(Integer.parseInt(firstCount[i]));
+                reI.setReturnItemNo(returnItemNo[i]);
                 updateItem.add(reI);
             }
 
         }
 
-        log.info("확입제발 : " + updateItem);
+        log.info("현석님 열심히 하세요 " + updateItem);
         int result = reItemService.updateReItem(updateItem, storeImpl.getStoreName());
 
         if(result > 0) {
             ReItemDTO update = reItemService.selectUpReItem(String.valueOf(rNo));
-            log.info(" 뭐라고 쓸까여 이제 할말도 ㅇ넚어"+update);
             mv.addObject("updateItem", update);
+            mv.addObject("rNo",rNo);
             mv.setViewName("redirect:/reItem/user/reviseReItem");
         }
 
@@ -295,7 +299,6 @@ public class ReItemController {
         searchMap.put("searchCondition", searchCondition);
         searchMap.put("searchValue", searchValue);
 
-        log.info("값이 들어오시나요 알려주세요 " + searchMap);
         int totalCount = reItemService.selectTotalCount(searchMap);
 
         int limit = 6;
@@ -309,7 +312,6 @@ public class ReItemController {
             selectCriteria = Pagenation.getSelectCriteria(pageNo, totalCount, limit, buttonAmount);
         }
 
-        log.info("뭐냐고 시발아 " + selectCriteria);
         List<ReListDTO> storeReturnList = reItemService.selectReturnList(selectCriteria);
 
         mv.addObject("returnList",storeReturnList);

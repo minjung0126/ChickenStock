@@ -316,7 +316,6 @@ public class ReItemServiceImpl implements ReItemService{
         up.put("rNo", updateItem.get(0).getrNo());
         up.put("rReason", updateItem.get(0).getrReason());
 
-
         result1 = reItemMapper.updateReturnItems(up);
         log.info("값이 들어올까요>?" + result1);
 
@@ -331,6 +330,7 @@ public class ReItemServiceImpl implements ReItemService{
                 maps.put("itemNo", updateItem.get(i).getItemNo());
                 maps.put("storeName", storeName);
                 maps.put("rNo", updateItem.get(i).getrNo());
+                maps.put("returnItemNo", updateItem.get(i).getReturnItemNo());
                 upList.add(maps);
 
             }
@@ -374,5 +374,13 @@ public class ReItemServiceImpl implements ReItemService{
         }
 
         return result1;
+    }
+
+    @Override
+    public int selectTotalCountS(Map<String, String> searchMap) {
+
+        int result = reItemMapper.selectTotalCountS(searchMap);
+
+        return result;
     }
 }
