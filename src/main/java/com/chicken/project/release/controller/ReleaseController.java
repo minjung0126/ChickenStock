@@ -38,24 +38,33 @@ public class ReleaseController {
         System.out.println(releaseSelectCriteria);
         /* 발주서에 등록된 발주품목 조회 */
         List<ReleaseOrderDTO> orderList = releaseService.releaseOrderSelect(releaseSelectCriteria);
+        System.out.println(orderList);
         /* 임시출고서에 등록된 출고품목 조회 */
         List<ReleaseOrderDTO> orderListN = releaseService.releaseOrderSelectN();
         /* 출고서 목록 조회 */
         List<ReleaseDTO> releaseDTO = releaseService.releaseDtoOrderSelect();
 
+        System.out.println(releaseDTO.size());
+
         /* 출고번호 생성 코드 */
-        String relCode = null;
+        int relCode = 0;
+
         if(!releaseDTO.isEmpty()){
-            relCode = String.valueOf(releaseDTO.size()+1);
+            relCode = releaseDTO.size()+1;
+
+        } else {
+            relCode = releaseDTO.size()+1;
         }
 
         System.out.println("relCode : " + relCode);
+
         System.out.println(releaseSelectCriteria);
+
         for(ReleaseOrderDTO ro : orderListN){
             System.out.println(ro);
         }
 
-        int intRelCode = Integer.parseInt(relCode);
+        int intRelCode = relCode;
         /* 출고서 작성시 물품 총 금액 조회 */
         Integer totalMoney = releaseService.totalMoneySelect(intRelCode);
 
