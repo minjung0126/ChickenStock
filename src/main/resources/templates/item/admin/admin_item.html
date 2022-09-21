@@ -21,7 +21,17 @@
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
   <script th:src="@{/js/common.js}"></script>
+  <script>
 
+    let check = '[[${ check }]]';
+
+    if(check){
+      alert('[[${ message }]]');
+      opener.location.reload();
+      window.close();
+
+    }
+  </script>
 </head>
 <body>
 <div class="wrap">
@@ -165,7 +175,7 @@
 
         <!-- E: paging -->
 
-<!--        <div th:include="item/admin/admin_item_detail.html"></div>-->
+        <!--        <div th:include="item/admin/admin_item_detail.html"></div>-->
 
       </div>
     </div>
@@ -207,28 +217,28 @@
 
 
 
-       /* 팝업 */
+      /* 팝업 */
 
-        //창 크기 지정
-        var width = 1200;
-        var height = 800;
+      //창 크기 지정
+      var width = 1200;
+      var height = 800;
 
-        //pc화면기준 가운데 정렬
-        var left = (window.screen.width / 2) - (width/2);
-        var top = (window.screen.height / 4);
+      //pc화면기준 가운데 정렬
+      var left = (window.screen.width / 2) - (width/2);
+      var top = (window.screen.height / 4);
 
-        //윈도우 속성 지정
-        var windowStatus = 'width='+width+', height='+height+', left='+left+', top='+top+', scrollbars=yes, status=yes, resizable=yes, titlebar=yes';
+      //윈도우 속성 지정
+      var windowStatus = 'width='+width+', height='+height+', left='+left+', top='+top+', scrollbars=yes, status=yes, resizable=yes, titlebar=yes';
 
-        //연결하고싶은url
-        const url = "/item/admin/itemDetail?itemNo=" + itemNo.value;
+      //연결하고싶은url
+      const url = "/item/admin/itemDetail?itemNo=" + itemNo.value;
 
-        //등록된 url 및 window 속성 기준으로 팝업창을 연다.
-        window.open(url, "품목 상세 조회", windowStatus);
-        // form.setAttribute('method', 'get');
-        // form.setAttribute('action', url);
-        // document.body.appendChild(form);
-        // form.submit();
+      //등록된 url 및 window 속성 기준으로 팝업창을 연다.
+      window.open(url, "품목 상세 조회", windowStatus);
+      // form.setAttribute('method', 'get');
+      // form.setAttribute('action', url);
+      // document.body.appendChild(form);
+      // form.submit();
 
 
 

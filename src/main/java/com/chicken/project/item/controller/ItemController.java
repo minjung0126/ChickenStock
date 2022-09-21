@@ -128,7 +128,6 @@ public class ItemController {
     }
 
     @PostMapping("/admin/update")
-    @ResponseBody
     public String itemUpdate(@ModelAttribute ItemInfoDTO item, @RequestParam(value="itemNo", required = false) int itemNo, @RequestParam(value="file", required = false) MultipartFile file, RedirectAttributes rttr) throws Exception{
 
 
@@ -196,12 +195,9 @@ public class ItemController {
         }
 
         rttr.addFlashAttribute("message", "품목 수정 성공!");
-        String str = "failed";
-        if(result > 0){
-            str = "success";
-        }
+        rttr.addFlashAttribute("check", "success");
 
-        return str;
+        return "redirect:/item/admin/list";
     }
 
 
