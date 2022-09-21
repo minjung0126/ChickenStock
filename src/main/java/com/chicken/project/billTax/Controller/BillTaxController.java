@@ -60,7 +60,7 @@ public class BillTaxController {
 
         log.info("[BillTaxController] searchMap = " + searchMap);
 
-        int totalCount = billTaxService.selectTotalCount(searchMap);
+        int totalCount = billTaxService.selectTotalCountS(searchMap);
         log.info("[BillTaxController] totalCount = " + totalCount);
 
         int limit = 6;
@@ -78,8 +78,6 @@ public class BillTaxController {
 
         List<BillTaxDTO> taxBillList = billTaxService.selectTaxBillList(selectCriteria);
 
-        //String recCode = taxBillList.get(0).getRecCode();
-//        String recCode = "SI0001";
         Map<String, List<BillTaxDTO>> map = new HashMap<>();
 
         for(int i = 0; i < taxBillList.size(); i++){
@@ -179,7 +177,7 @@ public class BillTaxController {
         searchMap.put("searchValue", searchValue);
         searchMap.put("storeName", storeName);
 
-        int totalCount = billTaxService.selectTotalCount(searchMap);
+        int totalCount = billTaxService.selectTotalCountS(searchMap);
 
         int limit = 6;
         int buttonAmount = 5;

@@ -63,10 +63,10 @@
                     <h3><i class="fa-solid fa-list-check"></i> 반품 내역</h3>
                     <br>
                     <div class="input-group mb-4 col-12">
-                        <div class="dateList1"> 반품 신청일 :
+                        <div class="dateList1  mx-4"> 반품 신청일 :
                             <span id="dueDate" th:text="${ updateItem.rDate }"></span>
                         </div>
-                        <form id="updateForm" name="updateForm" th:action="@{/reItem/user/reviseReItem}" method="post" style="width: auto;">
+                        <form id="updateForm" name="updateForm" th:action="@{/reItem/user/reviseReItem}" method="post" class="col-12">
                         <div class="dateList2" style="font-weight: bold;">
                             <select id="rReason" name="rReason" class="form-control col-4" style="max-width: max-content; margin-right: 10px; display: inline-block; border: none;">
                                 <option value="date"> - 반품사유 - </option>
@@ -82,7 +82,7 @@
                             <input type="hidden" name="returnTotalMoney" id="reTotal">
                             <input type="hidden" name="total" id="total">
                         </div>
-                    <div class="d-flex justify-content-end">
+                    <div class="d-flex justify-content-end flex-wrap align-content-end" style="position: absolute; right:1%; top:25%">
                         <button class="btn btn-warning mx-1" style="color: #fff;" onclick="openLayer('layerPop',7, 12)">품목 추가</button>
                         <div id="layerPop" class="p-5" style="display:none; width: 75%; height: 800px; position: absolute; z-index: 1; overflow: scroll;">
                             <div class="mt-3 d-flex justify-content-end">

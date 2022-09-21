@@ -375,4 +375,12 @@ public class ReItemServiceImpl implements ReItemService{
 
         return result1;
     }
+
+    @Override
+    public int selectTotalCountS(Map<String, String> searchMap) {
+
+        int result = reItemMapper.selectTotalCountS(searchMap);
+
+        return result;
+    }
 }

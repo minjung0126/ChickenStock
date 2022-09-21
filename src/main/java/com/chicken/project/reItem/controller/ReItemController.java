@@ -103,7 +103,7 @@ public class ReItemController {
         searchMap.put("searchValue", searchValue);
         searchMap.put("storeName", storeName);
 
-        int totalCount = reItemService.selectTotalCount(searchMap);
+        int totalCount = reItemService.selectTotalCountS(searchMap);
 
         int limit = 6;
         int buttonAmount = 5;

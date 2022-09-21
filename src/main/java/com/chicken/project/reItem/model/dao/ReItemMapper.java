@@ -83,4 +83,6 @@ public interface ReItemMapper {
     int updateReAcountP(Map<String, Object> map);
 
     int updateReAcountM(Map<String, Object> map);
+
+    int selectTotalCountS(Map<String, String> searchMap);
 }
