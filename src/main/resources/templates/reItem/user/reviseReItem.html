@@ -257,7 +257,7 @@
             total += returnAmount[i].value * parseInt(itemPurchase[i].innerText.replace(',',''));
         }
         console.log(total);
-        document.getElementById('returnTotalMoney').value = total;
+        document.getElementById('returnTotalMoney').value = total.toLocaleString('ko-KR') + "원";
         document.getElementById('total').value = total;
         document.getElementById('reTotal').value = returnTotalMoney;
         let secondCount = returnAmount;
