@@ -686,8 +686,6 @@
         , A.FILE_NO
         , A.ORIGIN_NAME
         , A.FILE_NAME
-        , A.ORDER_DATE
-        , A.ORDER_NO
         FROM (SELECT ROWNUM RNUM
         , B.ITEM_NO
         , B.CATEGORY_NO
@@ -699,8 +697,6 @@
         , B.FILE_NO
         , B.ORIGIN_NAME
         , B.FILE_NAME
-        , B.ORDER_DATE
-        , B.ORDER_NO
         FROM (SELECT
           C.ITEM_NO
         , C.CATEGORY_NO
@@ -712,28 +708,24 @@
         , E.FILE_NO
         , E.ORIGIN_NAME
         , E.FILE_NAME
-        , G.ORDER_DATE
-        , G.ORDER_NO
         FROM CART C
         LEFT JOIN ITEM_INFO D ON (C.ITEM_NO = D.ITEM_NO)
         LEFT JOIN ITEM_FILE E ON (C.ITEM_NO = E.ITEM_NO)
-        LEFT JOIN ORDER_HANDLER F ON (C.CART_NO = F.CART_NO)
-        JOIN STORE_ORDER G ON (F.ORDER_NO = G.ORDER_NO)
         <where>
             AND C.STORE_NAME = #{ storeName }
             AND C.CART_YN != 'Y'
-            <if test="orderDate != null and !startDate.equals('')">
-            AND G.ORDER_DATE = #{ orderDate }
-            </if>
+<!--            <if test="orderDate != null and !startDate.equals('')">-->
+<!--            AND G.ORDER_DATE = #{ orderDate }-->
+<!--            </if>-->
         </where>
-        ORDER BY G.ORDER_NO ASC
+--         ORDER BY G.ORDER_NO ASC
+            ORDER BY C.ITEM_NO ASC
         ) B
         <![CDATA[
                   WHERE ROWNUM <= #{ endRow }
                   ]]>
         ) A
         WHERE A.RNUM >= #{ startRow }
-        ORDER BY A.ORDER_NO ASC
     </select>
 
     <!-- 최종 날짜 조회 -->

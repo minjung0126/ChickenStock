@@ -15,11 +15,12 @@ public class OrderHistoryDTO {
     private int orderNo;
     private String storeName;
     private OrderItemFileDTO itemFile;
+    private int cartNo;
 
     public OrderHistoryDTO() {
     }
 
-    public OrderHistoryDTO(int itemNo, int categoryNo, int cartAmount, String itemName, String itemStandard, String itemMake, int itemSales, String orderDate, String cartYn, int orderNo, String storeName, OrderItemFileDTO itemFile) {
+    public OrderHistoryDTO(int itemNo, int categoryNo, int cartAmount, String itemName, String itemStandard, String itemMake, int itemSales, String orderDate, String cartYn, int orderNo, String storeName, OrderItemFileDTO itemFile, int cartNo) {
         this.itemNo = itemNo;
         this.categoryNo = categoryNo;
         this.cartAmount = cartAmount;
@@ -32,6 +33,7 @@ public class OrderHistoryDTO {
         this.orderNo = orderNo;
         this.storeName = storeName;
         this.itemFile = itemFile;
+        this.cartNo = cartNo;
     }
 
     public int getItemNo() {
@@ -130,6 +132,14 @@ public class OrderHistoryDTO {
         this.itemFile = itemFile;
     }
 
+    public int getCartNo() {
+        return cartNo;
+    }
+
+    public void setCartNo(int cartNo) {
+        this.cartNo = cartNo;
+    }
+
     @Override
     public String toString() {
         return "OrderHistoryDTO{" +
@@ -140,11 +150,12 @@ public class OrderHistoryDTO {
                 ", itemStandard='" + itemStandard + '\'' +
                 ", itemMake='" + itemMake + '\'' +
                 ", itemSales=" + itemSales +
-                ", orderDate=" + orderDate +
+                ", orderDate='" + orderDate + '\'' +
                 ", cartYn='" + cartYn + '\'' +
                 ", orderNo=" + orderNo +
                 ", storeName='" + storeName + '\'' +
                 ", itemFile=" + itemFile +
+                ", cartNo=" + cartNo +
                 '}';
     }
 }
