@@ -46,11 +46,13 @@
                 <col>
                 <col>
                 <col>
+                <col>
               </colgroup>
               <thead>
                 <tr>
                   <th>문의 번호</th>
                   <th>문의 제목</th>
+                  <th>가맹점 명</th>
                   <th>문의 등록일</th>
                   <th>문의 답변상태</th>
                 </tr>
@@ -59,6 +61,7 @@
                 <tr th:each="counsel : ${ counselList }">
                   <td th:text="${ counsel.counselNo }"></td>
                   <td th:text="${ counsel.counselName }"></td>
+                  <td th:text="${ counsel.storeName }"></td>
                   <td th:text="${ counsel.counselRegistDate }"></td>
                   <td th:text="${ counsel.counselYn }"></td>
                 </tr>

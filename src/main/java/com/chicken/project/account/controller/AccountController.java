@@ -104,24 +104,6 @@ public class AccountController {
         return mv;
     }
 
-    /* 유저 입금신청 */
-    @GetMapping("/user/insert")
-    public String userAccountInsert(@RequestParam int accountDeposit, RedirectAttributes rttr, @AuthenticationPrincipal User user){
-
-        log.info("[AccountController] accountDeposit : " + accountDeposit);
-
-        String storeName = ((StoreImpl) user).getStoreName();
-
-        log.info("[AccountController] storeName : " + storeName);
-
-        accountService.accountInsert(accountDeposit, storeName);
-
-        rttr.addFlashAttribute("message", "입금 신청을 하였습니다.");
-
-        return "redirect:/account/user/list";
-
-    }
-
     /* 관리자 입금신청 승인 */
     @GetMapping("/admin/update")
     public String adminAccountApplyUpdate(@ModelAttribute AccountApplyDTO accountApply,HttpServletRequest request, RedirectAttributes rttr){
@@ -153,16 +135,22 @@ public class AccountController {
         return "redirect:/account/admin/list";
     }
 
-    /* 관리자 가맹점 잔액 조회 */
-    @GetMapping("/admin/balance")
-    public ModelAndView adminBalanceSelect(ModelAndView mv){
+    /* 유저 입금신청 */
+    @GetMapping("/user/insert")
+    public String userAccountInsert(@RequestParam int accountDeposit, RedirectAttributes rttr, @AuthenticationPrincipal User user){
 
-        List<BalanceDTO> balanceSelect = accountService.balanceSelect();
+        log.info("[AccountController] accountDeposit : " + accountDeposit);
 
-        mv.addObject("balanceSelect", balanceSelect);
-        mv.setViewName("/account/admin/adminBalanceSelect");
+        String storeName = ((StoreImpl) user).getStoreName();
 
-        return mv;
+        log.info("[AccountController] storeName : " + storeName);
+
+        accountService.accountInsert(accountDeposit, storeName);
+
+        rttr.addFlashAttribute("message", "입금 신청을 하였습니다.");
+
+        return "redirect:/account/user/list";
+
     }
 
     /* 가맹점 입출금 내역 조회 */
@@ -185,5 +173,18 @@ public class AccountController {
 
         return mv;
     }
+
+    /* 관리자 가맹점 잔액 조회 */
+    @GetMapping("/admin/balance")
+    public ModelAndView adminBalanceSelect(ModelAndView mv){
+
+        List<BalanceDTO> balanceSelect = accountService.balanceSelect();
+
+        mv.addObject("balanceSelect", balanceSelect);
+        mv.setViewName("/account/admin/adminBalanceSelect");
+
+        return mv;
+    }
+
 
 }

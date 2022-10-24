@@ -13,9 +13,10 @@
   <link rel="stylesheet" type="text/css" th:href="@{/css/common/style.css}"/>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.js"/>
   <script th:src="@{/js/common.js}"/>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 
 
 </head>
@@ -61,14 +62,14 @@
   </div>
 
   <!-- S: header -->
-  <div th:include="common/adminHeader.html"></div>
+  <div th:include="/common/adminHeader.html"></div>
   <!-- S: header -->
 
   <!-- S: container -->
   <div class="container px-0">
 
     <!-- S: aside -->
-    <div th:include="common/adminSidebar.html"></div>
+    <div th:include="/common/adminSidebar.html"></div>
     <!-- E: aside -->
 
     <!-- S: main layout -->

@@ -65,14 +65,14 @@
                               WHERE C1.EMP_ID = C.EMP_ID), 1, 'N', 2,'Y') AS EMP_ROLE
                FROM ( SELECT DISTINCT
                           E.EMP_ID
-                                    , E.EMP_NAME
-                                    , E.EMP_PHONE
-                                    , E.EMP_EMAIL
-                                    , E.EMP_BIRTH
-                                    , DECODE((SELECT COUNT(E1.EMP_ID)
-                                              FROM EMPLOYEE E1
-                                                       JOIN EMP_ROLE F1 ON(E1.EMP_ID = F1.EMP_ID)
-                                              WHERE E1.EMP_ID = E.EMP_ID), 1, 'N', 2,'Y') AS EMP_ROLE
+                        , E.EMP_NAME
+                        , E.EMP_PHONE
+                        , E.EMP_EMAIL
+                        , E.EMP_BIRTH
+                        , DECODE((SELECT COUNT(E1.EMP_ID)
+                                  FROM EMPLOYEE E1
+                                           JOIN EMP_ROLE F1 ON(E1.EMP_ID = F1.EMP_ID)
+                                  WHERE E1.EMP_ID = E.EMP_ID), 1, 'N', 2,'Y') AS EMP_ROLE
                       FROM EMPLOYEE E
                     ) C
             <![CDATA[

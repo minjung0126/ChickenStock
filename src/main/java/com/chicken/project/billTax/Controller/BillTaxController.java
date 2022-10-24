@@ -63,7 +63,7 @@ public class BillTaxController {
         int totalCount = billTaxService.selectTotalCountS(searchMap);
         log.info("[BillTaxController] totalCount = " + totalCount);
 
-        int limit = 6;
+        int limit = 30;
         int buttonAmount = 5;
 
         SelectCriteria selectCriteria = null;
@@ -179,7 +179,7 @@ public class BillTaxController {
 
         int totalCount = billTaxService.selectTotalCountS(searchMap);
 
-        int limit = 6;
+        int limit = 30;
         int buttonAmount = 5;
 
         SelectCriteria selectCriteria = null;
