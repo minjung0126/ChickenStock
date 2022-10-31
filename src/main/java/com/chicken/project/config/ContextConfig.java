@@ -10,12 +10,15 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 @ComponentScan(basePackages = "com.chicken.project")
 public class ContextConfig {
 
-    @Bean    public MessageSource messageSource(){
+    @Bean
+    public MessageSource messageSource(){
 
-        ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
-        messageSource.setBasename("classpath:/message/message");
-        messageSource.setDefaultEncoding("UTF-8");
+    ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+    messageSource.setBasename("classpath:/message/message");
+    messageSource.setDefaultEncoding("UTF-8");
 
-        return messageSource;
-    }
+    return messageSource;
+}
+
+
 }
